@@ -1,7 +1,7 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { 
   ShoppingCart, Search, X, Heart, Filter, Home, 
-  MessageCircle, Plus, Minus, Zap 
+  MessageCircle, Plus, Minus 
 } from 'lucide-react';
 
 // --- IMPORTACIONES ---
@@ -11,7 +11,7 @@ import { detectarSeccion } from './utils/categories';
 
 // --- CONFIGURACIÓN ---
 const CONFIG = {
-  WHATSAPP: "593993279707", // ¡Tu número aquí!
+  WHATSAPP: "593993279707", // ¡Asegúrate de que este número es correcto!
   ITEMS_PAGINA: 30,
   KEY_FAVS: 'loveDaytonaFavs'
 };
@@ -31,7 +31,7 @@ const optimizarImg = (url: string) => {
   return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=400&h=400&fit=cover&a=top&q=75&output=webp`;
 };
 
-// --- COMPONENTE TARJETA (Integrado para evitar errores de importación) ---
+// --- COMPONENTE TARJETA (Integrado aquí mismo) ---
 const ProductCard = React.memo(({ p, onAdd, onZoom, isFav, toggleFav }: any) => {
   const [loaded, setLoaded] = useState(false);
   
@@ -39,7 +39,10 @@ const ProductCard = React.memo(({ p, onAdd, onZoom, isFav, toggleFav }: any) => 
     <div className="card">
       <div className="card-top">
         <span className="badge-cat">{p.categoria}</span>
-        <button className={`btn-fav ${isFav ? 'active' : ''}`} onClick={() => toggleFav(p.id)}>
+        <button 
+          className={`btn-fav ${isFav ? 'active' : ''}`} 
+          onClick={(e) => { e.stopPropagation(); toggleFav(p.id); }}
+        >
           <Heart size={18} fill={isFav ? "currentColor" : "none"} />
         </button>
       </div>
@@ -59,7 +62,10 @@ const ProductCard = React.memo(({ p, onAdd, onZoom, isFav, toggleFav }: any) => 
         <h3>{p.nombre}</h3>
         <div className="card-action">
           <span className="price">${Number(p.precio).toFixed(2)}</span>
-          <button className="btn-add" onClick={() => onAdd(p)}>
+          <button 
+            className="btn-add" 
+            onClick={(e) => { e.stopPropagation(); onAdd(p); }}
+          >
             <Plus size={20} />
           </button>
         </div>
@@ -89,7 +95,6 @@ export default function App() {
   const productos = useMemo(() => {
     const raw = (dataOrigen as any).RAW_SCRAPED_DATA || (dataOrigen as any).products || [];
     const lista = Array.isArray(raw) ? raw : [];
-    // Agregamos la sección a cada producto
     return lista.map((p: any) => ({ ...p, seccion: detectarSeccion(p) }));
   }, []);
 
@@ -102,7 +107,6 @@ export default function App() {
       return matchTexto && matchModelo;
     });
 
-    // ¡IMPORTANTE! Ordenar por sección para que salgan agrupados
     res.sort((a: any, b: any) => {
       const idxA = ORDEN_SECCIONES.indexOf(a.seccion || 'Otros');
       const idxB = ORDEN_SECCIONES.indexOf(b.seccion || 'Otros');
@@ -192,8 +196,6 @@ export default function App() {
 
         <div className="grid">
           {visibles.map((p: any, i: number) => {
-            // Lógica para mostrar el TÍTULO DE LA SECCIÓN
-            // Se muestra si es el primero de la lista O si la sección cambió respecto al anterior
             const mostrarTitulo = !verFavs && !busqueda && (i === 0 || p.seccion !== visibles[i-1]?.seccion);
             
             return (
@@ -277,7 +279,7 @@ export default function App() {
 
       {zoomImg && (
         <div className="lightbox" onClick={() => setZoomImg(null)}>
-          <img src={optimizarImg(zoomImg)} onClick={e => e.stopPropagation()} />
+          <img src={optimizarImg(zoomImg)} onClick={e => e.stopPropagation()} alt="Zoom" />
           <button className="close-zoom"><X size={30}/></button>
         </div>
       )}
