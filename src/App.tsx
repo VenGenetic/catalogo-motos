@@ -1,11 +1,31 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { 
-  ShoppingCart, Search, ImageOff, Plus, Minus, X, 
-  ChevronLeft, ChevronRight, 
-  Facebook, Instagram, ArrowUp, Zap, MessageCircle, Maximize2, AlertTriangle, LogOut, Check, Heart, Share2, Trash2, Filter, Home
+  ShoppingCart, Search, X, Check, Heart, Share2, Trash2, Filter, Home, 
+  Zap, MessageCircle, AlertTriangle, LogOut, ArrowUp, Plus, Maximize2, ImageOff, Minus, ChevronLeft, ChevronRight
 } from 'lucide-react';
+
+// IMPORTA TU DATA
 import dataOrigen from './data.json'; 
 
+// --- 1. CONFIGURACIÓN Y CONSTANTES ---
+const APP_CONFIG = {
+  WHATSAPP_NUMBER: "593993279707",
+  ITEMS_PER_PAGE: 30,
+  LOCAL_STORAGE_KEY_FAVS: 'loveDaytonaFavs',
+};
+
+const ORDEN_SECCIONES = [
+  'Motor e Internos', 'Transmisión', 'Sistema Eléctrico', 'Sistema de Frenos', 
+  'Chasis y Suspensión', 'Carrocería y Plásticos', 'Ruedas y Ejes', 
+  'Cables y Mandos', 'Filtros y Mantenimiento', 'Otros Repuestos'
+];
+
+const MODELOS_FIJOS = [
+  "Tekken", "Crucero", "Spitfire", "Shark", "Adventure", 
+  "GP1R", "Delta", "Wing Evo", "Montana", "Scorpion", "Workforce"
+];
+
+// --- 2. DEFINICIÓN DE TIPOS ---
 interface Producto {
   id: string;
   nombre: string;
@@ -13,23 +33,39 @@ interface Producto {
   categoria: string;
   imagen: string;
   stock: boolean;
+  seccion?: string; 
 }
 interface ItemCarrito extends Producto { cantidad: number; }
-interface Toast { id: number; message: string; }
+interface ToastMessage { id: number; message: string; }
 
-// --- HELPERS PARA IMAGENES ---
+// --- 3. UTILIDADES (Lógica de imágenes y categorías) ---
 const optimizarImagenThumbnail = (url: string) => {
   if (!url || url === 'No imagen') return '';
   if (url.includes('wsrv.nl')) return url;
   return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=500&h=500&fit=cover&a=top&q=80&output=webp`;
 };
+
 const optimizarImagenZoom = (url: string) => {
   if (!url || url === 'No imagen') return '';
   if (url.includes('wsrv.nl')) return url;
   return `https://wsrv.nl/?url=${encodeURIComponent(url)}&q=90&output=webp`;
 };
 
-// --- COMPONENTE TARJETA DE PRODUCTO ---
+const detectarSeccion = (p: Producto): string => {
+  const texto = (p.nombre + ' ' + p.categoria).toLowerCase();
+  if (texto.match(/motor|pist|cilind|valv|cigue|biela|carter|empaque|cabeza de fuerza|balancin|anillo|arbol de levas/)) return 'Motor e Internos';
+  if (texto.match(/freno|pastilla|disco|zapata|mordaza|liquido|bomba de freno/)) return 'Sistema de Frenos';
+  if (texto.match(/llanta|tubo|camara|radio|aro|eje|manzana|rueda/)) return 'Ruedas y Ejes';
+  if (texto.match(/electri|bateria|foco|luz|farol|stop|direccional|cdi|bobina|regulador|sensor|tablero|velocimetro|pito|bocina|encendido|switch/)) return 'Sistema Eléctrico';
+  if (texto.match(/transmision|cadena|piñon|catalina|corona|arrastre|embrague|clutch|disco de embrague/)) return 'Transmisión';
+  if (texto.match(/plastico|tanque|tapa|cubierta|guardabarro|carenado|sillon|asiento|parrilla|defensa|porta placa/)) return 'Carrocería y Plásticos';
+  if (texto.match(/suspension|amortiguador|barra|telescopica|timon|manubrio|espejo|cuna|chasis|tijera/)) return 'Chasis y Suspensión';
+  if (texto.match(/filtro|aire|aceite|gasolina|fluido|lubricante/)) return 'Filtros y Mantenimiento';
+  if (texto.match(/cable|acelerador|embrague|freno/)) return 'Cables y Mandos';
+  return 'Otros Repuestos';
+};
+
+// --- 4. COMPONENTES INTERNOS ---
 const ProductCard = React.memo(({ p, onAdd, onZoom, modeloActivo, isFav, toggleFav }: { 
   p: Producto, onAdd: (p: Producto) => void, onZoom: (url: string) => void, modeloActivo: string, isFav: boolean, toggleFav: (id: string) => void 
 }) => {
@@ -70,7 +106,9 @@ const ProductCard = React.memo(({ p, onAdd, onZoom, modeloActivo, isFav, toggleF
       </div>
       
       <div className="card-details">
-        <span className="tag">{modeloActivo ? modeloActivo : (p.categoria === 'General' ? 'Repuesto' : p.categoria)}</span>
+        <span className="tag">
+          {modeloActivo ? modeloActivo : (p.categoria === 'General' ? 'Repuesto' : p.categoria)}
+        </span>
         <h3 className="product-name">{p.nombre}</h3>
         <div className="price-row">
           <span className="price">${Number(p.precio).toFixed(2)}</span>
@@ -83,7 +121,7 @@ const ProductCard = React.memo(({ p, onAdd, onZoom, modeloActivo, isFav, toggleF
   );
 });
 
-// --- COMPONENTE PRINCIPAL APP ---
+// --- 5. COMPONENTE PRINCIPAL (APP) ---
 export default function App() {
   const [busqueda, setBusqueda] = useState('');
   const [carrito, setCarrito] = useState<ItemCarrito[]>([]);
@@ -95,23 +133,17 @@ export default function App() {
   const [intentandoSalir, setIntentandoSalir] = useState(false);
   const [confirmandoLimpiar, setConfirmandoLimpiar] = useState(false);
   const [menuFiltrosAbierto, setMenuFiltrosAbierto] = useState(false);
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
   
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isExiting = useRef(false);
 
   const [favoritos, setFavoritos] = useState<string[]>(() => {
-    const guardados = localStorage.getItem('loveDaytonaFavs');
+    const guardados = localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS);
     return guardados ? JSON.parse(guardados) : [];
   });
   const [verFavoritos, setVerFavoritos] = useState(false);
-  const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const productosPorPagina = 24;
-  const NUMERO_WHATSAPP = "593993279707"; 
-
-  const MODELOS_FIJOS = ["Tekken", "Crucero", "Spitfire", "Shark", "Adventure", "GP1R", "Delta", "Wing Evo", "Montana", "Scorpion", "Workforce"];
-
-  // Efectos de historial y scroll
   useEffect(() => {
     window.history.pushState(null, "", window.location.pathname);
     const handlePopState = (event: any) => { 
@@ -125,26 +157,26 @@ export default function App() {
     window.addEventListener("beforeunload", handleBeforeUnload);
     const handleScroll = () => setMostrarBotonSubir(window.scrollY > 400);
     window.addEventListener('scroll', handleScroll);
-    return () => { window.removeEventListener("popstate", handlePopState); window.removeEventListener("beforeunload", handleBeforeUnload); window.removeEventListener('scroll', handleScroll); };
-  }, [carrito]);
+    
+    if (carritoAbierto || menuFiltrosAbierto) { document.body.classList.add('no-scroll'); } 
+    else { document.body.classList.remove('no-scroll'); }
 
-  // --- BLOQUEO DE SCROLL CUANDO EL MENÚ/CARRITO ESTÁ ABIERTO ---
-  useEffect(() => {
-    if (carritoAbierto || menuFiltrosAbierto) {
-      document.body.classList.add('no-scroll');
-    } else {
+    return () => { 
+      window.removeEventListener("popstate", handlePopState); 
+      window.removeEventListener("beforeunload", handleBeforeUnload); 
+      window.removeEventListener('scroll', handleScroll);
       document.body.classList.remove('no-scroll');
-    }
-  }, [carritoAbierto, menuFiltrosAbierto]);
+    };
+  }, [carrito, carritoAbierto, menuFiltrosAbierto]);
 
-  // Datos Originales
   const productos: Producto[] = useMemo(() => {
     const raw = (dataOrigen as any).RAW_SCRAPED_DATA || (dataOrigen as any).products || [];
-    return Array.isArray(raw) ? raw : [];
+    const lista = Array.isArray(raw) ? raw : [];
+    return lista.map((p: any) => ({ ...p, seccion: detectarSeccion(p) }));
   }, []);
 
   const productosFiltrados = useMemo(() => {
-    return productos.filter(p => {
+    let filtrados = productos.filter(p => {
       if (!p.precio || p.precio <= 0) return false;
       if (verFavoritos && !favoritos.includes(p.id)) return false;
       const nombreNorm = (p.nombre || '').toLowerCase();
@@ -152,15 +184,23 @@ export default function App() {
       const matchModelo = filtroModeloActivo === '' || nombreNorm.includes(filtroModeloActivo.toLowerCase());
       return matchBusqueda && matchModelo;
     });
+
+    filtrados.sort((a, b) => {
+      const idxA = ORDEN_SECCIONES.indexOf(a.seccion || 'Otros Repuestos');
+      const idxB = ORDEN_SECCIONES.indexOf(b.seccion || 'Otros Repuestos');
+      return idxA - idxB;
+    });
+
+    return filtrados;
   }, [productos, busqueda, filtroModeloActivo, verFavoritos, favoritos]);
 
   const productosVisibles = useMemo(() => {
-    const ultimo = paginaActual * productosPorPagina;
-    const primero = ultimo - productosPorPagina;
+    const ultimo = paginaActual * APP_CONFIG.ITEMS_PER_PAGE;
+    const primero = ultimo - APP_CONFIG.ITEMS_PER_PAGE;
     return productosFiltrados.slice(primero, ultimo);
   }, [paginaActual, productosFiltrados]);
 
-  const totalPaginas = Math.ceil(productosFiltrados.length / productosPorPagina);
+  const totalPaginas = Math.ceil(productosFiltrados.length / APP_CONFIG.ITEMS_PER_PAGE);
 
   useEffect(() => { setPaginaActual(1); window.scrollTo(0,0); }, [busqueda, filtroModeloActivo, verFavoritos]);
 
@@ -173,7 +213,7 @@ export default function App() {
   const toggleFavorito = (id: string) => {
     setFavoritos(prev => {
       const nuevos = prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id];
-      localStorage.setItem('loveDaytonaFavs', JSON.stringify(nuevos));
+      localStorage.setItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS, JSON.stringify(nuevos));
       if (!prev.includes(id)) addToast("Agregado a favoritos ❤️");
       return nuevos;
     });
@@ -204,16 +244,14 @@ export default function App() {
 
   const enviarWhatsApp = () => {
     let msg = "Hola Love Daytona 🏍️\nQuisiera realizar este pedido web:\n\n";
-    carrito.forEach(i => {
-      msg += `▪️ ${i.cantidad} x ${i.nombre} ($${(i.precio * i.cantidad).toFixed(2)})\n`;
-    });
+    carrito.forEach(i => { msg += `▪️ ${i.cantidad} x ${i.nombre} ($${(i.precio * i.cantidad).toFixed(2)})\n`; });
     msg += `\n💰 *Total Productos:* $${totalCarrito.toFixed(2)}`;
     msg += `\n🚚 *Costo Envío:* $5.00 - $10.00 (Aprox)`;
     msg += `\n\nQuedo pendiente de los datos para el pago y confirmar el envío.`;
-    window.location.href = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(msg)}`;
+    window.location.href = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
   };
 
-  const cotizarWhatsApp = () => { window.location.href = `https://wa.me/${NUMERO_WHATSAPP}?text=Hola Love Daytona, quisiera cotizar un repuesto.`; };
+  const cotizarWhatsApp = () => { window.location.href = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=Hola Love Daytona, quisiera cotizar un repuesto.`; };
   
   const confirmarSalida = () => {
     isExiting.current = true; 
@@ -276,9 +314,20 @@ export default function App() {
         </div>
 
         <div className="product-grid">
-          {productosVisibles.map((p, i) => (
-            <ProductCard key={`${p.id}-${i}`} p={p} onAdd={agregarCarrito} onZoom={setImagenZoom} modeloActivo={filtroModeloActivo} isFav={favoritos.includes(p.id)} toggleFav={toggleFavorito} />
-          ))}
+          {productosVisibles.map((p, i) => {
+            const showHeader = i === 0 || p.seccion !== productosVisibles[i - 1].seccion;
+            return (
+              <React.Fragment key={`${p.id}-${i}`}>
+                {showHeader && (
+                  <div className="section-header">
+                    <h2>{p.seccion}</h2>
+                    <div className="section-line"></div>
+                  </div>
+                )}
+                <ProductCard p={p} onAdd={agregarCarrito} onZoom={setImagenZoom} modeloActivo={filtroModeloActivo} isFav={favoritos.includes(p.id)} toggleFav={toggleFavorito} />
+              </React.Fragment>
+            );
+          })}
         </div>
 
         {productosVisibles.length === 0 && (
@@ -299,7 +348,6 @@ export default function App() {
       </div>
     </main>
 
-    {/* MENÚ LATERAL DE FILTROS (DRAWER) */}
     {menuFiltrosAbierto && (
       <div className="filter-overlay" onClick={() => setMenuFiltrosAbierto(false)}>
         <div className="filter-drawer" onClick={(e) => e.stopPropagation()}>
@@ -413,7 +461,6 @@ export default function App() {
       </div>
     )}
 
-    {/* --- BARRA DE NAVEGACIÓN INFERIOR (BOTTOM NAV) --- */ }
     <div className="bottom-nav">
       <button className="nav-item active" onClick={() => { setVerFavoritos(false); window.scrollTo({top:0, behavior:'smooth'}); }}>
         <Home size={24} />
@@ -433,8 +480,6 @@ export default function App() {
         <span>Mi Pedido</span>
       </button>
     </div>
-
-    <style>{`@keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } } @keyframes scaleUp { from { transform: scale(0.9); opacity:0; } to { transform: scale(1); opacity:1; } } .hidden { display: none !important; } html { scroll-behavior: smooth; }`}</style>
     </>
   );
 }
