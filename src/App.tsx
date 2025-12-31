@@ -28,12 +28,11 @@ const MODELOS = [
   "Dynamic", "Agility", "Viper", "CX7", "Comander"
 ];
 
-// --- CAMBIO AQUÍ: fit=contain para que NO recorte nada ---
+// --- VUELVE A FIT=COVER PARA QUE LLENE EL CUADRO ANTES DE RECORTAR ---
 const optimizarImg = (url: string) => {
   if (!url || url === 'No imagen') return '';
   if (url.includes('wsrv.nl')) return url;
-  // fit=contain asegura que se vea toda la imagen original
-  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800&h=800&fit=contain&q=85&output=webp`;
+  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800&h=800&fit=cover&a=top&q=85&output=webp`;
 };
 
 // --- TARJETA DE PRODUCTO ---
