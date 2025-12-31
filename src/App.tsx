@@ -20,7 +20,14 @@ const ORDEN_SECCIONES = [
   'Cables y Mandos', 'Filtros y Mantenimiento', 'Otros Repuestos'
 ];
 
-const MODELOS = ["Tekken", "Crucero", "Spitfire", "Shark", "Adventure", "GP1R", "Delta", "Wing Evo", "Montana", "Scorpion", "Workforce"];
+// --- LISTA DE MODELOS ACTUALIZADA ---
+const MODELOS = [
+  "Tekken", "Crucero", "Spitfire", "Shark", "Adventure", "GP1", "Delta", 
+  "Wing Evo", "Montana", "Scorpion", "Workforce", "Scrambler", "Wolf", "GTR", 
+  "Panther", "Cafe Racer", "Eagle", "Speed", "Bull", "Hunter", "Everest", 
+  "Crossfire", "Feroce", "Maverick", "Predator", "S1", "Evo 2", "Elvissa", 
+  "Dynamic", "Agility", "Viper", "CX7", "Comander"
+];
 
 const optimizarImg = (url: string) => {
   if (!url || url === 'No imagen') return '';
@@ -28,7 +35,7 @@ const optimizarImg = (url: string) => {
   return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800&h=800&fit=cover&a=top&q=85&output=webp`;
 };
 
-// --- TARJETA DE PRODUCTO (Ahora abre detalles) ---
+// --- TARJETA DE PRODUCTO ---
 const ProductCard = React.memo(({ p, onAdd, onOpen, isFav, toggleFav }: any) => {
   const [loaded, setLoaded] = useState(false);
   
@@ -108,7 +115,6 @@ export default function App() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [visibles, productosFiltrados]);
 
-  // Handle back button to close modal
   useEffect(() => {
     if (productoSeleccionado) {
       window.history.pushState(null, "", window.location.pathname);
@@ -222,7 +228,7 @@ export default function App() {
         </div>
       </footer>
 
-      {/* --- PÁGINA DE DETALLE DE PRODUCTO (NUEVO) --- */}
+      {/* DETALLE DE PRODUCTO */}
       {productoSeleccionado && (
         <div className="detail-page-overlay">
           <div className="detail-page">
@@ -270,7 +276,7 @@ export default function App() {
         </div>
       )}
 
-      {/* CARRITO Y FILTROS (Igual que antes) */}
+      {/* CARRITO Y FILTROS */}
       {carritoAbierto && (
         <div className="modal-bg" onClick={() => setCarritoAbierto(false)}>
           <div className="drawer" onClick={e => e.stopPropagation()}>
