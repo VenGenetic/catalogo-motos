@@ -71,11 +71,13 @@ body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background:
 .btn-fav { background: rgba(255,255,255,0.95); border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--gray); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 .btn-fav.active { color: var(--primary); }
 
-/* --- IMAGEN TARJETA (SIN RECORTE) --- */
+/* --- IMAGEN TARJETA (CON RECORTE 3/10) --- */
 .img-container { aspect-ratio: 1; background: #fff; position: relative; overflow: hidden; }
 .img-container img { 
   width: 100%; height: 100%; 
-  object-fit: contain;
+  object-fit: cover; 
+  /* Escala 1.43 para ocultar el 30% inferior (marca de agua) */
+  transform: scale(1.43); transform-origin: top center;
   transition: 0.3s; opacity: 0; 
 }
 .img-container img.visible { opacity: 1; }
@@ -105,15 +107,17 @@ body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background:
 
 .detail-scroll { flex: 1; overflow-y: auto; padding-bottom: 20px; }
 
-/* --- IMAGEN DETALLE (CLICABLE) --- */
+/* --- IMAGEN DETALLE (CON RECORTE 3/10) --- */
 .detail-img-box {
   width: 100%; height: 350px; background: white; display: flex; align-items: center; justify-content: center;
   border-bottom: 1px solid #eee; padding: 0; overflow: hidden; position: relative;
-  cursor: zoom-in; /* Cursor de lupa */
+  cursor: zoom-in;
 }
 .detail-img-box img { 
   width: 100%; height: 100%; 
-  object-fit: contain; 
+  object-fit: cover; 
+  /* Escala 1.43 para ocultar el 30% inferior */
+  transform: scale(1.43); transform-origin: top center;
 }
 .zoom-hint {
   position: absolute; bottom: 10px; right: 10px;
@@ -150,7 +154,8 @@ body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background:
 
 .detail-desc { background: #f9fafb; padding: 15px; border-radius: 10px; border: 1px solid #eee; font-size: 0.9rem; color: #555; line-height: 1.5; }
 
-/* --- LIGHTBOX (PANTALLA COMPLETA) --- */
+/* --- LIGHTBOX (PANTALLA COMPLETA - SIN RECORTE) --- */
+/* Aquí NO aplicamos zoom para que el cliente pueda ver la imagen entera si lo desea */
 .lightbox { 
   position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 500; 
   display: flex; align-items: center; justify-content: center;
@@ -194,14 +199,16 @@ body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background:
 .drawer-body { padding: 20px; overflow-y: auto; }
 .drawer-foot { padding: 20px; border-top: 1px solid #eee; background: #fafafa; }
 
-/* ITEM CARRITO */
+/* --- ITEM CARRITO (CON RECORTE 3/10) --- */
 .item-cart { display: flex; gap: 15px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
 .cart-img-frame {
   width: 60px; height: 60px; overflow: hidden; border-radius: 8px; border: 1px solid #eee; flex-shrink: 0;
 }
 .cart-img-frame img { 
   width: 100%; height: 100%; 
-  object-fit: contain;
+  object-fit: cover; 
+  /* Escala 1.43 para ocultar el 30% inferior */
+  transform: scale(1.43); transform-origin: top center;
 }
 
 .item-cart .info { flex: 1; }
