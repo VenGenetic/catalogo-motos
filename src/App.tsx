@@ -1,37 +1,42 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { 
   ShoppingCart, Search, X, Heart, Filter, Home, 
-  MessageCircle, Plus, Minus 
+  MessageCircle, Plus, Minus, Facebook, Instagram 
 } from 'lucide-react';
 
-// --- IMPORTACIONES ---
 import './App.css';
 import dataOrigen from './data.json'; 
 import { detectarSeccion } from './utils/categories';
 
-// --- CONFIGURACIÓN ---
 const CONFIG = {
-  WHATSAPP: "593993279707", // ¡Asegúrate de que este número es correcto!
+  WHATSAPP: "593993279707", 
   ITEMS_PAGINA: 30,
   KEY_FAVS: 'loveDaytonaFavs'
 };
 
+// ESTE ES EL ORDEN EN QUE APARECERÁN EN LA PANTALLA
 const ORDEN_SECCIONES = [
-  'Motor e Internos', 'Transmisión', 'Sistema Eléctrico', 'Sistema de Frenos', 
-  'Chasis y Suspensión', 'Carrocería y Plásticos', 'Ruedas y Ejes', 
-  'Cables y Mandos', 'Filtros y Mantenimiento', 'Otros Repuestos'
+  'Motor e Internos', 
+  'Transmisión', 
+  'Sistema Eléctrico', 
+  'Sistema de Frenos', 
+  'Chasis y Suspensión', 
+  'Carrocería y Plásticos', 
+  'Ruedas y Ejes', 
+  'Cables y Mandos', 
+  'Filtros y Mantenimiento', 
+  'Otros Repuestos'
 ];
 
 const MODELOS = ["Tekken", "Crucero", "Spitfire", "Shark", "Adventure", "GP1R", "Delta", "Wing Evo", "Montana", "Scorpion", "Workforce"];
 
-// --- UTILIDADES ---
 const optimizarImg = (url: string) => {
   if (!url || url === 'No imagen') return '';
   if (url.includes('wsrv.nl')) return url;
   return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=400&h=400&fit=cover&a=top&q=75&output=webp`;
 };
 
-// --- COMPONENTE TARJETA (Integrado aquí mismo) ---
+// --- TARJETA DE PRODUCTO ---
 const ProductCard = React.memo(({ p, onAdd, onZoom, isFav, toggleFav }: any) => {
   const [loaded, setLoaded] = useState(false);
   
@@ -39,35 +44,19 @@ const ProductCard = React.memo(({ p, onAdd, onZoom, isFav, toggleFav }: any) => 
     <div className="card">
       <div className="card-top">
         <span className="badge-cat">{p.categoria}</span>
-        <button 
-          className={`btn-fav ${isFav ? 'active' : ''}`} 
-          onClick={(e) => { e.stopPropagation(); toggleFav(p.id); }}
-        >
+        <button className={`btn-fav ${isFav ? 'active' : ''}`} onClick={(e) => { e.stopPropagation(); toggleFav(p.id); }}>
           <Heart size={18} fill={isFav ? "currentColor" : "none"} />
         </button>
       </div>
-      
       <div className="img-container" onClick={() => onZoom(p.imagen)}>
         {!loaded && <div className="skeleton"></div>}
-        <img 
-          src={optimizarImg(p.imagen)} 
-          alt={p.nombre}
-          className={loaded ? 'visible' : ''}
-          onLoad={() => setLoaded(true)}
-          loading="lazy"
-        />
+        <img src={optimizarImg(p.imagen)} alt={p.nombre} className={loaded ? 'visible' : ''} onLoad={() => setLoaded(true)} loading="lazy"/>
       </div>
-
       <div className="card-info">
         <h3>{p.nombre}</h3>
         <div className="card-action">
           <span className="price">${Number(p.precio).toFixed(2)}</span>
-          <button 
-            className="btn-add" 
-            onClick={(e) => { e.stopPropagation(); onAdd(p); }}
-          >
-            <Plus size={20} />
-          </button>
+          <button className="btn-add" onClick={(e) => { e.stopPropagation(); onAdd(p); }}><Plus size={20} /></button>
         </div>
       </div>
     </div>
@@ -86,12 +75,10 @@ export default function App() {
   const [toast, setToast] = useState<{id: number, msg: string}[]>([]);
   const [verFavs, setVerFavs] = useState(false);
   
-  // Cargar Favoritos
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(CONFIG.KEY_FAVS) || '[]'); } catch { return []; }
   });
 
-  // Procesar Datos
   const productos = useMemo(() => {
     const raw = (dataOrigen as any).RAW_SCRAPED_DATA || (dataOrigen as any).products || [];
     const lista = Array.isArray(raw) ? raw : [];
@@ -107,9 +94,12 @@ export default function App() {
       return matchTexto && matchModelo;
     });
 
+    // --- CORRECCIÓN DE ORDENAMIENTO ---
     res.sort((a: any, b: any) => {
-      const idxA = ORDEN_SECCIONES.indexOf(a.seccion || 'Otros');
-      const idxB = ORDEN_SECCIONES.indexOf(b.seccion || 'Otros');
+      let idxA = ORDEN_SECCIONES.indexOf(a.seccion);
+      let idxB = ORDEN_SECCIONES.indexOf(b.seccion);
+      if (idxA === -1) idxA = 999;
+      if (idxB === -1) idxB = 999;
       return idxA - idxB;
     });
 
@@ -118,7 +108,6 @@ export default function App() {
 
   const visibles = productosFiltrados.slice(0, pagina * CONFIG.ITEMS_PAGINA);
 
-  // Scroll Infinito
   useEffect(() => {
     const onScroll = () => {
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
@@ -129,7 +118,7 @@ export default function App() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [visibles, productosFiltrados]);
 
-  // Acciones
+  // FUNCIONES
   const addToast = (msg: string) => {
     const id = Date.now();
     setToast(prev => [...prev, { id, msg }]);
@@ -160,58 +149,60 @@ export default function App() {
     window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
+  const cotizarGeneral = () => {
+    window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=Hola Love Daytona, quisiera cotizar un repuesto.`, '_blank');
+  };
+
+  // Esta función faltaba en el código anterior
+  const irASeccion = (seccion: string) => {
+    const id = `sec-${seccion.replace(/\s+/g, '-')}`;
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+      setVerFavs(false);
+    }
+  };
+
   const totalItems = carrito.reduce((a, b) => a + b.cant, 0);
 
   return (
     <div className="app">
-      {/* HEADER FIJO */}
+      {/* HEADER */}
       <header className="header">
-        <div className="brand" onClick={() => window.location.reload()}>
-          LOVE <span>DAYTONA</span>
-        </div>
+        <div className="brand" onClick={() => window.location.reload()}>LOVE <span>DAYTONA</span></div>
         <div className="search-box">
           <Search size={18} className="icon" />
-          <input 
-            type="text" 
-            placeholder="Buscar repuesto..." 
-            value={busqueda}
-            onChange={e => { setBusqueda(e.target.value); setPagina(1); window.scrollTo(0,0); }}
-          />
+          <input type="text" placeholder="Buscar repuesto..." value={busqueda} onChange={e => { setBusqueda(e.target.value); setPagina(1); window.scrollTo(0,0); }}/>
           {busqueda && <button onClick={() => setBusqueda('')}><X size={16}/></button>}
         </div>
-        <button className="filter-btn" onClick={() => setMenuFiltro(true)}>
-          <Filter size={20} />
-        </button>
+        <button className="filter-btn" onClick={() => setMenuFiltro(true)}><Filter size={20} /></button>
       </header>
+
+      {/* BARRA DE ATAJOS (Restaurada) */}
+      {!verFavs && !busqueda && (
+        <div className="shortcuts-bar">
+          {ORDEN_SECCIONES.map(cat => (
+            <button key={cat} className="shortcut-chip" onClick={() => irASeccion(cat)}>
+              {cat}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* CONTENIDO */}
       <main className="content">
-        {filtroModelo && (
-          <div className="chip-filtro" onClick={() => setFiltroModelo('')}>
-            Modelo: {filtroModelo} <X size={14} />
-          </div>
-        )}
-
+        {filtroModelo && <div className="chip-filtro" onClick={() => setFiltroModelo('')}>Modelo: {filtroModelo} <X size={14} /></div>}
         {verFavs && <h2 className="titulo-seccion">❤️ Tus Favoritos</h2>}
 
         <div className="grid">
           {visibles.map((p: any, i: number) => {
             const mostrarTitulo = !verFavs && !busqueda && (i === 0 || p.seccion !== visibles[i-1]?.seccion);
+            const seccionId = `sec-${(p.seccion || '').replace(/\s+/g, '-')}`;
             
             return (
               <React.Fragment key={p.id + i}>
-                {mostrarTitulo && (
-                  <div className="header-seccion">
-                    {p.seccion}
-                  </div>
-                )}
-                <ProductCard 
-                  p={p} 
-                  onAdd={addCarrito} 
-                  onZoom={setZoomImg} 
-                  isFav={favs.includes(p.id)} 
-                  toggleFav={toggleFav}
-                />
+                {mostrarTitulo && <div id={seccionId} className="header-seccion">{p.seccion}</div>}
+                <ProductCard p={p} onAdd={addCarrito} onZoom={setZoomImg} isFav={favs.includes(p.id)} toggleFav={toggleFav}/>
               </React.Fragment>
             );
           })}
@@ -219,29 +210,39 @@ export default function App() {
         
         {visibles.length === 0 && (
           <div className="vacio">
-            <Search size={40} />
-            <p>No se encontraron resultados</p>
+            <Search size={40} /><p>No se encontraron resultados</p>
             <button onClick={() => {setBusqueda(''); setFiltroModelo(''); setVerFavs(false)}}>Ver todo</button>
           </div>
         )}
       </main>
 
-      {/* MODALES Y MENÚS */}
+      {/* FOOTER (Restaurado) */}
+      <footer className="main-footer">
+        <div className="footer-content">
+          <h3>¿No encuentras tu repuesto?</h3>
+          <p>Escríbenos directamente, tenemos más stock en bodega.</p>
+          <button className="btn-cotizar-footer" onClick={cotizarGeneral}>
+            <MessageCircle size={20}/> Cotizar por WhatsApp
+          </button>
+          <div className="social-icons">
+             {/* Usamos iconos de lucide-react */}
+            <button aria-label="Facebook"><Facebook size={24}/></button>
+            <button aria-label="Instagram"><Instagram size={24}/></button>
+          </div>
+          <p className="copyright">© 2024 Love Daytona Ecuador</p>
+        </div>
+      </footer>
+
+      {/* MODALES */}
       {carritoAbierto && (
         <div className="modal-bg" onClick={() => setCarritoAbierto(false)}>
           <div className="drawer" onClick={e => e.stopPropagation()}>
-            <div className="drawer-head">
-              <h3>Mi Pedido ({totalItems})</h3>
-              <button onClick={() => setCarritoAbierto(false)}><X/></button>
-            </div>
+            <div className="drawer-head"><h3>Mi Pedido ({totalItems})</h3><button onClick={() => setCarritoAbierto(false)}><X/></button></div>
             <div className="drawer-body">
               {carrito.map(i => (
                 <div key={i.id} className="item-cart">
                   <img src={optimizarImg(i.imagen)} alt="" />
-                  <div className="info">
-                    <h4>{i.nombre}</h4>
-                    <p>${(i.precio * i.cant).toFixed(2)}</p>
-                  </div>
+                  <div className="info"><h4>{i.nombre}</h4><p>${(i.precio * i.cant).toFixed(2)}</p></div>
                   <div className="qty">
                     <button onClick={() => setCarrito(c => c.map(x => x.id === i.id ? {...x, cant: x.cant-1} : x).filter(x => x.cant > 0))}><Minus size={14}/></button>
                     <span>{i.cant}</span>
@@ -251,13 +252,8 @@ export default function App() {
               ))}
             </div>
             <div className="drawer-foot">
-              <div className="total">
-                <span>Total:</span>
-                <span>${carrito.reduce((a,b)=>a+b.precio*b.cant, 0).toFixed(2)}</span>
-              </div>
-              <button className="btn-ws" onClick={enviarPedido}>
-                <MessageCircle size={18}/> Pedir por WhatsApp
-              </button>
+              <div className="total"><span>Total:</span><span>${carrito.reduce((a,b)=>a+b.precio*b.cant, 0).toFixed(2)}</span></div>
+              <button className="btn-ws" onClick={enviarPedido}><MessageCircle size={18}/> Pedir por WhatsApp</button>
             </div>
           </div>
         </div>
@@ -269,41 +265,19 @@ export default function App() {
             <div className="drawer-head"><h3>Modelos</h3></div>
             <div className="drawer-body">
               <button className="opt-filtro" onClick={() => {setFiltroModelo(''); setMenuFiltro(false)}}>Todos</button>
-              {MODELOS.map(m => (
-                <button key={m} className={`opt-filtro ${filtroModelo===m ? 'active':''}`} onClick={() => {setFiltroModelo(m); setMenuFiltro(false)}}>{m}</button>
-              ))}
+              {MODELOS.map(m => <button key={m} className={`opt-filtro ${filtroModelo===m ? 'active':''}`} onClick={() => {setFiltroModelo(m); setMenuFiltro(false)}}>{m}</button>)}
             </div>
           </div>
         </div>
       )}
 
-      {zoomImg && (
-        <div className="lightbox" onClick={() => setZoomImg(null)}>
-          <img src={optimizarImg(zoomImg)} onClick={e => e.stopPropagation()} alt="Zoom" />
-          <button className="close-zoom"><X size={30}/></button>
-        </div>
-      )}
+      {zoomImg && <div className="lightbox" onClick={() => setZoomImg(null)}><img src={optimizarImg(zoomImg)} onClick={e => e.stopPropagation()} /><button className="close-zoom"><X size={30}/></button></div>}
+      <div className="toasts">{toast.map(t => <div key={t.id} className="toast">{t.msg}</div>)}</div>
 
-      {/* TOASTS */}
-      <div className="toasts">
-        {toast.map(t => <div key={t.id} className="toast">{t.msg}</div>)}
-      </div>
-
-      {/* NAVEGACIÓN INFERIOR (ESTILO APP) */}
       <nav className="bottom-nav">
-        <button className={!verFavs ? 'active' : ''} onClick={() => {setVerFavs(false); window.scrollTo(0,0)}}>
-          <Home size={24} /> Inicio
-        </button>
-        <button className={verFavs ? 'active' : ''} onClick={() => setVerFavs(true)}>
-          <Heart size={24} /> Favoritos
-        </button>
-        <button onClick={() => setCarritoAbierto(true)}>
-          <div className="badge-wrap">
-            <ShoppingCart size={24} />
-            {totalItems > 0 && <span>{totalItems}</span>}
-          </div>
-          Pedido
-        </button>
+        <button className={!verFavs ? 'active' : ''} onClick={() => {setVerFavs(false); window.scrollTo(0,0)}}><Home size={24} /> Inicio</button>
+        <button className={verFavs ? 'active' : ''} onClick={() => setVerFavs(true)}><Heart size={24} /> Favoritos</button>
+        <button onClick={() => setCarritoAbierto(true)}><div className="badge-wrap"><ShoppingCart size={24} />{totalItems > 0 && <span>{totalItems}</span>}</div> Pedido</button>
       </nav>
     </div>
   );
