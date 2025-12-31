@@ -1,223 +1,79 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { 
-  ShoppingCart, Search, X, Check, Heart, Share2, Trash2, Filter, Home, 
-  Zap, MessageCircle, AlertTriangle, LogOut, ArrowUp, Plus, Maximize2, ImageOff, Minus, ChevronLeft, ChevronRight
+  ShoppingCart, Search, X, ChevronLeft, ChevronRight, 
+  Facebook, Instagram, MessageCircle, AlertTriangle, 
+  Check, Heart, Trash2, Filter, Home
 } from 'lucide-react';
-
-// IMPORTA TU DATA
 import dataOrigen from './data.json'; 
+import ProductCard from './components/ProductCard';
+import { Producto, ItemCarrito, Toast } from './types';
 
-// --- 1. CONFIGURACIÓN Y CONSTANTES ---
-const APP_CONFIG = {
-  WHATSAPP_NUMBER: "593993279707",
-  ITEMS_PER_PAGE: 30,
-  LOCAL_STORAGE_KEY_FAVS: 'loveDaytonaFavs',
-};
-
-const ORDEN_SECCIONES = [
-  'Motor e Internos', 'Transmisión', 'Sistema Eléctrico', 'Sistema de Frenos', 
-  'Chasis y Suspensión', 'Carrocería y Plásticos', 'Ruedas y Ejes', 
-  'Cables y Mandos', 'Filtros y Mantenimiento', 'Otros Repuestos'
-];
-
-const MODELOS_FIJOS = [
-  "Tekken", "Crucero", "Spitfire", "Shark", "Adventure", 
-  "GP1R", "Delta", "Wing Evo", "Montana", "Scorpion", "Workforce"
-];
-
-// --- 2. DEFINICIÓN DE TIPOS ---
-interface Producto {
-  id: string;
-  nombre: string;
-  precio: number;
-  categoria: string;
-  imagen: string;
-  stock: boolean;
-  seccion?: string; 
-}
-interface ItemCarrito extends Producto { cantidad: number; }
-interface ToastMessage { id: number; message: string; }
-
-// --- 3. UTILIDADES (Lógica de imágenes y categorías) ---
-const optimizarImagenThumbnail = (url: string) => {
-  if (!url || url === 'No imagen') return '';
-  if (url.includes('wsrv.nl')) return url;
-  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=500&h=500&fit=cover&a=top&q=80&output=webp`;
-};
-
-const optimizarImagenZoom = (url: string) => {
-  if (!url || url === 'No imagen') return '';
-  if (url.includes('wsrv.nl')) return url;
-  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&q=90&output=webp`;
-};
-
-const detectarSeccion = (p: Producto): string => {
-  const texto = (p.nombre + ' ' + p.categoria).toLowerCase();
-  if (texto.match(/motor|pist|cilind|valv|cigue|biela|carter|empaque|cabeza de fuerza|balancin|anillo|arbol de levas/)) return 'Motor e Internos';
-  if (texto.match(/freno|pastilla|disco|zapata|mordaza|liquido|bomba de freno/)) return 'Sistema de Frenos';
-  if (texto.match(/llanta|tubo|camara|radio|aro|eje|manzana|rueda/)) return 'Ruedas y Ejes';
-  if (texto.match(/electri|bateria|foco|luz|farol|stop|direccional|cdi|bobina|regulador|sensor|tablero|velocimetro|pito|bocina|encendido|switch/)) return 'Sistema Eléctrico';
-  if (texto.match(/transmision|cadena|piñon|catalina|corona|arrastre|embrague|clutch|disco de embrague/)) return 'Transmisión';
-  if (texto.match(/plastico|tanque|tapa|cubierta|guardabarro|carenado|sillon|asiento|parrilla|defensa|porta placa/)) return 'Carrocería y Plásticos';
-  if (texto.match(/suspension|amortiguador|barra|telescopica|timon|manubrio|espejo|cuna|chasis|tijera/)) return 'Chasis y Suspensión';
-  if (texto.match(/filtro|aire|aceite|gasolina|fluido|lubricante/)) return 'Filtros y Mantenimiento';
-  if (texto.match(/cable|acelerador|embrague|freno/)) return 'Cables y Mandos';
-  return 'Otros Repuestos';
-};
-
-// --- 4. COMPONENTES INTERNOS ---
-const ProductCard = React.memo(({ p, onAdd, onZoom, modeloActivo, isFav, toggleFav }: { 
-  p: Producto, onAdd: (p: Producto) => void, onZoom: (url: string) => void, modeloActivo: string, isFav: boolean, toggleFav: (id: string) => void 
-}) => {
-  const [imgLoaded, setImgLoaded] = useState(false);
-  const baseUrl = p.imagen && p.imagen !== 'No imagen' && p.imagen.startsWith('http') ? p.imagen : null;
-  const thumbUrl = baseUrl ? optimizarImagenThumbnail(baseUrl) : null;
-  const zoomUrl = baseUrl ? optimizarImagenZoom(baseUrl) : null;
-
-  return (
-    <div className="card">
-      <button 
-        className={`fav-btn ${isFav ? 'active' : ''}`} 
-        onClick={(e) => { e.stopPropagation(); toggleFav(p.id); }}
-        aria-label="Agregar a favoritos"
-      >
-        <Heart size={18} fill={isFav ? "currentColor" : "none"} strokeWidth={2} color={isFav ? "#ef4444" : "#9ca3af"}/>
-      </button>
-
-      <div className="card-img-box" onClick={() => zoomUrl && onZoom(zoomUrl)}>
-        {!imgLoaded && thumbUrl && <div className="skeleton-loader"></div>}
-        {thumbUrl ? (
-          <>
-            <img 
-              src={thumbUrl} 
-              alt={p.nombre} 
-              loading="lazy"
-              className={imgLoaded ? 'loaded' : ''}
-              onLoad={() => setImgLoaded(true)}
-              onError={() => setImgLoaded(true)}
-            />
-            <div className="zoom-hint"><Maximize2 size={14}/></div>
-          </>
-        ) : (
-          <div style={{width:'100%', height:'100%', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', color:'#e5e7eb'}}>
-             <ImageOff size={30} />
-          </div>
-        )}
-      </div>
-      
-      <div className="card-details">
-        <span className="tag">
-          {modeloActivo ? modeloActivo : (p.categoria === 'General' ? 'Repuesto' : p.categoria)}
-        </span>
-        <h3 className="product-name">{p.nombre}</h3>
-        <div className="price-row">
-          <span className="price">${Number(p.precio).toFixed(2)}</span>
-          <button className="btn-add" onClick={(e) => { e.stopPropagation(); onAdd(p); }}>
-            <Plus size={20} />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-});
-
-// --- 5. COMPONENTE PRINCIPAL (APP) ---
+// --- COMPONENTE PRINCIPAL APP ---
 export default function App() {
   const [busqueda, setBusqueda] = useState('');
   const [carrito, setCarrito] = useState<ItemCarrito[]>([]);
   const [carritoAbierto, setCarritoAbierto] = useState(false);
   const [paginaActual, setPaginaActual] = useState(1);
   const [filtroModeloActivo, setFiltroModeloActivo] = useState('');
-  const [mostrarBotonSubir, setMostrarBotonSubir] = useState(false);
+  // const [mostrarBotonSubir, setMostrarBotonSubir] = useState(false); // (Opcional si no se usa)
   const [imagenZoom, setImagenZoom] = useState<string | null>(null);
-  const [intentandoSalir, setIntentandoSalir] = useState(false);
   const [confirmandoLimpiar, setConfirmandoLimpiar] = useState(false);
   const [menuFiltrosAbierto, setMenuFiltrosAbierto] = useState(false);
-  const [toasts, setToasts] = useState<ToastMessage[]>([]);
   
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const isExiting = useRef(false);
 
   const [favoritos, setFavoritos] = useState<string[]>(() => {
-    const guardados = localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS);
+    const guardados = localStorage.getItem('loveDaytonaFavs');
     return guardados ? JSON.parse(guardados) : [];
   });
   const [verFavoritos, setVerFavoritos] = useState(false);
+  const [toasts, setToasts] = useState<Toast[]>([]);
 
+  const productosPorPagina = 24;
+  const NUMERO_WHATSAPP = "593993279707"; 
+  const MODELOS_FIJOS = ["Tekken", "Crucero", "Spitfire", "Shark", "Adventure", "GP1R", "Delta", "Wing Evo", "Montana", "Scorpion", "Workforce"];
+
+  // Efecto Scroll al cambiar página
   useEffect(() => {
-    window.history.pushState(null, "", window.location.pathname);
-    const handlePopState = (event: any) => { 
-        if (isExiting.current) return;
-        event.preventDefault(); 
-        setIntentandoSalir(true); 
-        window.history.pushState(null, "", window.location.pathname); 
-    };
-    window.addEventListener("popstate", handlePopState);
-    const handleBeforeUnload = (e: any) => { if (carrito.length > 0) { e.preventDefault(); e.returnValue = ''; } };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    const handleScroll = () => setMostrarBotonSubir(window.scrollY > 400);
-    window.addEventListener('scroll', handleScroll);
-    
-    if (carritoAbierto || menuFiltrosAbierto) { document.body.classList.add('no-scroll'); } 
-    else { document.body.classList.remove('no-scroll'); }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [paginaActual, verFavoritos]);
 
-    return () => { 
-      window.removeEventListener("popstate", handlePopState); 
-      window.removeEventListener("beforeunload", handleBeforeUnload); 
-      window.removeEventListener('scroll', handleScroll);
-      document.body.classList.remove('no-scroll');
-    };
-  }, [carrito, carritoAbierto, menuFiltrosAbierto]);
-
-  const productos: Producto[] = useMemo(() => {
-    const raw = (dataOrigen as any).RAW_SCRAPED_DATA || (dataOrigen as any).products || [];
-    const lista = Array.isArray(raw) ? raw : [];
-    return lista.map((p: any) => ({ ...p, seccion: detectarSeccion(p) }));
-  }, []);
-
-  const productosFiltrados = useMemo(() => {
-    let filtrados = productos.filter(p => {
-      if (!p.precio || p.precio <= 0) return false;
-      if (verFavoritos && !favoritos.includes(p.id)) return false;
-      const nombreNorm = (p.nombre || '').toLowerCase();
-      const matchBusqueda = nombreNorm.includes(busqueda.toLowerCase());
-      const matchModelo = filtroModeloActivo === '' || nombreNorm.includes(filtroModeloActivo.toLowerCase());
-      return matchBusqueda && matchModelo;
-    });
-
-    filtrados.sort((a, b) => {
-      const idxA = ORDEN_SECCIONES.indexOf(a.seccion || 'Otros Repuestos');
-      const idxB = ORDEN_SECCIONES.indexOf(b.seccion || 'Otros Repuestos');
-      return idxA - idxB;
-    });
-
-    return filtrados;
-  }, [productos, busqueda, filtroModeloActivo, verFavoritos, favoritos]);
-
-  const productosVisibles = useMemo(() => {
-    const ultimo = paginaActual * APP_CONFIG.ITEMS_PER_PAGE;
-    const primero = ultimo - APP_CONFIG.ITEMS_PER_PAGE;
-    return productosFiltrados.slice(primero, ultimo);
-  }, [paginaActual, productosFiltrados]);
-
-  const totalPaginas = Math.ceil(productosFiltrados.length / APP_CONFIG.ITEMS_PER_PAGE);
-
-  useEffect(() => { setPaginaActual(1); window.scrollTo(0,0); }, [busqueda, filtroModeloActivo, verFavoritos]);
-
+  // Manejo de Toasts
   const addToast = (msg: string) => {
     const id = Date.now();
     setToasts(prev => [...prev, { id, message: msg }]);
-    setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 3000);
+    setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 2000);
   };
 
-  const toggleFavorito = (id: string) => {
-    setFavoritos(prev => {
-      const nuevos = prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id];
-      localStorage.setItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS, JSON.stringify(nuevos));
-      if (!prev.includes(id)) addToast("Agregado a favoritos ❤️");
-      return nuevos;
-    });
-  };
+  // Filtrado
+  const productosFiltrados = useMemo(() => {
+    let filtrados = dataOrigen.RAW_SCRAPED_DATA as unknown as Producto[];
+    if (verFavoritos) {
+      filtrados = filtrados.filter(p => favoritos.includes(p.id));
+    } else {
+      if (filtroModeloActivo) {
+        filtrados = filtrados.filter(p => 
+          p.nombre.toUpperCase().includes(filtroModeloActivo.toUpperCase()) || 
+          p.id.toUpperCase().includes(filtroModeloActivo.toUpperCase())
+        );
+      }
+      if (busqueda) {
+        const q = busqueda.toUpperCase();
+        filtrados = filtrados.filter(p => p.nombre.toUpperCase().includes(q));
+      }
+    }
+    return filtrados;
+  }, [busqueda, filtroModeloActivo, verFavoritos, favoritos]);
+
+  const totalPaginas = Math.ceil(productosFiltrados.length / productosPorPagina);
+  const productosVisibles = productosFiltrados.slice(
+    (paginaActual - 1) * productosPorPagina, 
+    paginaActual * productosPorPagina
+  );
+
+  // Carrito Lógica
+  const cantidadTotal = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+  const precioTotal = carrito.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
 
   const agregarCarrito = (p: Producto) => {
     if (navigator.vibrate) navigator.vibrate(50);
@@ -228,258 +84,216 @@ export default function App() {
     addToast("Agregado al carrito 🛒");
   };
 
-  const compartirTienda = () => {
-    if (navigator.share) { navigator.share({ title: 'Love Daytona', text: 'Mira los mejores repuestos para tu moto.', url: window.location.href }); } 
-    else { navigator.clipboard.writeText(window.location.href); addToast("Enlace copiado al portapapeles 📋"); }
+  const eliminarDelCarrito = (id: string) => {
+    setCarrito(prev => prev.filter(i => i.id !== id));
   };
 
-  const modificarCantidad = (id: string, d: number) => {
-    setCarrito(prev => prev.map(i => i.id === id ? { ...i, cantidad: Math.max(0, i.cantidad + d) } : i).filter(i => i.cantidad > 0));
+  const toggleFavorito = (id: string) => {
+    setFavoritos(prev => {
+      const nuevos = prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id];
+      localStorage.setItem('loveDaytonaFavs', JSON.stringify(nuevos));
+      if (!prev.includes(id)) addToast("Agregado a favoritos ❤️");
+      return nuevos;
+    });
   };
 
-  const limpiarCarrito = () => { setCarrito([]); setConfirmandoLimpiar(false); addToast("Carrito vaciado 🗑️"); };
-
-  const totalCarrito = carrito.reduce((sum, i) => sum + (i.precio * i.cantidad), 0);
-  const cantidadTotal = carrito.reduce((sum, i) => sum + i.cantidad, 0);
-
-  const enviarWhatsApp = () => {
-    let msg = "Hola Love Daytona 🏍️\nQuisiera realizar este pedido web:\n\n";
-    carrito.forEach(i => { msg += `▪️ ${i.cantidad} x ${i.nombre} ($${(i.precio * i.cantidad).toFixed(2)})\n`; });
-    msg += `\n💰 *Total Productos:* $${totalCarrito.toFixed(2)}`;
-    msg += `\n🚚 *Costo Envío:* $5.00 - $10.00 (Aprox)`;
-    msg += `\n\nQuedo pendiente de los datos para el pago y confirmar el envío.`;
-    window.location.href = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-  };
-
-  const cotizarWhatsApp = () => { window.location.href = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=Hola Love Daytona, quisiera cotizar un repuesto.`; };
-  
-  const confirmarSalida = () => {
-    isExiting.current = true; 
-    window.history.go(-2);
-    setTimeout(() => { window.close(); window.location.href = "https://google.com"; }, 200);
+  const enviarPedido = () => {
+    let mensaje = "Hola, me interesa comprar:\n\n";
+    carrito.forEach(item => {
+      mensaje += `▪️ ${item.cantidad} x ${item.nombre} ($${item.precio})\n`;
+    });
+    mensaje += `\n*TOTAL: $${precioTotal.toFixed(2)}*`;
+    window.open(`https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`, '_blank');
   };
 
   const irABuscador = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setTimeout(() => searchInputRef.current?.focus(), 500);
+    setVerFavoritos(false);
+    setCarritoAbierto(false);
+    searchInputRef.current?.focus();
   };
 
   return (
     <>
-    <div className="toast-container">{toasts.map(t => (<div key={t.id} className="toast"><Check size={18}/> {t.message}</div>))}</div>
-
-    <nav className="top-navbar">
-      <div className="main-container nav-content">
-        <div className="logo-container" onClick={() => window.location.reload()}>
-          <div className="logo-icon-bg"><Zap size={16} fill="white" strokeWidth={0} style={{transform: 'skew(10deg)'}} /></div>
-          <div className="logo-text-group"><span className="logo-main">LOVE <span>DAYTONA</span></span></div>
-        </div>
-        <div className="nav-actions">
-           <button className={`nav-btn-icon-only ${verFavoritos ? 'active' : ''}`} onClick={() => { setVerFavoritos(!verFavoritos); setBusqueda(''); setFiltroModeloActivo(''); }} aria-label="Ver Favoritos"><Heart size={20} fill={verFavoritos ? "white" : "none"} /></button>
-           <button className="nav-btn-icon-only" onClick={compartirTienda} aria-label="Compartir"><Share2 size={20} /></button>
-          <button className="nav-btn-icon-only" onClick={()=>setCarritoAbierto(true)} aria-label="Ver Carrito"><ShoppingCart size={20} />{cantidadTotal > 0 && <span className="cart-badge">{cantidadTotal}</span>}</button>
-        </div>
+      {/* TOASTS */}
+      <div className="toast-container">
+        {toasts.map(t => (
+          <div key={t.id} className="toast">{t.message}</div>
+        ))}
       </div>
-    </nav>
 
-    {!verFavoritos && <section className="hero-section"><div className="main-container"><h1 className="hero-title">REPUESTOS <span>DAYTONA</span></h1><p className="hero-subtitle">Calidad y precisión para tu motocicleta.</p></div></section>}
+      <nav className="navbar">
+        <div className="main-container nav-content">
+          <div className="nav-logo" onClick={() => { setVerFavoritos(false); setBusqueda(''); setFiltroModeloActivo(''); }}>
+            LOVE DAYTONA <span className="logo-beta">BETA</span>
+          </div>
+          <div className="nav-actions">
+            <button className="icon-btn relative" onClick={() => setVerFavoritos(!verFavoritos)}>
+              <Heart size={24} fill={verFavoritos ? "currentColor" : "none"} color={verFavoritos ? "#ef4444" : "#374151"} />
+            </button>
+            <button className="icon-btn relative" onClick={() => setCarritoAbierto(true)}>
+              <ShoppingCart size={24} />
+              {cantidadTotal > 0 && <span className="cart-badge">{cantidadTotal}</span>}
+            </button>
+          </div>
+        </div>
+      </nav>
 
-    <main className="catalog-section">
-      <div className="main-container">
-        <div className="toolbar-sticky">
-          <div className="search-bar-wrapper">
-             <Search size={20} className="search-icon" />
-             <input 
-                ref={searchInputRef}
+      {!verFavoritos && (
+        <section className="hero-section">
+          <div className="main-container">
+            <h1 className="hero-title">REPUESTOS <span>DAYTONA</span></h1>
+            <p className="hero-subtitle">Calidad y precisión para tu motocicleta.</p>
+          </div>
+        </section>
+      )}
+
+      <main className="catalog-section">
+        <div className="main-container">
+          <div className="toolbar-sticky">
+            <div className="search-bar-wrapper">
+              <Search size={20} className="search-icon" />
+              <input 
+                ref={searchInputRef} 
                 type="text" 
                 className="search-input" 
                 placeholder="Buscar repuestos..." 
                 value={busqueda} 
-                onChange={(e)=>{setBusqueda(e.target.value); setFiltroModeloActivo(''); setVerFavoritos(false);}} 
-             />
-             {busqueda && <button className="search-clear-btn" onClick={()=>setBusqueda('')}><X size={16} /></button>}
+                onChange={(e)=>{setBusqueda(e.target.value); setFiltroModeloActivo(''); setVerFavoritos(false); setPaginaActual(1);}} 
+              />
+              {busqueda && <button className="search-clear-btn" onClick={()=>setBusqueda('')}><X size={16} /></button>}
+            </div>
+            
+            {!verFavoritos && (
+              <button className="filter-trigger-btn" onClick={() => setMenuFiltrosAbierto(true)}>
+                <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
+                  <Filter size={18} /> <span>Filtrar por Modelo</span>
+                </div>
+                {filtroModeloActivo ? <span className="filter-active-tag">{filtroModeloActivo}</span> : <ChevronRight size={18} color="#9ca3af"/>}
+              </button>
+            )}
+            {verFavoritos && <div style={{textAlign:'center', fontWeight:'bold', marginTop:'10px'}}>❤️ Tus Favoritos ({productosFiltrados.length})</div>}
           </div>
-          
-          {!verFavoritos && (
-            <button className="filter-trigger-btn" onClick={() => setMenuFiltrosAbierto(true)}>
-              <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
-                <Filter size={18} />
-                <span>Filtrar por Modelo</span>
-              </div>
-              {filtroModeloActivo ? <span className="filter-active-tag">{filtroModeloActivo}</span> : <ChevronRight size={18} color="#9ca3af"/>}
-            </button>
+
+          <div className="product-grid">
+            {productosVisibles.map((p) => (
+              <ProductCard 
+                key={p.id} 
+                p={p} 
+                onAdd={agregarCarrito} 
+                onZoom={setImagenZoom} 
+                modeloActivo={filtroModeloActivo} 
+                isFav={favoritos.includes(p.id)} 
+                toggleFav={toggleFavorito} 
+              />
+            ))}
+          </div>
+
+          {productosVisibles.length === 0 && (
+            <div style={{textAlign:'center', padding:'60px 20px', color:'#9ca3af'}}>
+              <h2 style={{fontSize:'1.3rem', margin:'0 0 10px', color:'var(--text-dark)'}}>{verFavoritos ? 'Sin favoritos aún' : 'Sin resultados'}</h2>
+              <button onClick={()=>{setBusqueda(''); setFiltroModeloActivo(''); setVerFavoritos(false);}} style={{marginTop:'20px', background:'var(--primary)', color:'white', border:'none', padding:'10px 25px', borderRadius:'8px', fontWeight:'bold', cursor:'pointer'}}>Ver todo el catálogo</button>
+            </div>
           )}
 
-          {verFavoritos && <div style={{textAlign:'center', fontWeight:'bold', marginTop:'10px'}}>❤️ Tus Favoritos ({productosFiltrados.length})</div>}
+          {totalPaginas > 1 && (
+            <div className="pagination">
+              <button className="page-btn" disabled={paginaActual===1} onClick={()=>setPaginaActual(p=>p-1)}><ChevronLeft size={20}/></button>
+              <span className="page-info">Página {paginaActual} de {totalPaginas}</span>
+              <button className="page-btn" disabled={paginaActual===totalPaginas} onClick={()=>setPaginaActual(p=>p+1)}><ChevronRight size={20}/></button>
+            </div>
+          )}
         </div>
+      </main>
 
-        <div className="product-grid">
-          {productosVisibles.map((p, i) => {
-            const showHeader = i === 0 || p.seccion !== productosVisibles[i - 1].seccion;
-            return (
-              <React.Fragment key={`${p.id}-${i}`}>
-                {showHeader && (
-                  <div className="section-header">
-                    <h2>{p.seccion}</h2>
-                    <div className="section-line"></div>
-                  </div>
-                )}
-                <ProductCard p={p} onAdd={agregarCarrito} onZoom={setImagenZoom} modeloActivo={filtroModeloActivo} isFav={favoritos.includes(p.id)} toggleFav={toggleFavorito} />
-              </React.Fragment>
-            );
-          })}
-        </div>
-
-        {productosVisibles.length === 0 && (
-          <div style={{textAlign:'center', padding:'60px 20px', color:'#9ca3af'}}>
-            {verFavoritos ? <Heart size={48} style={{opacity:0.3, marginBottom:'15px'}} /> : <Search size={48} style={{opacity:0.3, marginBottom:'15px'}} />}
-            <h2 style={{fontSize:'1.3rem', margin:'0 0 10px', color:'var(--text-dark)'}}>{verFavoritos ? 'Sin favoritos aún' : 'Sin resultados'}</h2>
-            <button onClick={()=>{setBusqueda(''); setFiltroModeloActivo(''); setVerFavoritos(false);}} style={{marginTop:'20px', background:'var(--primary)', color:'white', border:'none', padding:'10px 25px', borderRadius:'8px', fontWeight:'bold', cursor:'pointer'}}>Ver todo el catálogo</button>
-          </div>
-        )}
-
-        {totalPaginas > 1 && (
-          <div className="pagination">
-            <button className="page-btn" disabled={paginaActual===1} onClick={()=>setPaginaActual(p=>p-1)}><ChevronLeft size={20}/></button>
-            <span className="page-info">Página {paginaActual} de {totalPaginas}</span>
-            <button className="page-btn" disabled={paginaActual===totalPaginas} onClick={()=>setPaginaActual(p=>p+1)}><ChevronRight size={20}/></button>
-          </div>
-        )}
-      </div>
-    </main>
-
-    {menuFiltrosAbierto && (
-      <div className="filter-overlay" onClick={() => setMenuFiltrosAbierto(false)}>
-        <div className="filter-drawer" onClick={(e) => e.stopPropagation()}>
-          <div className="filter-drawer-header">
-            <span className="filter-drawer-title"><Filter size={20} /> Modelos</span>
-            <button onClick={() => setMenuFiltrosAbierto(false)} style={{background:'none', border:'none', cursor:'pointer'}}><X size={24} color="#6b7280"/></button>
-          </div>
-          <div className="filter-list">
-            <button className={`filter-item ${filtroModeloActivo === '' ? 'active' : ''}`} onClick={() => { setFiltroModeloActivo(''); setBusqueda(''); setMenuFiltrosAbierto(false); }}>
-              Todos los modelos {filtroModeloActivo === '' && <Check size={18}/>}
-            </button>
-            {MODELOS_FIJOS.map(modelo => (
-              <button key={modelo} className={`filter-item ${filtroModeloActivo === modelo ? 'active' : ''}`} onClick={() => { setFiltroModeloActivo(modelo); setBusqueda(''); setMenuFiltrosAbierto(false); }}>
-                {modelo} {filtroModeloActivo === modelo && <Check size={18}/>}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    )}
-
-    <footer className="app-footer">
-      <div className="main-container footer-content">
-        <div className="logo-container"><span className="logo-main" style={{color:'#6b7280'}}>LOVE DAYTONA</span></div>
-        <p style={{fontSize:'0.9rem', margin:0}}>Repuestos para tu moto en Ecuador.</p>
-        <div className="social-links">
-            <a href="https://www.facebook.com/profile.php?id=61583611217559" target="_blank" rel="noreferrer" style={{color:'#9ca3af'}}><Facebook size={22}/></a>
-            <a href="https://www.instagram.com/love_daytona_oficial/" target="_blank" rel="noreferrer" style={{color:'#9ca3af'}}><Instagram size={22}/></a>
-        </div>
-      </div>
-    </footer>
-
-    <div className="floating-buttons-container">
-        <button className="float-btn cart-float-btn" onClick={()=>setCarritoAbierto(true)}><ShoppingCart size={24} />{cantidadTotal > 0 && <span className="floating-badge">{cantidadTotal}</span>}</button>
-        <button className="float-btn whatsapp-float-btn" onClick={cotizarWhatsApp}><MessageCircle size={24} /></button>
-        {mostrarBotonSubir && <button className="float-btn scroll-top-btn" onClick={()=>window.scrollTo({top:0, behavior:'smooth'})}><ArrowUp size={24} /></button>}
-    </div>
-
-    {imagenZoom && (
-      <div className="lightbox-overlay" onClick={() => setImagenZoom(null)}>
-        <button className="lightbox-close"><X size={24}/></button>
-        <img src={imagenZoom} className="lightbox-img" onClick={(e) => e.stopPropagation()} alt="Zoom Producto" />
-      </div>
-    )}
-
-    {carritoAbierto && (
-      <div className="cart-overlay" onClick={(e) => { if(e.target === e.currentTarget) setCarritoAbierto(false); }}>
-        <div className="cart-sheet">
-          <div className="cart-header">
-            <h2 style={{margin:0, fontSize:'1.3rem', color:'var(--text-dark)', fontWeight:800}}>Tu Pedido</h2>
-            <div style={{display:'flex', gap:'15px', alignItems:'center'}}>
-                {carrito.length > 0 && <button onClick={()=>setConfirmandoLimpiar(true)} style={{border:'none', background:'transparent', cursor:'pointer', padding:'5px', color:'#ef4444'}}><Trash2 size={20}/></button>}
-                <button onClick={()=>setCarritoAbierto(false)} style={{border:'none', background:'transparent', cursor:'pointer', padding:'5px'}}><X size={24} color="#9ca3af"/></button>
+      {/* MODALES Y MENÚS */}
+      {menuFiltrosAbierto && (
+        <div className="filter-overlay" onClick={() => setMenuFiltrosAbierto(false)}>
+          <div className="filter-drawer" onClick={(e) => e.stopPropagation()}>
+            <div className="filter-drawer-header">
+              <span className="filter-drawer-title"><Filter size={20} /> Modelos</span>
+              <button onClick={() => setMenuFiltrosAbierto(false)} style={{background:'none', border:'none', cursor:'pointer'}}><X size={24} color="#6b7280"/></button>
+            </div>
+            <div className="filter-list">
+              <button className={`filter-item ${filtroModeloActivo === '' ? 'active' : ''}`} onClick={() => { setFiltroModeloActivo(''); setBusqueda(''); setMenuFiltrosAbierto(false); }}> Todos los modelos {filtroModeloActivo === '' && <Check size={18}/>} </button>
+              {MODELOS_FIJOS.map(modelo => (
+                <button key={modelo} className={`filter-item ${filtroModeloActivo === modelo ? 'active' : ''}`} onClick={() => { setFiltroModeloActivo(modelo); setBusqueda(''); setMenuFiltrosAbierto(false); }}> {modelo} {filtroModeloActivo === modelo && <Check size={18}/>} </button>
+              ))}
             </div>
           </div>
-          <div className="cart-list">
-            {carrito.length===0 ? (
-              <div style={{textAlign:'center', color:'#9ca3af', marginTop:'60px'}}>
-                <ShoppingCart size={50} style={{opacity:0.2, marginBottom:20}}/>
-                <p>¡Tu carrito está vacío!</p>
-                <button onClick={()=>setCarritoAbierto(false)} style={{marginTop:'20px', background:'var(--primary)', color:'white', border:'none', padding:'10px 20px', borderRadius:'10px', fontWeight:'bold', cursor:'pointer'}}>Comenzar a comprar</button>
-              </div>
-            ) : carrito.map(i => (
-              <div key={i.id} style={{display:'flex', gap:'15px', marginBottom:'20px', paddingBottom:'20px', borderBottom:'1px solid #f3f4f6'}}>
-                <div style={{width:'70px', height:'70px', borderRadius:'12px', overflow:'hidden', border:'1px solid #f3f4f6', flexShrink:0, background:'white'}}>
-                  <img src={optimizarImagenThumbnail(i.imagen)} className="cart-img-crop" onError={(e)=>e.currentTarget.style.display='none'}/>
-                </div>
-                <div style={{flex:1}}>
-                  <h4 style={{margin:'0 0 5px', fontSize:'0.9rem', color:'var(--text-dark)', fontWeight:600}}>{i.nombre}</h4>
-                  <div style={{color:'var(--primary)', fontWeight:800, fontSize:'1rem'}}>${(i.precio * i.cantidad).toFixed(2)}</div>
-                </div>
-                <div style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'space-between'}}>
-                   <button onClick={()=>modificarCantidad(i.id, 1)} style={{width:'28px', height:'28px', borderRadius:'8px', border:'1px solid #e5e7eb', background:'white'}}><Plus size={14}/></button>
-                   <span style={{fontSize:'0.9rem', fontWeight:'700'}}>{i.cantidad}</span>
-                   <button onClick={()=>modificarCantidad(i.id, -1)} style={{width:'28px', height:'28px', borderRadius:'8px', border:'1px solid #e5e7eb', background:'white'}}><Minus size={14}/></button>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="cart-footer">
-            <div style={{display:'flex', justifyContent:'space-between', fontSize:'1.1rem', fontWeight:'800', marginBottom:'5px', color:'var(--text-dark)'}}><span>Subtotal:</span><span>${totalCarrito.toFixed(2)}</span></div>
-            <div style={{display:'flex', justifyContent:'space-between', fontSize:'0.9rem', color:'#6b7280', marginBottom:'15px'}}><span>🚚 Envío estimado:</span><span>$5.00 - $10.00</span></div>
-            <button onClick={enviarWhatsApp} style={{width:'100%', background:'#25D366', color:'white', padding:'16px', border:'none', borderRadius:'12px', fontSize:'1rem', fontWeight:'700', cursor:'pointer', display:'flex', justifyContent:'center', gap:'10px', boxShadow:'0 4px 10px rgba(37, 211, 102, 0.2)'}}><MessageCircle size={20}/> Pedir por WhatsApp</button>
-          </div>
         </div>
-      </div>
-    )}
+      )}
 
-    {(intentandoSalir || confirmandoLimpiar) && (
-      <div className="alert-overlay">
-        <div style={{background:'white', borderRadius:'20px', padding:'30px', width:'100%', maxWidth:'320px', textAlign:'center', animation:'scaleUp 0.3s'}}>
-          <div style={{width:'60px', height:'60px', background:'#fee2e2', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 15px', color:'#ef4444'}}>{confirmandoLimpiar ? <Trash2 size={30}/> : <AlertTriangle size={30} />}</div>
-          <h3 style={{margin:'0 0 10px', fontSize:'1.2rem', fontWeight:800, color:'var(--text-dark)'}}>{confirmandoLimpiar ? '¿Vaciar carrito?' : '¿Salir de la tienda?'}</h3>
-          <p style={{margin:'0 0 25px', color:'#6b7280', lineHeight:1.5, fontSize:'0.95rem'}}>{confirmandoLimpiar ? 'Se eliminarán todos los productos seleccionados.' : 'Si sales ahora, perderás los productos de tu pedido.'}</p>
-          <div style={{display:'flex', flexDirection:'column', gap:'10px'}}>
-            {confirmandoLimpiar ? (
-                <>
-                    <button onClick={limpiarCarrito} style={{background:'#ef4444', color:'white', border:'none', padding:'14px', borderRadius:'12px', fontSize:'1rem', fontWeight:'600', cursor:'pointer'}}>Sí, vaciar todo</button>
-                    <button onClick={() => setConfirmandoLimpiar(false)} style={{background:'transparent', color:'#6b7280', border:'none', padding:'10px', fontWeight:'600', cursor:'pointer'}}>Cancelar</button>
-                </>
-            ) : (
-                <>
-                    <button onClick={() => setIntentandoSalir(false)} style={{background:'var(--primary)', color:'white', border:'none', padding:'14px', borderRadius:'12px', fontSize:'1rem', fontWeight:'600', cursor:'pointer'}}>No, seguir comprando</button>
-                    <button onClick={confirmarSalida} style={{background:'transparent', color:'#6b7280', border:'none', padding:'10px', fontWeight:'600', cursor:'pointer', marginTop:'5px', display:'flex', alignItems:'center', justifyContent:'center', gap:'8px'}}>
-                      <LogOut size={18}/> Salir de la tienda
-                    </button>
-                </>
+      {imagenZoom && (
+        <div className="lightbox" onClick={() => setImagenZoom(null)}>
+          <button className="lightbox-close"><X size={24}/></button>
+          <img src={imagenZoom} className="lightbox-img" onClick={(e) => e.stopPropagation()} alt="Zoom Producto" />
+        </div>
+      )}
+
+      {carritoAbierto && (
+        <div className="cart-overlay" onClick={(e) => { if(e.target === e.currentTarget) setCarritoAbierto(false); }}>
+          <div className="cart-sheet">
+            <div className="cart-header">
+              <h2 style={{margin:0, fontSize:'1.3rem', color:'var(--text-dark)', fontWeight:800}}>Tu Pedido</h2>
+              <div style={{display:'flex', gap:'15px', alignItems:'center'}}>
+                {carrito.length > 0 && <button onClick={()=>setConfirmandoLimpiar(true)} style={{border:'none', background:'transparent', cursor:'pointer', padding:'5px', color:'#ef4444'}}><Trash2 size={20}/></button>}
+                <button onClick={()=>setCarritoAbierto(false)} style={{border:'none', background:'transparent', cursor:'pointer', padding:'5px'}}><X size={24} color="#9ca3af"/></button>
+              </div>
+            </div>
+            
+            <div className="cart-list">
+              {carrito.length === 0 ? (
+                <div style={{textAlign:'center', color:'#9ca3af', marginTop:'50px'}}>Tu carrito está vacío 😢</div>
+              ) : (
+                carrito.map((item, idx) => (
+                  <div key={`${item.id}-${idx}`} className="cart-item">
+                    <img src={item.imagen} alt={item.nombre} className="cart-item-img" />
+                    <div className="cart-item-details">
+                      <h4>{item.nombre}</h4>
+                      <p>${item.precio.toFixed(2)}</p>
+                      <div className="cart-controls">
+                        <span style={{fontSize:'0.9rem'}}>Cant: {item.cantidad}</span>
+                        <button onClick={()=>eliminarDelCarrito(item.id)} style={{color:'#ef4444', background:'none', border:'none', cursor:'pointer'}}>Eliminar</button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {carrito.length > 0 && (
+              <div className="cart-footer">
+                <div className="total-row"><span>Total:</span><span>${precioTotal.toFixed(2)}</span></div>
+                <button className="checkout-btn" onClick={enviarPedido}> <MessageCircle size={20}/> Pedir por WhatsApp </button>
+              </div>
             )}
           </div>
         </div>
-      </div>
-    )}
+      )}
 
-    <div className="bottom-nav">
-      <button className="nav-item active" onClick={() => { setVerFavoritos(false); window.scrollTo({top:0, behavior:'smooth'}); }}>
-        <Home size={24} />
-        <span>Inicio</span>
-      </button>
-      
-      <button className="nav-item" onClick={irABuscador}>
-        <Search size={24} />
-        <span>Buscar</span>
-      </button>
-      
-      <button className="nav-item" onClick={() => setCarritoAbierto(true)}>
-        <div style={{position:'relative'}}>
-          <ShoppingCart size={24} />
-          {cantidadTotal > 0 && <span className="nav-badge">{cantidadTotal}</span>}
+      {confirmandoLimpiar && (
+        <div className="modal-confirm-overlay">
+          <div className="modal-confirm">
+            <AlertTriangle size={40} color="#ef4444" style={{marginBottom:'10px'}}/>
+            <h3>¿Vaciar carrito?</h3>
+            <p>Se eliminarán todos los productos.</p>
+            <div className="modal-actions">
+              <button onClick={()=>setConfirmandoLimpiar(false)} className="btn-cancel">Cancelar</button>
+              <button onClick={()=>{setCarrito([]); setConfirmandoLimpiar(false);}} className="btn-confirm">Sí, vaciar</button>
+            </div>
+          </div>
         </div>
-        <span>Mi Pedido</span>
-      </button>
-    </div>
+      )}
+
+      {/* BOTTOM NAV */}
+      <div className="bottom-nav">
+        <button className="nav-item active" onClick={() => { setVerFavoritos(false); window.scrollTo({top:0, behavior:'smooth'}); }}> <Home size={24} /> <span>Inicio</span> </button>
+        <button className="nav-item" onClick={irABuscador}> <Search size={24} /> <span>Buscar</span> </button>
+        <button className="nav-item" onClick={() => setCarritoAbierto(true)}> 
+          <div style={{position:'relative'}}> <ShoppingCart size={24} /> {cantidadTotal > 0 && <span className="nav-badge">{cantidadTotal}</span>} </div> 
+          <span>Mi Pedido</span> 
+        </button>
+      </div>
     </>
   );
 }
