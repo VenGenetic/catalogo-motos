@@ -4,7 +4,10 @@ import {
   Zap, MessageCircle, AlertTriangle, LogOut, ArrowUp, Plus, Minus, ChevronLeft, ChevronRight 
 } from 'lucide-react';
 
-// --- IMPORTACIONES ---
+// --- ESTILOS (¡Esto faltaba!) ---
+import './App.css'; 
+
+// --- IMPORTACIONES DE TUS NUEVOS ARCHIVOS ---
 import dataOrigen from './data.json'; 
 import ProductCard from './components/ProductCard';
 import { Producto, ItemCarrito, ToastMessage } from './types/index';
@@ -30,8 +33,12 @@ export default function App() {
   const isExiting = useRef(false);
 
   const [favoritos, setFavoritos] = useState<string[]>(() => {
-    const guardados = localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS);
-    return guardados ? JSON.parse(guardados) : [];
+    try {
+      const guardados = localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS);
+      return guardados ? JSON.parse(guardados) : [];
+    } catch (e) {
+      return [];
+    }
   });
   const [verFavoritos, setVerFavoritos] = useState(false);
 
@@ -61,18 +68,15 @@ export default function App() {
     };
   }, [carrito, carritoAbierto, menuFiltrosAbierto]);
 
-  // Procesamiento de Datos (CORREGIDO PARA EVITAR ERRORES)
+  // Procesamiento de Datos (Blindado contra errores de JSON)
   const productos: Producto[] = useMemo(() => {
-    // 1. Intentamos obtener el array, manejando posibles estructuras diferentes del JSON
     const raw = (dataOrigen as any).RAW_SCRAPED_DATA || (dataOrigen as any).products || [];
-    const lista = Array.isArray(raw) ? raw : []; // Seguridad extra: si no es array, usamos vacío
-    
-    // 2. Mapeamos para agregar la sección
+    const lista = Array.isArray(raw) ? raw : [];
     return lista.map((p: any) => ({ ...p, seccion: detectarSeccion(p) }));
   }, []);
 
   const productosFiltrados = useMemo(() => {
-    if (!productos || productos.length === 0) return []; // Seguridad si no hay productos
+    if (!productos || productos.length === 0) return [];
 
     let filtrados = productos.filter(p => {
       if (!p.precio || p.precio <= 0) return false;
