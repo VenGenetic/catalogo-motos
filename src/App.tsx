@@ -28,7 +28,7 @@ const MODELOS = [
   "Dynamic", "Agility", "Viper", "CX7", "Comander"
 ];
 
-// USAMOS FIT=COVER PARA TENER LA IMAGEN LLENA
+// FIT=COVER PARA IMAGEN LLENA
 const optimizarImg = (url: string) => {
   if (!url || url === 'No imagen') return '';
   if (url.includes('wsrv.nl')) return url;
@@ -229,15 +229,18 @@ export default function App() {
         </div>
       </footer>
 
-      {/* DETALLE DE PRODUCTO */}
+      {/* DETALLE DE PRODUCTO (DISEÑO MEJORADO) */}
       {productoSeleccionado && (
         <div className="detail-page-overlay">
           <div className="detail-page">
-            <div className="detail-header">
-              <button onClick={() => setProductoSeleccionado(null)}><ChevronLeft size={28} /></button>
-              <span>Detalles</span>
-              <button onClick={() => toggleFav(productoSeleccionado.id)}>
-                <Heart size={24} fill={favs.includes(productoSeleccionado.id) ? "currentColor" : "none"} color={favs.includes(productoSeleccionado.id) ? "#FF6600" : "#333"} />
+            
+            {/* Cabecera Flotante Transparente */}
+            <div className="detail-header-floating">
+              <button className="btn-round-blur" onClick={() => setProductoSeleccionado(null)}>
+                <ChevronLeft size={28} />
+              </button>
+              <button className="btn-round-blur" onClick={() => toggleFav(productoSeleccionado.id)}>
+                <Heart size={24} fill={favs.includes(productoSeleccionado.id) ? "#FF6600" : "none"} color={favs.includes(productoSeleccionado.id) ? "#FF6600" : "#333"} />
               </button>
             </div>
             
@@ -247,33 +250,35 @@ export default function App() {
                 onClick={() => setZoomImg(productoSeleccionado.imagen)}
               >
                  <img src={optimizarImg(productoSeleccionado.imagen)} alt={productoSeleccionado.nombre} />
-                 <div className="zoom-hint"><Maximize2 size={16} /> Ver foto</div>
               </div>
               
-              <div className="detail-info">
-                 <div className="detail-cat">{productoSeleccionado.categoria} - {productoSeleccionado.seccion}</div>
-                 <h1>{productoSeleccionado.nombre}</h1>
+              {/* Tarjeta de Información Estilo "Sheet" */}
+              <div className="detail-info-sheet">
+                 <div className="sheet-handle"></div>
                  
-                 <div className="badge-pedido">
-                    <AlertCircle size={16} /> BAJO PEDIDO
+                 <div className="detail-badges">
+                    <span className="badge-pedido-clean">BAJO PEDIDO</span>
+                    <span className="badge-section-clean">{productoSeleccionado.seccion}</span>
                  </div>
+
+                 <h1>{productoSeleccionado.nombre}</h1>
 
                  <div className="detail-price-row">
                     <span className="detail-price">${Number(productoSeleccionado.precio).toFixed(2)}</span>
-                    <span className="detail-iva">+ IVA</span>
+                    <span className="detail-iva">Precio inc. IVA</span>
                  </div>
 
                  <div className="detail-actions">
                     <button className="btn-detail-add" onClick={() => { addCarrito(productoSeleccionado); setProductoSeleccionado(null); }}>
-                      Agregar al Pedido
+                      <Plus size={20}/> Agregar al Pedido
                     </button>
                     <button className="btn-detail-ws" onClick={() => cotizarProducto(productoSeleccionado)}>
-                      <MessageCircle size={20}/> Consultar
+                      <MessageCircle size={24}/>
                     </button>
                  </div>
 
                  <div className="detail-desc">
-                    <p>Repuesto original/homologado para motocicletas Daytona. Garantía de calidad y compatibilidad. Confirma el modelo exacto antes de la compra.</p>
+                    <p>Repuesto original garantizado para tu motocicleta Daytona. Verifica el modelo antes de comprar.</p>
                  </div>
               </div>
             </div>
@@ -281,7 +286,7 @@ export default function App() {
         </div>
       )}
 
-      {/* LIGHTBOX (VISOR A PANTALLA COMPLETA) */}
+      {/* LIGHTBOX */}
       {zoomImg && (
         <div className="lightbox" onClick={() => setZoomImg(null)}>
           <img src={optimizarImg(zoomImg)} onClick={e => e.stopPropagation()} alt="Zoom" />
