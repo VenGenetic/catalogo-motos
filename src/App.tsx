@@ -28,11 +28,11 @@ const MODELOS = [
   "Dynamic", "Agility", "Viper", "CX7", "Comander"
 ];
 
-// SIN RECORTES: fit=contain
+// USAMOS FIT=COVER PARA QUE EL RECORTE CSS FUNCIONE BIEN
 const optimizarImg = (url: string) => {
   if (!url || url === 'No imagen') return '';
   if (url.includes('wsrv.nl')) return url;
-  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800&h=800&fit=contain&q=85&output=webp`;
+  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800&h=800&fit=cover&a=top&q=85&output=webp`;
 };
 
 // --- TARJETA DE PRODUCTO ---
@@ -73,7 +73,6 @@ export default function App() {
   const [menuFiltro, setMenuFiltro] = useState(false);
   const [toast, setToast] = useState<{id: number, msg: string}[]>([]);
   const [verFavs, setVerFavs] = useState(false);
-  // ESTADO PARA EL VISOR DE IMAGEN (LIGHTBOX)
   const [zoomImg, setZoomImg] = useState<string | null>(null);
   
   const [favs, setFavs] = useState<string[]>(() => {
@@ -244,8 +243,8 @@ export default function App() {
             
             <div className="detail-scroll">
               <div 
-                className="detail-img-box" 
-                onClick={() => setZoomImg(productoSeleccionado.imagen)} /* CLIC PARA ABRIR */
+                className="detail-img-box"
+                onClick={() => setZoomImg(productoSeleccionado.imagen)}
               >
                  <img src={optimizarImg(productoSeleccionado.imagen)} alt={productoSeleccionado.nombre} />
                  <div className="zoom-hint"><Maximize2 size={16} /> Ver foto</div>
@@ -282,7 +281,7 @@ export default function App() {
         </div>
       )}
 
-      {/* LIGHTBOX (VISOR A PANTALLA COMPLETA) */}
+      {/* LIGHTBOX (VISOR) */}
       {zoomImg && (
         <div className="lightbox" onClick={() => setZoomImg(null)}>
           <img src={optimizarImg(zoomImg)} onClick={e => e.stopPropagation()} alt="Zoom" />
