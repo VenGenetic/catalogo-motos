@@ -1,6 +1,6 @@
 :root {
   --primary: #FF6600; /* Naranja Daytona */
-  --bg: #F8F9FA;
+  --bg: #F8F9FA;      /* Gris claro para interiores de componentes */
   --white: #FFFFFF;
   --text: #1F2937;
   --gray: #9CA3AF;
@@ -8,7 +8,15 @@
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); padding-bottom: 70px; }
+
+body { 
+  margin: 0; 
+  font-family: -apple-system, system-ui, sans-serif; 
+  /* CAMBIO: Fondo Naranja Daytona Global */
+  background: var(--primary); 
+  color: var(--text); 
+  padding-bottom: 70px; 
+}
 
 /* HEADER */
 .header {
@@ -89,11 +97,10 @@ body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background:
 .btn-model-card span { font-weight: 700; font-size: 0.9rem; text-align: center; }
 
 
-/* BARRA DE ATAJOS */
+/* BARRA DE ATAJOS - AHORA EN NARANJA PARA FUSIONARSE CON FONDO */
 .shortcuts-bar {
-  /* position: sticky; top: 62px; (Quitamos sticky aquí porque ahora está debajo del selector) */
-  background: var(--bg); display: flex; gap: 10px; overflow-x: auto; 
-  padding: 10px 15px; white-space: nowrap; border-bottom: 1px solid #e5e7eb;
+  background: var(--primary); display: flex; gap: 10px; overflow-x: auto; 
+  padding: 10px 15px; white-space: nowrap; border-bottom: 1px solid rgba(255,255,255,0.1);
   scrollbar-width: none; 
 }
 .shortcuts-bar::-webkit-scrollbar { display: none; }
@@ -103,26 +110,30 @@ body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background:
   font-size: 0.85rem; font-weight: 700; color: var(--text);
   cursor: pointer; flex-shrink: 0; transition: all 0.2s; text-transform: uppercase;
 }
-.shortcut-chip:active { background: var(--primary); color: white; border-color: var(--primary); }
+.shortcut-chip:active { background: #333; color: white; border-color: #333; }
 
 /* GRID PRODUCTOS */
 .content { padding: 15px; max-width: 1200px; margin: 0 auto; }
 .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
 @media (min-width: 768px) { .grid { grid-template-columns: repeat(5, 1fr); gap: 20px; } }
 
+/* TÍTULOS DE SECCIÓN - AHORA EN BLANCO */
 .header-seccion {
   grid-column: 1 / -1; margin-top: 25px; margin-bottom: 10px;
-  font-size: 1.1rem; font-weight: 900; color: var(--text);
-  border-left: 5px solid var(--primary); padding-left: 10px; text-transform: uppercase;
+  font-size: 1.1rem; font-weight: 900; 
+  color: white; /* Blanco sobre fondo naranja */
+  border-left: 5px solid white; 
+  padding-left: 10px; text-transform: uppercase;
   scroll-margin-top: 140px; 
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-.titulo-seccion { text-align: center; margin-bottom: 20px; color: var(--primary); }
+.titulo-seccion { text-align: center; margin-bottom: 20px; color: white; }
 
-/* TARJETAS */
+/* TARJETAS (BLANCAS PARA RESALTAR) */
 .card { 
   background: var(--white); border-radius: 12px; overflow: hidden; 
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; flex-direction: column; position: relative; 
-  border: 1px solid #f0f0f0; cursor: pointer; transition: transform 0.1s;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; position: relative; 
+  border: none; cursor: pointer; transition: transform 0.1s;
 }
 .card:active { transform: scale(0.98); }
 .card-top { position: absolute; top: 8px; left: 8px; right: 8px; display: flex; justify-content: space-between; z-index: 2; }
@@ -135,7 +146,6 @@ body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background:
 .img-container img { 
   width: 100%; height: 100%; 
   object-fit: cover; 
-  /* CORTA 25% DE ABAJO */
   clip-path: inset(0 0 25% 0);
   transition: 0.3s; opacity: 0; 
 }
@@ -296,7 +306,10 @@ body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background:
 .opt-filtro.active { font-weight: bold; color: var(--primary); background: #fff5eb; }
 .toasts { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 400; display: flex; flex-direction: column; gap: 10px; width: 90%; max-width: 350px; }
 .toast { background: #111; color: white; padding: 12px 20px; border-radius: 50px; font-size: 0.9rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); border: 1px solid #333; }
-.vacio { text-align: center; color: var(--gray); margin-top: 60px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+
+/* MENSAJE VACÍO - TEXTO BLANCO */
+.vacio { text-align: center; color: white; margin-top: 60px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+.vacio button { background: white; color: var(--primary); border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
 
 @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
