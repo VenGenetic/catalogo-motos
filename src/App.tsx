@@ -20,7 +20,6 @@ const ORDEN_SECCIONES = [
   'Cables y Mandos', 'Filtros y Mantenimiento', 'Otros Repuestos'
 ];
 
-// --- LISTA DE MODELOS ---
 const MODELOS = [
   "Tekken", "Crucero", "Spitfire", "Shark", "Adventure", "GP1", "Delta", 
   "Wing Evo", "Montana", "Scorpion", "Workforce", "Scrambler", "Wolf", "GTR", 
@@ -29,18 +28,12 @@ const MODELOS = [
   "Dynamic", "Agility", "Viper", "CX7", "Comander"
 ];
 
-// --- OPTIMIZACIÓN DE IMÁGENES (CON TRUCO ANTI-MARCA DE AGUA) ---
+// --- OPTIMIZACIÓN SIMPLE (Sin reemplazo de URL propenso a fallos) ---
 const optimizarImg = (url: string) => {
   if (!url || url === 'No imagen') return '';
-
-  // TRUCO: Las URL de Odoo suelen ser ".../image_512/...". 
-  // Reemplazamos por "image_1024" para intentar obtener la versión HD limpia.
-  const urlLimpia = url.replace('/image_512/', '/image_1024/'); 
-
   if (url.includes('wsrv.nl')) return url;
-  
-  // Pedimos a wsrv.nl que procese la URL "limpia"
-  return `https://wsrv.nl/?url=${encodeURIComponent(urlLimpia)}&w=800&h=800&fit=cover&a=top&q=85&output=webp`;
+  // Usamos fit=cover desde el servidor también para asegurar que no haya bordes blancos
+  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800&h=800&fit=cover&a=top&q=85&output=webp`;
 };
 
 // --- TARJETA DE PRODUCTO ---
@@ -250,6 +243,7 @@ export default function App() {
             
             <div className="detail-scroll">
               <div className="detail-img-box">
+                 {/* Aquí se aplicará el zoom también para consistencia */}
                  <img src={optimizarImg(productoSeleccionado.imagen)} alt={productoSeleccionado.nombre} />
               </div>
               
