@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { 
-  ShoppingCart, Search, X, Heart, Filter, Home, 
-  MessageCircle, Plus, Minus, Facebook, Instagram, ChevronLeft, AlertCircle, Maximize2, Bike 
+  ShoppingCart, Search, X, Heart, Home, 
+  MessageCircle, Plus, Minus, Facebook, Instagram, ChevronLeft, Bike 
 } from 'lucide-react';
 
 import './App.css';
@@ -184,7 +184,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* --- BARRA DE SELECCIÓN DE MOTO (NUEVO Y CLARO) --- */}
+      {/* --- BARRA DE SELECCIÓN DE MOTO (INTUITIVA) --- */}
       <div className="model-selector-container">
         {!filtroModelo ? (
           <button className="btn-select-model" onClick={() => setMenuFiltro(true)}>
@@ -305,7 +305,7 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL DE SELECCIÓN DE MOTO (EL GARAJE) */}
+      {/* MODAL DE SELECCIÓN DE MOTO */}
       {menuFiltro && (
         <div className="modal-bg" onClick={() => setMenuFiltro(false)}>
           <div className="drawer drawer-large">
