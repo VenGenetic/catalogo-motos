@@ -71,13 +71,11 @@ body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background:
 .btn-fav { background: rgba(255,255,255,0.95); border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--gray); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 .btn-fav.active { color: var(--primary); }
 
-/* --- RECORTE DE 1/4 (25% INFERIOR) EN TARJETAS --- */
+/* --- IMAGEN TARJETA (SIN RECORTE) --- */
 .img-container { aspect-ratio: 1; background: #fff; position: relative; overflow: hidden; }
 .img-container img { 
   width: 100%; height: 100%; 
-  object-fit: cover; /* Llena el cuadro */
-  /* ESCALA 1.333 = 100/75. Hace que el 75% superior ocupe todo el alto. */
-  transform: scale(1.333); transform-origin: top center;
+  object-fit: contain;
   transition: 0.3s; opacity: 0; 
 }
 .img-container img.visible { opacity: 1; }
@@ -107,16 +105,22 @@ body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background:
 
 .detail-scroll { flex: 1; overflow-y: auto; padding-bottom: 20px; }
 
-/* --- RECORTE DE 1/4 (25% INFERIOR) EN DETALLE --- */
+/* --- IMAGEN DETALLE (CLICABLE) --- */
 .detail-img-box {
   width: 100%; height: 350px; background: white; display: flex; align-items: center; justify-content: center;
-  border-bottom: 1px solid #eee; padding: 0; overflow: hidden;
+  border-bottom: 1px solid #eee; padding: 0; overflow: hidden; position: relative;
+  cursor: zoom-in; /* Cursor de lupa */
 }
 .detail-img-box img { 
   width: 100%; height: 100%; 
-  object-fit: cover; 
-  /* ESCALA 1.333 */
-  transform: scale(1.333); transform-origin: top center;
+  object-fit: contain; 
+}
+.zoom-hint {
+  position: absolute; bottom: 10px; right: 10px;
+  background: rgba(0,0,0,0.6); color: white;
+  padding: 5px 10px; border-radius: 20px;
+  font-size: 0.8rem; display: flex; align-items: center; gap: 5px;
+  backdrop-filter: blur(4px); pointer-events: none;
 }
 
 .detail-info { padding: 20px; }
@@ -146,6 +150,22 @@ body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background:
 
 .detail-desc { background: #f9fafb; padding: 15px; border-radius: 10px; border: 1px solid #eee; font-size: 0.9rem; color: #555; line-height: 1.5; }
 
+/* --- LIGHTBOX (PANTALLA COMPLETA) --- */
+.lightbox { 
+  position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 500; 
+  display: flex; align-items: center; justify-content: center;
+  animation: fadeIn 0.2s;
+}
+.lightbox img { 
+  max-width: 95vw; max-height: 95vh; 
+  object-fit: contain; 
+}
+.close-zoom { 
+  position: absolute; top: 20px; right: 20px; 
+  background: rgba(255,255,255,0.2); color: white; 
+  border: none; border-radius: 50%; padding: 10px; cursor: pointer;
+}
+
 /* FOOTER */
 .main-footer { background: #111; color: white; padding: 40px 20px 90px 20px; text-align: center; margin-top: 50px; }
 .footer-content h3 { margin: 0 0 10px; font-size: 1.3rem; color: var(--primary); }
@@ -174,16 +194,14 @@ body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background:
 .drawer-body { padding: 20px; overflow-y: auto; }
 .drawer-foot { padding: 20px; border-top: 1px solid #eee; background: #fafafa; }
 
-/* --- ITEM CARRITO (CON RECORTE 1/4) --- */
+/* ITEM CARRITO */
 .item-cart { display: flex; gap: 15px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
 .cart-img-frame {
   width: 60px; height: 60px; overflow: hidden; border-radius: 8px; border: 1px solid #eee; flex-shrink: 0;
 }
 .cart-img-frame img { 
   width: 100%; height: 100%; 
-  object-fit: cover; 
-  /* ESCALA 1.333 */
-  transform: scale(1.333); transform-origin: top center;
+  object-fit: contain;
 }
 
 .item-cart .info { flex: 1; }
@@ -201,3 +219,4 @@ body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background:
 @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

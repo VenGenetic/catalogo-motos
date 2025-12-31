@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { 
   ShoppingCart, Search, X, Heart, Filter, Home, 
-  MessageCircle, Plus, Minus, Facebook, Instagram, ChevronLeft, AlertCircle 
+  MessageCircle, Plus, Minus, Facebook, Instagram, ChevronLeft, AlertCircle, Maximize2 
 } from 'lucide-react';
 
 import './App.css';
@@ -28,11 +28,11 @@ const MODELOS = [
   "Dynamic", "Agility", "Viper", "CX7", "Comander"
 ];
 
-// --- VUELVE A FIT=COVER PARA QUE LLENE EL CUADRO ANTES DE RECORTAR ---
+// SIN RECORTES: fit=contain
 const optimizarImg = (url: string) => {
   if (!url || url === 'No imagen') return '';
   if (url.includes('wsrv.nl')) return url;
-  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800&h=800&fit=cover&a=top&q=85&output=webp`;
+  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800&h=800&fit=contain&q=85&output=webp`;
 };
 
 // --- TARJETA DE PRODUCTO ---
@@ -73,6 +73,8 @@ export default function App() {
   const [menuFiltro, setMenuFiltro] = useState(false);
   const [toast, setToast] = useState<{id: number, msg: string}[]>([]);
   const [verFavs, setVerFavs] = useState(false);
+  // ESTADO PARA EL VISOR DE IMAGEN (LIGHTBOX)
+  const [zoomImg, setZoomImg] = useState<string | null>(null);
   
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(CONFIG.KEY_FAVS) || '[]'); } catch { return []; }
@@ -241,8 +243,12 @@ export default function App() {
             </div>
             
             <div className="detail-scroll">
-              <div className="detail-img-box">
+              <div 
+                className="detail-img-box" 
+                onClick={() => setZoomImg(productoSeleccionado.imagen)} /* CLIC PARA ABRIR */
+              >
                  <img src={optimizarImg(productoSeleccionado.imagen)} alt={productoSeleccionado.nombre} />
+                 <div className="zoom-hint"><Maximize2 size={16} /> Ver foto</div>
               </div>
               
               <div className="detail-info">
@@ -273,6 +279,14 @@ export default function App() {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* LIGHTBOX (VISOR A PANTALLA COMPLETA) */}
+      {zoomImg && (
+        <div className="lightbox" onClick={() => setZoomImg(null)}>
+          <img src={optimizarImg(zoomImg)} onClick={e => e.stopPropagation()} alt="Zoom" />
+          <button className="close-zoom"><X size={30}/></button>
         </div>
       )}
 
