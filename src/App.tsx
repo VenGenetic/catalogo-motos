@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { 
   ShoppingCart, Search, X, Heart, Filter, Home, 
-  MessageCircle, Plus, Minus, Facebook, Instagram, ChevronLeft, AlertCircle, Maximize2 
+  MessageCircle, Plus, Minus, Facebook, Instagram, ChevronLeft 
 } from 'lucide-react';
 
 import './App.css';
