@@ -149,15 +149,18 @@ export default function App() {
     addToast('Agregado al carrito');
   };
 
+  // --- MENSAJE DE PEDIDO CON PRECIOS ---
   const enviarPedido = () => {
     let msg = "Hola Love Daytona, mi pedido:\n\n";
-    carrito.forEach(i => msg += `▪ ${i.cant}x ${i.nombre}\n`);
+    // Aquí agregamos el precio unitario a cada línea
+    carrito.forEach(i => msg += `▪ ${i.cant}x ${i.nombre} ($${Number(i.precio).toFixed(2)})\n`);
     msg += `\nTotal: $${carrito.reduce((a, b) => a + b.precio * b.cant, 0).toFixed(2)}`;
     window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
+  // --- CONSULTA INDIVIDUAL CON PRECIO ---
   const cotizarProducto = (p: any) => {
-     window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=Hola, me interesa este repuesto: ${p.nombre}`, '_blank');
+     window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=Hola, me interesa este repuesto: ${p.nombre} - Valor: $${Number(p.precio).toFixed(2)}`, '_blank');
   };
 
   const cotizarGeneral = () => {
