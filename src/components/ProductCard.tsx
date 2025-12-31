@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Heart, Maximize2, ImageOff, Plus } from 'lucide-react';
-import { Producto } from '../types';
-import { optimizarImagenThumbnail, optimizarImagenZoom } from '../utils';
+import { Producto } from '../types/index'; // Asegúrate de que apunte a types/index
+import { optimizarImagenThumbnail, optimizarImagenZoom } from '../utils/images'; // Apunta al archivo correcto
 
 interface ProductCardProps {
   p: Producto;

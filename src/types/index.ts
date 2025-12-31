@@ -5,13 +5,14 @@ export interface Producto {
   categoria: string;
   imagen: string;
   stock: boolean;
+  seccion?: string; 
 }
 
 export interface ItemCarrito extends Producto {
   cantidad: number;
 }
 
-export interface Toast {
+export interface ToastMessage {
   id: number;
   message: string;
 }
