@@ -28,12 +28,12 @@ const MODELOS = [
   "Dynamic", "Agility", "Viper", "CX7", "Comander"
 ];
 
-// --- OPTIMIZACIÓN SIMPLE (Sin reemplazo de URL propenso a fallos) ---
+// --- CAMBIO AQUÍ: fit=contain para que NO recorte nada ---
 const optimizarImg = (url: string) => {
   if (!url || url === 'No imagen') return '';
   if (url.includes('wsrv.nl')) return url;
-  // Usamos fit=cover desde el servidor también para asegurar que no haya bordes blancos
-  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800&h=800&fit=cover&a=top&q=85&output=webp`;
+  // fit=contain asegura que se vea toda la imagen original
+  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800&h=800&fit=contain&q=85&output=webp`;
 };
 
 // --- TARJETA DE PRODUCTO ---
@@ -243,7 +243,6 @@ export default function App() {
             
             <div className="detail-scroll">
               <div className="detail-img-box">
-                 {/* Aquí se aplicará el zoom también para consistencia */}
                  <img src={optimizarImg(productoSeleccionado.imagen)} alt={productoSeleccionado.nombre} />
               </div>
               
@@ -286,7 +285,9 @@ export default function App() {
             <div className="drawer-body">
               {carrito.map(i => (
                 <div key={i.id} className="item-cart">
-                  <img src={optimizarImg(i.imagen)} alt="" />
+                  <div className="cart-img-frame">
+                    <img src={optimizarImg(i.imagen)} alt="" />
+                  </div>
                   <div className="info"><h4>{i.nombre}</h4><p>${(i.precio * i.cant).toFixed(2)}</p></div>
                   <div className="qty">
                     <button onClick={() => setCarrito(c => c.map(x => x.id === i.id ? {...x, cant: x.cant-1} : x).filter(x => x.cant > 0))}><Minus size={14}/></button>
