@@ -1,23 +1,24 @@
 import { Producto } from '../types/index';
 
 export const detectarSeccion = (p: Producto): string => {
-  // 🛡️ BLINDAJE: Si el nombre o categoría vienen vacíos, usamos texto vacío para no romper la app
+  // --- PROTECCIÓN CONTRA ERRORES (BLINDAJE) ---
+  // Si el producto no tiene nombre o categoría, usamos un texto vacío para que no falle.
   const nombre = p.nombre || '';
   const categoria = p.categoria || '';
+  
+  // Convertimos todo a minúsculas para buscar
   const texto = `${nombre} ${categoria}`.toLowerCase();
 
-  // 1. CABLES Y MANDOS (Prioridad alta)
+  // 1. CABLES Y MANDOS
   if (texto.match(/cable|guaya|manigueta|acelerador|choke|ahogador|puño|manguera|funda/)) return 'Cables y Mandos';
 
-  // 2. MOTOR E INTERNOS (Detección mejorada)
-  // Nota: "arbol.*leva" detecta "Arbol de Levas" y "Arbol Levas"
+  // 2. MOTOR E INTERNOS
   if (texto.match(/motor|pist|cilind|valv|cigue|biela|carter|empaque|cabeza.*fuerza|balancin|anillo|arbol.*leva|cabezote|cadenilla|tensor|guia.*cadenilla|bendix|balanceador|resorte|sello|carburador|inyector|tobera|admision|arranque|stator|estator/)) return 'Motor e Internos';
 
   // 3. SISTEMA ELÉCTRICO
   if (texto.match(/electri|bateria|foco|luz|farol|stop|direccional|cdi|bobina|regulador|sensor|tablero|velocimetro|pito|bocina|encendido|switch|rectificador|flasher|relay|fusible|ramal|pulsar/)) return 'Sistema Eléctrico';
 
   // 4. TRANSMISIÓN
-  // Nota: "cadena" se pone aquí, pero "cadenilla" ya fue capturada arriba por Motor
   if (texto.match(/transmision|cadena|piñon|catalina|corona|arrastre|embrague|clutch|disco.*embrague|variador|polin|banda|caja.*cambio|selector|eje.*cambio/)) return 'Transmisión';
 
   // 5. SISTEMA DE FRENOS
@@ -35,6 +36,6 @@ export const detectarSeccion = (p: Producto): string => {
   // 9. FILTROS Y MANTENIMIENTO
   if (texto.match(/filtro|aire|aceite|gasolina|fluido|lubricante|grasa/)) return 'Filtros y Mantenimiento';
 
-  // Si no cae en ninguna, va a Otros
+  // Default
   return 'Otros Repuestos';
 };
