@@ -28,7 +28,7 @@ const MODELOS = [
   "Dynamic", "Agility", "Viper", "CX7", "Comander"
 ];
 
-// USAMOS FIT=COVER PARA QUE EL RECORTE CSS FUNCIONE BIEN
+// USAMOS FIT=COVER PARA TENER LA IMAGEN LLENA
 const optimizarImg = (url: string) => {
   if (!url || url === 'No imagen') return '';
   if (url.includes('wsrv.nl')) return url;
@@ -281,7 +281,7 @@ export default function App() {
         </div>
       )}
 
-      {/* LIGHTBOX (VISOR) */}
+      {/* LIGHTBOX (VISOR A PANTALLA COMPLETA) */}
       {zoomImg && (
         <div className="lightbox" onClick={() => setZoomImg(null)}>
           <img src={optimizarImg(zoomImg)} onClick={e => e.stopPropagation()} alt="Zoom" />
