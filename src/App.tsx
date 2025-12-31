@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { 
   ShoppingCart, Search, X, Heart, Filter, Home, 
-  MessageCircle, Plus, Minus, Facebook, Instagram, ChevronLeft 
+  MessageCircle, Plus, Minus, Facebook, Instagram, ChevronLeft, AlertCircle, Maximize2, Bike 
 } from 'lucide-react';
 
 import './App.css';
@@ -28,7 +28,7 @@ const MODELOS = [
   "Dynamic", "Agility", "Viper", "CX7", "Comander"
 ];
 
-// FIT=COVER PARA IMAGEN LLENA
+// USAMOS FIT=COVER PARA QUE EL RECORTE CSS FUNCIONE BIEN
 const optimizarImg = (url: string) => {
   if (!url || url === 'No imagen') return '';
   if (url.includes('wsrv.nl')) return url;
@@ -179,13 +179,35 @@ export default function App() {
         <div className="brand" onClick={() => window.location.reload()}>LOVE <span>DAYTONA</span></div>
         <div className="search-box">
           <Search size={18} className="icon" />
-          <input type="text" placeholder="Buscar repuesto..." value={busqueda} onChange={e => { setBusqueda(e.target.value); setPagina(1); window.scrollTo(0,0); }}/>
+          <input type="text" placeholder="Buscar..." value={busqueda} onChange={e => { setBusqueda(e.target.value); setPagina(1); window.scrollTo(0,0); }}/>
           {busqueda && <button onClick={() => setBusqueda('')}><X size={16}/></button>}
         </div>
-        <button className="filter-btn" onClick={() => setMenuFiltro(true)}><Filter size={20} /></button>
       </header>
 
-      {/* BARRA DE ATAJOS */}
+      {/* --- BARRA DE SELECCIÓN DE MOTO (NUEVO Y CLARO) --- */}
+      <div className="model-selector-container">
+        {!filtroModelo ? (
+          <button className="btn-select-model" onClick={() => setMenuFiltro(true)}>
+            <div className="icon-circle"><Bike size={24} /></div>
+            <div className="text-col">
+              <span className="label">FILTRAR POR MOTO</span>
+              <span className="sub">Toca aquí para elegir tu modelo</span>
+            </div>
+            <ChevronLeft size={20} style={{transform: 'rotate(-90deg)', opacity: 0.5}}/>
+          </button>
+        ) : (
+          <div className="active-model-bar">
+            <div className="active-info">
+              <span>Viendo repuestos de:</span>
+              <strong>{filtroModelo}</strong>
+            </div>
+            <button onClick={() => setMenuFiltro(true)}>Cambiar</button>
+            <button className="btn-clear" onClick={() => setFiltroModelo('')}><X size={18}/></button>
+          </div>
+        )}
+      </div>
+
+      {/* BARRA DE ATAJOS (CATEGORÍAS) */}
       {!verFavs && !busqueda && (
         <div className="shortcuts-bar">
           {ORDEN_SECCIONES.map(cat => <button key={cat} className="shortcut-chip" onClick={() => irASeccion(cat)}>{cat}</button>)}
@@ -194,7 +216,6 @@ export default function App() {
 
       {/* CONTENIDO */}
       <main className="content">
-        {filtroModelo && <div className="chip-filtro" onClick={() => setFiltroModelo('')}>Modelo: {filtroModelo} <X size={14} /></div>}
         {verFavs && <h2 className="titulo-seccion">❤️ Tus Favoritos</h2>}
 
         <div className="grid">
@@ -212,8 +233,8 @@ export default function App() {
         
         {visibles.length === 0 && (
           <div className="vacio">
-            <Search size={40} /><p>No se encontraron resultados</p>
-            <button onClick={() => {setBusqueda(''); setFiltroModelo(''); setVerFavs(false)}}>Ver todo</button>
+            <Search size={40} /><p>No encontramos repuestos con ese criterio.</p>
+            <button onClick={() => {setBusqueda(''); setFiltroModelo(''); setVerFavs(false)}}>Ver todo el catálogo</button>
           </div>
         )}
       </main>
@@ -229,12 +250,11 @@ export default function App() {
         </div>
       </footer>
 
-      {/* DETALLE DE PRODUCTO (DISEÑO MEJORADO) */}
+      {/* DETALLE DE PRODUCTO */}
       {productoSeleccionado && (
         <div className="detail-page-overlay">
           <div className="detail-page">
             
-            {/* Cabecera Flotante Transparente */}
             <div className="detail-header-floating">
               <button className="btn-round-blur" onClick={() => setProductoSeleccionado(null)}>
                 <ChevronLeft size={28} />
@@ -245,29 +265,21 @@ export default function App() {
             </div>
             
             <div className="detail-scroll">
-              <div 
-                className="detail-img-box"
-                onClick={() => setZoomImg(productoSeleccionado.imagen)}
-              >
+              <div className="detail-img-box" onClick={() => setZoomImg(productoSeleccionado.imagen)}>
                  <img src={optimizarImg(productoSeleccionado.imagen)} alt={productoSeleccionado.nombre} />
               </div>
               
-              {/* Tarjeta de Información Estilo "Sheet" */}
               <div className="detail-info-sheet">
                  <div className="sheet-handle"></div>
-                 
                  <div className="detail-badges">
                     <span className="badge-pedido-clean">BAJO PEDIDO</span>
                     <span className="badge-section-clean">{productoSeleccionado.seccion}</span>
                  </div>
-
                  <h1>{productoSeleccionado.nombre}</h1>
-
                  <div className="detail-price-row">
                     <span className="detail-price">${Number(productoSeleccionado.precio).toFixed(2)}</span>
                     <span className="detail-iva">Precio inc. IVA</span>
                  </div>
-
                  <div className="detail-actions">
                     <button className="btn-detail-add" onClick={() => { addCarrito(productoSeleccionado); setProductoSeleccionado(null); }}>
                       <Plus size={20}/> Agregar al Pedido
@@ -276,7 +288,6 @@ export default function App() {
                       <MessageCircle size={24}/>
                     </button>
                  </div>
-
                  <div className="detail-desc">
                     <p>Repuesto original garantizado para tu motocicleta Daytona. Verifica el modelo antes de comprar.</p>
                  </div>
@@ -294,7 +305,36 @@ export default function App() {
         </div>
       )}
 
-      {/* CARRITO Y FILTROS */}
+      {/* MODAL DE SELECCIÓN DE MOTO (EL GARAJE) */}
+      {menuFiltro && (
+        <div className="modal-bg" onClick={() => setMenuFiltro(false)}>
+          <div className="drawer drawer-large">
+            <div className="drawer-head">
+              <h3>Selecciona tu Moto</h3>
+              <button onClick={() => setMenuFiltro(false)}><X/></button>
+            </div>
+            <div className="drawer-body">
+              <button className="btn-model-all" onClick={() => {setFiltroModelo(''); setMenuFiltro(false)}}>
+                VER TODAS LAS MOTOS
+              </button>
+              <div className="model-grid">
+                {MODELOS.map(m => (
+                  <button 
+                    key={m} 
+                    className={`btn-model-card ${filtroModelo===m ? 'active':''}`} 
+                    onClick={() => {setFiltroModelo(m); setMenuFiltro(false)}}
+                  >
+                    <Bike size={28} className="model-icon"/>
+                    <span>{m}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* CARRITO */}
       {carritoAbierto && (
         <div className="modal-bg" onClick={() => setCarritoAbierto(false)}>
           <div className="drawer" onClick={e => e.stopPropagation()}>
@@ -317,18 +357,6 @@ export default function App() {
             <div className="drawer-foot">
               <div className="total"><span>Total:</span><span>${carrito.reduce((a,b)=>a+b.precio*b.cant, 0).toFixed(2)}</span></div>
               <button className="btn-ws" onClick={enviarPedido}><MessageCircle size={18}/> Pedir por WhatsApp</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {menuFiltro && (
-        <div className="modal-bg" onClick={() => setMenuFiltro(false)}>
-          <div className="drawer">
-            <div className="drawer-head"><h3>Modelos</h3></div>
-            <div className="drawer-body">
-              <button className="opt-filtro" onClick={() => {setFiltroModelo(''); setMenuFiltro(false)}}>Todos</button>
-              {MODELOS.map(m => <button key={m} className={`opt-filtro ${filtroModelo===m ? 'active':''}`} onClick={() => {setFiltroModelo(m); setMenuFiltro(false)}}>{m}</button>)}
             </div>
           </div>
         </div>

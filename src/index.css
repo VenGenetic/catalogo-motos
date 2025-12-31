@@ -16,7 +16,7 @@ body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background:
   background: var(--white); padding: 10px 15px;
   display: flex; align-items: center; gap: 10px;
   box-shadow: var(--shadow);
-  border-bottom: 2px solid var(--primary);
+  border-bottom: 1px solid #eee;
 }
 .brand { font-weight: 900; font-size: 1.1rem; flex-shrink: 0; cursor: pointer; text-transform: uppercase; font-style: italic; }
 .brand span { color: var(--primary); }
@@ -30,9 +30,68 @@ body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background:
 .search-box input { border: none; background: transparent; outline: none; width: 100%; margin-left: 8px; font-size: 0.95rem; }
 .filter-btn { background: var(--text); color: white; border: none; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
+/* --- SECCIÓN NUEVA: SELECTOR DE MOTO --- */
+.model-selector-container {
+  background: var(--white); padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+  position: sticky; top: 61px; z-index: 48;
+}
+
+/* Botón Grande "Elegir Moto" */
+.btn-select-model {
+  width: 100%; background: linear-gradient(135deg, #111 0%, #333 100%);
+  color: white; border: none; padding: 10px 15px; border-radius: 12px;
+  display: flex; align-items: center; gap: 12px; cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: transform 0.1s;
+}
+.btn-select-model:active { transform: scale(0.98); }
+.icon-circle {
+  background: var(--primary); width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; color: white;
+}
+.text-col { flex: 1; text-align: left; display: flex; flex-direction: column; }
+.text-col .label { font-weight: 800; font-size: 0.9rem; letter-spacing: 0.5px; }
+.text-col .sub { font-size: 0.75rem; opacity: 0.8; }
+
+/* Barra Activa (Cuando ya elegiste moto) */
+.active-model-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  background: #FFF3E0; padding: 10px 15px; border-radius: 10px;
+  border: 1px solid #FFE0B2;
+}
+.active-info { display: flex; flex-direction: column; font-size: 0.8rem; }
+.active-info strong { font-size: 1rem; color: var(--primary); }
+.active-model-bar button {
+  background: var(--white); border: 1px solid #ddd; padding: 5px 12px;
+  border-radius: 20px; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+}
+.active-model-bar .btn-clear {
+  background: none; border: none; padding: 5px; color: #999;
+}
+
+/* --- ESTILOS DEL MODAL DE MOTOS (GARAJE) --- */
+.drawer-large { height: 80vh; }
+.btn-model-all {
+  width: 100%; padding: 15px; background: #eee; border: none; border-radius: 10px;
+  font-weight: bold; margin-bottom: 15px; color: #555;
+}
+.model-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding-bottom: 20px;
+}
+.btn-model-card {
+  background: var(--white); border: 1px solid #eee; border-radius: 12px;
+  padding: 15px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.btn-model-card.active { border-color: var(--primary); background: #FFF3E0; color: var(--primary); }
+.model-icon { opacity: 0.6; }
+.btn-model-card.active .model-icon { opacity: 1; color: var(--primary); }
+.btn-model-card span { font-weight: 700; font-size: 0.9rem; text-align: center; }
+
+
 /* BARRA DE ATAJOS */
 .shortcuts-bar {
-  position: sticky; top: 62px; z-index: 45;
+  /* position: sticky; top: 62px; (Quitamos sticky aquí porque ahora está debajo del selector) */
   background: var(--bg); display: flex; gap: 10px; overflow-x: auto; 
   padding: 10px 15px; white-space: nowrap; border-bottom: 1px solid #e5e7eb;
   scrollbar-width: none; 
@@ -71,7 +130,7 @@ body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background:
 .btn-fav { background: rgba(255,255,255,0.95); border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--gray); cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 .btn-fav.active { color: var(--primary); }
 
-/* --- RECORTE DE 1/4 EN TARJETAS --- */
+/* --- RECORTE DE 1/4 (25% INFERIOR) EN TARJETAS --- */
 .img-container { aspect-ratio: 1; background: #fff; position: relative; overflow: hidden; }
 .img-container img { 
   width: 100%; height: 100%; 
