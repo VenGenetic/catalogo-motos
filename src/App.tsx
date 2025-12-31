@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { 
   ShoppingCart, Search, X, Heart, Filter, Home, 
-  MessageCircle, Plus, Minus, Facebook, Instagram 
+  MessageCircle, Plus, Minus, Facebook, Instagram, ChevronLeft, AlertCircle 
 } from 'lucide-react';
 
 import './App.css';
@@ -14,18 +14,10 @@ const CONFIG = {
   KEY_FAVS: 'loveDaytonaFavs'
 };
 
-// ESTE ES EL ORDEN EN QUE APARECERÁN EN LA PANTALLA
 const ORDEN_SECCIONES = [
-  'Motor e Internos', 
-  'Transmisión', 
-  'Sistema Eléctrico', 
-  'Sistema de Frenos', 
-  'Chasis y Suspensión', 
-  'Carrocería y Plásticos', 
-  'Ruedas y Ejes', 
-  'Cables y Mandos', 
-  'Filtros y Mantenimiento', 
-  'Otros Repuestos'
+  'Motor e Internos', 'Transmisión', 'Sistema Eléctrico', 'Sistema de Frenos', 
+  'Chasis y Suspensión', 'Carrocería y Plásticos', 'Ruedas y Ejes', 
+  'Cables y Mandos', 'Filtros y Mantenimiento', 'Otros Repuestos'
 ];
 
 const MODELOS = ["Tekken", "Crucero", "Spitfire", "Shark", "Adventure", "GP1R", "Delta", "Wing Evo", "Montana", "Scorpion", "Workforce"];
@@ -33,22 +25,22 @@ const MODELOS = ["Tekken", "Crucero", "Spitfire", "Shark", "Adventure", "GP1R", 
 const optimizarImg = (url: string) => {
   if (!url || url === 'No imagen') return '';
   if (url.includes('wsrv.nl')) return url;
-  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=400&h=400&fit=cover&a=top&q=75&output=webp`;
+  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=800&h=800&fit=cover&a=top&q=85&output=webp`;
 };
 
-// --- TARJETA DE PRODUCTO ---
-const ProductCard = React.memo(({ p, onAdd, onZoom, isFav, toggleFav }: any) => {
+// --- TARJETA DE PRODUCTO (Ahora abre detalles) ---
+const ProductCard = React.memo(({ p, onAdd, onOpen, isFav, toggleFav }: any) => {
   const [loaded, setLoaded] = useState(false);
   
   return (
-    <div className="card">
+    <div className="card" onClick={() => onOpen(p)}>
       <div className="card-top">
         <span className="badge-cat">{p.categoria}</span>
         <button className={`btn-fav ${isFav ? 'active' : ''}`} onClick={(e) => { e.stopPropagation(); toggleFav(p.id); }}>
           <Heart size={18} fill={isFav ? "currentColor" : "none"} />
         </button>
       </div>
-      <div className="img-container" onClick={() => onZoom(p.imagen)}>
+      <div className="img-container">
         {!loaded && <div className="skeleton"></div>}
         <img src={optimizarImg(p.imagen)} alt={p.nombre} className={loaded ? 'visible' : ''} onLoad={() => setLoaded(true)} loading="lazy"/>
       </div>
@@ -70,7 +62,7 @@ export default function App() {
   const [carritoAbierto, setCarritoAbierto] = useState(false);
   const [filtroModelo, setFiltroModelo] = useState('');
   const [pagina, setPagina] = useState(1);
-  const [zoomImg, setZoomImg] = useState<string | null>(null);
+  const [productoSeleccionado, setProductoSeleccionado] = useState<any | null>(null);
   const [menuFiltro, setMenuFiltro] = useState(false);
   const [toast, setToast] = useState<{id: number, msg: string}[]>([]);
   const [verFavs, setVerFavs] = useState(false);
@@ -94,7 +86,6 @@ export default function App() {
       return matchTexto && matchModelo;
     });
 
-    // --- CORRECCIÓN DE ORDENAMIENTO ---
     res.sort((a: any, b: any) => {
       let idxA = ORDEN_SECCIONES.indexOf(a.seccion);
       let idxB = ORDEN_SECCIONES.indexOf(b.seccion);
@@ -102,7 +93,6 @@ export default function App() {
       if (idxB === -1) idxB = 999;
       return idxA - idxB;
     });
-
     return res;
   }, [productos, busqueda, filtroModelo, verFavs, favs]);
 
@@ -117,6 +107,16 @@ export default function App() {
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, [visibles, productosFiltrados]);
+
+  // Handle back button to close modal
+  useEffect(() => {
+    if (productoSeleccionado) {
+      window.history.pushState(null, "", window.location.pathname);
+      const handlePop = () => setProductoSeleccionado(null);
+      window.addEventListener("popstate", handlePop);
+      return () => window.removeEventListener("popstate", handlePop);
+    }
+  }, [productoSeleccionado]);
 
   // FUNCIONES
   const addToast = (msg: string) => {
@@ -149,18 +149,18 @@ export default function App() {
     window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
+  const cotizarProducto = (p: any) => {
+     window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=Hola, me interesa este repuesto: ${p.nombre}`, '_blank');
+  };
+
   const cotizarGeneral = () => {
     window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=Hola Love Daytona, quisiera cotizar un repuesto.`, '_blank');
   };
 
-  // Esta función faltaba en el código anterior
   const irASeccion = (seccion: string) => {
     const id = `sec-${seccion.replace(/\s+/g, '-')}`;
     const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-      setVerFavs(false);
-    }
+    if (el) { el.scrollIntoView({ behavior: 'smooth' }); setVerFavs(false); }
   };
 
   const totalItems = carrito.reduce((a, b) => a + b.cant, 0);
@@ -178,14 +178,10 @@ export default function App() {
         <button className="filter-btn" onClick={() => setMenuFiltro(true)}><Filter size={20} /></button>
       </header>
 
-      {/* BARRA DE ATAJOS (Restaurada) */}
+      {/* BARRA DE ATAJOS */}
       {!verFavs && !busqueda && (
         <div className="shortcuts-bar">
-          {ORDEN_SECCIONES.map(cat => (
-            <button key={cat} className="shortcut-chip" onClick={() => irASeccion(cat)}>
-              {cat}
-            </button>
-          ))}
+          {ORDEN_SECCIONES.map(cat => <button key={cat} className="shortcut-chip" onClick={() => irASeccion(cat)}>{cat}</button>)}
         </div>
       )}
 
@@ -198,11 +194,10 @@ export default function App() {
           {visibles.map((p: any, i: number) => {
             const mostrarTitulo = !verFavs && !busqueda && (i === 0 || p.seccion !== visibles[i-1]?.seccion);
             const seccionId = `sec-${(p.seccion || '').replace(/\s+/g, '-')}`;
-            
             return (
               <React.Fragment key={p.id + i}>
                 {mostrarTitulo && <div id={seccionId} className="header-seccion">{p.seccion}</div>}
-                <ProductCard p={p} onAdd={addCarrito} onZoom={setZoomImg} isFav={favs.includes(p.id)} toggleFav={toggleFav}/>
+                <ProductCard p={p} onAdd={addCarrito} onOpen={setProductoSeleccionado} isFav={favs.includes(p.id)} toggleFav={toggleFav}/>
               </React.Fragment>
             );
           })}
@@ -216,24 +211,66 @@ export default function App() {
         )}
       </main>
 
-      {/* FOOTER (Restaurado) */}
+      {/* FOOTER */}
       <footer className="main-footer">
         <div className="footer-content">
           <h3>¿No encuentras tu repuesto?</h3>
           <p>Escríbenos directamente, tenemos más stock en bodega.</p>
-          <button className="btn-cotizar-footer" onClick={cotizarGeneral}>
-            <MessageCircle size={20}/> Cotizar por WhatsApp
-          </button>
-          <div className="social-icons">
-             {/* Usamos iconos de lucide-react */}
-            <button aria-label="Facebook"><Facebook size={24}/></button>
-            <button aria-label="Instagram"><Instagram size={24}/></button>
-          </div>
+          <button className="btn-cotizar-footer" onClick={cotizarGeneral}><MessageCircle size={20}/> Cotizar por WhatsApp</button>
+          <div className="social-icons"><button><Facebook size={24}/></button><button><Instagram size={24}/></button></div>
           <p className="copyright">© 2024 Love Daytona Ecuador</p>
         </div>
       </footer>
 
-      {/* MODALES */}
+      {/* --- PÁGINA DE DETALLE DE PRODUCTO (NUEVO) --- */}
+      {productoSeleccionado && (
+        <div className="detail-page-overlay">
+          <div className="detail-page">
+            <div className="detail-header">
+              <button onClick={() => setProductoSeleccionado(null)}><ChevronLeft size={28} /></button>
+              <span>Detalles</span>
+              <button onClick={() => toggleFav(productoSeleccionado.id)}>
+                <Heart size={24} fill={favs.includes(productoSeleccionado.id) ? "currentColor" : "none"} color={favs.includes(productoSeleccionado.id) ? "#FF6600" : "#333"} />
+              </button>
+            </div>
+            
+            <div className="detail-scroll">
+              <div className="detail-img-box">
+                 <img src={optimizarImg(productoSeleccionado.imagen)} alt={productoSeleccionado.nombre} />
+              </div>
+              
+              <div className="detail-info">
+                 <div className="detail-cat">{productoSeleccionado.categoria} - {productoSeleccionado.seccion}</div>
+                 <h1>{productoSeleccionado.nombre}</h1>
+                 
+                 <div className="badge-pedido">
+                    <AlertCircle size={16} /> BAJO PEDIDO
+                 </div>
+
+                 <div className="detail-price-row">
+                    <span className="detail-price">${Number(productoSeleccionado.precio).toFixed(2)}</span>
+                    <span className="detail-iva">+ IVA</span>
+                 </div>
+
+                 <div className="detail-actions">
+                    <button className="btn-detail-add" onClick={() => { addCarrito(productoSeleccionado); setProductoSeleccionado(null); }}>
+                      Agregar al Pedido
+                    </button>
+                    <button className="btn-detail-ws" onClick={() => cotizarProducto(productoSeleccionado)}>
+                      <MessageCircle size={20}/> Consultar
+                    </button>
+                 </div>
+
+                 <div className="detail-desc">
+                    <p>Repuesto original/homologado para motocicletas Daytona. Garantía de calidad y compatibilidad. Confirma el modelo exacto antes de la compra.</p>
+                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* CARRITO Y FILTROS (Igual que antes) */}
       {carritoAbierto && (
         <div className="modal-bg" onClick={() => setCarritoAbierto(false)}>
           <div className="drawer" onClick={e => e.stopPropagation()}>
@@ -271,7 +308,6 @@ export default function App() {
         </div>
       )}
 
-      {zoomImg && <div className="lightbox" onClick={() => setZoomImg(null)}><img src={optimizarImg(zoomImg)} onClick={e => e.stopPropagation()} /><button className="close-zoom"><X size={30}/></button></div>}
       <div className="toasts">{toast.map(t => <div key={t.id} className="toast">{t.msg}</div>)}</div>
 
       <nav className="bottom-nav">
