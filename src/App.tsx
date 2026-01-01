@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { 
   ShoppingCart, Search, X, Heart, Home, 
-  MessageCircle, Plus, Minus, Facebook, Instagram, ChevronLeft, Bike 
+  MessageCircle, Plus, Minus, Facebook, Instagram, ChevronLeft, Bike, ArrowUp 
 } from 'lucide-react';
 
 import './App.css';
@@ -74,6 +74,7 @@ export default function App() {
   const [toast, setToast] = useState<{id: number, msg: string}[]>([]);
   const [verFavs, setVerFavs] = useState(false);
   const [zoomImg, setZoomImg] = useState<string | null>(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(CONFIG.KEY_FAVS) || '[]'); } catch { return []; }
@@ -106,11 +107,15 @@ export default function App() {
 
   const visibles = productosFiltrados.slice(0, pagina * CONFIG.ITEMS_PAGINA);
 
+  // DETECTOR DE SCROLL
   useEffect(() => {
     const onScroll = () => {
+      // Paginación infinita
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
         if (visibles.length < productosFiltrados.length) setPagina(p => p + 1);
       }
+      // Mostrar botón "Volver arriba"
+      setShowScrollTop(window.scrollY > 400);
     };
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
@@ -149,16 +154,13 @@ export default function App() {
     addToast('Agregado al carrito');
   };
 
-  // --- MENSAJE DE PEDIDO CON PRECIOS ---
   const enviarPedido = () => {
     let msg = "Hola Love Daytona, mi pedido:\n\n";
-    // Aquí agregamos el precio unitario a cada línea
     carrito.forEach(i => msg += `▪ ${i.cant}x ${i.nombre} ($${Number(i.precio).toFixed(2)})\n`);
     msg += `\nTotal: $${carrito.reduce((a, b) => a + b.precio * b.cant, 0).toFixed(2)}`;
     window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
-  // --- CONSULTA INDIVIDUAL CON PRECIO ---
   const cotizarProducto = (p: any) => {
      window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=Hola, me interesa este repuesto: ${p.nombre} - Valor: $${Number(p.precio).toFixed(2)}`, '_blank');
   };
@@ -171,6 +173,10 @@ export default function App() {
     const id = `sec-${seccion.replace(/\s+/g, '-')}`;
     const el = document.getElementById(id);
     if (el) { el.scrollIntoView({ behavior: 'smooth' }); setVerFavs(false); }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const totalItems = carrito.reduce((a, b) => a + b.cant, 0);
@@ -241,6 +247,15 @@ export default function App() {
           </div>
         )}
       </main>
+
+      {/* BOTÓN VOLVER ARRIBA */}
+      <button 
+        className={`btn-scroll-top ${showScrollTop ? 'visible' : ''}`} 
+        onClick={scrollToTop}
+        aria-label="Volver arriba"
+      >
+        <ArrowUp size={24} />
+      </button>
 
       {/* FOOTER */}
       <footer className="main-footer">
