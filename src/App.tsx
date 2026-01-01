@@ -105,6 +105,18 @@ export default function App() {
     return res;
   }, [productos, busqueda, filtroModelo, verFavs, favs]);
 
+  // --- NUEVA LÓGICA: FILTRAR BOTONES DE CATEGORÍA ---
+  const seccionesVisibles = useMemo(() => {
+    // 1. Si no hay modelo seleccionado, no mostramos nada (Vista General Limpia)
+    if (!filtroModelo) return [];
+
+    // 2. Si hay modelo, buscamos qué categorías tienen productos en el resultado actual
+    const categoriasConProductos = new Set(productosFiltrados.map((p: any) => p.seccion));
+    
+    // 3. Filtramos el orden original para mostrar solo las que existen
+    return ORDEN_SECCIONES.filter(cat => categoriasConProductos.has(cat));
+  }, [filtroModelo, productosFiltrados]);
+
   const visibles = productosFiltrados.slice(0, pagina * CONFIG.ITEMS_PAGINA);
 
   // DETECTOR DE SCROLL
@@ -193,7 +205,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* --- BARRA DE SELECCIÓN DE MOTO (INTUITIVA) --- */}
+      {/* --- BARRA DE SELECCIÓN DE MOTO --- */}
       <div className="model-selector-container">
         {!filtroModelo ? (
           <button className="btn-select-model" onClick={() => setMenuFiltro(true)}>
@@ -216,10 +228,14 @@ export default function App() {
         )}
       </div>
 
-      {/* BARRA DE ATAJOS (CATEGORÍAS) */}
-      {!verFavs && !busqueda && (
+      {/* BARRA DE ATAJOS (CATEGORÍAS) - AHORA INTELIGENTE */}
+      {!verFavs && !busqueda && seccionesVisibles.length > 0 && (
         <div className="shortcuts-bar">
-          {ORDEN_SECCIONES.map(cat => <button key={cat} className="shortcut-chip" onClick={() => irASeccion(cat)}>{cat}</button>)}
+          {seccionesVisibles.map(cat => (
+            <button key={cat} className="shortcut-chip" onClick={() => irASeccion(cat)}>
+              {cat}
+            </button>
+          ))}
         </div>
       )}
 
