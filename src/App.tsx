@@ -52,6 +52,12 @@ const ProductCard = React.memo(({ p, onAdd, onOpen, isFav, toggleFav }: any) => 
         <img src={optimizarImg(p.imagen)} alt={p.nombre} className={loaded ? 'visible' : ''} onLoad={() => setLoaded(true)} loading="lazy"/>
       </div>
       <div className="card-info">
+        {/* MOSTRAR CÓDIGO EN TARJETA */}
+        {p.codigo_referencia && (
+          <span style={{ fontSize: '0.7rem', color: '#888', fontWeight: 'bold', display: 'block', marginBottom: '2px' }}>
+            CÓD: {p.codigo_referencia}
+          </span>
+        )}
         <h3>{p.nombre}</h3>
         <div className="card-action">
           <span className="price">${Number(p.precio).toFixed(2)}</span>
@@ -90,7 +96,9 @@ export default function App() {
     let res = productos.filter((p: any) => {
       if (!p.precio) return false;
       if (verFavs && !favs.includes(p.id)) return false;
-      const matchTexto = p.nombre.toLowerCase().includes(busqueda.toLowerCase());
+      // Búsqueda extendida: busca también por código de referencia
+      const textoBusqueda = `${p.nombre} ${p.codigo_referencia || ''}`.toLowerCase();
+      const matchTexto = textoBusqueda.includes(busqueda.toLowerCase());
       const matchModelo = !filtroModelo || p.nombre.toLowerCase().includes(filtroModelo.toLowerCase());
       return matchTexto && matchModelo;
     });
@@ -107,13 +115,8 @@ export default function App() {
 
   // --- NUEVA LÓGICA: FILTRAR BOTONES DE CATEGORÍA ---
   const seccionesVisibles = useMemo(() => {
-    // 1. Si no hay modelo seleccionado, no mostramos nada (Vista General Limpia)
     if (!filtroModelo) return [];
-
-    // 2. Si hay modelo, buscamos qué categorías tienen productos en el resultado actual
     const categoriasConProductos = new Set(productosFiltrados.map((p: any) => p.seccion));
-    
-    // 3. Filtramos el orden original para mostrar solo las que existen
     return ORDEN_SECCIONES.filter(cat => categoriasConProductos.has(cat));
   }, [filtroModelo, productosFiltrados]);
 
@@ -122,11 +125,9 @@ export default function App() {
   // DETECTOR DE SCROLL
   useEffect(() => {
     const onScroll = () => {
-      // Paginación infinita
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
         if (visibles.length < productosFiltrados.length) setPagina(p => p + 1);
       }
-      // Mostrar botón "Volver arriba"
       setShowScrollTop(window.scrollY > 400);
     };
     window.addEventListener('scroll', onScroll);
@@ -168,13 +169,16 @@ export default function App() {
 
   const enviarPedido = () => {
     let msg = "Hola Love Daytona, mi pedido:\n\n";
-    carrito.forEach(i => msg += `▪ ${i.cant}x ${i.nombre} ($${Number(i.precio).toFixed(2)})\n`);
+    // AGREGADO CÓDIGO AL MENSAJE DE WHATSAPP
+    carrito.forEach(i => msg += `▪ [${i.codigo_referencia || 'S/C'}] ${i.cant}x ${i.nombre} ($${Number(i.precio).toFixed(2)})\n`);
     msg += `\nTotal: $${carrito.reduce((a, b) => a + b.precio * b.cant, 0).toFixed(2)}`;
     window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
   const cotizarProducto = (p: any) => {
-     window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=Hola, me interesa este repuesto: ${p.nombre} - Valor: $${Number(p.precio).toFixed(2)}`, '_blank');
+     // AGREGADO CÓDIGO AL MENSAJE DE COTIZACIÓN
+     const ref = p.codigo_referencia ? `(Ref: ${p.codigo_referencia})` : '';
+     window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=Hola, me interesa este repuesto ${ref}: ${p.nombre} - Valor: $${Number(p.precio).toFixed(2)}`, '_blank');
   };
 
   const cotizarGeneral = () => {
@@ -200,7 +204,7 @@ export default function App() {
         <div className="brand" onClick={() => window.location.reload()}>LOVE <span>DAYTONA</span></div>
         <div className="search-box">
           <Search size={18} className="icon" />
-          <input type="text" placeholder="Buscar..." value={busqueda} onChange={e => { setBusqueda(e.target.value); setPagina(1); window.scrollTo(0,0); }}/>
+          <input type="text" placeholder="Buscar por nombre o código..." value={busqueda} onChange={e => { setBusqueda(e.target.value); setPagina(1); window.scrollTo(0,0); }}/>
           {busqueda && <button onClick={() => setBusqueda('')}><X size={16}/></button>}
         </div>
       </header>
@@ -228,7 +232,7 @@ export default function App() {
         )}
       </div>
 
-      {/* BARRA DE ATAJOS (CATEGORÍAS) - AHORA INTELIGENTE */}
+      {/* BARRA DE ATAJOS (CATEGORÍAS) */}
       {!verFavs && !busqueda && seccionesVisibles.length > 0 && (
         <div className="shortcuts-bar">
           {seccionesVisibles.map(cat => (
@@ -309,6 +313,14 @@ export default function App() {
                     <span className="badge-pedido-clean">BAJO PEDIDO</span>
                     <span className="badge-section-clean">{productoSeleccionado.seccion}</span>
                  </div>
+                 
+                 {/* MOSTRAR CÓDIGO EN DETALLE */}
+                 {productoSeleccionado.codigo_referencia && (
+                    <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '5px', fontWeight: 600 }}>
+                      REF: {productoSeleccionado.codigo_referencia}
+                    </p>
+                 )}
+
                  <h1>{productoSeleccionado.nombre}</h1>
                  <div className="detail-price-row">
                     <span className="detail-price">${Number(productoSeleccionado.precio).toFixed(2)}</span>
@@ -379,7 +391,12 @@ export default function App() {
                   <div className="cart-img-frame">
                     <img src={optimizarImg(i.imagen)} alt="" />
                   </div>
-                  <div className="info"><h4>{i.nombre}</h4><p>${(i.precio * i.cant).toFixed(2)}</p></div>
+                  <div className="info">
+                     <h4>{i.nombre}</h4>
+                     {/* CÓDIGO EN CARRITO OPCIONAL */}
+                     {i.codigo_referencia && <span style={{fontSize:'0.7rem', color:'#888'}}>Ref: {i.codigo_referencia}</span>}
+                     <p>${(i.precio * i.cant).toFixed(2)}</p>
+                  </div>
                   <div className="qty">
                     <button onClick={() => setCarrito(c => c.map(x => x.id === i.id ? {...x, cant: x.cant-1} : x).filter(x => x.cant > 0))}><Minus size={14}/></button>
                     <span>{i.cant}</span>
