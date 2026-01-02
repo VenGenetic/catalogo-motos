@@ -48,7 +48,7 @@ const MODELOS = [
   "Crucero", "Spitfire", "Delta", "Montana", "Workforce", "GTR", "Panther", 
   "Cafe Racer", "Eagle", "Speed", "Everest",
 
-  // --- MODELOS CON LÓGICA ESPECIAL (NO BORRAR NI CAMBIAR NOMBRE) ---
+  // --- MODELOS CON LÓGICA ESPECIAL ---
   "Wing Evo", "Wing Evo 200", "Wing Evo 2", 
   "Scooter Evo 2 180",
   "S1", "S1 Adv", "S1 Crossover 180"
@@ -106,6 +106,7 @@ export default function App() {
   const [carrito, setCarrito] = useState<any[]>([]);
   const [carritoAbierto, setCarritoAbierto] = useState(false);
   const [filtroModelo, setFiltroModelo] = useState('');
+  const [busquedaModelo, setBusquedaModelo] = useState(''); // <--- NUEVO ESTADO PARA BUSCAR MODELO
   const [pagina, setPagina] = useState(1);
   const [productoSeleccionado, setProductoSeleccionado] = useState<any | null>(null);
   const [menuFiltro, setMenuFiltro] = useState(false);
@@ -117,6 +118,11 @@ export default function App() {
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(CONFIG.KEY_FAVS) || '[]'); } catch { return []; }
   });
+
+  // Limpiar buscador de modelos al cerrar el modal
+  useEffect(() => {
+    if (!menuFiltro) setBusquedaModelo('');
+  }, [menuFiltro]);
 
   const productos = useMemo(() => {
     const raw = (dataOrigen as any).RAW_SCRAPED_DATA || (dataOrigen as any).products || [];
@@ -189,7 +195,6 @@ export default function App() {
         }
         // --- RESTO DE MODELOS ---
         else {
-           // Búsqueda simple por inclusión de texto para el resto de modelos
            matchModelo = nombreLower.includes(filtroModelo.toLowerCase());
         }
       }
@@ -441,6 +446,7 @@ export default function App() {
         </div>
       )}
 
+      {/* --- MODAL DE SELECCIÓN DE MOTO (CON BUSCADOR) --- */}
       {menuFiltro && (
         <div className="modal-bg" onClick={() => setMenuFiltro(false)}>
           <div className="drawer drawer-large">
@@ -448,21 +454,59 @@ export default function App() {
               <h3>Selecciona tu Moto</h3>
               <button onClick={() => setMenuFiltro(false)}><X/></button>
             </div>
+            
+            {/* BUSCADOR DE MODELOS (NUEVO) */}
+            <div style={{ padding: '0 15px 10px', position: 'sticky', top: 0, background: 'white', zIndex: 10 }}>
+              <div style={{ 
+                display: 'flex', alignItems: 'center', background: '#f5f5f5', 
+                borderRadius: '8px', padding: '8px 12px', border: '1px solid #eee' 
+              }}>
+                <Search size={18} color="#666" />
+                <input 
+                  type="text" 
+                  placeholder="Buscar modelo (ej. Tekken, Shark)..." 
+                  value={busquedaModelo}
+                  onChange={e => setBusquedaModelo(e.target.value)}
+                  onClick={e => e.stopPropagation()}
+                  style={{ 
+                    border: 'none', background: 'transparent', outline: 'none', 
+                    marginLeft: '10px', width: '100%', fontSize: '1rem', color: '#333' 
+                  }}
+                  autoFocus
+                />
+                {busquedaModelo && (
+                  <button onClick={() => setBusquedaModelo('')} style={{border:'none', background:'transparent', padding:0, cursor:'pointer'}}>
+                    <X size={16} color="#999"/>
+                  </button>
+                )}
+              </div>
+            </div>
+
             <div className="drawer-body">
               <button className="btn-model-all" onClick={() => {setFiltroModelo(''); setMenuFiltro(false)}}>
                 VER TODAS LAS MOTOS
               </button>
+              
               <div className="model-grid">
-                {MODELOS.map(m => (
-                  <button 
-                    key={m} 
-                    className={`btn-model-card ${filtroModelo===m ? 'active':''}`} 
-                    onClick={() => {setFiltroModelo(m); setMenuFiltro(false)}}
-                  >
-                    <Bike size={28} className="model-icon"/>
-                    <span>{m}</span>
-                  </button>
+                {/* FILTRADO DE LA LISTA DE MODELOS */}
+                {MODELOS
+                  .filter(m => m.toLowerCase().includes(busquedaModelo.toLowerCase()))
+                  .map(m => (
+                    <button 
+                      key={m} 
+                      className={`btn-model-card ${filtroModelo===m ? 'active':''}`} 
+                      onClick={() => {setFiltroModelo(m); setMenuFiltro(false)}}
+                    >
+                      <Bike size={28} className="model-icon"/>
+                      <span>{m}</span>
+                    </button>
                 ))}
+                
+                {MODELOS.filter(m => m.toLowerCase().includes(busquedaModelo.toLowerCase())).length === 0 && (
+                   <div style={{gridColumn: '1/-1', textAlign:'center', padding:'20px', color:'#999'}}>
+                     No se encontraron modelos.
+                   </div>
+                )}
               </div>
             </div>
           </div>
