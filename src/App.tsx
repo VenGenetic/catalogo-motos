@@ -9,7 +9,9 @@ import dataOrigen from './data.json';
 import { detectarSeccion } from './utils/categories';
 
 const CONFIG = {
-  WHATSAPP: "593993279707", 
+  WHATSAPP: "593993279707",
+  FACEBOOK: "https://www.facebook.com/profile.php?id=61583611217559",
+  INSTAGRAM: "https://www.instagram.com/love_daytona_oficial/",
   ITEMS_PAGINA: 30,
   KEY_FAVS: 'loveDaytonaFavs'
 };
@@ -348,7 +350,11 @@ export default function App() {
           <h3>¿No encuentras tu repuesto?</h3>
           <p>Escríbenos directamente, tenemos más stock en bodega.</p>
           <button className="btn-cotizar-footer" onClick={cotizarGeneral}><MessageCircle size={20}/> Cotizar por WhatsApp</button>
-          <div className="social-icons"><button><Facebook size={24}/></button><button><Instagram size={24}/></button></div>
+          <div className="social-icons">
+            {/* REDES SOCIALES CONFIGURADAS */}
+            <button onClick={() => window.open(CONFIG.FACEBOOK, '_blank')}><Facebook size={24}/></button>
+            <button onClick={() => window.open(CONFIG.INSTAGRAM, '_blank')}><Instagram size={24}/></button>
+          </div>
           <p className="copyright">© 2024 Love Daytona Ecuador</p>
         </div>
       </footer>
