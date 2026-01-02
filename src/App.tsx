@@ -22,14 +22,14 @@ const ORDEN_SECCIONES = [
 
 const MODELOS = [
   "Tekken", "Crucero", "Spitfire", "Shark", "Adventure", "GP1", "Delta", 
-  "Wing Evo", "Montana", "Scorpion", "Workforce", "Scrambler", "Wolf", "GTR", 
+  "Wing Evo", "Wing Evo 200", "Wing Evo 2", "Scooter Evo 2 180", // Agregado Scooter
+  "Montana", "Scorpion", "Workforce", "Scrambler", "Wolf", "GTR", 
   "Panther", "Cafe Racer", "Eagle", "Speed", "Bull", "Hunter", "Everest", 
   "Crossfire", "Feroce", "Maverick", "Predator", "S1", "Evo 2", "Elvissa", 
   "Dynamic", "Agility", "Viper", "CX7", "Comander"
 ];
 
 // --- UTILIDAD DE BÚSQUEDA PODEROSA ---
-// Elimina acentos y diacríticos para facilitar la búsqueda
 const limpiarTexto = (texto: string) => {
   return texto
     .toLowerCase()
@@ -37,7 +37,6 @@ const limpiarTexto = (texto: string) => {
     .replace(/[\u0300-\u036f]/g, "");
 };
 
-// USAMOS FIT=COVER PARA QUE EL RECORTE CSS FUNCIONE BIEN
 const optimizarImg = (url: string) => {
   if (!url || url === 'No imagen') return '';
   if (url.includes('wsrv.nl')) return url;
@@ -61,7 +60,6 @@ const ProductCard = React.memo(({ p, onAdd, onOpen, isFav, toggleFav }: any) => 
         <img src={optimizarImg(p.imagen)} alt={p.nombre} className={loaded ? 'visible' : ''} onLoad={() => setLoaded(true)} loading="lazy"/>
       </div>
       <div className="card-info">
-        {/* MOSTRAR CÓDIGO EN TARJETA */}
         {p.codigo_referencia && (
           <span style={{ fontSize: '0.7rem', color: '#888', fontWeight: 'bold', display: 'block', marginBottom: '2px' }}>
             CÓD: {p.codigo_referencia}
@@ -98,32 +96,64 @@ export default function App() {
   const productos = useMemo(() => {
     const raw = (dataOrigen as any).RAW_SCRAPED_DATA || (dataOrigen as any).products || [];
     const lista = Array.isArray(raw) ? raw : [];
-    // Pre-procesamos el texto de búsqueda para cada producto para que sea súper rápido
     return lista.map((p: any) => {
-      const seccion = detectingSeccion(p); // Usamos nombre local para evitar error si import falla, o usamos la importada
+      const seccion = detectarSeccion(p); 
       const textoBusqueda = limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccion}`);
       return { ...p, seccion, textoBusqueda };
     });
   }, []);
 
-  // Función local por si acaso, aunque usamos la importada 'detectarSeccion'
-  function detectingSeccion(p: any) {
-    return detectarSeccion(p);
-  }
-
   const productosFiltrados = useMemo(() => {
-    // 1. Preparamos los términos de búsqueda (separamos por espacios)
     const terminosBusqueda = limpiarTexto(busqueda).split(' ').filter(t => t.length > 0);
 
     let res = productos.filter((p: any) => {
       if (!p.precio) return false;
       if (verFavs && !favs.includes(p.id)) return false;
 
-      // 2. Lógica "Super Poderosa": Todos los términos deben estar en el producto
-      // Si busco "tekken freno", busca que el producto tenga "tekken" Y "freno"
+      // 1. FILTRO DE BÚSQUEDA
       const matchTexto = terminosBusqueda.every(termino => p.textoBusqueda.includes(termino));
       
-      const matchModelo = !filtroModelo || p.nombre.toLowerCase().includes(filtroModelo.toLowerCase());
+      // 2. FILTRO DE MODELO (LÓGICA BLINDADA WING EVO + SCOOTER)
+      let matchModelo = true;
+      if (filtroModelo) {
+        const nombreLower = p.nombre.toLowerCase();
+        
+        // --- LÓGICA ESPECIAL PARA LA FAMILIA EVO ---
+        
+        // HELPER: Detectar si es la MOTO Wing Evo 2 (cubre "evo 2", "evo2", "evo ii" CON "WING")
+        const esWingEvo2 = nombreLower.includes('wing evo 2') || 
+                           nombreLower.includes('wing evo2') || 
+                           nombreLower.includes('wing evo ii');
+
+        if (filtroModelo === 'Wing Evo') {
+           // Es la CLÁSICA si dice "wing evo" PERO NO dice "200" ni es "evo 2/evo2"
+           const esEvo = nombreLower.includes('wing evo');
+           const es200 = nombreLower.includes('200');
+           // Aseguramos que NO sea la Evo 2
+           matchModelo = esEvo && !es200 && !esWingEvo2;
+        }
+        else if (filtroModelo === 'Wing Evo 200') {
+           // Es la 200 si dice "wing evo" Y "200", pero NO es "evo 2/evo2"
+           const esEvo = nombreLower.includes('wing evo');
+           const es200 = nombreLower.includes('200');
+           matchModelo = esEvo && es200 && !esWingEvo2;
+        }
+        else if (filtroModelo === 'Wing Evo 2') {
+           // Es la MOTO EVO 2 si tiene "wing" y "evo 2/ii"
+           matchModelo = esWingEvo2;
+        }
+        else if (filtroModelo === 'Scooter Evo 2 180') {
+           // LÓGICA PASOLA: Busca "180" Y ("evo 2" O "evo2")
+           // Esto atrapa "Evo 2 180", "180 Evo 2", "Evo2 180", etc.
+           const tiene180 = nombreLower.includes('180');
+           const tieneEvo2 = nombreLower.includes('evo 2') || nombreLower.includes('evo2');
+           matchModelo = tiene180 && tieneEvo2;
+        }
+        else {
+           // Resto de modelos (búsqueda normal)
+           matchModelo = nombreLower.includes(filtroModelo.toLowerCase());
+        }
+      }
       
       return matchTexto && matchModelo;
     });
@@ -138,7 +168,6 @@ export default function App() {
     return res;
   }, [productos, busqueda, filtroModelo, verFavs, favs]);
 
-  // --- NUEVA LÓGICA: FILTRAR BOTONES DE CATEGORÍA ---
   const seccionesVisibles = useMemo(() => {
     if (!filtroModelo) return [];
     const categoriasConProductos = new Set(productosFiltrados.map((p: any) => p.seccion));
@@ -147,7 +176,6 @@ export default function App() {
 
   const visibles = productosFiltrados.slice(0, pagina * CONFIG.ITEMS_PAGINA);
 
-  // DETECTOR DE SCROLL
   useEffect(() => {
     const onScroll = () => {
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
@@ -168,7 +196,6 @@ export default function App() {
     }
   }, [productoSeleccionado]);
 
-  // FUNCIONES
   const addToast = (msg: string) => {
     const id = Date.now();
     setToast(prev => [...prev, { id, msg }]);
@@ -222,7 +249,6 @@ export default function App() {
 
   return (
     <div className="app">
-      {/* HEADER */}
       <header className="header">
         <div className="brand" onClick={() => window.location.reload()}>LOVE <span>DAYTONA</span></div>
         <div className="search-box">
@@ -237,7 +263,6 @@ export default function App() {
         </div>
       </header>
 
-      {/* --- BARRA DE SELECCIÓN DE MOTO --- */}
       <div className="model-selector-container">
         {!filtroModelo ? (
           <button className="btn-select-model" onClick={() => setMenuFiltro(true)}>
@@ -260,7 +285,6 @@ export default function App() {
         )}
       </div>
 
-      {/* BARRA DE ATAJOS (CATEGORÍAS) */}
       {!verFavs && !busqueda && seccionesVisibles.length > 0 && (
         <div className="shortcuts-bar">
           {seccionesVisibles.map(cat => (
@@ -271,7 +295,6 @@ export default function App() {
         </div>
       )}
 
-      {/* CONTENIDO */}
       <main className="content">
         {verFavs && <h2 className="titulo-seccion">❤️ Tus Favoritos</h2>}
 
@@ -298,7 +321,6 @@ export default function App() {
         )}
       </main>
 
-      {/* BOTÓN VOLVER ARRIBA */}
       <button 
         className={`btn-scroll-top ${showScrollTop ? 'visible' : ''}`} 
         onClick={scrollToTop}
@@ -307,7 +329,6 @@ export default function App() {
         <ArrowUp size={24} />
       </button>
 
-      {/* FOOTER */}
       <footer className="main-footer">
         <div className="footer-content">
           <h3>¿No encuentras tu repuesto?</h3>
@@ -318,7 +339,6 @@ export default function App() {
         </div>
       </footer>
 
-      {/* DETALLE DE PRODUCTO */}
       {productoSeleccionado && (
         <div className="detail-page-overlay">
           <div className="detail-page">
@@ -372,7 +392,6 @@ export default function App() {
         </div>
       )}
 
-      {/* LIGHTBOX */}
       {zoomImg && (
         <div className="lightbox" onClick={() => setZoomImg(null)}>
           <img src={optimizarImg(zoomImg)} onClick={e => e.stopPropagation()} alt="Zoom" />
@@ -380,7 +399,6 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL DE SELECCIÓN DE MOTO */}
       {menuFiltro && (
         <div className="modal-bg" onClick={() => setMenuFiltro(false)}>
           <div className="drawer drawer-large">
@@ -409,7 +427,6 @@ export default function App() {
         </div>
       )}
 
-      {/* CARRITO */}
       {carritoAbierto && (
         <div className="modal-bg" onClick={() => setCarritoAbierto(false)}>
           <div className="drawer" onClick={e => e.stopPropagation()}>
