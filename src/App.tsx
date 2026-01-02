@@ -22,11 +22,12 @@ const ORDEN_SECCIONES = [
 
 const MODELOS = [
   "Tekken", "Crucero", "Spitfire", "Shark", "Adventure", "GP1", "Delta", 
-  "Wing Evo", "Wing Evo 200", "Wing Evo 2", "Scooter Evo 2 180", // Agregado Scooter
+  "Wing Evo", "Wing Evo 200", "Wing Evo 2", "Scooter Evo 2 180", 
   "Montana", "Scorpion", "Workforce", "Scrambler", "Wolf", "GTR", 
   "Panther", "Cafe Racer", "Eagle", "Speed", "Bull", "Hunter", "Everest", 
-  "Crossfire", "Feroce", "Maverick", "Predator", "S1", "Evo 2", "Elvissa", 
-  "Dynamic", "Agility", "Viper", "CX7", "Comander"
+  "Crossfire", "Feroce", "Maverick", "Predator", 
+  "S1", "S1 Adv", "S1 Crossover 180", 
+  "Elvissa", "Dynamic", "Agility", "Viper", "CX7", "Comander"
 ];
 
 // --- UTILIDAD DE BÚSQUEDA PODEROSA ---
@@ -113,44 +114,57 @@ export default function App() {
       // 1. FILTRO DE BÚSQUEDA
       const matchTexto = terminosBusqueda.every(termino => p.textoBusqueda.includes(termino));
       
-      // 2. FILTRO DE MODELO (LÓGICA BLINDADA WING EVO + SCOOTER)
+      // 2. FILTRO DE MODELO (LÓGICA BLINDADA MULTI-MODELO)
       let matchModelo = true;
       if (filtroModelo) {
         const nombreLower = p.nombre.toLowerCase();
         
-        // --- LÓGICA ESPECIAL PARA LA FAMILIA EVO ---
-        
-        // HELPER: Detectar si es la MOTO Wing Evo 2 (cubre "evo 2", "evo2", "evo ii" CON "WING")
+        // --- LÓGICA WING EVO ---
         const esWingEvo2 = nombreLower.includes('wing evo 2') || 
                            nombreLower.includes('wing evo2') || 
                            nombreLower.includes('wing evo ii');
 
         if (filtroModelo === 'Wing Evo') {
-           // Es la CLÁSICA si dice "wing evo" PERO NO dice "200" ni es "evo 2/evo2"
            const esEvo = nombreLower.includes('wing evo');
            const es200 = nombreLower.includes('200');
-           // Aseguramos que NO sea la Evo 2
            matchModelo = esEvo && !es200 && !esWingEvo2;
         }
         else if (filtroModelo === 'Wing Evo 200') {
-           // Es la 200 si dice "wing evo" Y "200", pero NO es "evo 2/evo2"
            const esEvo = nombreLower.includes('wing evo');
            const es200 = nombreLower.includes('200');
            matchModelo = esEvo && es200 && !esWingEvo2;
         }
         else if (filtroModelo === 'Wing Evo 2') {
-           // Es la MOTO EVO 2 si tiene "wing" y "evo 2/ii"
            matchModelo = esWingEvo2;
         }
+        // --- LÓGICA SCOOTER ---
         else if (filtroModelo === 'Scooter Evo 2 180') {
-           // LÓGICA PASOLA: Busca "180" Y ("evo 2" O "evo2")
-           // Esto atrapa "Evo 2 180", "180 Evo 2", "Evo2 180", etc.
            const tiene180 = nombreLower.includes('180');
            const tieneEvo2 = nombreLower.includes('evo 2') || nombreLower.includes('evo2');
-           matchModelo = tiene180 && tieneEvo2;
+           const noEsWing = !nombreLower.includes('wing'); // Bloqueamos Wing
+           matchModelo = tiene180 && tieneEvo2 && noEsWing;
         }
+        // --- LÓGICA S1 (TRIÁNGULO S1 / ADV / CROSSOVER) ---
+        else if (filtroModelo === 'S1') {
+           // S1 estándar: Busca "S1" pero QUE NO SEA "Adv", "Adventure" ni "Crossover"
+           const tieneS1 = nombreLower.includes('s1');
+           const esAdv = nombreLower.includes('adv') || nombreLower.includes('adventure');
+           const esCross = nombreLower.includes('crossover');
+           matchModelo = tieneS1 && !esAdv && !esCross;
+        }
+        else if (filtroModelo === 'S1 Adv') {
+           // S1 Adv: Busca "S1" Y ("Adv" o "Adventure") pero QUE NO SEA "Crossover"
+           const tieneS1 = nombreLower.includes('s1');
+           const esAdv = nombreLower.includes('adv') || nombreLower.includes('adventure');
+           const esCross = nombreLower.includes('crossover');
+           matchModelo = tieneS1 && esAdv && !esCross;
+        }
+        else if (filtroModelo === 'S1 Crossover 180') {
+           // S1 Crossover: Busca "Crossover" (es la palabra clave única)
+           matchModelo = nombreLower.includes('crossover');
+        }
+        // --- RESTO DE MODELOS ---
         else {
-           // Resto de modelos (búsqueda normal)
            matchModelo = nombreLower.includes(filtroModelo.toLowerCase());
         }
       }
