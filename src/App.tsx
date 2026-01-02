@@ -28,6 +28,15 @@ const MODELOS = [
   "Dynamic", "Agility", "Viper", "CX7", "Comander"
 ];
 
+// --- UTILIDAD DE BÚSQUEDA PODEROSA ---
+// Elimina acentos y diacríticos para facilitar la búsqueda
+const limpiarTexto = (texto: string) => {
+  return texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+};
+
 // USAMOS FIT=COVER PARA QUE EL RECORTE CSS FUNCIONE BIEN
 const optimizarImg = (url: string) => {
   if (!url || url === 'No imagen') return '';
@@ -89,17 +98,33 @@ export default function App() {
   const productos = useMemo(() => {
     const raw = (dataOrigen as any).RAW_SCRAPED_DATA || (dataOrigen as any).products || [];
     const lista = Array.isArray(raw) ? raw : [];
-    return lista.map((p: any) => ({ ...p, seccion: detectarSeccion(p) }));
+    // Pre-procesamos el texto de búsqueda para cada producto para que sea súper rápido
+    return lista.map((p: any) => {
+      const seccion = detectingSeccion(p); // Usamos nombre local para evitar error si import falla, o usamos la importada
+      const textoBusqueda = limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccion}`);
+      return { ...p, seccion, textoBusqueda };
+    });
   }, []);
 
+  // Función local por si acaso, aunque usamos la importada 'detectarSeccion'
+  function detectingSeccion(p: any) {
+    return detectarSeccion(p);
+  }
+
   const productosFiltrados = useMemo(() => {
+    // 1. Preparamos los términos de búsqueda (separamos por espacios)
+    const terminosBusqueda = limpiarTexto(busqueda).split(' ').filter(t => t.length > 0);
+
     let res = productos.filter((p: any) => {
       if (!p.precio) return false;
       if (verFavs && !favs.includes(p.id)) return false;
-      // Búsqueda extendida: busca también por código de referencia
-      const textoBusqueda = `${p.nombre} ${p.codigo_referencia || ''}`.toLowerCase();
-      const matchTexto = textoBusqueda.includes(busqueda.toLowerCase());
+
+      // 2. Lógica "Super Poderosa": Todos los términos deben estar en el producto
+      // Si busco "tekken freno", busca que el producto tenga "tekken" Y "freno"
+      const matchTexto = terminosBusqueda.every(termino => p.textoBusqueda.includes(termino));
+      
       const matchModelo = !filtroModelo || p.nombre.toLowerCase().includes(filtroModelo.toLowerCase());
+      
       return matchTexto && matchModelo;
     });
 
@@ -169,14 +194,12 @@ export default function App() {
 
   const enviarPedido = () => {
     let msg = "Hola Love Daytona, mi pedido:\n\n";
-    // AGREGADO CÓDIGO AL MENSAJE DE WHATSAPP
     carrito.forEach(i => msg += `▪ [${i.codigo_referencia || 'S/C'}] ${i.cant}x ${i.nombre} ($${Number(i.precio).toFixed(2)})\n`);
     msg += `\nTotal: $${carrito.reduce((a, b) => a + b.precio * b.cant, 0).toFixed(2)}`;
     window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
   const cotizarProducto = (p: any) => {
-     // AGREGADO CÓDIGO AL MENSAJE DE COTIZACIÓN
      const ref = p.codigo_referencia ? `(Ref: ${p.codigo_referencia})` : '';
      window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=Hola, me interesa este repuesto ${ref}: ${p.nombre} - Valor: $${Number(p.precio).toFixed(2)}`, '_blank');
   };
@@ -204,7 +227,12 @@ export default function App() {
         <div className="brand" onClick={() => window.location.reload()}>LOVE <span>DAYTONA</span></div>
         <div className="search-box">
           <Search size={18} className="icon" />
-          <input type="text" placeholder="Buscar por nombre o código..." value={busqueda} onChange={e => { setBusqueda(e.target.value); setPagina(1); window.scrollTo(0,0); }}/>
+          <input 
+            type="text" 
+            placeholder="Buscar repuesto, código..." 
+            value={busqueda} 
+            onChange={e => { setBusqueda(e.target.value); setPagina(1); window.scrollTo(0,0); }}
+          />
           {busqueda && <button onClick={() => setBusqueda('')}><X size={16}/></button>}
         </div>
       </header>
@@ -262,7 +290,9 @@ export default function App() {
         
         {visibles.length === 0 && (
           <div className="vacio">
-            <Search size={40} /><p>No encontramos repuestos con ese criterio.</p>
+            <Search size={40} />
+            <p>No encontramos repuestos con "{busqueda}".</p>
+            {filtroModelo && <p style={{fontSize: '0.8rem', color: '#666'}}>Intenta quitar el filtro de "{filtroModelo}"</p>}
             <button onClick={() => {setBusqueda(''); setFiltroModelo(''); setVerFavs(false)}}>Ver todo el catálogo</button>
           </div>
         )}
@@ -314,7 +344,6 @@ export default function App() {
                     <span className="badge-section-clean">{productoSeleccionado.seccion}</span>
                  </div>
                  
-                 {/* MOSTRAR CÓDIGO EN DETALLE */}
                  {productoSeleccionado.codigo_referencia && (
                     <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '5px', fontWeight: 600 }}>
                       REF: {productoSeleccionado.codigo_referencia}
@@ -393,7 +422,6 @@ export default function App() {
                   </div>
                   <div className="info">
                      <h4>{i.nombre}</h4>
-                     {/* CÓDIGO EN CARRITO OPCIONAL */}
                      {i.codigo_referencia && <span style={{fontSize:'0.7rem', color:'#888'}}>Ref: {i.codigo_referencia}</span>}
                      <p>${(i.precio * i.cant).toFixed(2)}</p>
                   </div>
