@@ -1,0 +1,7 @@
+/* Importamos la fuente Inter para darle el toque moderno a la App */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+/* Opcional: Aseguramos que el scroll sea suave en toda la página */
+html {
+  scroll-behavior: smooth;
+}
