@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { 
   Home, ShoppingBag, Phone, X, Search, ChevronRight, 
-  Heart, Bike, Plus, Minus, MessageCircle, Grid, ArrowLeft, Share2
+  Heart, Bike, Plus, Minus, MessageCircle, Grid, ArrowLeft, Share2, ArrowUp
 } from 'lucide-react';
 
 import './App.css';
@@ -41,13 +41,12 @@ const limpiarTexto = (texto: string) => texto.toLowerCase().normalize("NFD").rep
 const optimizarImg = (url: string) => {
   if (!url || url === 'No imagen') return 'https://via.placeholder.com/400x300?text=No+Image';
   if (url.includes('wsrv.nl')) return url;
-  // MEJORA: Ajustamos el fit a 'cover' y la alineación a 'top' también en el servidor
   return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=400&h=400&fit=cover&a=top&q=80&output=webp`;
 };
 
 // --- COMPONENTES ---
 
-// 1. ZOOM INTELIGENTE
+// 1. ZOOM INTELIGENTE (Con Recorte 1/4 Inferior)
 const ImageZoom = ({ src, alt }: { src: string, alt: string }) => {
   const [isActive, setIsActive] = useState(false);
   const [position, setPosition] = useState({ x: 50, y: 50 });
@@ -72,19 +71,21 @@ const ImageZoom = ({ src, alt }: { src: string, alt: string }) => {
       onMouseMove={handleMouseMove}
       onClick={toggleZoom}
     >
-      {/* MEJORA: object-top para alinear arriba */}
       <img 
         src={src} 
         alt={alt}
+        style={{ 
+          clipPath: 'inset(0 0 25% 0)', // Recorta 25% abajo
+          transformOrigin: `${position.x}% ${position.y}%`
+        }}
         className={`w-full h-full object-cover object-top transition-transform duration-200 ease-out ${isActive ? 'scale-[2.5]' : 'scale-100'}`}
-        style={isActive ? { transformOrigin: `${position.x}% ${position.y}%` } : undefined}
         loading="lazy"
       />
     </div>
   );
 };
 
-// 2. DETALLE DE PRODUCTO (MODAL / FULLSCREEN)
+// 2. DETALLE DE PRODUCTO (MODAL)
 const ProductDetailModal = ({ product, onClose, onAdd }: any) => {
   if (!product) return null;
 
@@ -95,7 +96,6 @@ const ProductDetailModal = ({ product, onClose, onAdd }: any) => {
       </button>
 
       <div className="w-full h-full md:h-auto md:max-w-4xl md:max-h-[90vh] bg-white md:rounded-2xl flex flex-col md:flex-row overflow-hidden relative shadow-2xl">
-        
         <button onClick={onClose} className="hidden md:block absolute top-4 right-4 z-20 bg-white/90 p-2 rounded-full hover:bg-gray-100 transition-colors">
           <X className="w-6 h-6 text-slate-500" />
         </button>
@@ -138,7 +138,6 @@ const ProductDetailModal = ({ product, onClose, onAdd }: any) => {
 
             <p className="text-gray-600 text-sm leading-relaxed">
               Repuesto original garantizado para tu motocicleta. Compatible con los modelos especificados.
-              Contáctanos si tienes dudas sobre la compatibilidad.
             </p>
 
             <div className="hidden md:flex gap-4 mt-8">
@@ -171,7 +170,36 @@ const ProductDetailModal = ({ product, onClose, onAdd }: any) => {
   );
 };
 
-// 3. BOTTOM NAVIGATION
+// 3. BOTÓN SCROLL TO TOP
+const ScrollToTopButton = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      setIsVisible(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', toggleVisibility);
+    return () => window.removeEventListener('scroll', toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  if (!isVisible) return null;
+
+  return (
+    <button 
+      onClick={scrollToTop}
+      className="fixed z-40 bg-slate-900 text-white p-3 rounded-full shadow-xl hover:bg-red-600 transition-all duration-300 animate-bounce bottom-20 right-4 md:bottom-8 md:right-8"
+      aria-label="Volver arriba"
+    >
+      <ArrowUp className="w-6 h-6" />
+    </button>
+  );
+};
+
+// 4. BOTTOM NAVIGATION
 const BottomNav = ({ activeTab, setActiveTab, cartCount, openCart }: any) => {
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 py-2 px-6 flex justify-between items-center z-40 pb-safe">
@@ -251,8 +279,13 @@ const Navbar = ({ activeTab, setActiveTab, cartCount, openCart }: any) => {
 const HeroSection = ({ setActiveTab }: any) => (
   <div className="relative bg-slate-900 overflow-hidden font-sans">
     <div className="absolute inset-0">
-      {/* MEJORA: object-top en Hero */}
-      <img src="https://images.unsplash.com/photo-1558981285-6f0c94958bb6?auto=format&fit=crop&q=80&w=1920" alt="Moto Workshop" className="w-full h-full object-cover object-top opacity-40" />
+      {/* Recorte en Hero */}
+      <img 
+        src="https://images.unsplash.com/photo-1558981285-6f0c94958bb6?auto=format&fit=crop&q=80&w=1920" 
+        alt="Moto Workshop" 
+        className="w-full h-full object-cover object-top opacity-40"
+        style={{ clipPath: 'inset(0 0 25% 0)' }}
+      />
       <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent"></div>
     </div>
     <div className="relative max-w-7xl mx-auto px-4 py-12 md:py-32">
@@ -346,11 +379,17 @@ const CatalogView = ({
                   </button>
 
                   <div className="h-40 md:h-56 overflow-hidden bg-gray-100 relative">
-                    {/* MEJORA: object-top en Catálogo */}
-                    <img src={optimizarImg(product.imagen)} alt={product.nombre} className="w-full h-full object-cover object-top" loading="lazy" />
+                    {/* Recorte en Grid Catálogo + Zoom compensatorio */}
+                    <img 
+                      src={optimizarImg(product.imagen)} 
+                      alt={product.nombre} 
+                      className="w-full h-full object-cover object-top scale-[1.15] origin-top" 
+                      style={{ clipPath: 'inset(0 0 25% 0)' }}
+                      loading="lazy" 
+                    />
                   </div>
 
-                  <div className="p-3 flex flex-col flex-grow">
+                  <div className="p-3 flex flex-col flex-grow relative z-10 bg-white">
                     <span className="text-[10px] font-bold text-red-600 uppercase tracking-wide mb-1 line-clamp-1">{product.seccion}</span>
                     <h3 className="text-xs md:text-sm font-bold text-slate-800 mb-1 line-clamp-2 leading-tight min-h-[2.5em]">{product.nombre}</h3>
                     <div className="mt-auto pt-2">
@@ -436,7 +475,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [carrito, setCarrito] = useState<any[]>([]);
   const [carritoAbierto, setCarritoAbierto] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<any>(null); // Estado para el modal de detalle
+  const [selectedProduct, setSelectedProduct] = useState<any>(null); 
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(CONFIG.KEY_FAVS) || '[]'); } catch { return []; }
   });
@@ -504,10 +543,14 @@ export default function App() {
               <div className="grid grid-cols-2 gap-3">
                 {productosProcesados.slice(0, 4).map((p:any) => (
                   <div key={p.id} className="border border-gray-100 rounded-lg p-3 bg-white shadow-sm cursor-pointer" onClick={() => {setActiveTab('catalog'); setBusqueda(p.nombre)}}>
-                    {/* MEJORA: object-top en Destacados */}
-                    <img src={optimizarImg(p.imagen)} className="w-full h-32 object-cover object-top rounded-md mb-2 bg-gray-100" />
-                    <h3 className="text-xs font-bold line-clamp-2 mb-1">{p.nombre}</h3>
-                    <span className="text-red-600 font-bold text-sm">${Number(p.precio).toFixed(2)}</span>
+                    {/* Recorte en Destacados + Zoom compensatorio */}
+                    <img 
+                      src={optimizarImg(p.imagen)} 
+                      className="w-full h-32 object-cover object-top rounded-md mb-2 bg-gray-100 scale-[1.15] origin-top" 
+                      style={{ clipPath: 'inset(0 0 25% 0)' }}
+                    />
+                    <h3 className="text-xs font-bold line-clamp-2 mb-1 relative z-10 bg-white">{p.nombre}</h3>
+                    <span className="text-red-600 font-bold text-sm relative z-10 bg-white">${Number(p.precio).toFixed(2)}</span>
                   </div>
                 ))}
               </div>
@@ -526,23 +569,23 @@ export default function App() {
             setBusqueda={setBusqueda}
             filtroSeccion={filtroSeccion} 
             setFiltroSeccion={setFiltroSeccion}
-            onProductClick={setSelectedProduct} // Abre el modal
+            onProductClick={setSelectedProduct} 
           />
         )}
         
         {activeTab === 'contact' && <ContactView />}
       </main>
 
-      {/* NUEVO: Modal de Detalle de Producto */}
       <ProductDetailModal 
         product={selectedProduct} 
         onClose={() => setSelectedProduct(null)} 
         onAdd={addCarrito} 
       />
 
+      <ScrollToTopButton />
+
       <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} cartCount={carrito.reduce((a,b)=>a+b.cant,0)} openCart={() => setCarritoAbierto(true)} />
 
-      {/* Drawer Carrito */}
       {carritoAbierto && (
         <div className="fixed inset-0 z-[100] flex justify-end">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setCarritoAbierto(false)}></div>
@@ -554,8 +597,12 @@ export default function App() {
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
               {carrito.map(item => (
                 <div key={item.id} className="flex gap-3 p-2 border rounded-lg">
-                  {/* MEJORA: object-top en Carrito */}
-                  <img src={optimizarImg(item.imagen)} className="w-16 h-16 object-cover object-top rounded bg-gray-100" />
+                  {/* Recorte en Carrito */}
+                  <img 
+                    src={optimizarImg(item.imagen)} 
+                    className="w-16 h-16 object-cover object-top rounded bg-gray-100 scale-[1.15] origin-top" 
+                    style={{ clipPath: 'inset(0 0 25% 0)' }}
+                  />
                   <div className="flex-1">
                     <h4 className="text-xs font-bold line-clamp-2">{item.nombre}</h4>
                     <p className="text-red-600 font-bold text-sm">${(item.precio * item.cant).toFixed(2)}</p>
