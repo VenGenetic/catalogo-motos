@@ -1,4 +1,3 @@
-// src/context/CartContext.tsx
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Producto, ItemCarrito } from '../types';
 import { APP_CONFIG } from '../config/constants';
@@ -21,10 +20,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<ItemCarrito[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   
-  // Estado para la notificación visual (Toast)
+  // --- Estado para el Toast (Notificación) ---
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
-  // Cargar carrito del localStorage
+  // Cargar carrito guardado
   useEffect(() => {
     const savedCart = localStorage.getItem('cart_backup');
     if (savedCart) {
@@ -32,25 +31,27 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  // Guardar carrito en localStorage
+  // Guardar carrito al cambiar
   useEffect(() => {
     localStorage.setItem('cart_backup', JSON.stringify(cart));
   }, [cart]);
 
-  // Manejar tiempo de vida del Toast (2 segundos)
+  // Temporizador para ocultar el Toast
   useEffect(() => {
     if (toastMsg) {
-      const timer = setTimeout(() => setToastMsg(null), 2000);
+      const timer = setTimeout(() => setToastMsg(null), 2500);
       return () => clearTimeout(timer);
     }
   }, [toastMsg]);
 
   const addToCart = (product: Producto) => {
-    // 1. Feedback Táctil (Vibración en móviles)
-    if (navigator.vibrate) navigator.vibrate(50);
+    // Feedback táctil (si el dispositivo lo soporta)
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate(50);
+    }
     
-    // 2. Feedback Visual (Toast)
-    setToastMsg(`Agregado: ${product.nombre.substring(0, 20)}...`);
+    // Feedback visual
+    setToastMsg(`Agregado: ${product.nombre.substring(0, 25)}${product.nombre.length > 25 ? '...' : ''}`);
 
     setCart(prev => {
       const existing = prev.find(i => i.id === product.id);
@@ -64,8 +65,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return [...prev, { ...product, cantidad: 1, cant: 1 }];
     });
     
-    // Opcional: Si prefieres que NO se abra el carrito automáticamente, comenta la siguiente línea:
-    setIsOpen(true);
+    // Opcional: No abrimos el drawer automáticamente para no interrumpir
+    // setIsOpen(true);
   };
 
   const updateQuantity = (id: string, delta: number) => {
@@ -96,17 +97,17 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       addToCart, updateQuantity, cartCount, cartTotal, sendOrderToWhatsapp
     }}>
       {children}
-
-      {/* RENDERIZADO DEL TOAST FLOTANTE */}
+      
+      {/* Componente Toast Renderizado Globalmente */}
       {toastMsg && (
-        <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-[100] animate-fade-in-up w-max max-w-[90%]">
-          <div className="bg-slate-900/95 backdrop-blur-sm text-white px-6 py-3 rounded-full shadow-xl flex items-center gap-3 border border-slate-700">
-            <div className="bg-green-500 rounded-full p-1">
-              <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <span className="text-sm font-bold">{toastMsg}</span>
+        <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-[100] animate-fade-in-up w-max max-w-[90%] pointer-events-none">
+          <div className="bg-slate-900/95 backdrop-blur-sm text-white px-5 py-3 rounded-full shadow-2xl flex items-center gap-3 border border-slate-700">
+             <div className="bg-green-500 rounded-full p-0.5">
+               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+               </svg>
+             </div>
+             <span className="text-xs md:text-sm font-bold">{toastMsg}</span>
           </div>
         </div>
       )}

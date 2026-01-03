@@ -26,11 +26,11 @@ export const ImageZoom = ({ src, alt }: { src: string, alt: string }) => {
         src={src} 
         alt={alt}
         style={{ 
-          // CORRECCIÓN: Eliminado clipPath
+          // IMPORTANTE: Eliminamos 'clipPath' para ver la imagen completa
           transformOrigin: `${position.x}% ${position.y}%`
         }}
-        // Se añade object-contain o object-top según prefieras para ver todo el producto
-        className={`w-full h-full object-contain md:object-cover md:object-top transition-transform duration-200 ease-out ${isActive ? 'scale-[2.5]' : 'scale-100'}`}
+        // Usamos object-contain para asegurar que TODA la moto se vea sin cortes
+        className={`w-full h-full object-contain transition-transform duration-200 ease-out ${isActive ? 'scale-[2.5]' : 'scale-100'}`}
         loading="lazy"
       />
     </div>

@@ -6,16 +6,20 @@ interface Props {
 }
 
 export const HighlightedText = ({ text, highlight }: Props) => {
-  if (!highlight.trim()) return <>{text}</>;
+  if (!highlight || !highlight.trim()) {
+    return <span>{text}</span>;
+  }
 
-  // Dividir el texto basado en la búsqueda (insensible a mayúsculas)
-  const regex = new RegExp(`(${highlight})`, 'gi');
-  const parts = text.split(regex);
+  // Escapamos caracteres especiales de regex para evitar errores
+  const escapeRegExp = (string: string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const pattern = new RegExp(`(${escapeRegExp(highlight)})`, 'gi');
+  
+  const parts = text.split(pattern);
 
   return (
     <span>
       {parts.map((part, i) => 
-        regex.test(part) ? (
+        pattern.test(part) ? (
           <mark key={i} className="bg-yellow-200 text-slate-900 rounded-sm px-0.5 font-bold mx-0.5">
             {part}
           </mark>
