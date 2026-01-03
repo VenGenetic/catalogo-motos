@@ -1,9 +1,10 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { Search, Bike, Heart, X } from 'lucide-react';
 import { optimizarImg } from '../utils/helpers';
 import { APP_CONFIG, ORDEN_SECCIONES, MODELOS } from '../config/constants';
 import { Producto } from '../types';
 import { LazyImage } from './LazyImage';
+import { HighlightedText } from './HighlightedText';
 
 interface Props {
   productos: Producto[];
@@ -28,16 +29,24 @@ export const CatalogView = ({
   const [pagina, setPagina] = useState(1);
   const [modalModelos, setModalModelos] = useState(false);
   const [busquedaModelo, setBusquedaModelo] = useState('');
+  
+  // Referencia para el scroll automático
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Reiniciar página al filtrar
-  useEffect(() => { setPagina(1); }, [busqueda, filtroModelo, filtroSeccion]);
+  // Reiniciar página y hacer scroll al inicio al filtrar
+  useEffect(() => { 
+    setPagina(1); 
+    if (busqueda || filtroModelo || filtroSeccion !== 'Todos') {
+      containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [busqueda, filtroModelo, filtroSeccion]);
 
   const visibles = useMemo(() => {
     return productos.slice(0, pagina * APP_CONFIG.ITEMS_PER_PAGE);
   }, [productos, pagina]);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24 pt-2 md:pt-4 px-0 md:px-8 font-sans">
+    <div ref={containerRef} className="min-h-screen bg-gray-50 pb-24 pt-2 md:pt-4 px-0 md:px-8 font-sans">
       <div className="max-w-7xl mx-auto">
         
         {/* BARRA DE FILTROS SUPERIOR */}
@@ -96,7 +105,7 @@ export const CatalogView = ({
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
-                  {/* IMAGEN OPTIMIZADA CON LAZY LOAD */}
+                  {/* IMAGEN OPTIMIZADA */}
                   <LazyImage 
                     src={optimizarImg(product.imagen)} 
                     alt={product.nombre}
@@ -106,7 +115,15 @@ export const CatalogView = ({
 
                   <div className="p-3 flex flex-col flex-grow relative z-10 bg-white">
                     <span className="text-[10px] font-bold text-red-600 uppercase tracking-wide mb-1 line-clamp-1">{product.seccion}</span>
-                    <h3 className="text-xs md:text-sm font-bold text-slate-800 mb-1 line-clamp-2 leading-tight min-h-[2.5em]">{product.nombre}</h3>
+                    
+                    {/* TÍTULO CON RESALTADO */}
+                    <h3 className="text-xs md:text-sm font-bold text-slate-800 mb-1 line-clamp-2 leading-tight min-h-[2.5em]">
+                      <HighlightedText 
+                        text={product.nombre} 
+                        highlight={busqueda} 
+                      />
+                    </h3>
+
                     <div className="mt-auto pt-2">
                        <span className="text-sm md:text-lg font-extrabold text-slate-900 block">${Number(product.precio).toFixed(2)}</span>
                     </div>

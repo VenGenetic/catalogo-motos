@@ -1,6 +1,7 @@
+import { Link } from 'react-router-dom'; // Usamos Link en lugar de setActiveTab
 import { ChevronRight } from 'lucide-react';
 
-export const HeroSection = ({ setActiveTab }: { setActiveTab: (t: string) => void }) => (
+export const HeroSection = () => (
   <div className="relative bg-slate-900 overflow-hidden font-sans">
     <div className="absolute inset-0">
       <img 
@@ -18,9 +19,9 @@ export const HeroSection = ({ setActiveTab }: { setActiveTab: (t: string) => voi
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">Repuestos de Calidad</span>
         </h1>
         <p className="text-base md:text-xl text-gray-300 mb-6 md:mb-8 max-w-2xl">Encuentra las mejores piezas para tu Daytona. Calidad garantizada.</p>
-        <button onClick={() => setActiveTab('catalog')} className="w-full md:w-auto flex items-center justify-center px-8 py-4 text-lg font-bold rounded-full text-white bg-red-600 hover:bg-red-700 transition-all shadow-lg active:scale-95">
+        <Link to="/catalogo" className="w-full md:w-auto inline-flex items-center justify-center px-8 py-4 text-lg font-bold rounded-full text-white bg-red-600 hover:bg-red-700 transition-all shadow-lg active:scale-95">
           Ver Catálogo <ChevronRight className="ml-2 w-5 h-5" />
-        </button>
+        </Link>
       </div>
     </div>
   </div>

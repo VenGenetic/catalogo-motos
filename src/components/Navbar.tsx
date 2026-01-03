@@ -1,30 +1,30 @@
+import { Link, useLocation } from 'react-router-dom';
 import { ShoppingBag } from 'lucide-react';
-import { useCart } from '../context/CartContext'; // Importar hook
+import { useCart } from '../context/CartContext';
 
-interface Props {
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
-  // Eliminamos cartCount y openCart de las props
-}
+export const Navbar = () => {
+  const { cartCount, openCart } = useCart();
+  const location = useLocation();
 
-export const Navbar = ({ activeTab, setActiveTab }: Props) => {
-  const { cartCount, openCart } = useCart(); // Usamos el hook
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <nav className="bg-slate-900 text-white shadow-lg sticky top-0 z-50 font-sans">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setActiveTab('home')}>
+          {/* Logo con Link a Inicio */}
+          <Link to="/" className="flex items-center space-x-2 cursor-pointer">
             <div className="bg-red-600 p-2 rounded-lg">
               <ShoppingBag className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </div>
             <span className="font-bold text-lg md:text-xl tracking-wider">MOTO<span className="text-red-500">PARTS</span></span>
-          </div>
+          </Link>
 
           <div className="hidden md:flex space-x-8 items-center">
-            <button onClick={() => setActiveTab('home')} className={`font-medium transition-colors ${activeTab === 'home' ? 'text-red-500' : 'hover:text-red-400'}`}>Inicio</button>
-            <button onClick={() => setActiveTab('catalog')} className={`font-medium transition-colors ${activeTab === 'catalog' ? 'text-red-500' : 'hover:text-red-400'}`}>Catálogo</button>
-            <button onClick={() => setActiveTab('contact')} className={`font-medium transition-colors ${activeTab === 'contact' ? 'text-red-500' : 'hover:text-red-400'}`}>Contacto</button>
+            <Link to="/" className={`font-medium transition-colors ${isActive('/') ? 'text-red-500' : 'hover:text-red-400'}`}>Inicio</Link>
+            <Link to="/catalogo" className={`font-medium transition-colors ${isActive('/catalogo') ? 'text-red-500' : 'hover:text-red-400'}`}>Catálogo</Link>
+            <Link to="/contacto" className={`font-medium transition-colors ${isActive('/contacto') ? 'text-red-500' : 'hover:text-red-400'}`}>Contacto</Link>
+            
             <button onClick={openCart} className="relative p-2 bg-slate-800 rounded-full hover:bg-red-600 transition-colors">
               <ShoppingBag className="w-5 h-5 text-white" />
               {cartCount > 0 && (
