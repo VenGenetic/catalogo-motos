@@ -14,9 +14,12 @@ export const optimizarImg = (url: any) => {
   // 2. Si ya viene optimizada, retornar tal cual
   if (url.includes('wsrv.nl')) return url;
 
-  // 3. Optimización segura
+  // 3. Optimización segura SIN RECORTES
   try {
-    return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=400&h=400&fit=cover&a=top&q=80&output=webp`;
+    // ⚠️ CAMBIO CRÍTICO: 
+    // Eliminamos 'h=400', 'fit=cover' y 'a=top' que causaban el recorte cuadrado.
+    // Solo limitamos el ancho (w=500) para que cargue rápido, pero dejamos la altura AUTOMÁTICA.
+    return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=500&q=80&output=webp`;
   } catch (e) {
     return 'https://via.placeholder.com/400x300?text=Error+Img';
   }
