@@ -4,7 +4,7 @@ import { Routes, Route, useNavigate, useSearchParams } from 'react-router-dom';
 // Estilos
 import './App.css';
 
-// Utilidades
+// Utilidades y Configuración
 import { detectarSeccion } from './utils/categories';
 import { limpiarTexto, optimizarImg } from './utils/helpers';
 import { APP_CONFIG } from './config/constants';
@@ -21,9 +21,10 @@ import { CartDrawer } from './components/CartDrawer';
 import { Footer } from './components/Footer';
 
 // Tipos
-import { Producto, DataFuente } from './types';
+import { Producto } from './types';
 
 export default function App() {
+  // --- HOOKS DE ROUTER ---
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -31,44 +32,65 @@ export default function App() {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Estado Global UI
+  // --- ESTADO GLOBAL UI ---
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
   
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
   });
   
-  // Filtros
+  // Estado de Filtros (Globales para persistencia)
   const [busqueda, setBusqueda] = useState('');
   const [filtroModelo, setFiltroModelo] = useState('');
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
 
-  // --- EFECTO: CARGAR DATOS DESDE PUBLIC ---
+  // --- EFECTO: CARGAR DATOS (ROBUSTO) ---
   useEffect(() => {
+    // Busca el archivo en la carpeta 'public'
     fetch('/data.json')
       .then(res => {
-        if (!res.ok) throw new Error('No se pudo cargar data.json');
+        if (!res.ok) {
+          throw new Error(`No se pudo cargar data.json (Status: ${res.status}). Verifica que el archivo esté en la carpeta public.`);
+        }
         return res.json();
       })
-      .then((data: DataFuente) => {
-        const raw = data.RAW_SCRAPED_DATA || [];
-        // Procesamos los datos una sola vez
-        const procesados = raw.map((p) => ({
-          ...p,
-          seccion: detectarSeccion(p),
-          // Pre-calculamos texto de búsqueda para rendimiento
-          textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${detectarSeccion(p)}`)
-        }));
+      .then((data: any) => {
+        // LÓGICA ROBUSTA: Detecta la estructura del JSON automáticamente
+        let raw: any[] = [];
+        
+        if (Array.isArray(data)) {
+          raw = data; // Es un array directo [ ... ]
+        } else if (Array.isArray(data.RAW_SCRAPED_DATA)) {
+          raw = data.RAW_SCRAPED_DATA; // Estructura scrap
+        } else if (Array.isArray(data.products)) {
+          raw = data.products; // Estructura alternativa
+        } else {
+          console.warn("Estructura de JSON desconocida, se usará array vacío.");
+        }
+
+        // Procesamiento de datos (Categorías y Búsqueda)
+        const procesados = raw.map((p) => {
+            const seccionCalc = detectarSeccion(p);
+            return {
+              ...p,
+              // Asegurar que precio sea número
+              precio: typeof p.precio === 'string' ? parseFloat(p.precio) : p.precio,
+              seccion: seccionCalc,
+              // Pre-calculamos texto de búsqueda para optimizar filtros
+              textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc}`)
+            };
+        });
+
         setProductos(procesados);
         setLoading(false);
       })
       .catch(err => {
-        console.error("Error cargando productos:", err);
+        console.error("Error crítico cargando productos:", err);
         setLoading(false);
       });
   }, []);
 
-  // --- LÓGICA ---
+  // --- LÓGICA DE FAVORITOS ---
   const toggleFav = (id: string) => {
     setFavs(prev => {
       const nuevos = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
@@ -77,18 +99,26 @@ export default function App() {
     });
   };
 
+  // --- FILTRADO OPTIMIZADO ---
   const productosFiltrados = useMemo(() => {
     const terminos = limpiarTexto(busqueda).split(' ').filter(t => t.length > 0);
     return productos.filter((p) => {
-      if (!p.precio) return false;
+      if (!p.precio) return false; // Ocultar productos sin precio
+      
+      // Filtro Texto
       if (terminos.length > 0 && !terminos.every((t) => p.textoBusqueda?.includes(t))) return false;
+      
+      // Filtro Sección
       if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
+      
+      // Filtro Modelo
       if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
+      
       return true;
     });
   }, [productos, busqueda, filtroSeccion, filtroModelo]);
 
-  // URL Mágica (Deep Linking)
+  // --- DEEP LINKING (URL Mágica) ---
   useEffect(() => {
     if (!loading && productos.length > 0) {
       const prodId = searchParams.get('prod');
@@ -101,6 +131,7 @@ export default function App() {
     }
   }, [searchParams, productos, loading]);
 
+  // Manejadores de Modal
   const handleProductClick = (p: Producto) => {
     setSelectedProduct(p);
     setSearchParams(prev => { prev.set('prod', p.id); return prev; });
@@ -111,12 +142,15 @@ export default function App() {
     setSearchParams(prev => { prev.delete('prod'); return prev; });
   };
 
+  // Navegación desde Home a Catálogo
   const handleSearchFromHome = (term: string) => {
     setBusqueda(term);
     navigate('/catalogo');
   };
 
-  // Pantalla de carga simple
+  // --- RENDERIZADO ---
+  
+  // Pantalla de Carga
   if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-white">
@@ -148,7 +182,7 @@ export default function App() {
                       onClick={() => handleSearchFromHome(p.nombre)}
                     >
                       <div className="overflow-hidden rounded-md mb-2 bg-gray-100 relative h-32">
-                          {/* CORRECCIÓN: Eliminado clipPath, añadido object-top */}
+                          {/* CORRECCIÓN: Se eliminó clipPath y se usa object-top para mejor encuadre */}
                           <img 
                             src={optimizarImg(p.imagen)} 
                             className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300" 
@@ -185,6 +219,7 @@ export default function App() {
         </Routes>
       </main>
 
+      {/* --- MODALES Y GLOBALES --- */}
       <ProductDetailModal product={selectedProduct} onClose={handleCloseModal} />
       <CartDrawer />
       <ScrollToTopButton />

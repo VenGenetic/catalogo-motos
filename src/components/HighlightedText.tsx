@@ -1,45 +1,28 @@
-import { useMemo } from 'react';
-import { limpiarTexto } from '../utils/helpers';
+// src/components/HighlightedText.tsx
 
 interface Props {
   text: string;
   highlight: string;
-  className?: string;
 }
 
-export const HighlightedText = ({ text, highlight, className = '' }: Props) => {
-  const parts = useMemo(() => {
-    if (!highlight.trim()) return [{ text, isMatch: false }];
+export const HighlightedText = ({ text, highlight }: Props) => {
+  if (!highlight.trim()) return <>{text}</>;
 
-    const normalizedText = limpiarTexto(text);
-    const normalizedHighlight = limpiarTexto(highlight);
-    
-    if (!normalizedText.includes(normalizedHighlight)) {
-      return [{ text, isMatch: false }];
-    }
-
-    const term = highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const parts = text.split(new RegExp(`(${term})`, 'gi'));
-    
-    return parts.map(part => ({
-      text: part,
-      isMatch: limpiarTexto(part) === normalizedHighlight
-    }));
-  }, [text, highlight]);
-
-  if (!highlight.trim()) return <span className={className}>{text}</span>;
+  // Dividir el texto basado en la búsqueda (insensible a mayúsculas)
+  const regex = new RegExp(`(${highlight})`, 'gi');
+  const parts = text.split(regex);
 
   return (
-    <span className={className}>
-      {parts.map((part, i) => (
-        part.isMatch ? (
-          <span key={i} className="bg-yellow-200 text-slate-900 font-extrabold px-0.5 rounded-sm">
-            {part.text}
-          </span>
+    <span>
+      {parts.map((part, i) => 
+        regex.test(part) ? (
+          <mark key={i} className="bg-yellow-200 text-slate-900 rounded-sm px-0.5 font-bold mx-0.5">
+            {part}
+          </mark>
         ) : (
-          <span key={i}>{part.text}</span>
+          part
         )
-      ))}
+      )}
     </span>
   );
 };
