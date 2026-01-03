@@ -1,5 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Routes, Route, useNavigate, useSearchParams } from 'react-router-dom';
+
+// Estilos
 import './App.css';
 
 // Utilidades
@@ -25,12 +27,13 @@ export default function App() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Estado de Productos
+  // --- ESTADO DE DATOS (Carga Asíncrona) ---
   const [productos, setProductos] = useState<Producto[]>([]);
-  const [loading, setLoading] = useState(true); // Estado de carga
+  const [loading, setLoading] = useState(true);
 
-  // Estado Global
+  // Estado Global UI
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
+  
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
   });
@@ -40,16 +43,20 @@ export default function App() {
   const [filtroModelo, setFiltroModelo] = useState('');
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
 
-  // --- 1. CARGA DE DATOS OPTIMIZADA (Fetch desde public) ---
+  // --- EFECTO: CARGAR DATOS DESDE PUBLIC ---
   useEffect(() => {
     fetch('/data.json')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('No se pudo cargar data.json');
+        return res.json();
+      })
       .then((data: DataFuente) => {
         const raw = data.RAW_SCRAPED_DATA || [];
-        // Procesamos los datos UNA sola vez al cargar
+        // Procesamos los datos una sola vez
         const procesados = raw.map((p) => ({
           ...p,
           seccion: detectarSeccion(p),
+          // Pre-calculamos texto de búsqueda para rendimiento
           textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${detectarSeccion(p)}`)
         }));
         setProductos(procesados);
@@ -61,7 +68,7 @@ export default function App() {
       });
   }, []);
 
-  // --- 2. LOGICA DE DATOS ---
+  // --- LÓGICA ---
   const toggleFav = (id: string) => {
     setFavs(prev => {
       const nuevos = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
@@ -74,17 +81,14 @@ export default function App() {
     const terminos = limpiarTexto(busqueda).split(' ').filter(t => t.length > 0);
     return productos.filter((p) => {
       if (!p.precio) return false;
-      // Filtro por texto (busca en nombre, codigo, categoria)
       if (terminos.length > 0 && !terminos.every((t) => p.textoBusqueda?.includes(t))) return false;
-      // Filtro por Sección
       if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
-      // Filtro por Modelo (Búsqueda simple en el nombre)
       if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
       return true;
     });
   }, [productos, busqueda, filtroSeccion, filtroModelo]);
 
-  // Deep Linking
+  // URL Mágica (Deep Linking)
   useEffect(() => {
     if (!loading && productos.length > 0) {
       const prodId = searchParams.get('prod');
@@ -112,8 +116,16 @@ export default function App() {
     navigate('/catalogo');
   };
 
+  // Pantalla de carga simple
   if (loading) {
-    return <div className="flex h-screen items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div></div>;
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-white">
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+          <p className="text-gray-500 font-medium animate-pulse">Cargando catálogo...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -122,6 +134,7 @@ export default function App() {
       
       <main className="fade-in flex-1">
         <Routes>
+          {/* RUTA: INICIO */}
           <Route path="/" element={
             <div>
               <HeroSection />
@@ -134,11 +147,11 @@ export default function App() {
                       className="border border-gray-100 rounded-lg p-3 bg-white shadow-sm cursor-pointer hover:shadow-md transition-shadow group" 
                       onClick={() => handleSearchFromHome(p.nombre)}
                     >
-                      <div className="overflow-hidden rounded-md mb-2 bg-gray-100 relative">
-                          {/* CORRECCIÓN: Eliminado clipPath agresivo, añadido object-top */}
+                      <div className="overflow-hidden rounded-md mb-2 bg-gray-100 relative h-32">
+                          {/* CORRECCIÓN: Eliminado clipPath, añadido object-top */}
                           <img 
                             src={optimizarImg(p.imagen)} 
-                            className="w-full h-32 object-cover object-top group-hover:scale-110 transition-transform duration-300" 
+                            className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300" 
                             alt={p.nombre}
                           />
                       </div>
@@ -151,6 +164,7 @@ export default function App() {
             </div>
           } />
           
+          {/* RUTA: CATÁLOGO */}
           <Route path="/catalogo" element={
             <CatalogView 
               productos={productosFiltrados} 
@@ -166,6 +180,7 @@ export default function App() {
             />
           } />
           
+          {/* RUTA: CONTACTO */}
           <Route path="/contacto" element={<ContactView />} />
         </Routes>
       </main>

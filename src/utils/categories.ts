@@ -1,6 +1,6 @@
 import { Producto } from '../types/index';
 
-// Configuración de palabras clave por categoría
+// Diccionario de reglas: Categoría -> Expresión Regular
 const CATEGORY_RULES: Record<string, RegExp> = {
   'Cables y Mandos': /cable|guaya|manigueta|acelerador|choke|ahogador|puño|manguera|funda/i,
   'Motor e Internos': /motor|pist|cilind|valv|cigue|biela|carter|empaque|cabeza.*fuerza|balancin|anillo|arbol.*leva|cabezote|cadenilla|tensor|guia.*cadenilla|bendix|balanceador|resorte|sello|carburador|inyector|tobera|admision|arranque|stator|estator/i,
@@ -14,15 +14,20 @@ const CATEGORY_RULES: Record<string, RegExp> = {
 };
 
 export const detectarSeccion = (p: Producto): string => {
+  // Protección contra datos vacíos
   const nombre = p.nombre || '';
   const categoria = p.categoria || '';
+  
+  // Unimos nombre y categoría para buscar palabras clave
   const texto = `${nombre} ${categoria}`.toLowerCase();
 
+  // Iteramos sobre las reglas
   for (const [seccion, regex] of Object.entries(CATEGORY_RULES)) {
     if (regex.test(texto)) {
       return seccion;
     }
   }
 
+  // Si nada coincide
   return 'Otros Repuestos';
 };

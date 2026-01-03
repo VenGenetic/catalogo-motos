@@ -21,9 +21,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<ItemCarrito[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   
-  // --- NUEVO: Estado para el Toast ---
+  // Estado para la notificación visual (Toast)
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
+  // Cargar carrito del localStorage
   useEffect(() => {
     const savedCart = localStorage.getItem('cart_backup');
     if (savedCart) {
@@ -31,24 +32,25 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  // Guardar carrito en localStorage
   useEffect(() => {
     localStorage.setItem('cart_backup', JSON.stringify(cart));
   }, [cart]);
 
-  // --- LÓGICA DEL TOAST ---
+  // Manejar tiempo de vida del Toast (2 segundos)
   useEffect(() => {
     if (toastMsg) {
-      const timer = setTimeout(() => setToastMsg(null), 2000); // Se oculta en 2 segundos
+      const timer = setTimeout(() => setToastMsg(null), 2000);
       return () => clearTimeout(timer);
     }
   }, [toastMsg]);
 
   const addToCart = (product: Producto) => {
-    // Feedback táctil
+    // 1. Feedback Táctil (Vibración en móviles)
     if (navigator.vibrate) navigator.vibrate(50);
     
-    // Feedback visual (Toast)
-    setToastMsg(`¡${product.nombre} agregado!`);
+    // 2. Feedback Visual (Toast)
+    setToastMsg(`Agregado: ${product.nombre.substring(0, 20)}...`);
 
     setCart(prev => {
       const existing = prev.find(i => i.id === product.id);
@@ -61,8 +63,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       }
       return [...prev, { ...product, cantidad: 1, cant: 1 }];
     });
-    // Opcional: No abrir el carrito automáticamente para no interrumpir la compra
-    // setIsOpen(true); 
+    
+    // Opcional: Si prefieres que NO se abra el carrito automáticamente, comenta la siguiente línea:
+    setIsOpen(true);
   };
 
   const updateQuantity = (id: string, delta: number) => {
@@ -93,12 +96,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       addToCart, updateQuantity, cartCount, cartTotal, sendOrderToWhatsapp
     }}>
       {children}
-      
-      {/* --- RENDERIZADO DEL TOAST --- */}
+
+      {/* RENDERIZADO DEL TOAST FLOTANTE */}
       {toastMsg && (
-        <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-[100] animate-fade-in-up">
-          <div className="bg-slate-900 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2">
-            <span className="text-green-400">✓</span>
+        <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-[100] animate-fade-in-up w-max max-w-[90%]">
+          <div className="bg-slate-900/95 backdrop-blur-sm text-white px-6 py-3 rounded-full shadow-xl flex items-center gap-3 border border-slate-700">
+            <div className="bg-green-500 rounded-full p-1">
+              <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
             <span className="text-sm font-bold">{toastMsg}</span>
           </div>
         </div>

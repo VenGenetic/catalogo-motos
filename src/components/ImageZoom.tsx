@@ -1,5 +1,3 @@
-// src/components/ImageZoom.tsx
-
 import { useState, useRef } from 'react';
 
 export const ImageZoom = ({ src, alt }: { src: string, alt: string }) => {
@@ -18,7 +16,7 @@ export const ImageZoom = ({ src, alt }: { src: string, alt: string }) => {
   return (
     <div 
       ref={imgRef}
-      className="w-full h-full overflow-hidden relative cursor-zoom-in touch-manipulation"
+      className="w-full h-full overflow-hidden relative cursor-zoom-in touch-manipulation bg-white"
       onMouseEnter={() => setIsActive(true)}
       onMouseLeave={() => setIsActive(false)}
       onMouseMove={handleMouseMove}
@@ -28,11 +26,11 @@ export const ImageZoom = ({ src, alt }: { src: string, alt: string }) => {
         src={src} 
         alt={alt}
         style={{ 
-          // CORRECCIÓN: Eliminamos clipPath: 'inset(0 0 25% 0)',
+          // CORRECCIÓN: Eliminado clipPath
           transformOrigin: `${position.x}% ${position.y}%`
         }}
-        // Añadimos object-top para priorizar la parte superior si la imagen no cuadra
-        className={`w-full h-full object-cover object-top transition-transform duration-200 ease-out ${isActive ? 'scale-[2.5]' : 'scale-100'}`}
+        // Se añade object-contain o object-top según prefieras para ver todo el producto
+        className={`w-full h-full object-contain md:object-cover md:object-top transition-transform duration-200 ease-out ${isActive ? 'scale-[2.5]' : 'scale-100'}`}
         loading="lazy"
       />
     </div>
