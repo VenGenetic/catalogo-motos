@@ -1,4 +1,3 @@
-// src/components/ImageZoom.tsx
 import { useState, useRef } from 'react';
 
 export const ImageZoom = ({ src, alt }: { src: string, alt: string }) => {
@@ -18,7 +17,7 @@ export const ImageZoom = ({ src, alt }: { src: string, alt: string }) => {
   // Manejo para Táctil (Móvil)
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!imgRef.current || !isActive) return;
-    const touch = e.touches[0]; // Primer dedo
+    const touch = e.touches[0];
     const { left, top, width, height } = imgRef.current.getBoundingClientRect();
     const x = ((touch.clientX - left) / width) * 100;
     const y = ((touch.clientY - top) / height) * 100;
@@ -26,13 +25,14 @@ export const ImageZoom = ({ src, alt }: { src: string, alt: string }) => {
   };
 
   return (
+    // Añadido 'bg-white' al contenedor
     <div 
       ref={imgRef}
-      className="w-full h-full overflow-hidden relative cursor-zoom-in touch-manipulation bg-white"
+      className="w-full h-full overflow-hidden relative cursor-zoom-in touch-manipulation bg-white flex items-center justify-center animate-fade-in"
       onMouseEnter={() => setIsActive(true)}
       onMouseLeave={() => setIsActive(false)}
       onMouseMove={handleMouseMove}
-      onTouchMove={handleTouchMove} // IMPORTANTE: Agregado para móvil
+      onTouchMove={handleTouchMove}
       onClick={() => setIsActive(!isActive)}
     >
       <img 
@@ -41,7 +41,10 @@ export const ImageZoom = ({ src, alt }: { src: string, alt: string }) => {
         style={{ 
           transformOrigin: `${position.x}% ${position.y}%`
         }}
-        className={`w-full h-full object-contain md:object-cover md:object-top transition-transform duration-200 ease-out ${isActive ? 'scale-[2.5]' : 'scale-100'}`}
+        // CLAVE AQUÍ: 
+        // 'object-contain' en móvil (por defecto) para ver toda la pieza sin cortes.
+        // 'md:object-cover' en PC para que llene el espacio.
+        className={`w-full h-full object-contain md:object-cover transition-transform duration-200 ease-out p-1 md:p-0 ${isActive ? 'scale-[2.5]' : 'scale-100'}`}
         loading="lazy"
         draggable={false}
       />

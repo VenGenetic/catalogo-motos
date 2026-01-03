@@ -56,7 +56,6 @@ export default function App() {
             const seccionCalc = detectarSeccion(p);
             return {
               ...p,
-              // Usamos la limpieza robusta de precios
               precio: limpiarPrecio(p.precio),
               seccion: seccionCalc,
               textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc}`)
@@ -144,10 +143,12 @@ export default function App() {
                       className="border border-gray-100 rounded-lg p-3 bg-white shadow-sm cursor-pointer hover:shadow-md transition-shadow group" 
                       onClick={() => handleSearchFromHome(p.nombre)}
                     >
-                      <div className="overflow-hidden rounded-md mb-2 bg-gray-100 relative h-32">
+                      {/* CONTENEDOR DE IMAGEN DESTACADA CORREGIDO */}
+                      <div className="overflow-hidden rounded-md mb-2 bg-white relative h-32 flex items-center justify-center border border-gray-50">
+                          {/* CORRECCIÓN: 'object-contain' y 'p-2' para ver la pieza entera */}
                           <img 
                             src={optimizarImg(p.imagen)} 
-                            className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300" 
+                            className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300" 
                             alt={p.nombre}
                           />
                       </div>
