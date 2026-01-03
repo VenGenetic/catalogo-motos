@@ -1,14 +1,14 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { 
   Home, ShoppingBag, Phone, Menu, X, Search, ChevronRight, 
-  Star, MapPin, Mail, Heart, Bike, Filter, ArrowUp, Plus, Minus, MessageCircle
+  Mail, Heart, Bike, Filter, Plus, Minus, MessageCircle
 } from 'lucide-react';
 
 import './App.css';
 import dataOrigen from './data.json'; 
 import { detectarSeccion } from './utils/categories';
 
-// --- CONFIGURACIÓN Y CONSTANTES (PRESERVADAS) ---
+// --- CONFIGURACIÓN Y CONSTANTES ---
 const CONFIG = {
   WHATSAPP: "593993279707",
   FACEBOOK: "https://www.facebook.com/profile.php?id=61583611217559",
