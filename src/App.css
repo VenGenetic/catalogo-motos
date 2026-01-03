@@ -1,35 +1,15 @@
-/* --- ANIMACIONES PERSONALIZADAS --- */
-
-/* Efecto de aparición suave al cambiar de pestaña o cargar la página */
+/* --- ANIMACIONES --- */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+.fade-in { animation: fadeIn 0.4s ease-out forwards; }
 
-.fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
-}
-
-/* Efecto deslizante suave para la entrada del Carrito desde la derecha */
 @keyframes slideInRight {
   from { transform: translateX(100%); opacity: 0; }
   to { transform: translateX(0); opacity: 1; }
 }
+.animate-slide-in-right { animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-.animate-slide-in-right {
-  animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* --- UTILIDADES --- */
-
-/* Ocultar barra de scroll en selectores horizontales (Categorías) */
-/* Chrome, Safari and Opera */
-.scrollbar-hide::-webkit-scrollbar {
-    display: none;
-}
-
-/* IE, Edge and Firefox */
-.scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }

@@ -1,7 +1,23 @@
-/* Importamos la fuente Inter para darle el toque moderno a la App */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fuente Inter para un look moderno */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-/* Opcional: Aseguramos que el scroll sea suave en toda la página */
+:root {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #f8fafc; /* Slate 50 */
+}
+
 html {
   scroll-behavior: smooth;
 }
