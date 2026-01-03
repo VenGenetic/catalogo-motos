@@ -3,7 +3,7 @@ import { ImageZoom } from './ImageZoom';
 import { optimizarImg } from '../utils/helpers';
 import { Producto } from '../types';
 import { useCart } from '../context/CartContext';
-import { APP_CONFIG } from '../config/constants'; // IMPORTANTE: Importamos la configuración
+import { APP_CONFIG } from '../config/constants';
 
 interface Props {
   product: Producto | null;
@@ -20,7 +20,6 @@ export const ProductDetailModal = ({ product, onClose }: Props) => {
     onClose();
   };
 
-  // --- NUEVA FUNCIÓN: Manejar consulta por WhatsApp ---
   const handleConsult = () => {
     const precio = Number(product.precio) || 0;
     const mensaje = `Hola LV PARTS, estoy interesado en este repuesto:
@@ -34,9 +33,7 @@ ${product.codigo_referencia ? `⚙️ Ref: ${product.codigo_referencia}` : ''}
     const url = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, '_blank');
   };
-  // ----------------------------------------------------
 
-  // Función de seguridad local para precio
   const precioSeguro = Number(product.precio) || 0;
 
   return (
@@ -50,15 +47,14 @@ ${product.codigo_referencia ? `⚙️ Ref: ${product.codigo_referencia}` : ''}
           <X className="w-6 h-6 text-slate-500" />
         </button>
 
-        {/* Sección Imagen */}
-        <div className="w-full md:w-1/2 h-[45vh] md:h-[500px] bg-gray-100 relative shrink-0">
+        {/* CORRECCIÓN: bg-white en lugar de bg-gray-100 para evitar el "espacio feo" */}
+        <div className="w-full md:w-1/2 h-[45vh] md:h-[500px] bg-white relative shrink-0">
           <ImageZoom src={optimizarImg(product.imagen)} alt={product.nombre} />
           <div className="absolute bottom-4 right-4 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-sm pointer-events-none">
             Toca para zoom
           </div>
         </div>
 
-        {/* Sección Info */}
         <div className="flex-1 flex flex-col h-full overflow-hidden">
           <div className="flex-1 overflow-y-auto p-5 md:p-8 pb-32 md:pb-8">
             <div className="flex justify-between items-start mb-2">
@@ -89,7 +85,6 @@ ${product.codigo_referencia ? `⚙️ Ref: ${product.codigo_referencia}` : ''}
               Repuesto original garantizado para tu motocicleta. Compatible con los modelos especificados.
             </p>
 
-            {/* BOTONES ESCRITORIO */}
             <div className="hidden md:flex gap-4 mt-8">
               <button 
                 onClick={handleAdd}
@@ -97,7 +92,6 @@ ${product.codigo_referencia ? `⚙️ Ref: ${product.codigo_referencia}` : ''}
               >
                 <Plus className="w-5 h-5" /> Agregar al Pedido
               </button>
-              {/* CORREGIDO: Ahora tiene onClick={handleConsult} */}
               <button 
                 onClick={handleConsult}
                 className="flex-1 border-2 border-slate-200 text-slate-700 py-4 rounded-xl font-bold hover:border-slate-900 transition-all active:scale-95"
@@ -107,9 +101,7 @@ ${product.codigo_referencia ? `⚙️ Ref: ${product.codigo_referencia}` : ''}
             </div>
           </div>
 
-          {/* BOTONES MÓVIL (Fixed Bottom) */}
           <div className="md:hidden fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 flex gap-3 z-30 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-            {/* CORREGIDO: Ahora tiene onClick={handleConsult} */}
             <button 
               onClick={handleConsult}
               className="flex-1 bg-white border border-gray-200 text-slate-700 py-3 rounded-xl font-bold flex items-center justify-center gap-2 text-sm active:bg-gray-50"
