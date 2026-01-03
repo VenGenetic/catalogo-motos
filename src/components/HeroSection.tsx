@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'; // Usamos Link en lugar de setActiveTab
+import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 
 export const HeroSection = () => (
@@ -7,8 +7,8 @@ export const HeroSection = () => (
       <img 
         src="https://images.unsplash.com/photo-1558981285-6f0c94958bb6?auto=format&fit=crop&q=80&w=1920" 
         alt="Moto Workshop" 
-        className="w-full h-full object-cover object-top opacity-40"
-        style={{ clipPath: 'inset(0 0 25% 0)' }}
+        className="w-full h-full object-cover object-center opacity-40"
+        // ELIMINADO: clipPath: 'inset(0 0 25% 0)' para que se vea toda la imagen
       />
       <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent"></div>
     </div>

@@ -19,6 +19,9 @@ export const ProductDetailModal = ({ product, onClose }: Props) => {
     onClose();
   };
 
+  // Función de seguridad local para precio
+  const precioSeguro = Number(product.precio) || 0;
+
   return (
     <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center bg-white md:bg-black/60 backdrop-blur-sm animate-fade-in">
       <button onClick={onClose} className="md:hidden absolute top-4 left-4 z-20 bg-white/80 p-2 rounded-full shadow-sm backdrop-blur-md">
@@ -41,7 +44,7 @@ export const ProductDetailModal = ({ product, onClose }: Props) => {
           <div className="flex-1 overflow-y-auto p-5 md:p-8 pb-32 md:pb-8">
             <div className="flex justify-between items-start mb-2">
               <span className="text-xs font-bold text-red-600 uppercase tracking-wider bg-red-50 px-2 py-1 rounded">
-                {product.seccion}
+                {product.seccion || 'Repuesto'}
               </span>
             </div>
 
@@ -56,7 +59,7 @@ export const ProductDetailModal = ({ product, onClose }: Props) => {
             <div className="my-6 border-t border-b border-gray-100 py-4 flex items-center justify-between">
               <div>
                 <span className="block text-sm text-gray-400 mb-1">Precio Unitario</span>
-                <span className="text-3xl font-extrabold text-slate-900">${Number(product.precio).toFixed(2)}</span>
+                <span className="text-3xl font-extrabold text-slate-900">${precioSeguro.toFixed(2)}</span>
               </div>
               <div className="bg-green-50 text-green-700 px-3 py-1 rounded-full text-xs font-bold">
                 Disponible
@@ -88,7 +91,7 @@ export const ProductDetailModal = ({ product, onClose }: Props) => {
               onClick={handleAdd}
               className="flex-[1.5] bg-red-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-red-200 text-sm"
             >
-              <ShoppingBag className="w-4 h-4" /> Agregar ${Number(product.precio).toFixed(2)}
+              <ShoppingBag className="w-4 h-4" /> Agregar ${precioSeguro.toFixed(2)}
             </button>
           </div>
         </div>
