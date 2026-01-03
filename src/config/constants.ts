@@ -2,18 +2,17 @@
 
 export const APP_CONFIG = {
   WHATSAPP_NUMBER: "593993279707",
-  ITEMS_PER_PAGE: 30, // Puedes ajustar esto según prefieras (en App.tsx original decía 20)
+  ITEMS_PER_PAGE: 30, 
   LOCAL_STORAGE_KEY_FAVS: 'loveDaytonaFavs',
 };
 
 export const ORDEN_SECCIONES = [
-  'Todos', // Agregamos 'Todos' al inicio para el filtro
+  'Todos', 
   'Motor e Internos', 'Transmisión', 'Sistema Eléctrico', 'Sistema de Frenos', 
   'Chasis y Suspensión', 'Carrocería y Plásticos', 'Ruedas y Ejes', 
   'Cables y Mandos', 'Filtros y Mantenimiento', 'Otros Repuestos'
 ];
 
-// Movemos la lista gigante aquí
 export const MODELOS = [
   "Tekken", "Tekken Evo", "Axxo Tracker", "DK Nativa", "Scrambler", "Scrambler Clasica", 
   "Scrambler Revolution", "Axxo Scrambler", "Scorpion", "Axxo TRX", "TH Mig25", "DK250-D Sport",
@@ -23,12 +22,11 @@ export const MODELOS = [
   "Ranger CFZ", "Honda CB190", "Honda CB1", "Force", "DK XTZ", "Axxo TR1", "DK200B", "SHM Armi150",
   "Axxo Viper", "Ranger 150BWSM", "Bultaco Storm", "Z1 Super", "Sukida Joy", "Agility", "Agility X",
   "Boneville", "Axxo Milano", "Bultaco Freedom", "Tanq", "Dynamic", "Dynamic Pro", "SHM Jedi",
-  "Feroce", "Predator", "Elvissa", "Viper", "CX7", "Comander", "Crucero", "Spitfire", "Delta", 
+  "Feroce", "Predator", "Eivissa", "Viper", "CX7", "Comander", "Crucero", "Spitfire", "Delta", 
   "Montana", "Workforce", "GTR", "Panther", "Cafe Racer", "Eagle", "Speed", "Everest",
   "Wing Evo", "Wing Evo 200", "Wing Evo 2", "Scooter Evo 2 180", "S1", "S1 Adv", "S1 Crossover 180"
 ];
 
-// Mantenemos los fijos si los usabas para algo específico, o puedes borrarlos si ya no los necesitas
 export const MODELOS_FIJOS = [
   "Tekken", "Crucero", "Spitfire", "Shark", "Adventure", 
   "GP1R", "Delta", "Wing Evo", "Montana", "Scorpion", "Workforce"
