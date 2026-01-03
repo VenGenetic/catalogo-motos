@@ -416,7 +416,7 @@ const CatalogView = ({
         )}
       </div>
 
-      {/* --- MODAL DE FILTRAR MOTO (CORREGIDO: CENTRADO) --- */}
+      {/* --- MODAL DE FILTRAR MOTO (CENTRADO) --- */}
       {modalModelos && (
         <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center backdrop-blur-sm p-4">
           <div className="bg-white w-full max-w-lg h-auto max-h-[85vh] rounded-2xl flex flex-col overflow-hidden shadow-2xl animate-fade-in">
