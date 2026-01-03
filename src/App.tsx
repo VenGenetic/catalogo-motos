@@ -75,7 +75,7 @@ const ImageZoom = ({ src, alt }: { src: string, alt: string }) => {
         src={src} 
         alt={alt}
         style={{ 
-          clipPath: 'inset(0 0 25% 0)', // Recorta 25% abajo
+          clipPath: 'inset(0 0 25% 0)',
           transformOrigin: `${position.x}% ${position.y}%`
         }}
         className={`w-full h-full object-cover object-top transition-transform duration-200 ease-out ${isActive ? 'scale-[2.5]' : 'scale-100'}`}
@@ -279,7 +279,6 @@ const Navbar = ({ activeTab, setActiveTab, cartCount, openCart }: any) => {
 const HeroSection = ({ setActiveTab }: any) => (
   <div className="relative bg-slate-900 overflow-hidden font-sans">
     <div className="absolute inset-0">
-      {/* Recorte en Hero */}
       <img 
         src="https://images.unsplash.com/photo-1558981285-6f0c94958bb6?auto=format&fit=crop&q=80&w=1920" 
         alt="Moto Workshop" 
@@ -379,7 +378,6 @@ const CatalogView = ({
                   </button>
 
                   <div className="h-40 md:h-56 overflow-hidden bg-gray-100 relative">
-                    {/* Recorte en Grid Catálogo + Zoom compensatorio */}
                     <img 
                       src={optimizarImg(product.imagen)} 
                       alt={product.nombre} 
@@ -418,9 +416,10 @@ const CatalogView = ({
         )}
       </div>
 
+      {/* --- MODAL DE FILTRAR MOTO (CORREGIDO: CENTRADO) --- */}
       {modalModelos && (
-        <div className="fixed inset-0 bg-black/50 z-[100] flex items-end md:items-center justify-center backdrop-blur-sm">
-          <div className="bg-white w-full md:max-w-2xl h-[80vh] md:h-auto md:max-h-[80vh] rounded-t-2xl md:rounded-2xl flex flex-col overflow-hidden animate-slide-up">
+        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center backdrop-blur-sm p-4">
+          <div className="bg-white w-full max-w-lg h-auto max-h-[85vh] rounded-2xl flex flex-col overflow-hidden shadow-2xl animate-fade-in">
             <div className="p-4 border-b flex justify-between items-center bg-gray-50">
               <h3 className="font-bold text-slate-900">Selecciona tu Moto</h3>
               <button onClick={() => setModalModelos(false)} className="p-2 bg-gray-200 rounded-full"><X className="w-5 h-5"/></button>
@@ -543,7 +542,6 @@ export default function App() {
               <div className="grid grid-cols-2 gap-3">
                 {productosProcesados.slice(0, 4).map((p:any) => (
                   <div key={p.id} className="border border-gray-100 rounded-lg p-3 bg-white shadow-sm cursor-pointer" onClick={() => {setActiveTab('catalog'); setBusqueda(p.nombre)}}>
-                    {/* Recorte en Destacados + Zoom compensatorio */}
                     <img 
                       src={optimizarImg(p.imagen)} 
                       className="w-full h-32 object-cover object-top rounded-md mb-2 bg-gray-100 scale-[1.15] origin-top" 
@@ -597,7 +595,6 @@ export default function App() {
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
               {carrito.map(item => (
                 <div key={item.id} className="flex gap-3 p-2 border rounded-lg">
-                  {/* Recorte en Carrito */}
                   <img 
                     src={optimizarImg(item.imagen)} 
                     className="w-16 h-16 object-cover object-top rounded bg-gray-100 scale-[1.15] origin-top" 
