@@ -1,15 +1,11 @@
 import { useState, useMemo, useEffect } from 'react';
-
-// Estilos y Datos
 import './App.css';
 import dataOrigen from './data.json'; 
 
-// Utilidades y Configuración
 import { detectarSeccion } from './utils/categories';
 import { limpiarTexto, optimizarImg } from './utils/helpers';
 import { APP_CONFIG } from './config/constants';
 
-// Componentes
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { CatalogView } from './components/CatalogView';
@@ -17,32 +13,25 @@ import { ContactView } from './components/ContactView';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { BottomNav } from './components/BottomNav';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
-import { CartDrawer } from './components/CartDrawer'; // Nuevo
-import { Footer } from './components/Footer'; // Nuevo
+import { CartDrawer } from './components/CartDrawer';
+import { Footer } from './components/Footer';
 
-// Tipos
 import { Producto } from './types';
 
 export default function App() {
-  // --- ESTADO ---
   const [activeTab, setActiveTab] = useState('home');
-  const [carrito, setCarrito] = useState<any[]>([]); // Se mantiene any[] temporalmente por compatibilidad
-  const [carritoAbierto, setCarritoAbierto] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
   
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
   });
   
-  // Estado de Filtros
   const [busqueda, setBusqueda] = useState('');
   const [filtroModelo, setFiltroModelo] = useState('');
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
 
-  // --- EFECTOS ---
   useEffect(() => { window.scrollTo(0, 0); }, [activeTab]);
 
-  // --- LÓGICA ---
   const toggleFav = (id: string) => {
     setFavs(prev => {
       const nuevos = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
@@ -51,18 +40,7 @@ export default function App() {
     });
   };
 
-  const addCarrito = (p: Producto) => {
-    if (navigator.vibrate) navigator.vibrate(50);
-    setCarrito(prev => {
-      const existe = prev.find(i => i.id === p.id);
-      return existe 
-        ? prev.map(i => i.id === p.id ? {...i, cant: (i.cant || 0) + 1} : i) 
-        : [...prev, {...p, cant: 1}];
-    });
-    setCarritoAbierto(true);
-  };
-
-  // Procesamiento de datos (Memoizado)
+  // Procesamiento de datos
   const productosProcesados = useMemo(() => {
     const raw = (dataOrigen as any).RAW_SCRAPED_DATA || (dataOrigen as any).products || [];
     return (Array.isArray(raw) ? raw : []).map((p: any) => ({
@@ -83,18 +61,10 @@ export default function App() {
     });
   }, [productosProcesados, busqueda, filtroSeccion, filtroModelo]);
 
-  const totalItemsCarrito = carrito.reduce((a, b) => a + (b.cant || b.cantidad || 0), 0);
-
-  // --- RENDER ---
   return (
     <div className="min-h-screen bg-white font-sans text-slate-800">
-      
-      <Navbar 
-        activeTab={activeTab} 
-        setActiveTab={setActiveTab} 
-        cartCount={totalItemsCarrito} 
-        openCart={() => setCarritoAbierto(true)} 
-      />
+      {/* Navbar ya no necesita props del carrito */}
+      <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
       
       <main className="fade-in min-h-[calc(100vh-64px)]">
         {activeTab === 'home' && (
@@ -111,9 +81,9 @@ export default function App() {
                   >
                     <div className="overflow-hidden rounded-md mb-2 bg-gray-100 relative">
                         <img 
-                        src={optimizarImg(p.imagen)} 
-                        className="w-full h-32 object-cover object-top scale-[1.15] origin-top group-hover:scale-[1.2] transition-transform duration-300" 
-                        style={{ clipPath: 'inset(0 0 25% 0)' }}
+                          src={optimizarImg(p.imagen)} 
+                          className="w-full h-32 object-cover object-top scale-[1.15] origin-top group-hover:scale-[1.2] transition-transform duration-300" 
+                          style={{ clipPath: 'inset(0 0 25% 0)' }}
                         />
                     </div>
                     <h3 className="text-xs font-bold line-clamp-2 mb-1 text-slate-800">{p.nombre}</h3>
@@ -143,29 +113,17 @@ export default function App() {
         {activeTab === 'contact' && <ContactView />}
       </main>
 
-      {/* --- MODALES Y OVERLAYS --- */}
-      
+      {/* Modales y Drawers - Ya no necesitan props de control de carrito */}
       <ProductDetailModal 
         product={selectedProduct} 
         onClose={() => setSelectedProduct(null)} 
-        onAdd={addCarrito} 
       />
 
-      <CartDrawer 
-        isOpen={carritoAbierto} 
-        onClose={() => setCarritoAbierto(false)} 
-        cart={carrito} 
-        setCart={setCarrito} 
-      />
+      <CartDrawer />
 
       <ScrollToTopButton />
 
-      <BottomNav 
-        activeTab={activeTab} 
-        setActiveTab={setActiveTab} 
-        cartCount={totalItemsCarrito} 
-        openCart={() => setCarritoAbierto(true)} 
-      />
+      <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <Footer />
     </div>

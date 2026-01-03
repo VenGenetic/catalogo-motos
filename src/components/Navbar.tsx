@@ -1,13 +1,15 @@
 import { ShoppingBag } from 'lucide-react';
+import { useCart } from '../context/CartContext'; // Importar hook
 
 interface Props {
   activeTab: string;
   setActiveTab: (tab: string) => void;
-  cartCount: number;
-  openCart: () => void;
+  // Eliminamos cartCount y openCart de las props
 }
 
-export const Navbar = ({ activeTab, setActiveTab, cartCount, openCart }: Props) => {
+export const Navbar = ({ activeTab, setActiveTab }: Props) => {
+  const { cartCount, openCart } = useCart(); // Usamos el hook
+
   return (
     <nav className="bg-slate-900 text-white shadow-lg sticky top-0 z-50 font-sans">
       <div className="max-w-7xl mx-auto px-4">

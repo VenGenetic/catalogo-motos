@@ -1,13 +1,14 @@
 import { Home, Grid, ShoppingBag, Phone } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 interface Props {
   activeTab: string;
   setActiveTab: (tab: string) => void;
-  cartCount: number;
-  openCart: () => void;
 }
 
-export const BottomNav = ({ activeTab, setActiveTab, cartCount, openCart }: Props) => {
+export const BottomNav = ({ activeTab, setActiveTab }: Props) => {
+  const { cartCount, openCart } = useCart();
+
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 py-2 px-6 flex justify-between items-center z-40 pb-safe">
       <button 
