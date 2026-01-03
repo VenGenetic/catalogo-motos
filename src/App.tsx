@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { 
-  Home, ShoppingBag, Phone, Menu, X, Search, ChevronRight, 
-  Mail, Heart, Bike, Filter, Plus, Minus, MessageCircle, Grid
+  Home, ShoppingBag, Phone, X, Search, ChevronRight, 
+  Heart, Bike, Plus, Minus, MessageCircle, Grid
 } from 'lucide-react';
 
 import './App.css';
@@ -105,11 +105,26 @@ const Navbar = ({ activeTab, setActiveTab, cartCount, openCart }: any) => {
             <span className="font-bold text-lg md:text-xl tracking-wider">MOTO<span className="text-red-500">PARTS</span></span>
           </div>
 
-          {/* Desktop Menu */}
+          {/* Desktop Menu - AHORA USA activeTab CORRECTAMENTE */}
           <div className="hidden md:flex space-x-8 items-center">
-            <button onClick={() => setActiveTab('home')} className="hover:text-red-500 font-medium">Inicio</button>
-            <button onClick={() => setActiveTab('catalog')} className="hover:text-red-500 font-medium">Catálogo</button>
-            <button onClick={() => setActiveTab('contact')} className="hover:text-red-500 font-medium">Contacto</button>
+            <button 
+              onClick={() => setActiveTab('home')} 
+              className={`font-medium transition-colors ${activeTab === 'home' ? 'text-red-500' : 'hover:text-red-400'}`}
+            >
+              Inicio
+            </button>
+            <button 
+              onClick={() => setActiveTab('catalog')} 
+              className={`font-medium transition-colors ${activeTab === 'catalog' ? 'text-red-500' : 'hover:text-red-400'}`}
+            >
+              Catálogo
+            </button>
+            <button 
+              onClick={() => setActiveTab('contact')} 
+              className={`font-medium transition-colors ${activeTab === 'contact' ? 'text-red-500' : 'hover:text-red-400'}`}
+            >
+              Contacto
+            </button>
             
             <button onClick={openCart} className="relative p-2 bg-slate-800 rounded-full hover:bg-red-600 transition-colors">
               <ShoppingBag className="w-5 h-5 text-white" />
@@ -121,7 +136,6 @@ const Navbar = ({ activeTab, setActiveTab, cartCount, openCart }: any) => {
             </button>
           </div>
 
-          {/* En móvil solo mostramos el botón de carrito extra (opcional) o nada si usamos bottom nav */}
           <div className="md:hidden">
              {/* Espacio reservado para acciones futuras */}
           </div>
@@ -183,7 +197,7 @@ const CatalogView = ({
     <div className="min-h-screen bg-gray-50 pb-24 pt-4 px-3 md:px-8 font-sans">
       <div className="max-w-7xl mx-auto">
         
-        {/* Controles Principales (Sticky en móvil para fácil acceso) */}
+        {/* Controles Principales */}
         <div className="sticky top-[64px] z-30 bg-gray-50/95 backdrop-blur-sm pb-4 pt-2">
           <div className="flex gap-2 mb-3">
             <button 
