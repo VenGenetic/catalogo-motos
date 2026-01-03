@@ -1,3 +1,4 @@
+// src/context/CartContext.tsx
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Producto, ItemCarrito } from '../types';
 import { APP_CONFIG } from '../config/constants';
@@ -23,7 +24,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   // --- Estado para el Toast (Notificación) ---
   const [toastMsg, setToastMsg] = useState<string | null>(null);
 
-  // Cargar carrito guardado
+  // Cargar carrito guardado del localStorage
   useEffect(() => {
     const savedCart = localStorage.getItem('cart_backup');
     if (savedCart) {
@@ -36,7 +37,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('cart_backup', JSON.stringify(cart));
   }, [cart]);
 
-  // Temporizador para ocultar el Toast
+  // Temporizador para ocultar el Toast automáticamente
   useEffect(() => {
     if (toastMsg) {
       const timer = setTimeout(() => setToastMsg(null), 2500);
@@ -45,13 +46,18 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   }, [toastMsg]);
 
   const addToCart = (product: Producto) => {
-    // Feedback táctil (si el dispositivo lo soporta)
+    // BLINDAJE: Verificamos que 'navigator' y 'vibrate' existan antes de llamar
+    // Esto evita que la app se rompa en algunos navegadores móviles
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
-      navigator.vibrate(50);
+      try { navigator.vibrate(50); } catch (e) { /* Ignorar error de vibración */ }
     }
     
-    // Feedback visual
-    setToastMsg(`Agregado: ${product.nombre.substring(0, 25)}${product.nombre.length > 25 ? '...' : ''}`);
+    // Feedback visual (Toast)
+    const nombreCorto = product.nombre.length > 25 
+      ? product.nombre.substring(0, 25) + '...' 
+      : product.nombre;
+      
+    setToastMsg(`Agregado: ${nombreCorto}`);
 
     setCart(prev => {
       const existing = prev.find(i => i.id === product.id);
@@ -65,7 +71,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return [...prev, { ...product, cantidad: 1, cant: 1 }];
     });
     
-    // Opcional: No abrimos el drawer automáticamente para no interrumpir
+    // Opcional: Si prefieres abrir el carrito automáticamente, descomenta la siguiente línea:
     // setIsOpen(true);
   };
 
