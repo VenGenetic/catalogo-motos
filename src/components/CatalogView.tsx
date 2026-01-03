@@ -33,15 +33,11 @@ export const CatalogView = ({
   
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Scroll inteligente: Usa window.scrollTo para asegurar que se ve desde el inicio
+  // Scroll mejorado: Resetea al tope al cambiar filtros
   useEffect(() => { 
     setPagina(1); 
     if (busqueda || filtroModelo || filtroSeccion !== 'Todos') {
-      // Opción A: Scroll al tope de la ventana (Más natural)
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      
-      // Opción B (Si prefieres mantener el foco en el contenedor):
-      // containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, [busqueda, filtroModelo, filtroSeccion]);
 
@@ -50,7 +46,6 @@ export const CatalogView = ({
   }, [productos, pagina]);
 
   return (
-    // Agregamos 'scroll-mt-20' para que si se usa scrollIntoView, respete el header
     <div ref={containerRef} className="min-h-screen bg-gray-50 pb-24 pt-2 md:pt-4 px-0 md:px-8 font-sans scroll-mt-20">
       <div className="max-w-7xl mx-auto">
         
@@ -93,7 +88,7 @@ export const CatalogView = ({
           </div>
         </div>
 
-        {/* LISTADO */}
+        {/* LISTADO DE PRODUCTOS */}
         {visibles.length > 0 ? (
           <>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 md:gap-6">
@@ -156,7 +151,7 @@ export const CatalogView = ({
         )}
       </div>
 
-      {/* MODAL MOTO (Sin cambios lógicos, solo visuales si es necesario) */}
+      {/* MODAL MOTO */}
       {modalModelos && (
         <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center backdrop-blur-sm p-4">
           <div className="bg-white w-full max-w-lg h-auto max-h-[85vh] rounded-2xl flex flex-col overflow-hidden shadow-2xl animate-fade-in">

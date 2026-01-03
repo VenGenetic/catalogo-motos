@@ -1,19 +1,17 @@
 // src/utils/helpers.ts
 
 export const limpiarTexto = (texto: string) => {
-  // Si el texto no existe, devolvemos cadena vacía para evitar errores
   if (!texto) return '';
   return String(texto).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 };
 
 export const optimizarImg = (url: any) => {
-  // 1. BLINDAJE: Si url no es texto, es nulo, o es un número, devolvemos placeholder.
-  // EL CÓDIGO ANTERIOR FALLABA AQUÍ PORQUE NO VERIFICABA 'typeof url'
+  // 1. BLINDAJE TOTAL: Si no es string, devolvemos placeholder para evitar crash
   if (!url || typeof url !== 'string' || url.trim() === '' || url === 'No imagen') {
     return 'https://via.placeholder.com/400x300?text=Sin+Imagen';
   }
 
-  // 2. Si ya viene de wsrv, la dejamos pasar
+  // 2. Si ya viene optimizada, retornar tal cual
   if (url.includes('wsrv.nl')) return url;
 
   // 3. Optimización segura

@@ -1,4 +1,3 @@
-// src/App.tsx
 import { useState, useMemo, useEffect } from 'react';
 import { Routes, Route, useNavigate, useSearchParams } from 'react-router-dom';
 import './App.css';
@@ -16,11 +15,11 @@ import { CartDrawer } from './components/CartDrawer';
 import { Footer } from './components/Footer';
 import { Producto } from './types';
 
-// Función auxiliar para asegurar precios numéricos correctos
+// Función para asegurar que el precio sea un número válido
 const limpiarPrecio = (valor: any): number => {
   if (typeof valor === 'number') return valor;
   if (!valor) return 0;
-  // Elimina todo lo que no sea número o punto (ej: $1,200.00 -> 1200.00)
+  // Elimina todo excepto números y puntos
   const limpio = String(valor).replace(/[^0-9.]/g, '');
   const numero = parseFloat(limpio);
   return isNaN(numero) ? 0 : numero;
@@ -44,7 +43,7 @@ export default function App() {
   useEffect(() => {
     fetch('/data.json')
       .then(res => {
-        if (!res.ok) throw new Error('Error cargando data.json');
+        if (!res.ok) throw new Error('Error al cargar data.json');
         return res.json();
       })
       .then((data: any) => {
@@ -57,7 +56,7 @@ export default function App() {
             const seccionCalc = detectarSeccion(p);
             return {
               ...p,
-              // CORRECCIÓN: Usamos la función robusta para el precio
+              // Usamos la limpieza robusta de precios
               precio: limpiarPrecio(p.precio),
               seccion: seccionCalc,
               textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc}`)
