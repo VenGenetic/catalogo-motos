@@ -274,11 +274,11 @@ const HeroSection = ({ setActiveTab }: any) => (
 );
 
 const CatalogView = ({ 
-  productos, onAdd, isFav, toggleFav, 
+  productos, isFav, toggleFav, // <-- Se eliminó 'onAdd' de aquí para arreglar el error
   filtroModelo, setFiltroModelo, 
   busqueda, setBusqueda,
   filtroSeccion, setFiltroSeccion,
-  onProductClick // Nueva prop para abrir el modal
+  onProductClick
 }: any) => {
   const [pagina, setPagina] = useState(1);
   const [modalModelos, setModalModelos] = useState(false);
@@ -291,11 +291,9 @@ const CatalogView = ({
   }, [productos, pagina]);
 
   return (
-    // MEJORA: px-0 en móvil para Edge-to-Edge
     <div className="min-h-screen bg-gray-50 pb-24 pt-2 md:pt-4 px-0 md:px-8 font-sans">
       <div className="max-w-7xl mx-auto">
         
-        {/* Filtros: Padding lateral para que no se peguen a los bordes */}
         <div className="sticky top-[64px] z-30 bg-gray-50/95 backdrop-blur-sm pb-3 pt-2 px-3 md:px-0">
           <div className="flex gap-2 mb-3">
             <button 
@@ -334,7 +332,6 @@ const CatalogView = ({
           </div>
         </div>
 
-        {/* Grid Edge-to-Edge: gap-1 para look moderno */}
         {visibles.length > 0 ? (
           <>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 md:gap-6">
@@ -522,7 +519,6 @@ export default function App() {
         {activeTab === 'catalog' && (
           <CatalogView 
             productos={productosFiltrados} 
-            onAdd={addCarrito} 
             isFav={(id:string) => favs.includes(id)} 
             toggleFav={toggleFav}
             filtroModelo={filtroModelo} 
