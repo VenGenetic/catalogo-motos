@@ -1,3 +1,5 @@
+// src/components/ImageZoom.tsx
+
 import { useState, useRef } from 'react';
 
 export const ImageZoom = ({ src, alt }: { src: string, alt: string }) => {
@@ -26,9 +28,10 @@ export const ImageZoom = ({ src, alt }: { src: string, alt: string }) => {
         src={src} 
         alt={alt}
         style={{ 
-          clipPath: 'inset(0 0 25% 0)',
+          // CORRECCIÓN: Eliminamos clipPath: 'inset(0 0 25% 0)',
           transformOrigin: `${position.x}% ${position.y}%`
         }}
+        // Añadimos object-top para priorizar la parte superior si la imagen no cuadra
         className={`w-full h-full object-cover object-top transition-transform duration-200 ease-out ${isActive ? 'scale-[2.5]' : 'scale-100'}`}
         loading="lazy"
       />

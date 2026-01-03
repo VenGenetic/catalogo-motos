@@ -8,15 +8,16 @@ export interface Producto {
   categoria: string;
   imagen: string;
   stock: boolean;
-  seccion?: string; // Propiedad opcional para el agrupamiento
+  seccion?: string;
+  textoBusqueda?: string; // Para optimizar búsquedas
 }
 
 export interface ItemCarrito extends Producto {
-  cantidad: number; // En el carrito necesitamos saber la cantidad
-  cant?: number;    // Soporte legacy por si usas 'cant' en vez de 'cantidad'
+  cantidad: number;
+  cant?: number;
 }
 
-export interface ToastMessage {
-  id: number;
-  message: string;
+// Estructura del JSON completo
+export interface DataFuente {
+  RAW_SCRAPED_DATA: Producto[];
 }

@@ -92,9 +92,9 @@ export const CatalogView = ({
         {visibles.length > 0 ? (
           <>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 md:gap-6">
-              {visibles.map((product: any) => (
+              {visibles.map((product: Producto) => (
                 <div 
-                  key={product.id || Math.random()} 
+                  key={product.id} 
                   className="bg-white md:rounded-lg shadow-sm md:border border-gray-100 flex flex-col h-full overflow-hidden relative active:opacity-90 transition-opacity"
                   onClick={() => onProductClick(product)}
                 >
@@ -105,16 +105,18 @@ export const CatalogView = ({
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
-                  {/* IMAGEN OPTIMIZADA */}
+                  {/* IMAGEN OPTIMIZADA - CORREGIDA (Sin recorte) */}
                   <LazyImage 
                     src={optimizarImg(product.imagen)} 
                     alt={product.nombre}
                     className="h-40 md:h-56 bg-gray-100"
-                    style={{ clipPath: 'inset(0 0 25% 0)' }}
+                    // Nota: Se eliminó style={{ clipPath... }} para mostrar la imagen completa
                   />
 
                   <div className="p-3 flex flex-col flex-grow relative z-10 bg-white">
-                    <span className="text-[10px] font-bold text-red-600 uppercase tracking-wide mb-1 line-clamp-1">{product.seccion}</span>
+                    <span className="text-[10px] font-bold text-red-600 uppercase tracking-wide mb-1 line-clamp-1">
+                      {product.seccion}
+                    </span>
                     
                     {/* TÍTULO CON RESALTADO */}
                     <h3 className="text-xs md:text-sm font-bold text-slate-800 mb-1 line-clamp-2 leading-tight min-h-[2.5em]">
@@ -125,7 +127,9 @@ export const CatalogView = ({
                     </h3>
 
                     <div className="mt-auto pt-2">
-                       <span className="text-sm md:text-lg font-extrabold text-slate-900 block">${Number(product.precio).toFixed(2)}</span>
+                       <span className="text-sm md:text-lg font-extrabold text-slate-900 block">
+                         ${Number(product.precio).toFixed(2)}
+                       </span>
                     </div>
                   </div>
                 </div>
@@ -145,7 +149,12 @@ export const CatalogView = ({
           <div className="text-center py-20 px-4">
             <Search className="mx-auto h-12 w-12 text-gray-300 mb-4" />
             <h3 className="text-gray-900 font-medium">Sin resultados</h3>
-            <button onClick={() => { setBusqueda(''); setFiltroModelo(''); setFiltroSeccion('Todos'); }} className="mt-2 text-red-600 font-bold text-sm">Limpiar filtros</button>
+            <button 
+              onClick={() => { setBusqueda(''); setFiltroModelo(''); setFiltroSeccion('Todos'); }} 
+              className="mt-2 text-red-600 font-bold text-sm"
+            >
+              Limpiar filtros
+            </button>
           </div>
         )}
       </div>
@@ -156,7 +165,9 @@ export const CatalogView = ({
           <div className="bg-white w-full max-w-lg h-auto max-h-[85vh] rounded-2xl flex flex-col overflow-hidden shadow-2xl animate-fade-in">
             <div className="p-4 border-b flex justify-between items-center bg-gray-50">
               <h3 className="font-bold text-slate-900">Selecciona tu Moto</h3>
-              <button onClick={() => setModalModelos(false)} className="p-2 bg-gray-200 rounded-full"><X className="w-5 h-5"/></button>
+              <button onClick={() => setModalModelos(false)} className="p-2 bg-gray-200 rounded-full">
+                <X className="w-5 h-5"/>
+              </button>
             </div>
             <div className="p-3 bg-white border-b">
               <input 
@@ -168,12 +179,21 @@ export const CatalogView = ({
               />
             </div>
             <div className="overflow-y-auto p-4 grid grid-cols-2 gap-2 content-start">
-              <button onClick={() => { setFiltroModelo(''); setModalModelos(false); }} className="p-3 rounded-xl border border-dashed border-red-300 bg-red-50 text-red-600 font-bold text-sm">TODAS</button>
+              <button 
+                onClick={() => { setFiltroModelo(''); setModalModelos(false); }} 
+                className="p-3 rounded-xl border border-dashed border-red-300 bg-red-50 text-red-600 font-bold text-sm"
+              >
+                TODAS
+              </button>
               {MODELOS.filter(m => m.toLowerCase().includes(busquedaModelo.toLowerCase())).map(m => (
                 <button
                   key={m}
                   onClick={() => { setFiltroModelo(m); setModalModelos(false); }}
-                  className={`p-3 rounded-xl text-left text-xs font-bold border ${filtroModelo === m ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-gray-600 border-gray-100'}`}
+                  className={`p-3 rounded-xl text-left text-xs font-bold border ${
+                    filtroModelo === m 
+                      ? 'bg-slate-900 text-white border-slate-900' 
+                      : 'bg-white text-gray-600 border-gray-100'
+                  }`}
                 >
                   {m}
                 </button>

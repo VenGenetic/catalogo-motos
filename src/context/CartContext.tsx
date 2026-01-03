@@ -20,8 +20,10 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<ItemCarrito[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  
+  // --- NUEVO: Estado para el Toast ---
+  const [toastMsg, setToastMsg] = useState<string | null>(null);
 
-  // Efecto opcional: Guardar carrito en LocalStorage para no perderlo al recargar
   useEffect(() => {
     const savedCart = localStorage.getItem('cart_backup');
     if (savedCart) {
@@ -33,20 +35,34 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('cart_backup', JSON.stringify(cart));
   }, [cart]);
 
+  // --- LÓGICA DEL TOAST ---
+  useEffect(() => {
+    if (toastMsg) {
+      const timer = setTimeout(() => setToastMsg(null), 2000); // Se oculta en 2 segundos
+      return () => clearTimeout(timer);
+    }
+  }, [toastMsg]);
+
   const addToCart = (product: Producto) => {
+    // Feedback táctil
     if (navigator.vibrate) navigator.vibrate(50);
+    
+    // Feedback visual (Toast)
+    setToastMsg(`¡${product.nombre} agregado!`);
+
     setCart(prev => {
       const existing = prev.find(i => i.id === product.id);
       if (existing) {
         return prev.map(i => 
           i.id === product.id 
-            ? { ...i, cantidad: (i.cantidad || i.cant || 0) + 1, cant: (i.cantidad || i.cant || 0) + 1 } 
+            ? { ...i, cantidad: (i.cantidad || i.cant || 0) + 1 } 
             : i
         );
       }
       return [...prev, { ...product, cantidad: 1, cant: 1 }];
     });
-    setIsOpen(true);
+    // Opcional: No abrir el carrito automáticamente para no interrumpir la compra
+    // setIsOpen(true); 
   };
 
   const updateQuantity = (id: string, delta: number) => {
@@ -62,7 +78,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const cartCount = cart.reduce((acc, item) => acc + (item.cantidad || item.cant || 0), 0);
-  
   const cartTotal = cart.reduce((acc, item) => acc + item.precio * (item.cantidad || item.cant || 0), 0);
 
   const sendOrderToWhatsapp = () => {
@@ -74,17 +89,20 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <CartContext.Provider value={{
-      cart,
-      isOpen,
-      openCart: () => setIsOpen(true),
-      closeCart: () => setIsOpen(false),
-      addToCart,
-      updateQuantity,
-      cartCount,
-      cartTotal,
-      sendOrderToWhatsapp
+      cart, isOpen, openCart: () => setIsOpen(true), closeCart: () => setIsOpen(false),
+      addToCart, updateQuantity, cartCount, cartTotal, sendOrderToWhatsapp
     }}>
       {children}
+      
+      {/* --- RENDERIZADO DEL TOAST --- */}
+      {toastMsg && (
+        <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-[100] animate-fade-in-up">
+          <div className="bg-slate-900 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2">
+            <span className="text-green-400">✓</span>
+            <span className="text-sm font-bold">{toastMsg}</span>
+          </div>
+        </div>
+      )}
     </CartContext.Provider>
   );
 };
