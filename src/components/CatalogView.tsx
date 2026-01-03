@@ -3,6 +3,7 @@ import { Search, Bike, Heart, X } from 'lucide-react';
 import { optimizarImg } from '../utils/helpers';
 import { APP_CONFIG, ORDEN_SECCIONES, MODELOS } from '../config/constants';
 import { Producto } from '../types';
+import { LazyImage } from './LazyImage';
 
 interface Props {
   productos: Producto[];
@@ -95,15 +96,13 @@ export const CatalogView = ({
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
-                  <div className="h-40 md:h-56 overflow-hidden bg-gray-100 relative">
-                    <img 
-                      src={optimizarImg(product.imagen)} 
-                      alt={product.nombre} 
-                      className="w-full h-full object-cover object-top scale-[1.15] origin-top" 
-                      style={{ clipPath: 'inset(0 0 25% 0)' }}
-                      loading="lazy" 
-                    />
-                  </div>
+                  {/* IMAGEN OPTIMIZADA CON LAZY LOAD */}
+                  <LazyImage 
+                    src={optimizarImg(product.imagen)} 
+                    alt={product.nombre}
+                    className="h-40 md:h-56 bg-gray-100"
+                    style={{ clipPath: 'inset(0 0 25% 0)' }}
+                  />
 
                   <div className="p-3 flex flex-col flex-grow relative z-10 bg-white">
                     <span className="text-[10px] font-bold text-red-600 uppercase tracking-wide mb-1 line-clamp-1">{product.seccion}</span>

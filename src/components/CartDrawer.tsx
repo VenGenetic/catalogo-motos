@@ -1,51 +1,91 @@
 import { X, Minus, Plus, MessageCircle } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
-import { useCart } from '../context/CartContext'; // Hook
+import { LazyImage } from './LazyImage';
 
 export const CartDrawer = () => {
-  // Obtenemos todo del contexto
-  const { isOpen, closeCart, cart, updateQuantity, cartTotal, sendOrderToWhatsapp } = useCart();
+  // Obtenemos el estado y funciones directamente del Contexto
+  const { 
+    isOpen, 
+    closeCart, 
+    cart, 
+    updateQuantity, 
+    cartTotal, 
+    sendOrderToWhatsapp 
+  } = useCart();
 
+  // Si el carrito está cerrado, no renderizamos nada
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex justify-end">
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={closeCart}></div>
+      {/* Overlay Oscuro (Cierra al hacer click fuera) */}
+      <div 
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" 
+        onClick={closeCart}
+      />
+
+      {/* Panel Lateral (Drawer) */}
       <div className="relative w-full md:max-w-md bg-white h-full shadow-2xl flex flex-col animate-slide-in-right">
         
+        {/* Encabezado */}
         <div className="p-4 border-b flex justify-between items-center bg-gray-50">
-          <h2 className="text-lg font-bold">Tu Pedido</h2>
-          <button onClick={closeCart}><X className="w-6 h-6 text-gray-500 hover:text-red-500"/></button>
+          <h2 className="text-lg font-bold text-slate-900">Tu Pedido</h2>
+          <button 
+            onClick={closeCart}
+            className="p-2 hover:bg-gray-200 rounded-full transition-colors"
+          >
+            <X className="w-6 h-6 text-gray-500 hover:text-red-600"/>
+          </button>
         </div>
 
+        {/* Lista de Productos */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
           {cart.length === 0 ? (
-            <div className="text-center text-gray-400 py-10">Tu carrito está vacío</div>
+            <div className="flex flex-col items-center justify-center h-full text-gray-400 gap-2">
+              <MessageCircle className="w-12 h-12 opacity-20" />
+              <p>Tu carrito está vacío</p>
+            </div>
           ) : (
             cart.map(item => (
-              <div key={item.id} className="flex gap-3 p-2 border border-gray-100 rounded-lg bg-white">
-                <img 
+              <div key={item.id} className="flex gap-3 p-2 border border-gray-100 rounded-lg bg-white shadow-sm">
+                
+                {/* Imagen Optimizada */}
+                <LazyImage 
                   src={optimizarImg(item.imagen)} 
                   alt={item.nombre}
-                  className="w-16 h-16 object-cover object-top rounded bg-gray-100" 
+                  className="w-16 h-16 rounded bg-gray-100 shrink-0" 
                 />
-                <div className="flex-1">
-                  <h4 className="text-xs font-bold line-clamp-2 text-slate-800">{item.nombre}</h4>
-                  <p className="text-red-600 font-bold text-sm">${(item.precio * (item.cantidad || item.cant || 0)).toFixed(2)}</p>
+
+                {/* Info del Producto */}
+                <div className="flex-1 flex flex-col justify-between">
+                  <div>
+                    <h4 className="text-xs font-bold line-clamp-2 text-slate-800 leading-tight">
+                      {item.nombre}
+                    </h4>
+                    <p className="text-red-600 font-bold text-sm mt-1">
+                      ${(item.precio * (item.cantidad || item.cant || 0)).toFixed(2)}
+                    </p>
+                  </div>
                   
-                  <div className="flex items-center gap-3 mt-2">
+                  {/* Controles de Cantidad */}
+                  <div className="flex items-center gap-3 mt-2 self-start">
                     <button 
                       onClick={() => updateQuantity(item.id, -1)} 
-                      className="w-6 h-6 bg-gray-100 hover:bg-gray-200 rounded flex items-center justify-center transition-colors"
+                      className="w-7 h-7 bg-gray-100 hover:bg-gray-200 rounded-lg flex items-center justify-center transition-colors text-slate-600 active:scale-95"
                     >
-                      <Minus size={12}/>
+                      <Minus size={14}/>
                     </button>
-                    <span className="text-xs font-bold w-4 text-center">{item.cantidad || item.cant}</span>
+                    
+                    <span className="text-sm font-bold w-4 text-center text-slate-900">
+                      {item.cantidad || item.cant}
+                    </span>
+                    
                     <button 
                       onClick={() => updateQuantity(item.id, 1)} 
-                      className="w-6 h-6 bg-gray-100 hover:bg-gray-200 rounded flex items-center justify-center transition-colors"
+                      className="w-7 h-7 bg-slate-900 hover:bg-slate-800 text-white rounded-lg flex items-center justify-center transition-colors active:scale-95"
                     >
-                      <Plus size={12}/>
+                      <Plus size={14}/>
                     </button>
                   </div>
                 </div>
@@ -54,21 +94,26 @@ export const CartDrawer = () => {
           )}
         </div>
 
-        <div className="p-4 border-t bg-gray-50 pb-safe">
-          <div className="flex justify-between font-bold text-lg mb-4 text-slate-900">
-            <span>Total:</span>
-            <span>${cartTotal.toFixed(2)}</span>
+        {/* Footer (Total y Acción) */}
+        <div className="p-4 border-t bg-gray-50 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-10">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-gray-500 font-medium">Total Estimado</span>
+            <span className="text-2xl font-extrabold text-slate-900">
+              ${cartTotal.toFixed(2)}
+            </span>
           </div>
+          
           <button 
             onClick={sendOrderToWhatsapp} 
             disabled={cart.length === 0}
-            className={`w-full font-bold py-4 rounded-xl flex justify-center items-center gap-2 transition-all ${
+            className={`w-full font-bold py-4 rounded-xl flex justify-center items-center gap-2 transition-all transform active:scale-[0.98] ${
               cart.length === 0 
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
-                : 'bg-green-600 text-white hover:bg-green-700 shadow-lg hover:shadow-green-500/30'
+                : 'bg-[#25D366] text-white hover:bg-[#20bd5a] shadow-lg hover:shadow-green-500/30'
             }`}
           >
-            <MessageCircle size={20} /> Pedir por WhatsApp
+            <MessageCircle size={20} className="fill-current" /> 
+            Pedir por WhatsApp
           </button>
         </div>
       </div>
