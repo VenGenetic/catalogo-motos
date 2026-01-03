@@ -1,7 +1,7 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { 
   Home, ShoppingBag, Phone, X, Search, ChevronRight, 
-  Heart, Bike, Plus, Minus, MessageCircle, Grid
+  Heart, Bike, Plus, Minus, MessageCircle, Grid, ArrowLeft, Share2
 } from 'lucide-react';
 
 import './App.css';
@@ -46,13 +46,142 @@ const optimizarImg = (url: string) => {
 
 // --- COMPONENTES ---
 
-// 1. Bottom Navigation (Solo visible en Móvil)
+// 1. ZOOM INTELIGENTE
+const ImageZoom = ({ src, alt }: { src: string, alt: string }) => {
+  const [isActive, setIsActive] = useState(false);
+  const [position, setPosition] = useState({ x: 50, y: 50 });
+  const imgRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!imgRef.current) return;
+    const { left, top, width, height } = imgRef.current.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setPosition({ x, y });
+  };
+
+  const toggleZoom = () => setIsActive(!isActive);
+
+  return (
+    <div 
+      ref={imgRef}
+      className="w-full h-full overflow-hidden relative cursor-zoom-in touch-manipulation"
+      onMouseEnter={() => setIsActive(true)}
+      onMouseLeave={() => setIsActive(false)}
+      onMouseMove={handleMouseMove}
+      onClick={toggleZoom}
+    >
+      <img 
+        src={src} 
+        alt={alt}
+        className={`w-full h-full object-cover transition-transform duration-200 ease-out ${isActive ? 'scale-[2.5]' : 'scale-100'}`}
+        style={isActive ? { transformOrigin: `${position.x}% ${position.y}%` } : undefined}
+        loading="lazy"
+      />
+    </div>
+  );
+};
+
+// 2. DETALLE DE PRODUCTO (MODAL / FULLSCREEN)
+const ProductDetailModal = ({ product, onClose, onAdd }: any) => {
+  if (!product) return null;
+
+  return (
+    <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center bg-white md:bg-black/60 backdrop-blur-sm animate-fade-in">
+      {/* Botón cerrar flotante para móvil */}
+      <button onClick={onClose} className="md:hidden absolute top-4 left-4 z-20 bg-white/80 p-2 rounded-full shadow-sm backdrop-blur-md">
+        <ArrowLeft className="w-6 h-6 text-slate-900" />
+      </button>
+
+      <div className="w-full h-full md:h-auto md:max-w-4xl md:max-h-[90vh] bg-white md:rounded-2xl flex flex-col md:flex-row overflow-hidden relative shadow-2xl">
+        
+        {/* Botón cerrar escritorio */}
+        <button onClick={onClose} className="hidden md:block absolute top-4 right-4 z-20 bg-white/90 p-2 rounded-full hover:bg-gray-100 transition-colors">
+          <X className="w-6 h-6 text-slate-500" />
+        </button>
+
+        {/* COLUMNA IMAGEN */}
+        <div className="w-full md:w-1/2 h-[45vh] md:h-[500px] bg-gray-100 relative shrink-0">
+          <ImageZoom src={optimizarImg(product.imagen)} alt={product.nombre} />
+          <div className="absolute bottom-4 right-4 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-sm pointer-events-none">
+            Toca para zoom
+          </div>
+        </div>
+
+        {/* COLUMNA INFO */}
+        <div className="flex-1 flex flex-col h-full overflow-hidden">
+          <div className="flex-1 overflow-y-auto p-5 md:p-8 pb-32 md:pb-8">
+            <div className="flex justify-between items-start mb-2">
+              <span className="text-xs font-bold text-red-600 uppercase tracking-wider bg-red-50 px-2 py-1 rounded">
+                {product.seccion}
+              </span>
+              <button className="text-gray-400 hover:text-red-500">
+                <Share2 className="w-5 h-5" />
+              </button>
+            </div>
+
+            <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 mb-2 leading-tight">
+              {product.nombre}
+            </h2>
+            
+            {product.codigo_referencia && (
+              <p className="text-sm text-gray-500 font-mono mb-4">Ref: {product.codigo_referencia}</p>
+            )}
+
+            <div className="my-6 border-t border-b border-gray-100 py-4 flex items-center justify-between">
+              <div>
+                <span className="block text-sm text-gray-400 mb-1">Precio Unitario</span>
+                <span className="text-3xl font-extrabold text-slate-900">${Number(product.precio).toFixed(2)}</span>
+              </div>
+              <div className="bg-green-50 text-green-700 px-3 py-1 rounded-full text-xs font-bold">
+                Disponible
+              </div>
+            </div>
+
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Repuesto original garantizado para tu motocicleta. Compatible con los modelos especificados.
+              Contáctanos si tienes dudas sobre la compatibilidad.
+            </p>
+
+            {/* BOTONES ESCRITORIO (Ocultos en móvil) */}
+            <div className="hidden md:flex gap-4 mt-8">
+              <button 
+                onClick={() => { onAdd(product); onClose(); }}
+                className="flex-1 bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
+              >
+                <Plus className="w-5 h-5" /> Agregar al Pedido
+              </button>
+              <button className="flex-1 border-2 border-slate-200 text-slate-700 py-4 rounded-xl font-bold hover:border-slate-900 transition-all">
+                Consultar WhatsApp
+              </button>
+            </div>
+          </div>
+
+          {/* BARRA DE ACCIÓN FLOTANTE (Solo Móvil - Sticky Footer) */}
+          <div className="md:hidden fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 flex gap-3 z-30 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+            <button className="flex-1 bg-white border border-gray-200 text-slate-700 py-3 rounded-xl font-bold flex items-center justify-center gap-2 text-sm">
+              <MessageCircle className="w-4 h-4" /> Consultar
+            </button>
+            <button 
+              onClick={() => { onAdd(product); onClose(); }}
+              className="flex-[1.5] bg-red-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-red-200 text-sm"
+            >
+              <ShoppingBag className="w-4 h-4" /> Agregar ${Number(product.precio).toFixed(2)}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// 3. BOTTOM NAVIGATION
 const BottomNav = ({ activeTab, setActiveTab, cartCount, openCart }: any) => {
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-6 flex justify-between items-center z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] pb-safe">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 py-2 px-6 flex justify-between items-center z-40 pb-safe">
       <button 
         onClick={() => setActiveTab('home')}
-        className={`flex flex-col items-center gap-1 ${activeTab === 'home' ? 'text-red-600' : 'text-gray-400'}`}
+        className={`flex flex-col items-center gap-1 min-w-[60px] p-1 ${activeTab === 'home' ? 'text-red-600' : 'text-gray-400'}`}
       >
         <Home className="w-6 h-6" />
         <span className="text-[10px] font-bold">Inicio</span>
@@ -60,7 +189,7 @@ const BottomNav = ({ activeTab, setActiveTab, cartCount, openCart }: any) => {
       
       <button 
         onClick={() => setActiveTab('catalog')}
-        className={`flex flex-col items-center gap-1 ${activeTab === 'catalog' ? 'text-red-600' : 'text-gray-400'}`}
+        className={`flex flex-col items-center gap-1 min-w-[60px] p-1 ${activeTab === 'catalog' ? 'text-red-600' : 'text-gray-400'}`}
       >
         <Grid className="w-6 h-6" />
         <span className="text-[10px] font-bold">Catálogo</span>
@@ -68,12 +197,12 @@ const BottomNav = ({ activeTab, setActiveTab, cartCount, openCart }: any) => {
 
       <button 
         onClick={openCart}
-        className="flex flex-col items-center gap-1 relative text-gray-400"
+        className="flex flex-col items-center gap-1 relative text-gray-400 min-w-[60px] p-1"
       >
         <div className="relative">
           <ShoppingBag className="w-6 h-6" />
           {cartCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full animate-bounce">
+            <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full animate-bounce">
               {cartCount}
             </span>
           )}
@@ -83,7 +212,7 @@ const BottomNav = ({ activeTab, setActiveTab, cartCount, openCart }: any) => {
 
       <button 
         onClick={() => setActiveTab('contact')}
-        className={`flex flex-col items-center gap-1 ${activeTab === 'contact' ? 'text-red-600' : 'text-gray-400'}`}
+        className={`flex flex-col items-center gap-1 min-w-[60px] p-1 ${activeTab === 'contact' ? 'text-red-600' : 'text-gray-400'}`}
       >
         <Phone className="w-6 h-6" />
         <span className="text-[10px] font-bold">Contacto</span>
@@ -97,7 +226,6 @@ const Navbar = ({ activeTab, setActiveTab, cartCount, openCart }: any) => {
     <nav className="bg-slate-900 text-white shadow-lg sticky top-0 z-50 font-sans">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          {/* Logo (Mantenido) */}
           <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setActiveTab('home')}>
             <div className="bg-red-600 p-2 rounded-lg">
               <ShoppingBag className="w-5 h-5 md:w-6 md:h-6 text-white" />
@@ -105,27 +233,10 @@ const Navbar = ({ activeTab, setActiveTab, cartCount, openCart }: any) => {
             <span className="font-bold text-lg md:text-xl tracking-wider">MOTO<span className="text-red-500">PARTS</span></span>
           </div>
 
-          {/* Desktop Menu - AHORA USA activeTab CORRECTAMENTE */}
           <div className="hidden md:flex space-x-8 items-center">
-            <button 
-              onClick={() => setActiveTab('home')} 
-              className={`font-medium transition-colors ${activeTab === 'home' ? 'text-red-500' : 'hover:text-red-400'}`}
-            >
-              Inicio
-            </button>
-            <button 
-              onClick={() => setActiveTab('catalog')} 
-              className={`font-medium transition-colors ${activeTab === 'catalog' ? 'text-red-500' : 'hover:text-red-400'}`}
-            >
-              Catálogo
-            </button>
-            <button 
-              onClick={() => setActiveTab('contact')} 
-              className={`font-medium transition-colors ${activeTab === 'contact' ? 'text-red-500' : 'hover:text-red-400'}`}
-            >
-              Contacto
-            </button>
-            
+            <button onClick={() => setActiveTab('home')} className={`font-medium transition-colors ${activeTab === 'home' ? 'text-red-500' : 'hover:text-red-400'}`}>Inicio</button>
+            <button onClick={() => setActiveTab('catalog')} className={`font-medium transition-colors ${activeTab === 'catalog' ? 'text-red-500' : 'hover:text-red-400'}`}>Catálogo</button>
+            <button onClick={() => setActiveTab('contact')} className={`font-medium transition-colors ${activeTab === 'contact' ? 'text-red-500' : 'hover:text-red-400'}`}>Contacto</button>
             <button onClick={openCart} className="relative p-2 bg-slate-800 rounded-full hover:bg-red-600 transition-colors">
               <ShoppingBag className="w-5 h-5 text-white" />
               {cartCount > 0 && (
@@ -134,10 +245,6 @@ const Navbar = ({ activeTab, setActiveTab, cartCount, openCart }: any) => {
                 </span>
               )}
             </button>
-          </div>
-
-          <div className="md:hidden">
-             {/* Espacio reservado para acciones futuras */}
           </div>
         </div>
       </div>
@@ -148,28 +255,17 @@ const Navbar = ({ activeTab, setActiveTab, cartCount, openCart }: any) => {
 const HeroSection = ({ setActiveTab }: any) => (
   <div className="relative bg-slate-900 overflow-hidden font-sans">
     <div className="absolute inset-0">
-      <img 
-        src="https://images.unsplash.com/photo-1558981285-6f0c94958bb6?auto=format&fit=crop&q=80&w=1920" 
-        alt="Moto Workshop" 
-        className="w-full h-full object-cover opacity-40"
-      />
+      <img src="https://images.unsplash.com/photo-1558981285-6f0c94958bb6?auto=format&fit=crop&q=80&w=1920" alt="Moto Workshop" className="w-full h-full object-cover opacity-40" />
       <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent"></div>
     </div>
-    <div className="relative max-w-7xl mx-auto px-4 py-16 md:py-32">
+    <div className="relative max-w-7xl mx-auto px-4 py-12 md:py-32">
       <div className="lg:w-2/3">
         <h1 className="text-3xl md:text-6xl font-extrabold text-white tracking-tight mb-4 md:mb-6 leading-tight">
           Potencia tu Pasión <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
-            Repuestos de Calidad
-          </span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">Repuestos de Calidad</span>
         </h1>
-        <p className="text-base md:text-xl text-gray-300 mb-6 md:mb-8 max-w-2xl">
-          Encuentra las mejores piezas para tu Daytona. Calidad garantizada.
-        </p>
-        <button 
-          onClick={() => setActiveTab('catalog')}
-          className="w-full md:w-auto flex items-center justify-center px-8 py-4 text-lg font-bold rounded-full text-white bg-red-600 hover:bg-red-700 transition-all shadow-lg active:scale-95"
-        >
+        <p className="text-base md:text-xl text-gray-300 mb-6 md:mb-8 max-w-2xl">Encuentra las mejores piezas para tu Daytona. Calidad garantizada.</p>
+        <button onClick={() => setActiveTab('catalog')} className="w-full md:w-auto flex items-center justify-center px-8 py-4 text-lg font-bold rounded-full text-white bg-red-600 hover:bg-red-700 transition-all shadow-lg active:scale-95">
           Ver Catálogo <ChevronRight className="ml-2 w-5 h-5" />
         </button>
       </div>
@@ -181,7 +277,8 @@ const CatalogView = ({
   productos, onAdd, isFav, toggleFav, 
   filtroModelo, setFiltroModelo, 
   busqueda, setBusqueda,
-  filtroSeccion, setFiltroSeccion
+  filtroSeccion, setFiltroSeccion,
+  onProductClick // Nueva prop para abrir el modal
 }: any) => {
   const [pagina, setPagina] = useState(1);
   const [modalModelos, setModalModelos] = useState(false);
@@ -194,11 +291,12 @@ const CatalogView = ({
   }, [productos, pagina]);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24 pt-4 px-3 md:px-8 font-sans">
+    // MEJORA: px-0 en móvil para Edge-to-Edge
+    <div className="min-h-screen bg-gray-50 pb-24 pt-2 md:pt-4 px-0 md:px-8 font-sans">
       <div className="max-w-7xl mx-auto">
         
-        {/* Controles Principales */}
-        <div className="sticky top-[64px] z-30 bg-gray-50/95 backdrop-blur-sm pb-4 pt-2">
+        {/* Filtros: Padding lateral para que no se peguen a los bordes */}
+        <div className="sticky top-[64px] z-30 bg-gray-50/95 backdrop-blur-sm pb-3 pt-2 px-3 md:px-0">
           <div className="flex gap-2 mb-3">
             <button 
               onClick={() => setModalModelos(true)}
@@ -207,30 +305,26 @@ const CatalogView = ({
               <Bike className="w-4 h-4 mr-2" />
               {filtroModelo ? filtroModelo : 'Filtrar Moto'}
             </button>
-            
             <div className="flex-[2] relative">
               <Search className="absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Buscar repuesto..."
-                className="w-full pl-9 pr-3 py-3 border border-gray-200 rounded-xl bg-white text-sm focus:ring-2 focus:ring-red-500 outline-none shadow-sm"
+                placeholder="Buscar..."
+                className="w-full pl-9 pr-3 py-3 border border-gray-200 rounded-xl bg-white text-base focus:ring-2 focus:ring-red-500 outline-none shadow-sm"
                 value={busqueda}
                 onChange={(e) => setBusqueda(e.target.value)}
               />
             </div>
           </div>
 
-          {/* Categorías Scrolleables */}
-          <div className="overflow-x-auto pb-1 scrollbar-hide -mx-3 px-3 md:mx-0 md:px-0">
+          <div className="overflow-x-auto pb-1 scrollbar-hide scroll-smooth -mx-3 px-3 md:mx-0 md:px-0">
             <div className="flex space-x-2">
               {ORDEN_SECCIONES.map((category) => (
                 <button
                   key={category}
                   onClick={() => setFiltroSeccion(category)}
                   className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-colors border ${
-                    filtroSeccion === category
-                      ? 'bg-slate-900 text-white border-slate-900'
-                      : 'bg-white text-gray-600 border-gray-200'
+                    filtroSeccion === category ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-gray-600 border-gray-200'
                   }`}
                 >
                   {category}
@@ -240,13 +334,16 @@ const CatalogView = ({
           </div>
         </div>
 
-        {/* Grid Optimizado para Móvil (2 Columnas) */}
+        {/* Grid Edge-to-Edge: gap-1 para look moderno */}
         {visibles.length > 0 ? (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 md:gap-6">
               {visibles.map((product: any) => (
-                <div key={product.id || Math.random()} className="bg-white rounded-lg shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden relative">
-                  {/* Botón Fav Flotante */}
+                <div 
+                  key={product.id || Math.random()} 
+                  className="bg-white md:rounded-lg shadow-sm md:border border-gray-100 flex flex-col h-full overflow-hidden relative active:opacity-90 transition-opacity"
+                  onClick={() => onProductClick(product)}
+                >
                   <button 
                     className={`absolute top-2 right-2 p-1.5 rounded-full z-10 ${isFav(product.id) ? 'bg-red-100 text-red-600' : 'bg-black/10 text-white backdrop-blur-sm'}`}
                     onClick={(e) => { e.stopPropagation(); toggleFav(product.id); }}
@@ -254,56 +351,32 @@ const CatalogView = ({
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
-                  <div className="h-32 md:h-56 overflow-hidden bg-gray-100 relative">
-                    <img 
-                      src={optimizarImg(product.imagen)}
-                      alt={product.nombre} 
-                      className="w-full h-full object-cover" 
-                      loading="lazy"
-                    />
+                  <div className="h-40 md:h-56 overflow-hidden bg-gray-100 relative">
+                    <img src={optimizarImg(product.imagen)} alt={product.nombre} className="w-full h-full object-cover" loading="lazy" />
                   </div>
 
                   <div className="p-3 flex flex-col flex-grow">
-                    <span className="text-[10px] font-bold text-red-600 uppercase tracking-wide mb-1 line-clamp-1">
-                      {product.seccion}
-                    </span>
-                    <h3 className="text-xs md:text-sm font-bold text-slate-800 mb-2 line-clamp-2 flex-grow leading-tight">
-                      {product.nombre}
-                    </h3>
-                    
-                    <div className="flex items-end justify-between mt-auto pt-2">
-                      <div className="flex flex-col">
-                        <span className="text-[10px] text-gray-400">Precio</span>
-                        <span className="text-sm md:text-lg font-extrabold text-slate-900">
-                          ${Number(product.precio).toFixed(2)}
-                        </span>
-                      </div>
-                      <button 
-                        onClick={() => onAdd(product)}
-                        className="bg-slate-900 text-white p-2 rounded-lg hover:bg-red-600 active:scale-90 transition-all"
-                      >
-                        <Plus className="w-4 h-4" />
-                      </button>
+                    <span className="text-[10px] font-bold text-red-600 uppercase tracking-wide mb-1 line-clamp-1">{product.seccion}</span>
+                    <h3 className="text-xs md:text-sm font-bold text-slate-800 mb-1 line-clamp-2 leading-tight min-h-[2.5em]">{product.nombre}</h3>
+                    <div className="mt-auto pt-2">
+                       <span className="text-sm md:text-lg font-extrabold text-slate-900 block">${Number(product.precio).toFixed(2)}</span>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
             
-            {/* Botón Cargar Más */}
-            {visibles.length < productos.length && (
-              <div className="mt-8 text-center">
-                <button 
-                  onClick={() => setPagina(p => p + 1)}
-                  className="w-full md:w-auto px-6 py-3 bg-white border border-gray-300 text-gray-700 font-bold text-sm rounded-full shadow-sm active:bg-gray-50"
-                >
-                  Ver más productos ({productos.length - visibles.length})
-                </button>
-              </div>
-            )}
+            <div className="mt-8 text-center px-4">
+              <button 
+                onClick={() => setPagina(p => p + 1)}
+                className="w-full md:w-auto px-6 py-3 bg-white border border-gray-300 text-gray-700 font-bold text-sm rounded-full shadow-sm active:bg-gray-50"
+              >
+                Cargar más
+              </button>
+            </div>
           </>
         ) : (
-          <div className="text-center py-20">
+          <div className="text-center py-20 px-4">
             <Search className="mx-auto h-12 w-12 text-gray-300 mb-4" />
             <h3 className="text-gray-900 font-medium">Sin resultados</h3>
             <button onClick={() => { setBusqueda(''); setFiltroModelo(''); setFiltroSeccion('Todos'); }} className="mt-2 text-red-600 font-bold text-sm">Limpiar filtros</button>
@@ -311,7 +384,6 @@ const CatalogView = ({
         )}
       </div>
 
-      {/* Modal Modelos (Full Screen en Móvil) */}
       {modalModelos && (
         <div className="fixed inset-0 bg-black/50 z-[100] flex items-end md:items-center justify-center backdrop-blur-sm">
           <div className="bg-white w-full md:max-w-2xl h-[80vh] md:h-auto md:max-h-[80vh] rounded-t-2xl md:rounded-2xl flex flex-col overflow-hidden animate-slide-up">
@@ -323,15 +395,13 @@ const CatalogView = ({
               <input 
                 type="text" 
                 placeholder="Buscar modelo..." 
-                className="w-full px-4 py-3 bg-gray-100 rounded-xl outline-none text-sm"
+                className="w-full px-4 py-3 bg-gray-100 rounded-xl outline-none text-base"
                 value={busquedaModelo}
                 onChange={(e) => setBusquedaModelo(e.target.value)}
               />
             </div>
             <div className="overflow-y-auto p-4 grid grid-cols-2 gap-2 content-start">
-              <button onClick={() => { setFiltroModelo(''); setModalModelos(false); }} className="p-3 rounded-xl border border-dashed border-red-300 bg-red-50 text-red-600 font-bold text-sm">
-                TODAS LAS MOTOS
-              </button>
+              <button onClick={() => { setFiltroModelo(''); setModalModelos(false); }} className="p-3 rounded-xl border border-dashed border-red-300 bg-red-50 text-red-600 font-bold text-sm">TODAS</button>
               {MODELOS.filter(m => m.toLowerCase().includes(busquedaModelo.toLowerCase())).map(m => (
                 <button
                   key={m}
@@ -357,11 +427,7 @@ const ContactView = () => (
       </div>
       <h2 className="text-2xl font-bold text-slate-900 mb-2">Contáctanos</h2>
       <p className="text-gray-500 mb-8 text-sm">Estamos listos para ayudarte por WhatsApp.</p>
-      <a 
-        href={`https://wa.me/${CONFIG.WHATSAPP}`} 
-        target="_blank"
-        className="block w-full bg-[#25D366] text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-green-500/30 transition-all mb-4"
-      >
+      <a href={`https://wa.me/${CONFIG.WHATSAPP}`} target="_blank" className="block w-full bg-[#25D366] text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-green-500/30 transition-all mb-4">
         Chat en WhatsApp
       </a>
       <p className="text-xs text-gray-400">Horario: Lunes a Sábado, 9am - 6pm</p>
@@ -375,6 +441,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [carrito, setCarrito] = useState<any[]>([]);
   const [carritoAbierto, setCarritoAbierto] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null); // Estado para el modal de detalle
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(CONFIG.KEY_FAVS) || '[]'); } catch { return []; }
   });
@@ -441,7 +508,7 @@ export default function App() {
               <h2 className="text-xl font-bold mb-4">Destacados</h2>
               <div className="grid grid-cols-2 gap-3">
                 {productosProcesados.slice(0, 4).map((p:any) => (
-                  <div key={p.id} className="border border-gray-100 rounded-lg p-3 bg-white shadow-sm" onClick={() => {setActiveTab('catalog'); setBusqueda(p.nombre)}}>
+                  <div key={p.id} className="border border-gray-100 rounded-lg p-3 bg-white shadow-sm cursor-pointer" onClick={() => {setActiveTab('catalog'); setBusqueda(p.nombre)}}>
                     <img src={optimizarImg(p.imagen)} className="w-full h-32 object-cover rounded-md mb-2 bg-gray-100" />
                     <h3 className="text-xs font-bold line-clamp-2 mb-1">{p.nombre}</h3>
                     <span className="text-red-600 font-bold text-sm">${Number(p.precio).toFixed(2)}</span>
@@ -454,17 +521,30 @@ export default function App() {
         
         {activeTab === 'catalog' && (
           <CatalogView 
-            productos={productosFiltrados} onAdd={addCarrito} isFav={(id:string) => favs.includes(id)} toggleFav={toggleFav}
-            filtroModelo={filtroModelo} setFiltroModelo={setFiltroModelo}
-            busqueda={busqueda} setBusqueda={setBusqueda}
-            filtroSeccion={filtroSeccion} setFiltroSeccion={setFiltroSeccion}
+            productos={productosFiltrados} 
+            onAdd={addCarrito} 
+            isFav={(id:string) => favs.includes(id)} 
+            toggleFav={toggleFav}
+            filtroModelo={filtroModelo} 
+            setFiltroModelo={setFiltroModelo}
+            busqueda={busqueda} 
+            setBusqueda={setBusqueda}
+            filtroSeccion={filtroSeccion} 
+            setFiltroSeccion={setFiltroSeccion}
+            onProductClick={setSelectedProduct} // Abre el modal
           />
         )}
         
         {activeTab === 'contact' && <ContactView />}
       </main>
 
-      {/* Menú Inferior Móvil */}
+      {/* NUEVO: Modal de Detalle de Producto */}
+      <ProductDetailModal 
+        product={selectedProduct} 
+        onClose={() => setSelectedProduct(null)} 
+        onAdd={addCarrito} 
+      />
+
       <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} cartCount={carrito.reduce((a,b)=>a+b.cant,0)} openCart={() => setCarritoAbierto(true)} />
 
       {/* Drawer Carrito */}
