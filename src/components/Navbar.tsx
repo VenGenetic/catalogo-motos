@@ -17,7 +17,8 @@ export const Navbar = () => {
             <div className="bg-red-600 p-2 rounded-lg">
               <ShoppingBag className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </div>
-            <span className="font-bold text-lg md:text-xl tracking-wider">MOTO<span className="text-red-500">PARTS</span></span>
+            {/* CORRECCIÓN: Cambiado de MOTO a LV */}
+            <span className="font-bold text-lg md:text-xl tracking-wider">LV <span className="text-red-500">PARTS</span></span>
           </Link>
 
           <div className="hidden md:flex space-x-8 items-center">
