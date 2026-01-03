@@ -19,7 +19,6 @@ import { Producto } from './types';
 const limpiarPrecio = (valor: any): number => {
   if (typeof valor === 'number') return valor;
   if (!valor) return 0;
-  // Elimina todo excepto números y puntos
   const limpio = String(valor).replace(/[^0-9.]/g, '');
   const numero = parseFloat(limpio);
   return isNaN(numero) ? 0 : numero;
@@ -143,12 +142,12 @@ export default function App() {
                       className="border border-gray-100 rounded-lg p-3 bg-white shadow-sm cursor-pointer hover:shadow-md transition-shadow group" 
                       onClick={() => handleSearchFromHome(p.nombre)}
                     >
-                      {/* CONTENEDOR DE IMAGEN DESTACADA CORREGIDO */}
-                      <div className="overflow-hidden rounded-md mb-2 bg-white relative h-32 flex items-center justify-center border border-gray-50">
-                          {/* CORRECCIÓN: 'object-contain' y 'p-2' para ver la pieza entera */}
+                      {/* VUELTA AL RECORTE DEL 25% */}
+                      <div className="overflow-hidden rounded-md mb-2 bg-gray-100 relative h-32">
                           <img 
                             src={optimizarImg(p.imagen)} 
-                            className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300" 
+                            className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300" 
+                            style={{ clipPath: 'inset(0 0 25% 0)' }}
                             alt={p.nombre}
                           />
                       </div>

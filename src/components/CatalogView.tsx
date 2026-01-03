@@ -30,12 +30,9 @@ export const CatalogView = ({
   const [modalModelos, setModalModelos] = useState(false);
   const [busquedaModelo, setBusquedaModelo] = useState('');
   
-  // Referencia para el scroll automático
   const containerRef = useRef<HTMLDivElement>(null);
-  // Referencia para el input de búsqueda dentro del modal
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Reiniciar página y hacer scroll al inicio al filtrar
   useEffect(() => { 
     setPagina(1); 
     if (busqueda || filtroModelo || filtroSeccion !== 'Todos') {
@@ -43,7 +40,6 @@ export const CatalogView = ({
     }
   }, [busqueda, filtroModelo, filtroSeccion]);
 
-  // Enfocar el input cuando se abre el modal
   useEffect(() => {
     if (modalModelos) {
       setTimeout(() => searchInputRef.current?.focus(), 100);
@@ -54,7 +50,6 @@ export const CatalogView = ({
     return productos.slice(0, pagina * APP_CONFIG.ITEMS_PER_PAGE);
   }, [productos, pagina]);
 
-  // Filtrado de la lista de modelos dentro del modal
   const modelosFiltrados = useMemo(() => {
     return MODELOS.filter(m => m.toLowerCase().includes(busquedaModelo.toLowerCase()));
   }, [busquedaModelo]);
@@ -63,7 +58,7 @@ export const CatalogView = ({
     <div ref={containerRef} className="min-h-screen bg-gray-50 pb-24 pt-2 md:pt-4 px-0 md:px-8 font-sans scroll-mt-20">
       <div className="max-w-7xl mx-auto">
         
-        {/* BARRA DE FILTROS SUPERIOR (STICKY) */}
+        {/* BARRA DE FILTROS */}
         <div className="sticky top-[64px] z-30 bg-gray-50/95 backdrop-blur-sm pb-3 pt-2 px-3 md:px-0 transition-all shadow-sm md:shadow-none">
           <div className="flex gap-2 mb-3">
             <button 
@@ -97,7 +92,6 @@ export const CatalogView = ({
             </div>
           </div>
 
-          {/* Categorías (Scroll Horizontal) */}
           <div className="overflow-x-auto pb-1 scrollbar-hide scroll-smooth -mx-3 px-3 md:mx-0 md:px-0">
             <div className="flex space-x-2">
               {ORDEN_SECCIONES.map((category) => (
@@ -117,7 +111,7 @@ export const CatalogView = ({
           </div>
         </div>
 
-        {/* LISTADO DE PRODUCTOS */}
+        {/* LISTADO CON RECORTE */}
         {visibles.length > 0 ? (
           <>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6 px-2 md:px-0">
@@ -138,10 +132,13 @@ export const CatalogView = ({
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
+                  {/* VUELTA AL RECORTE: Usamos imageFit='cover' y style clipPath */}
                   <LazyImage 
                     src={optimizarImg(product.imagen)} 
                     alt={product.nombre}
-                    className="h-40 md:h-56 bg-gray-50"
+                    className="h-40 md:h-56 bg-gray-100" 
+                    imageFit="cover"
+                    style={{ clipPath: 'inset(0 0 25% 0)' }}
                   />
 
                   <div className="p-3 flex flex-col flex-grow relative z-10 bg-white">
@@ -190,38 +187,26 @@ export const CatalogView = ({
         )}
       </div>
 
-      {/* --- MODAL MEJORADO (Bottom Sheet en Móvil) --- */}
+      {/* MODAL DE FILTROS (Mismo código de siempre) */}
       {modalModelos && (
         <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center">
-          {/* Backdrop Oscuro */}
           <div 
             className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
             onClick={() => setModalModelos(false)}
           />
-          
-          {/* Contenedor Modal */}
           <div className="bg-white w-full md:max-w-xl h-[85vh] md:h-[80vh] rounded-t-3xl md:rounded-2xl flex flex-col overflow-hidden shadow-2xl z-10 animate-slide-up transform transition-transform">
-            
-            {/* Barra superior móvil (Drag Handle) */}
             <div className="md:hidden flex justify-center pt-3 pb-1" onClick={() => setModalModelos(false)}>
                <div className="w-12 h-1.5 bg-gray-200 rounded-full" />
             </div>
-
-            {/* Cabecera */}
             <div className="p-4 border-b flex justify-between items-center bg-white shrink-0">
               <div>
                 <h3 className="text-lg font-bold text-slate-900">Selecciona tu Moto</h3>
                 <p className="text-xs text-gray-500">Filtrar repuestos compatibles</p>
               </div>
-              <button 
-                onClick={() => setModalModelos(false)} 
-                className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors text-gray-600"
-              >
+              <button onClick={() => setModalModelos(false)} className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors text-gray-600">
                 <X className="w-5 h-5"/>
               </button>
             </div>
-
-            {/* Buscador de Modelos */}
             <div className="p-3 bg-gray-50 border-b shrink-0">
               <div className="relative">
                 <Search className="absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
@@ -234,53 +219,35 @@ export const CatalogView = ({
                   onChange={(e) => setBusquedaModelo(e.target.value)}
                 />
                 {busquedaModelo && (
-                  <button 
-                    onClick={() => setBusquedaModelo('')}
-                    className="absolute right-3 top-3.5 text-gray-400 hover:text-red-500 p-0.5"
-                  >
+                  <button onClick={() => setBusquedaModelo('')} className="absolute right-3 top-3.5 text-gray-400 hover:text-red-500 p-0.5">
                     <X className="w-4 h-4" />
                   </button>
                 )}
               </div>
             </div>
-
-            {/* Lista de Modelos (Grid) */}
             <div className="overflow-y-auto p-4 flex-1 bg-white scrollbar-thin">
                <div className="grid grid-cols-2 gap-2 pb-8">
-                  {/* Opción 'Todas' */}
                   <button 
                     onClick={() => { setFiltroModelo(''); setModalModelos(false); }} 
                     className={`p-3 rounded-xl border-2 text-sm font-bold flex items-center justify-center gap-2 transition-all min-h-[60px] ${
-                      filtroModelo === '' 
-                      ? 'border-red-600 bg-red-50 text-red-600' 
-                      : 'border-dashed border-gray-300 bg-gray-50 text-gray-500 hover:bg-white hover:border-gray-400'
+                      filtroModelo === '' ? 'border-red-600 bg-red-50 text-red-600' : 'border-dashed border-gray-300 bg-gray-50 text-gray-500 hover:bg-white hover:border-gray-400'
                     }`}
                   >
                     {filtroModelo === '' && <Check className="w-4 h-4" />}
                     TODAS
                   </button>
-                  
-                  {/* Lista Filtrada */}
                   {modelosFiltrados.map(m => (
                     <button
                       key={m}
                       onClick={() => { setFiltroModelo(m); setModalModelos(false); }}
                       className={`p-3 rounded-xl text-left text-xs font-bold border transition-all flex items-center justify-between min-h-[50px] active:scale-[0.98] ${
-                        filtroModelo === m 
-                          ? 'bg-slate-900 text-white border-slate-900 shadow-md' 
-                          : 'bg-white text-gray-600 border-gray-100 hover:border-gray-300 hover:shadow-sm'
+                        filtroModelo === m ? 'bg-slate-900 text-white border-slate-900 shadow-md' : 'bg-white text-gray-600 border-gray-100 hover:border-gray-300 hover:shadow-sm'
                       }`}
                     >
                       <span className="truncate">{m}</span>
                       {filtroModelo === m && <Check className="w-3 h-3 shrink-0 ml-1" />}
                     </button>
                   ))}
-                  
-                  {modelosFiltrados.length === 0 && (
-                    <div className="col-span-2 text-center py-8 text-gray-400 text-sm">
-                      No se encontró ese modelo
-                    </div>
-                  )}
                </div>
             </div>
           </div>
