@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-// CAMBIO IMPORTANTE: Usamos HashRouter en lugar de BrowserRouter
+// 1. CAMBIO IMPORTANTE: Usar HashRouter
 import { HashRouter } from 'react-router-dom' 
 import './index.css'
 import App from './App.tsx'
@@ -8,7 +8,7 @@ import { CartProvider } from './context/CartContext'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {/* CAMBIO: HashRouter es obligatorio para que funcione en Vercel sin configuraciones extra */}
+    {/* 2. CAMBIO IMPORTANTE: HashRouter envuelve la App */}
     <HashRouter> 
       <CartProvider>
         <App />
