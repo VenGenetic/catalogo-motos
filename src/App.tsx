@@ -1,15 +1,10 @@
+// src/App.tsx
 import { useState, useMemo, useEffect } from 'react';
 import { Routes, Route, useNavigate, useSearchParams } from 'react-router-dom';
-
-// Estilos
 import './App.css';
-
-// Utilidades y Configuración
 import { detectarSeccion } from './utils/categories';
 import { limpiarTexto, optimizarImg } from './utils/helpers';
 import { APP_CONFIG } from './config/constants';
-
-// Componentes
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { CatalogView } from './components/CatalogView';
@@ -19,64 +14,52 @@ import { BottomNav } from './components/BottomNav';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { CartDrawer } from './components/CartDrawer';
 import { Footer } from './components/Footer';
-
-// Tipos
 import { Producto } from './types';
 
+// Función auxiliar para asegurar precios numéricos correctos
+const limpiarPrecio = (valor: any): number => {
+  if (typeof valor === 'number') return valor;
+  if (!valor) return 0;
+  // Elimina todo lo que no sea número o punto (ej: $1,200.00 -> 1200.00)
+  const limpio = String(valor).replace(/[^0-9.]/g, '');
+  const numero = parseFloat(limpio);
+  return isNaN(numero) ? 0 : numero;
+};
+
 export default function App() {
-  // --- HOOKS DE ROUTER ---
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-
-  // --- ESTADO DE DATOS (Carga Asíncrona) ---
   const [productos, setProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState(true);
-
-  // --- ESTADO GLOBAL UI ---
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
   
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
   });
   
-  // Estado de Filtros (Globales para persistencia)
   const [busqueda, setBusqueda] = useState('');
   const [filtroModelo, setFiltroModelo] = useState('');
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
 
-  // --- EFECTO: CARGAR DATOS (ROBUSTO) ---
   useEffect(() => {
-    // Busca el archivo en la carpeta 'public'
     fetch('/data.json')
       .then(res => {
-        if (!res.ok) {
-          throw new Error(`No se pudo cargar data.json (Status: ${res.status}). Verifica que el archivo esté en la carpeta public.`);
-        }
+        if (!res.ok) throw new Error('Error cargando data.json');
         return res.json();
       })
       .then((data: any) => {
-        // LÓGICA ROBUSTA: Detecta la estructura del JSON automáticamente
         let raw: any[] = [];
-        
-        if (Array.isArray(data)) {
-          raw = data; // Es un array directo [ ... ]
-        } else if (Array.isArray(data.RAW_SCRAPED_DATA)) {
-          raw = data.RAW_SCRAPED_DATA; // Estructura scrap
-        } else if (Array.isArray(data.products)) {
-          raw = data.products; // Estructura alternativa
-        } else {
-          console.warn("Estructura de JSON desconocida, se usará array vacío.");
-        }
+        if (Array.isArray(data)) raw = data;
+        else if (Array.isArray(data.RAW_SCRAPED_DATA)) raw = data.RAW_SCRAPED_DATA;
+        else if (Array.isArray(data.products)) raw = data.products;
 
-        // Procesamiento de datos (Categorías y Búsqueda)
         const procesados = raw.map((p) => {
             const seccionCalc = detectarSeccion(p);
             return {
               ...p,
-              // Asegurar que precio sea número
-              precio: typeof p.precio === 'string' ? parseFloat(p.precio) : p.precio,
+              // CORRECCIÓN: Usamos la función robusta para el precio
+              precio: limpiarPrecio(p.precio),
               seccion: seccionCalc,
-              // Pre-calculamos texto de búsqueda para optimizar filtros
               textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc}`)
             };
         });
@@ -85,12 +68,11 @@ export default function App() {
         setLoading(false);
       })
       .catch(err => {
-        console.error("Error crítico cargando productos:", err);
+        console.error("Error cargando productos:", err);
         setLoading(false);
       });
   }, []);
 
-  // --- LÓGICA DE FAVORITOS ---
   const toggleFav = (id: string) => {
     setFavs(prev => {
       const nuevos = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
@@ -99,39 +81,27 @@ export default function App() {
     });
   };
 
-  // --- FILTRADO OPTIMIZADO ---
   const productosFiltrados = useMemo(() => {
     const terminos = limpiarTexto(busqueda).split(' ').filter(t => t.length > 0);
     return productos.filter((p) => {
-      if (!p.precio) return false; // Ocultar productos sin precio
-      
-      // Filtro Texto
+      if (!p.precio) return false;
       if (terminos.length > 0 && !terminos.every((t) => p.textoBusqueda?.includes(t))) return false;
-      
-      // Filtro Sección
       if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
-      
-      // Filtro Modelo
       if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
-      
       return true;
     });
   }, [productos, busqueda, filtroSeccion, filtroModelo]);
 
-  // --- DEEP LINKING (URL Mágica) ---
   useEffect(() => {
     if (!loading && productos.length > 0) {
       const prodId = searchParams.get('prod');
       if (prodId) {
         const found = productos.find((p) => p.id === prodId);
         if (found) setSelectedProduct(found);
-      } else {
-        setSelectedProduct(null);
-      }
+      } else setSelectedProduct(null);
     }
   }, [searchParams, productos, loading]);
 
-  // Manejadores de Modal
   const handleProductClick = (p: Producto) => {
     setSelectedProduct(p);
     setSearchParams(prev => { prev.set('prod', p.id); return prev; });
@@ -142,15 +112,11 @@ export default function App() {
     setSearchParams(prev => { prev.delete('prod'); return prev; });
   };
 
-  // Navegación desde Home a Catálogo
   const handleSearchFromHome = (term: string) => {
     setBusqueda(term);
     navigate('/catalogo');
   };
 
-  // --- RENDERIZADO ---
-  
-  // Pantalla de Carga
   if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-white">
@@ -165,10 +131,8 @@ export default function App() {
   return (
     <div className="min-h-screen bg-white font-sans text-slate-800 flex flex-col">
       <Navbar />
-      
       <main className="fade-in flex-1">
         <Routes>
-          {/* RUTA: INICIO */}
           <Route path="/" element={
             <div>
               <HeroSection />
@@ -182,7 +146,6 @@ export default function App() {
                       onClick={() => handleSearchFromHome(p.nombre)}
                     >
                       <div className="overflow-hidden rounded-md mb-2 bg-gray-100 relative h-32">
-                          {/* CORRECCIÓN: Se eliminó clipPath y se usa object-top para mejor encuadre */}
                           <img 
                             src={optimizarImg(p.imagen)} 
                             className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300" 
@@ -197,8 +160,6 @@ export default function App() {
               </div>
             </div>
           } />
-          
-          {/* RUTA: CATÁLOGO */}
           <Route path="/catalogo" element={
             <CatalogView 
               productos={productosFiltrados} 
@@ -213,13 +174,9 @@ export default function App() {
               onProductClick={handleProductClick} 
             />
           } />
-          
-          {/* RUTA: CONTACTO */}
           <Route path="/contacto" element={<ContactView />} />
         </Routes>
       </main>
-
-      {/* --- MODALES Y GLOBALES --- */}
       <ProductDetailModal product={selectedProduct} onClose={handleCloseModal} />
       <CartDrawer />
       <ScrollToTopButton />

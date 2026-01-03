@@ -1,3 +1,4 @@
+// src/components/CatalogView.tsx
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { Search, Bike, Heart, X } from 'lucide-react';
 import { optimizarImg } from '../utils/helpers';
@@ -30,14 +31,17 @@ export const CatalogView = ({
   const [modalModelos, setModalModelos] = useState(false);
   const [busquedaModelo, setBusquedaModelo] = useState('');
   
-  // Referencia para el scroll automático
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Reiniciar página y hacer scroll al inicio al filtrar
+  // Scroll inteligente: Usa window.scrollTo para asegurar que se ve desde el inicio
   useEffect(() => { 
     setPagina(1); 
     if (busqueda || filtroModelo || filtroSeccion !== 'Todos') {
-      containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Opción A: Scroll al tope de la ventana (Más natural)
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // Opción B (Si prefieres mantener el foco en el contenedor):
+      // containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, [busqueda, filtroModelo, filtroSeccion]);
 
@@ -46,11 +50,12 @@ export const CatalogView = ({
   }, [productos, pagina]);
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-gray-50 pb-24 pt-2 md:pt-4 px-0 md:px-8 font-sans">
+    // Agregamos 'scroll-mt-20' para que si se usa scrollIntoView, respete el header
+    <div ref={containerRef} className="min-h-screen bg-gray-50 pb-24 pt-2 md:pt-4 px-0 md:px-8 font-sans scroll-mt-20">
       <div className="max-w-7xl mx-auto">
         
-        {/* BARRA DE FILTROS SUPERIOR */}
-        <div className="sticky top-[64px] z-30 bg-gray-50/95 backdrop-blur-sm pb-3 pt-2 px-3 md:px-0">
+        {/* BARRA DE FILTROS */}
+        <div className="sticky top-[64px] z-30 bg-gray-50/95 backdrop-blur-sm pb-3 pt-2 px-3 md:px-0 transition-all">
           <div className="flex gap-2 mb-3">
             <button 
               onClick={() => setModalModelos(true)}
@@ -88,7 +93,7 @@ export const CatalogView = ({
           </div>
         </div>
 
-        {/* GRILLA DE PRODUCTOS */}
+        {/* LISTADO */}
         {visibles.length > 0 ? (
           <>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 md:gap-6">
@@ -105,27 +110,19 @@ export const CatalogView = ({
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
-                  {/* IMAGEN OPTIMIZADA - CORREGIDA (Sin recorte) */}
                   <LazyImage 
                     src={optimizarImg(product.imagen)} 
                     alt={product.nombre}
                     className="h-40 md:h-56 bg-gray-100"
-                    // Nota: Se eliminó style={{ clipPath... }} para mostrar la imagen completa
                   />
 
                   <div className="p-3 flex flex-col flex-grow relative z-10 bg-white">
                     <span className="text-[10px] font-bold text-red-600 uppercase tracking-wide mb-1 line-clamp-1">
                       {product.seccion}
                     </span>
-                    
-                    {/* TÍTULO CON RESALTADO */}
                     <h3 className="text-xs md:text-sm font-bold text-slate-800 mb-1 line-clamp-2 leading-tight min-h-[2.5em]">
-                      <HighlightedText 
-                        text={product.nombre} 
-                        highlight={busqueda} 
-                      />
+                      <HighlightedText text={product.nombre} highlight={busqueda} />
                     </h3>
-
                     <div className="mt-auto pt-2">
                        <span className="text-sm md:text-lg font-extrabold text-slate-900 block">
                          ${Number(product.precio).toFixed(2)}
@@ -159,7 +156,7 @@ export const CatalogView = ({
         )}
       </div>
 
-      {/* MODAL DE FILTRAR MOTO */}
+      {/* MODAL MOTO (Sin cambios lógicos, solo visuales si es necesario) */}
       {modalModelos && (
         <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center backdrop-blur-sm p-4">
           <div className="bg-white w-full max-w-lg h-auto max-h-[85vh] rounded-2xl flex flex-col overflow-hidden shadow-2xl animate-fade-in">
@@ -190,9 +187,7 @@ export const CatalogView = ({
                   key={m}
                   onClick={() => { setFiltroModelo(m); setModalModelos(false); }}
                   className={`p-3 rounded-xl text-left text-xs font-bold border ${
-                    filtroModelo === m 
-                      ? 'bg-slate-900 text-white border-slate-900' 
-                      : 'bg-white text-gray-600 border-gray-100'
+                    filtroModelo === m ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-gray-600 border-gray-100'
                   }`}
                 >
                   {m}
