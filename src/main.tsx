@@ -1,16 +1,17 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom' // <--- Router Reactivado
+// VOLVEMOS A: BrowserRouter (Para URLs limpias sin #)
+import { BrowserRouter } from 'react-router-dom' 
 import './index.css'
 import App from './App.tsx'
-import { CartProvider } from './context/CartContext' // <--- Carrito Reactivado
+import { CartProvider } from './context/CartContext'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <CartProvider>
-      <BrowserRouter> {/* El Router envuelve la App dentro del Carrito */}
+    <BrowserRouter> 
+      <CartProvider>
         <App />
-      </BrowserRouter>
-    </CartProvider>
+      </CartProvider>
+    </BrowserRouter>
   </StrictMode>,
 )

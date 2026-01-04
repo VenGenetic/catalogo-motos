@@ -1,5 +1,6 @@
+// src/config/constants.ts
+
 export const APP_CONFIG = {
-  SITE_NAME: 'LV PARTS', // <--- ESTO FALTABA
   WHATSAPP_NUMBER: "593993279707",
   ITEMS_PER_PAGE: 30, 
   LOCAL_STORAGE_KEY_FAVS: 'loveDaytonaFavs',
