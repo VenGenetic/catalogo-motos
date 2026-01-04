@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Routes, Route, useNavigate, useSearchParams } from 'react-router-dom';
+import { Routes, Route, useNavigate, useSearchParams, Link } from 'react-router-dom'; // CORRECCIÓN: Agregado 'Link'
 import { Heart } from 'lucide-react';
 import './App.css';
 import { detectarSeccion } from './utils/categories';
@@ -149,12 +149,7 @@ export default function App() {
                     >
                       {/* CONTENEDOR DE IMAGEN DESTACADA */}
                       <div className="overflow-hidden rounded-md mb-2 bg-white relative h-32 flex items-center justify-center border border-gray-50">
-                          {/* CORRECCIÓN FINAL:
-                              1. scale-[1.35]: Hace zoom para que la imagen sea más grande que el contenedor.
-                              2. origin-top: Mantiene la parte de arriba fija.
-                              3. object-cover: Llena los lados.
-                              RESULTADO: La parte de abajo (marca de agua) se sale del contenedor y no se ve, sin dejar espacios.
-                          */}
+                          {/* ZOOM y RECORTE VISUAL */}
                           <img 
                             src={optimizarImg(p.imagen)} 
                             className="w-full h-full object-cover object-top scale-[1.35] origin-top group-hover:scale-[1.45] transition-transform duration-300" 
