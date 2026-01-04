@@ -4,11 +4,14 @@ import { ChevronRight } from 'lucide-react';
 export const HeroSection = () => (
   <div className="relative bg-slate-900 overflow-hidden font-sans">
     <div className="absolute inset-0">
+      {/* ACTUALIZADO: Referencia a banner.png */}
       <img 
-        src="https://images.unsplash.com/photo-1558981285-6f0c94958bb6?auto=format&fit=crop&q=80&w=1920" 
+        src="/banner.png" 
         alt="Moto Workshop" 
         className="w-full h-full object-cover object-center opacity-40"
-        style={{ clipPath: 'inset(0 0 25% 0)' }}
+        // Nota: He dejado la imagen completa. Si quisieras recortarla abajo como la anterior,
+        // puedes descomentar la siguiente línea:
+        // style={{ clipPath: 'inset(0 0 25% 0)' }}
       />
       <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent"></div>
     </div>
