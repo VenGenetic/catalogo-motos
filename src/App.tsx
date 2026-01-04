@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Routes, Route, useSearchParams, Link, useLocation } from 'react-router-dom';
+// CORRECCIÓN: Eliminado 'useLocation' que ya no se usa
+import { Routes, Route, useSearchParams, Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import './App.css';
 import { APP_CONFIG } from './config/constants';
@@ -23,7 +24,7 @@ export default function App() {
   const { productos, loading } = useProducts();
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
-  const location = useLocation(); 
+  // CORRECCIÓN: Eliminada la línea 'const location = useLocation();'
   
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
@@ -97,7 +98,7 @@ export default function App() {
           <Route path="/" element={
             <div>
               <HeroSection />
-              {/* Banner Promocional (Sustituye a Destacados) */}
+              {/* Banner Promocional */}
               <div className="max-w-7xl mx-auto px-4 py-8">
                 <div className="rounded-2xl overflow-hidden shadow-md relative h-48 md:h-[400px]">
                   <img src="/banner.png" alt="Banner Promocional" className="w-full h-full object-cover object-center" />
