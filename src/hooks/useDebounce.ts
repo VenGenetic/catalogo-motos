@@ -9,7 +9,7 @@ export function useDebounce<T>(value: T, delay: number): T {
       setDebouncedValue(value);
     }, delay);
 
-    // Si el valor cambia antes de que termine el tiempo, limpiamos el temporizador anterior
+    // Si el valor cambia antes de terminar el tiempo, limpiamos el anterior
     return () => {
       clearTimeout(handler);
     };

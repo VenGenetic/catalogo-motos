@@ -34,10 +34,10 @@ export const useProducts = () => {
           const seccionCalc = detectarSeccion(p);
           return {
             ...p,
-            id: String(p.id || crypto.randomUUID()), // Asegurar que siempre haya ID
+            id: String(p.id || crypto.randomUUID()), // Aseguramos ID
             precio: limpiarPrecio(p.precio),
             seccion: seccionCalc,
-            // Pre-calculamos el texto de búsqueda para optimizar el filtrado
+            // Pre-calculamos texto de búsqueda para optimizar filtros
             textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc}`)
           };
         });

@@ -22,7 +22,7 @@ import { useDebounce } from './hooks/useDebounce';
 export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
   
-  // 1. Usamos el hook para obtener datos (¡Mucho más limpio!)
+  // 1. Lógica de datos extraída al Hook
   const { productos, loading } = useProducts();
   
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
@@ -31,12 +31,13 @@ export default function App() {
     try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
   });
   
+  // Estado para filtros
   const [busqueda, setBusqueda] = useState('');
-  // 2. Aplicamos debounce a la búsqueda (300ms de espera)
-  const busquedaDebounced = useDebounce(busqueda, 300);
-
   const [filtroModelo, setFiltroModelo] = useState('');
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
+
+  // 2. Aplicamos Debounce (espera 300ms antes de filtrar)
+  const busquedaDebounced = useDebounce(busqueda, 300);
 
   const toggleFav = (id: string) => {
     setFavs(prev => {
@@ -52,7 +53,7 @@ export default function App() {
 
   // Función de filtrado centralizada
   const filtrarLista = (lista: Producto[]) => {
-    // USAMOS LA VARIABLE DEBOUNCED AQUÍ en lugar de 'busqueda' directa
+    // Usamos 'busquedaDebounced' para el filtro real (rendimiento)
     const terminos = limpiarTexto(busquedaDebounced).split(' ').filter(t => t.length > 0);
     
     return lista.filter((p) => {
@@ -64,15 +65,16 @@ export default function App() {
     });
   };
 
-  // Memorizamos las listas filtradas
+  // 3. Memorizamos las listas resultantes
   const filteredProducts = useMemo(() => {
     return filtrarLista(productos);
-  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo]); // Dependencia actualizada
+  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo]);
 
   const filteredFavs = useMemo(() => {
     return filtrarLista(productosFavoritos);
-  }, [productosFavoritos, busquedaDebounced, filtroSeccion, filtroModelo]); // Dependencia actualizada
+  }, [productosFavoritos, busquedaDebounced, filtroSeccion, filtroModelo]);
 
+  // Manejo de URL para modales
   useEffect(() => {
     if (!loading && productos.length > 0) {
       const prodId = searchParams.get('prod');
@@ -139,7 +141,7 @@ export default function App() {
               toggleFav={toggleFav}
               filtroModelo={filtroModelo} 
               setFiltroModelo={setFiltroModelo}
-              busqueda={busqueda} // Pasamos el valor "real" al input para que no tenga lag visual
+              busqueda={busqueda} // Input visual (inmediato)
               setBusqueda={setBusqueda}
               filtroSeccion={filtroSeccion} 
               setFiltroSeccion={setFiltroSeccion}
