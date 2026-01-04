@@ -3,7 +3,8 @@ import { Routes, Route, useNavigate, useSearchParams, Link } from 'react-router-
 import { Heart } from 'lucide-react';
 import './App.css';
 import { detectarSeccion } from './utils/categories';
-import { limpiarTexto, optimizarImg } from './utils/helpers';
+// CORRECCIÓN: Quitamos optimizarImg porque ya no se usa aquí
+import { limpiarTexto } from './utils/helpers';
 import { APP_CONFIG } from './config/constants';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
@@ -114,10 +115,7 @@ export default function App() {
     setSearchParams(prev => { prev.delete('prod'); return prev; });
   };
 
-  const handleSearchFromHome = (term: string) => {
-    setBusqueda(term);
-    navigate('/catalogo');
-  };
+  // CORRECCIÓN: Eliminada la función handleSearchFromHome que ya no se usa
 
   if (loading) {
     return (
@@ -139,10 +137,9 @@ export default function App() {
             <div>
               <HeroSection />
               
-              {/* SECCIÓN NUEVA: Imagen Promocional (Reemplaza a Destacados) */}
+              {/* Sección de Imagen Promocional */}
               <div className="max-w-7xl mx-auto px-4 py-8">
                 <div className="rounded-2xl overflow-hidden shadow-md relative h-48 md:h-[400px]">
-                  {/* Usamos banner.png sin opacidad para que se vea claro y brillante */}
                   <img
                     src="/banner.png"
                     alt="Banner Promocional"
@@ -150,7 +147,6 @@ export default function App() {
                   />
                 </div>
                 
-                {/* Botón opcional debajo de la imagen para llevar al catálogo */}
                 <div className="mt-6 text-center">
                   <Link 
                     to="/catalogo" 
