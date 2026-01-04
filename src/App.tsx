@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Routes, Route, useNavigate, useSearchParams, Link } from 'react-router-dom'; // Agregamos Link
-import { Heart } from 'lucide-react'; // Importamos icono para estado vacío
+import { Routes, Route, useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { Heart } from 'lucide-react';
 import './App.css';
 import { detectarSeccion } from './utils/categories';
 import { limpiarTexto, optimizarImg } from './utils/helpers';
@@ -79,12 +79,10 @@ export default function App() {
     });
   };
 
-  // --- LOGICA DE FAVORITOS ---
   const productosFavoritos = useMemo(() => {
     return productos.filter(p => favs.includes(p.id));
   }, [productos, favs]);
 
-  // Filtrado General (Catalog y Favoritos comparten estado de filtros, lo cual es útil)
   const getProductosFiltrados = (listaBase: Producto[]) => {
     const terminos = limpiarTexto(busqueda).split(' ').filter(t => t.length > 0);
     return listaBase.filter((p) => {
@@ -149,10 +147,12 @@ export default function App() {
                       className="border border-gray-100 rounded-lg p-3 bg-white shadow-sm cursor-pointer hover:shadow-md transition-shadow group" 
                       onClick={() => handleSearchFromHome(p.nombre)}
                     >
-                      <div className="overflow-hidden rounded-md mb-2 bg-white relative h-32 flex items-center justify-center border border-gray-50">
+                      {/* VUELTA AL RECORTE DEL 25% (Estilo Original) */}
+                      <div className="overflow-hidden rounded-md mb-2 bg-gray-100 relative h-32">
                           <img 
                             src={optimizarImg(p.imagen)} 
-                            className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300" 
+                            className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300" 
+                            style={{ clipPath: 'inset(0 0 25% 0)' }}
                             alt={p.nombre}
                           />
                       </div>
@@ -180,7 +180,6 @@ export default function App() {
             />
           } />
 
-          {/* NUEVA RUTA: FAVORITOS */}
           <Route path="/favoritos" element={
             favs.length > 0 ? (
               <div className="animate-fade-in">
@@ -189,7 +188,6 @@ export default function App() {
                     <Heart className="text-red-600 fill-current" /> Mis Favoritos
                   </h2>
                 </div>
-                {/* Reutilizamos CatalogView pero solo con los favoritos */}
                 <CatalogView 
                   productos={getProductosFiltrados(productosFavoritos)} 
                   isFav={(id) => favs.includes(id)} 
