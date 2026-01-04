@@ -4,14 +4,13 @@ import { ChevronRight } from 'lucide-react';
 export const HeroSection = () => (
   <div className="relative bg-slate-900 overflow-hidden font-sans">
     <div className="absolute inset-0">
-      {/* ACTUALIZADO: Referencia a banner.png */}
+      {/* IMPORTANTE: Cambia 'hero-nueva.jpg' por el nombre real de tu archivo en la carpeta 'public' */}
       <img 
-        src="/banner.png" 
-        alt="Moto Workshop" 
+        src="/hero-nueva.jpg" 
+        alt="Imagen Principal" 
         className="w-full h-full object-cover object-center opacity-40"
-        // Nota: He dejado la imagen completa. Si quisieras recortarla abajo como la anterior,
-        // puedes descomentar la siguiente línea:
-        // style={{ clipPath: 'inset(0 0 25% 0)' }}
+        // Nota: La opacidad (0.4) hace que se vea oscura para que el texto resalte.
+        // Si la quieres más clara, aumenta el valor (ej. opacity-60).
       />
       <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent"></div>
     </div>
