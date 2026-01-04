@@ -1,9 +1,10 @@
-import { useState, useEffect, useMemo } from 'react';
+// src/hooks/useProducts.ts
+import { useState, useEffect } from 'react'; // Se eliminó useMemo que no se usaba
 import { Producto } from '../types';
 import { detectarSeccion } from '../utils/categories';
 import { limpiarTexto } from '../utils/helpers';
 
-// Función auxiliar fuera del componente para no recrearla
+// Función auxiliar
 const limpiarPrecio = (valor: any): number => {
   if (typeof valor === 'number') return valor;
   if (!valor) return 0;
@@ -24,7 +25,6 @@ export const useProducts = () => {
         return res.json();
       })
       .then((data: any) => {
-        // Soporte para diferentes estructuras de JSON
         let raw: any[] = [];
         if (Array.isArray(data)) raw = data;
         else if (Array.isArray(data.RAW_SCRAPED_DATA)) raw = data.RAW_SCRAPED_DATA;
@@ -36,7 +36,6 @@ export const useProducts = () => {
               ...p,
               precio: limpiarPrecio(p.precio),
               seccion: seccionCalc,
-              // Pre-calculamos el texto de búsqueda para que el filtro sea instantáneo
               textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc}`)
             };
         });
