@@ -1,9 +1,10 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Routes, Route, useNavigate, useSearchParams, Link } from 'react-router-dom';
+// CORRECCIÓN: Eliminamos 'useNavigate' que ya no se usa
+import { Routes, Route, useSearchParams, Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import './App.css';
 import { detectarSeccion } from './utils/categories';
-import { limpiarTexto } from './utils/helpers'; // Se eliminó optimizarImg porque ya no se usa
+import { limpiarTexto } from './utils/helpers';
 import { APP_CONFIG } from './config/constants';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
@@ -26,7 +27,7 @@ const limpiarPrecio = (valor: any): number => {
 };
 
 export default function App() {
-  const navigate = useNavigate();
+  // CORRECCIÓN: Eliminamos 'const navigate = useNavigate();'
   const [searchParams, setSearchParams] = useSearchParams();
   const [productos, setProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState(true);
@@ -114,8 +115,6 @@ export default function App() {
     setSearchParams(prev => { prev.delete('prod'); return prev; });
   };
 
-  // NOTA: Se eliminó handleSearchFromHome porque ya no se utiliza
-
   if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-white">
@@ -136,10 +135,9 @@ export default function App() {
             <div>
               <HeroSection />
               
-              {/* SECCIÓN NUEVA: Banner Promocional (Reemplaza a Destacados) */}
+              {/* Sección de Banner Promocional */}
               <div className="max-w-7xl mx-auto px-4 py-8">
                 <div className="rounded-2xl overflow-hidden shadow-md relative h-48 md:h-[400px]">
-                  {/* Asegúrate de que banner.png esté en la carpeta public */}
                   <img
                     src="/banner.png"
                     alt="Banner Promocional"
