@@ -1,13 +1,14 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Routes, Route, useSearchParams, Link } from 'react-router-dom';
+import { Routes, Route, useSearchParams, Link, useLocation } from 'react-router-dom';
 import { Heart } from 'lucide-react';
+import { Helmet } from 'react-helmet-async'; // <--- Importamos Helmet para el SEO
 import './App.css';
 import { APP_CONFIG } from './config/constants';
 import { limpiarTexto } from './utils/helpers';
 
 // Hooks y Componentes
-import { useProducts } from './hooks/useProducts'; // <--- Nuevo Hook
-import { SkeletonLoader } from './components/SkeletonLoader'; // <--- Nuevo Loader
+import { useProducts } from './hooks/useProducts';
+import { SkeletonLoader } from './components/SkeletonLoader';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { CatalogView } from './components/CatalogView';
@@ -20,11 +21,10 @@ import { Footer } from './components/Footer';
 import { Producto } from './types';
 
 export default function App() {
-  // 1. Usamos el Hook para traer los datos limpios
   const { productos, loading } = useProducts();
-  
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
+  const location = useLocation(); // Para saber en qué página estamos
   
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
@@ -34,20 +34,23 @@ export default function App() {
   const [filtroModelo, setFiltroModelo] = useState('');
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
 
-  // 2. OPTIMIZACIÓN CRÍTICA: useMemo para el filtrado
-  // Esto evita que la app se ponga lenta si tienes muchos productos
+  // Lógica de Título Dinámico (SEO)
+  const pageTitle = useMemo(() => {
+    if (selectedProduct) return `${selectedProduct.nombre} | LV PARTS`;
+    if (location.pathname === '/catalogo') return 'Catálogo de Repuestos | LV PARTS';
+    if (location.pathname === '/favoritos') return 'Mis Favoritos | LV PARTS';
+    if (location.pathname === '/contacto') return 'Contáctanos | LV PARTS';
+    return 'LV PARTS | Repuestos Daytona Ecuador';
+  }, [location, selectedProduct]);
+
+  // Filtrado Optimizado
   const productosFiltrados = useMemo(() => {
     const terminos = limpiarTexto(busqueda).split(' ').filter(t => t.length > 0);
-    
     return productos.filter((p) => {
       if (!p.precio) return false;
-      // Filtro por texto
       if (terminos.length > 0 && !terminos.every((t) => p.textoBusqueda?.includes(t))) return false;
-      // Filtro por sección
       if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
-      // Filtro por modelo de moto
       if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
-      
       return true;
     });
   }, [productos, busqueda, filtroSeccion, filtroModelo]);
@@ -64,7 +67,6 @@ export default function App() {
     return productos.filter(p => favs.includes(p.id));
   }, [productos, favs]);
 
-  // Sincronizar URL con modal de producto
   useEffect(() => {
     if (!loading && productos.length > 0) {
       const prodId = searchParams.get('prod');
@@ -85,13 +87,13 @@ export default function App() {
     setSearchParams(prev => { prev.delete('prod'); return prev; });
   };
 
-  // 3. Renderizado con Skeleton Loader
   if (loading) {
     return (
       <div className="min-h-screen bg-white">
         <Navbar />
         <div className="max-w-7xl mx-auto pt-20">
             <h2 className="text-center text-gray-400 font-medium mt-8">Cargando Catálogo...</h2>
+            {/* Si aún no creaste SkeletonLoader, comenta la siguiente línea */}
             <SkeletonLoader />
         </div>
       </div>
@@ -100,26 +102,24 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-800 flex flex-col">
+      {/* Componente SEO: Cambia el título de la pestaña automáticamente */}
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content="Encuentra los mejores repuestos para motos Daytona en Ecuador. Calidad, garantía y envíos a todo el país." />
+      </Helmet>
+
       <Navbar />
       <main className="fade-in flex-1">
         <Routes>
           <Route path="/" element={
             <div>
               <HeroSection />
-              {/* Banner Promocional */}
               <div className="max-w-7xl mx-auto px-4 py-8">
                 <div className="rounded-2xl overflow-hidden shadow-md relative h-48 md:h-[400px]">
-                  <img
-                    src="/banner.png"
-                    alt="Banner Promocional"
-                    className="w-full h-full object-cover object-center"
-                  />
+                  <img src="/banner.png" alt="Banner Promocional" className="w-full h-full object-cover object-center" />
                 </div>
                 <div className="mt-6 text-center">
-                  <Link 
-                    to="/catalogo" 
-                    className="inline-block px-8 py-3 bg-slate-900 text-white font-bold rounded-full hover:bg-red-600 transition-colors shadow-lg active:scale-95"
-                  >
+                  <Link to="/catalogo" className="inline-block px-8 py-3 bg-slate-900 text-white font-bold rounded-full hover:bg-red-600 transition-colors shadow-lg active:scale-95">
                     Ver Todos los Repuestos
                   </Link>
                 </div>
@@ -129,7 +129,7 @@ export default function App() {
           
           <Route path="/catalogo" element={
             <CatalogView 
-              productos={productosFiltrados} // Pasamos la lista ya filtrada
+              productos={productosFiltrados} 
               isFav={(id) => favs.includes(id)} 
               toggleFav={toggleFav}
               filtroModelo={filtroModelo} 
