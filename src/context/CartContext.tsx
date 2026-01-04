@@ -86,17 +86,24 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const cartCount = cart.reduce((acc, item) => acc + (item.cantidad || item.cant || 0), 0);
   const cartTotal = cart.reduce((acc, item) => acc + item.precio * (item.cantidad || item.cant || 0), 0);
 
-  // --- FUNCIÓN ACTUALIZADA CON DETALLES EXTRA ---
+  // --- FUNCIÓN ACTUALIZADA CON FORMATO VERTICAL ---
   const sendOrderToWhatsapp = () => {
     let msg = "Hola LV PARTS, mi pedido:\n\n";
     
     cart.forEach(i => {
       const cantidad = i.cantidad || i.cant || 0;
       const precioUnitario = Number(i.precio).toFixed(2);
-      // Agregamos (Ref: CODIGO) si existe, y el precio al final
-      const detalleRef = i.codigo_referencia ? `(Ref: ${i.codigo_referencia})` : '';
       
-      msg += `▪ ${cantidad}x ${i.nombre} ${detalleRef} - $${precioUnitario}\n`;
+      // Línea 1: Cantidad y Nombre (Usamos ▪ como viñeta principal)
+      msg += `▪ ${cantidad}x ${i.nombre}\n`;
+      
+      // Línea 2: Referencia (si existe)
+      if (i.codigo_referencia) {
+        msg += `• Ref: ${i.codigo_referencia}\n`;
+      }
+      
+      // Línea 3: Precio
+      msg += `• $${precioUnitario}\n`;
     });
 
     msg += `\nTotal: $${cartTotal.toFixed(2)}`;
