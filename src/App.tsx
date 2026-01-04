@@ -3,8 +3,7 @@ import { Routes, Route, useNavigate, useSearchParams, Link } from 'react-router-
 import { Heart } from 'lucide-react';
 import './App.css';
 import { detectarSeccion } from './utils/categories';
-// CORRECCIÓN: Quitamos optimizarImg porque ya no se usa aquí
-import { limpiarTexto } from './utils/helpers';
+import { limpiarTexto } from './utils/helpers'; // Se eliminó optimizarImg porque ya no se usa
 import { APP_CONFIG } from './config/constants';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
@@ -115,7 +114,7 @@ export default function App() {
     setSearchParams(prev => { prev.delete('prod'); return prev; });
   };
 
-  // CORRECCIÓN: Eliminada la función handleSearchFromHome que ya no se usa
+  // NOTA: Se eliminó handleSearchFromHome porque ya no se utiliza
 
   if (loading) {
     return (
@@ -137,9 +136,10 @@ export default function App() {
             <div>
               <HeroSection />
               
-              {/* Sección de Imagen Promocional */}
+              {/* SECCIÓN NUEVA: Banner Promocional (Reemplaza a Destacados) */}
               <div className="max-w-7xl mx-auto px-4 py-8">
                 <div className="rounded-2xl overflow-hidden shadow-md relative h-48 md:h-[400px]">
+                  {/* Asegúrate de que banner.png esté en la carpeta public */}
                   <img
                     src="/banner.png"
                     alt="Banner Promocional"
