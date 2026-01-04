@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-// CORRECCIÓN: Eliminado 'useLocation' que ya no se usa
+// CORRECCIÓN: Solo importamos lo que usamos. Adiós useLocation.
 import { Routes, Route, useSearchParams, Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import './App.css';
@@ -24,7 +24,8 @@ export default function App() {
   const { productos, loading } = useProducts();
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
-  // CORRECCIÓN: Eliminada la línea 'const location = useLocation();'
+  
+  // CORRECCIÓN: Eliminamos la variable 'location' que causaba el error
   
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
