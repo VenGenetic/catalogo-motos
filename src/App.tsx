@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Routes, Route, useNavigate, useSearchParams } from 'react-router-dom';
+import { Routes, Route, useNavigate, useSearchParams, Link } from 'react-router-dom'; // Agregamos Link
+import { Heart } from 'lucide-react'; // Importamos icono para estado vacío
 import './App.css';
 import { detectarSeccion } from './utils/categories';
 import { limpiarTexto, optimizarImg } from './utils/helpers';
@@ -78,16 +79,22 @@ export default function App() {
     });
   };
 
-  const productosFiltrados = useMemo(() => {
+  // --- LOGICA DE FAVORITOS ---
+  const productosFavoritos = useMemo(() => {
+    return productos.filter(p => favs.includes(p.id));
+  }, [productos, favs]);
+
+  // Filtrado General (Catalog y Favoritos comparten estado de filtros, lo cual es útil)
+  const getProductosFiltrados = (listaBase: Producto[]) => {
     const terminos = limpiarTexto(busqueda).split(' ').filter(t => t.length > 0);
-    return productos.filter((p) => {
+    return listaBase.filter((p) => {
       if (!p.precio) return false;
       if (terminos.length > 0 && !terminos.every((t) => p.textoBusqueda?.includes(t))) return false;
       if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
       if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
       return true;
     });
-  }, [productos, busqueda, filtroSeccion, filtroModelo]);
+  };
 
   useEffect(() => {
     if (!loading && productos.length > 0) {
@@ -142,12 +149,10 @@ export default function App() {
                       className="border border-gray-100 rounded-lg p-3 bg-white shadow-sm cursor-pointer hover:shadow-md transition-shadow group" 
                       onClick={() => handleSearchFromHome(p.nombre)}
                     >
-                      {/* VUELTA AL RECORTE DEL 25% */}
-                      <div className="overflow-hidden rounded-md mb-2 bg-gray-100 relative h-32">
+                      <div className="overflow-hidden rounded-md mb-2 bg-white relative h-32 flex items-center justify-center border border-gray-50">
                           <img 
                             src={optimizarImg(p.imagen)} 
-                            className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300" 
-                            style={{ clipPath: 'inset(0 0 25% 0)' }}
+                            className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300" 
                             alt={p.nombre}
                           />
                       </div>
@@ -159,9 +164,10 @@ export default function App() {
               </div>
             </div>
           } />
+          
           <Route path="/catalogo" element={
             <CatalogView 
-              productos={productosFiltrados} 
+              productos={getProductosFiltrados(productos)} 
               isFav={(id) => favs.includes(id)} 
               toggleFav={toggleFav}
               filtroModelo={filtroModelo} 
@@ -173,6 +179,44 @@ export default function App() {
               onProductClick={handleProductClick} 
             />
           } />
+
+          {/* NUEVA RUTA: FAVORITOS */}
+          <Route path="/favoritos" element={
+            favs.length > 0 ? (
+              <div className="animate-fade-in">
+                <div className="max-w-7xl mx-auto px-4 pt-6 pb-2">
+                  <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    <Heart className="text-red-600 fill-current" /> Mis Favoritos
+                  </h2>
+                </div>
+                {/* Reutilizamos CatalogView pero solo con los favoritos */}
+                <CatalogView 
+                  productos={getProductosFiltrados(productosFavoritos)} 
+                  isFav={(id) => favs.includes(id)} 
+                  toggleFav={toggleFav}
+                  filtroModelo={filtroModelo} 
+                  setFiltroModelo={setFiltroModelo}
+                  busqueda={busqueda} 
+                  setBusqueda={setBusqueda}
+                  filtroSeccion={filtroSeccion} 
+                  setFiltroSeccion={setFiltroSeccion}
+                  onProductClick={handleProductClick} 
+                />
+              </div>
+            ) : (
+              <div className="min-h-[60vh] flex flex-col items-center justify-center text-center p-4">
+                <div className="bg-gray-100 p-6 rounded-full mb-4">
+                  <Heart className="w-12 h-12 text-gray-400" />
+                </div>
+                <h2 className="text-xl font-bold text-slate-900 mb-2">Aún no tienes favoritos</h2>
+                <p className="text-gray-500 mb-6 max-w-xs mx-auto">Marca los repuestos que te interesen con el corazón para encontrarlos aquí.</p>
+                <Link to="/catalogo" className="bg-red-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-red-700 transition-colors shadow-lg shadow-red-200">
+                  Explorar Catálogo
+                </Link>
+              </div>
+            )
+          } />
+          
           <Route path="/contacto" element={<ContactView />} />
         </Routes>
       </main>
