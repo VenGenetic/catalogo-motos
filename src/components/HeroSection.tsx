@@ -4,13 +4,12 @@ import { ChevronRight } from 'lucide-react';
 export const HeroSection = () => (
   <div className="relative bg-slate-900 overflow-hidden font-sans">
     <div className="absolute inset-0">
-      {/* IMPORTANTE: Cambia 'hero-nueva.jpg' por el nombre real de tu archivo en la carpeta 'public' */}
+      {/* CORRECCIÓN: Ahora busca exactamente 'hero-nueva.png' */}
       <img 
-        src="/hero-nueva.jpg" 
+        src="/hero-nueva.png" 
         alt="Imagen Principal" 
-        className="w-full h-full object-cover object-center opacity-40"
-        // Nota: La opacidad (0.4) hace que se vea oscura para que el texto resalte.
-        // Si la quieres más clara, aumenta el valor (ej. opacity-60).
+        className="w-full h-full object-cover object-center opacity-50"
+        // Nota: He subido un poco la opacidad a 0.5 para que se vea más la moto
       />
       <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent"></div>
     </div>
