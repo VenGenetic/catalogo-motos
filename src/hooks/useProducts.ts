@@ -3,7 +3,7 @@ import { Producto } from '../types';
 import { detectarSeccion } from '../utils/categories';
 import { limpiarTexto } from '../utils/helpers';
 
-// Helper para precio (movido aquí)
+// Helper local para limpiar precios
 const limpiarPrecio = (valor: unknown): number => {
   if (typeof valor === 'number') return valor;
   if (!valor) return 0;
@@ -34,16 +34,17 @@ export const useProducts = () => {
           const seccionCalc = detectarSeccion(p);
           return {
             ...p,
-            id: String(p.id || crypto.randomUUID()), // Asegurar ID
+            id: String(p.id || crypto.randomUUID()), // Asegurar que siempre haya ID
             precio: limpiarPrecio(p.precio),
             seccion: seccionCalc,
+            // Pre-calculamos el texto de búsqueda para optimizar el filtrado
             textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc}`)
           };
         });
 
         setProductos(procesados);
       } catch (err) {
-        console.error(err);
+        console.error("Error cargando productos:", err);
         setError(err instanceof Error ? err.message : 'Error desconocido');
       } finally {
         setLoading(false);

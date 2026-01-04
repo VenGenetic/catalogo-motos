@@ -2,7 +2,6 @@ import { useState, useMemo, useEffect } from 'react';
 import { Routes, Route, useSearchParams, Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import './App.css';
-import { detectarSeccion } from './utils/categories';
 import { limpiarTexto } from './utils/helpers';
 import { APP_CONFIG } from './config/constants';
 import { Navbar } from './components/Navbar';
@@ -16,19 +15,16 @@ import { CartDrawer } from './components/CartDrawer';
 import { Footer } from './components/Footer';
 import { Producto } from './types';
 
-// Función para asegurar que el precio sea un número válido
-const limpiarPrecio = (valor: any): number => {
-  if (typeof valor === 'number') return valor;
-  if (!valor) return 0;
-  const limpio = String(valor).replace(/[^0-9.]/g, '');
-  const numero = parseFloat(limpio);
-  return isNaN(numero) ? 0 : numero;
-};
+// IMPORTAMOS LOS NUEVOS HOOKS
+import { useProducts } from './hooks/useProducts';
+import { useDebounce } from './hooks/useDebounce';
 
 export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [productos, setProductos] = useState<Producto[]>([]);
-  const [loading, setLoading] = useState(true);
+  
+  // 1. Usamos el hook para obtener datos (¡Mucho más limpio!)
+  const { productos, loading } = useProducts();
+  
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
   
   const [favs, setFavs] = useState<string[]>(() => {
@@ -36,39 +32,11 @@ export default function App() {
   });
   
   const [busqueda, setBusqueda] = useState('');
+  // 2. Aplicamos debounce a la búsqueda (300ms de espera)
+  const busquedaDebounced = useDebounce(busqueda, 300);
+
   const [filtroModelo, setFiltroModelo] = useState('');
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
-
-  useEffect(() => {
-    fetch('/data.json')
-      .then(res => {
-        if (!res.ok) throw new Error('Error al cargar data.json');
-        return res.json();
-      })
-      .then((data: any) => {
-        let raw: any[] = [];
-        if (Array.isArray(data)) raw = data;
-        else if (Array.isArray(data.RAW_SCRAPED_DATA)) raw = data.RAW_SCRAPED_DATA;
-        else if (Array.isArray(data.products)) raw = data.products;
-
-        const procesados = raw.map((p) => {
-            const seccionCalc = detectarSeccion(p);
-            return {
-              ...p,
-              precio: limpiarPrecio(p.precio),
-              seccion: seccionCalc,
-              textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc}`)
-            };
-        });
-
-        setProductos(procesados);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Error cargando productos:", err);
-        setLoading(false);
-      });
-  }, []);
 
   const toggleFav = (id: string) => {
     setFavs(prev => {
@@ -82,10 +50,11 @@ export default function App() {
     return productos.filter(p => favs.includes(p.id));
   }, [productos, favs]);
 
-  // MEJORA: Memorizamos el resultado del filtrado para evitar recálculos innecesarios
-  // Definimos la lógica de filtrado aquí dentro para usarla en ambos casos
+  // Función de filtrado centralizada
   const filtrarLista = (lista: Producto[]) => {
-    const terminos = limpiarTexto(busqueda).split(' ').filter(t => t.length > 0);
+    // USAMOS LA VARIABLE DEBOUNCED AQUÍ en lugar de 'busqueda' directa
+    const terminos = limpiarTexto(busquedaDebounced).split(' ').filter(t => t.length > 0);
+    
     return lista.filter((p) => {
       if (!p.precio) return false;
       if (terminos.length > 0 && !terminos.every((t) => p.textoBusqueda?.includes(t))) return false;
@@ -95,15 +64,14 @@ export default function App() {
     });
   };
 
-  // Usamos useMemo para la lista principal del catálogo
+  // Memorizamos las listas filtradas
   const filteredProducts = useMemo(() => {
     return filtrarLista(productos);
-  }, [productos, busqueda, filtroSeccion, filtroModelo]);
+  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo]); // Dependencia actualizada
 
-  // Usamos useMemo para la lista de favoritos filtrada
   const filteredFavs = useMemo(() => {
     return filtrarLista(productosFavoritos);
-  }, [productosFavoritos, busqueda, filtroSeccion, filtroModelo]);
+  }, [productosFavoritos, busquedaDebounced, filtroSeccion, filtroModelo]); // Dependencia actualizada
 
   useEffect(() => {
     if (!loading && productos.length > 0) {
@@ -144,8 +112,6 @@ export default function App() {
           <Route path="/" element={
             <div>
               <HeroSection />
-              
-              {/* Sección de Banner Promocional */}
               <div className="max-w-7xl mx-auto px-4 py-8">
                 <div className="rounded-2xl overflow-hidden shadow-md relative h-48 md:h-[400px]">
                   <img
@@ -154,7 +120,6 @@ export default function App() {
                     className="w-full h-full object-cover object-center"
                   />
                 </div>
-                
                 <div className="mt-6 text-center">
                   <Link 
                     to="/catalogo" 
@@ -164,18 +129,17 @@ export default function App() {
                   </Link>
                 </div>
               </div>
-
             </div>
           } />
           
           <Route path="/catalogo" element={
             <CatalogView 
-              productos={filteredProducts} // USAMOS LA LISTA MEMORIZADA
+              productos={filteredProducts}
               isFav={(id) => favs.includes(id)} 
               toggleFav={toggleFav}
               filtroModelo={filtroModelo} 
               setFiltroModelo={setFiltroModelo}
-              busqueda={busqueda} 
+              busqueda={busqueda} // Pasamos el valor "real" al input para que no tenga lag visual
               setBusqueda={setBusqueda}
               filtroSeccion={filtroSeccion} 
               setFiltroSeccion={setFiltroSeccion}
@@ -192,7 +156,7 @@ export default function App() {
                   </h2>
                 </div>
                 <CatalogView 
-                  productos={filteredFavs} // USAMOS LA LISTA FAVORITOS MEMORIZADA
+                  productos={filteredFavs}
                   isFav={(id) => favs.includes(id)} 
                   toggleFav={toggleFav}
                   filtroModelo={filtroModelo} 
