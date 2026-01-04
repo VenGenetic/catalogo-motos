@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect } from 'react';
-import { Heart } from 'lucide-react';
+import { useState, useMemo } from 'react'; // Quitamos useEffect
+// Quitamos import { Heart } ...
 import './App.css';
 import { APP_CONFIG } from './config/constants';
 import { limpiarTexto } from './utils/helpers';
@@ -56,7 +56,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-800 flex flex-col">
-      {/* Pasamos setView a la Navbar para cambiar de sección manualmente */}
       <Navbar onNavigate={setView} />
       
       <main className="flex-1">
