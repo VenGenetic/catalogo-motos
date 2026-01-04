@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Routes, Route, useNavigate, useSearchParams, Link } from 'react-router-dom'; // CORRECCIÓN: Agregado 'Link'
+import { Routes, Route, useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import './App.css';
 import { detectarSeccion } from './utils/categories';
@@ -147,16 +147,15 @@ export default function App() {
                       className="border border-gray-100 rounded-lg p-3 bg-white shadow-sm cursor-pointer hover:shadow-md transition-shadow group" 
                       onClick={() => handleSearchFromHome(p.nombre)}
                     >
-                      {/* CONTENEDOR DE IMAGEN DESTACADA */}
                       <div className="overflow-hidden rounded-md mb-2 bg-white relative h-32 flex items-center justify-center border border-gray-50">
-                          {/* ZOOM y RECORTE VISUAL */}
                           <img 
                             src={optimizarImg(p.imagen)} 
                             className="w-full h-full object-cover object-top scale-[1.35] origin-top group-hover:scale-[1.45] transition-transform duration-300" 
                             alt={p.nombre}
                           />
                       </div>
-                      <h3 className="text-xs font-bold line-clamp-2 mb-1 text-slate-800">{p.nombre}</h3>
+                      {/* CAMBIO: Eliminado 'line-clamp-2' */}
+                      <h3 className="text-xs font-bold mb-1 text-slate-800">{p.nombre}</h3>
                       <span className="text-red-600 font-bold text-sm">${Number(p.precio).toFixed(2)}</span>
                     </div>
                   ))}

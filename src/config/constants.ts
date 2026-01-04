@@ -24,7 +24,7 @@ export const MODELOS = [
   "Boneville", "Axxo Milano", "Bultaco Freedom", "Tanq", "Dynamic", "Dynamic Pro", "SHM Jedi",
   "Feroce", "Predator", "Eivissa", "Viper", "CX7", "Comander", "Crucero", "Spitfire", "Delta", 
   "Montana", "Workforce", "GTR", "Panther", "Cafe Racer", "Eagle", "Speed", "Everest",
-  "Wing Evo", "Wing Evo 200", "Wing Evo 2", "Scooter Evo 2 180", "S1", "S1 Adv", "S1 Crossover 180"
+  "Wing Evo", "Scooter Evo 2 180", "S1"
 ];
 
 export const MODELOS_FIJOS = [

@@ -132,22 +132,24 @@ export const CatalogView = ({
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
-                  {/* IMAGEN CON RECORTE INTELIGENTE */}
                   <LazyImage 
                     src={optimizarImg(product.imagen)} 
                     alt={product.nombre}
                     className="h-40 md:h-56 bg-white" 
                     imageFit="cover"
-                    cropBottom={true} // Activamos el recorte para el catálogo
+                    cropBottom={true}
                   />
 
                   <div className="p-3 flex flex-col flex-grow relative z-10 bg-white">
                     <span className="text-[10px] font-bold text-red-600 uppercase tracking-wide mb-1 line-clamp-1">
                       {product.seccion}
                     </span>
-                    <h3 className="text-xs md:text-sm font-bold text-slate-800 mb-1 line-clamp-2 leading-tight min-h-[2.5em]">
+                    
+                    {/* CAMBIO: Eliminado 'line-clamp-2' y 'min-h' para mostrar nombre completo */}
+                    <h3 className="text-xs md:text-sm font-bold text-slate-800 mb-1 leading-tight">
                       <HighlightedText text={product.nombre} highlight={busqueda} />
                     </h3>
+
                     <div className="mt-auto pt-2 flex items-end justify-between">
                        <span className="text-sm md:text-lg font-extrabold text-slate-900">
                          ${Number(product.precio).toFixed(2)}
@@ -187,7 +189,7 @@ export const CatalogView = ({
         )}
       </div>
 
-      {/* MODAL (Sin cambios necesarios) */}
+      {/* MODAL DE FILTROS (Sin cambios) */}
       {modalModelos && (
         <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center">
           <div 
