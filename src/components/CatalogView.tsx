@@ -111,7 +111,7 @@ export const CatalogView = ({
           </div>
         </div>
 
-        {/* LISTADO CON RECORTE */}
+        {/* LISTADO */}
         {visibles.length > 0 ? (
           <>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6 px-2 md:px-0">
@@ -132,13 +132,13 @@ export const CatalogView = ({
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
-                  {/* VUELTA AL RECORTE: Usamos imageFit='cover' y style clipPath */}
+                  {/* IMAGEN CON RECORTE INTELIGENTE */}
                   <LazyImage 
                     src={optimizarImg(product.imagen)} 
                     alt={product.nombre}
-                    className="h-40 md:h-56 bg-gray-100" 
+                    className="h-40 md:h-56 bg-white" 
                     imageFit="cover"
-                    style={{ clipPath: 'inset(0 0 25% 0)' }}
+                    cropBottom={true} // Activamos el recorte para el catálogo
                   />
 
                   <div className="p-3 flex flex-col flex-grow relative z-10 bg-white">
@@ -187,7 +187,7 @@ export const CatalogView = ({
         )}
       </div>
 
-      {/* MODAL DE FILTROS (Mismo código de siempre) */}
+      {/* MODAL (Sin cambios necesarios) */}
       {modalModelos && (
         <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center">
           <div 

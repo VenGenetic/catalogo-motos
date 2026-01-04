@@ -6,15 +6,17 @@ interface Props {
   className?: string;
   style?: React.CSSProperties;
   onClick?: () => void;
-  // Nueva propiedad opcional: define cómo se ajusta la imagen
-  imageFit?: 'cover' | 'contain'; 
+  // Propiedad para activar el recorte inteligente (zoom)
+  cropBottom?: boolean; 
+  imageFit?: 'cover' | 'contain';
 }
 
-export const LazyImage = ({ src, alt, className, style, onClick, imageFit = 'cover' }: Props) => {
+export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = false, imageFit = 'cover' }: Props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  // Mapeamos la prop a la clase de Tailwind correspondiente
+  // Si cropBottom es true, aplicamos la escala y el origen
+  const cropClasses = cropBottom ? 'scale-[1.35] origin-top' : '';
   const fitClass = imageFit === 'contain' ? 'object-contain' : 'object-cover';
 
   return (
@@ -23,7 +25,6 @@ export const LazyImage = ({ src, alt, className, style, onClick, imageFit = 'cov
       style={style} 
       onClick={onClick}
     >
-      {/* Skeleton (Cargando...) */}
       {!isLoaded && !hasError && (
         <div className="absolute inset-0 bg-gray-100 animate-pulse z-10 flex items-center justify-center">
         </div>
@@ -38,9 +39,9 @@ export const LazyImage = ({ src, alt, className, style, onClick, imageFit = 'cov
           setHasError(true);
           setIsLoaded(true);
         }}
-        // AQUI ESTA EL CAMBIO CLAVE: Usamos la variable fitClass y añadimos padding si es 'contain'
-        className={`w-full h-full ${fitClass} ${imageFit === 'contain' ? 'p-2' : ''} transition-all duration-500 ease-out ${
-          isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+        // APLICAMOS LAS CLASES DE RECORTE AQUÍ
+        className={`w-full h-full ${fitClass} ${cropClasses} object-top transition-all duration-500 ease-out ${
+          isLoaded ? 'opacity-100' : 'opacity-0'
         }`}
       />
     </div>

@@ -14,9 +14,10 @@ export const optimizarImg = (url: any) => {
   // 2. Si ya viene de wsrv, retornar tal cual
   if (url.includes('wsrv.nl')) return url;
 
-  // 3. Optimización SIN RECORTES CUADRADOS
+  // 3. Optimización LIMPIA (Sin recortes del servidor)
   try {
-    // CAMBIO CRÍTICO: Quitamos 'h=400', 'fit=cover'. Solo limitamos el ancho.
+    // CAMBIO CRÍTICO: Eliminamos 'h', 'fit', 'a'. Solo optimizamos formato y ancho.
+    // Dejamos que CSS se encargue del recorte visual.
     return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=500&q=80&output=webp`;
   } catch (e) {
     return 'https://via.placeholder.com/400x300?text=Error+Img';

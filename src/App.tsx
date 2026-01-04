@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Routes, Route, useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { Routes, Route, useNavigate, useSearchParams } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import './App.css';
 import { detectarSeccion } from './utils/categories';
@@ -147,12 +147,17 @@ export default function App() {
                       className="border border-gray-100 rounded-lg p-3 bg-white shadow-sm cursor-pointer hover:shadow-md transition-shadow group" 
                       onClick={() => handleSearchFromHome(p.nombre)}
                     >
-                      {/* VUELTA AL RECORTE DEL 25% (Estilo Original) */}
-                      <div className="overflow-hidden rounded-md mb-2 bg-gray-100 relative h-32">
+                      {/* CONTENEDOR DE IMAGEN DESTACADA */}
+                      <div className="overflow-hidden rounded-md mb-2 bg-white relative h-32 flex items-center justify-center border border-gray-50">
+                          {/* CORRECCIÓN FINAL:
+                              1. scale-[1.35]: Hace zoom para que la imagen sea más grande que el contenedor.
+                              2. origin-top: Mantiene la parte de arriba fija.
+                              3. object-cover: Llena los lados.
+                              RESULTADO: La parte de abajo (marca de agua) se sale del contenedor y no se ve, sin dejar espacios.
+                          */}
                           <img 
                             src={optimizarImg(p.imagen)} 
-                            className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300" 
-                            style={{ clipPath: 'inset(0 0 25% 0)' }}
+                            className="w-full h-full object-cover object-top scale-[1.35] origin-top group-hover:scale-[1.45] transition-transform duration-300" 
                             alt={p.nombre}
                           />
                       </div>
