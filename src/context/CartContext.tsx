@@ -47,7 +47,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const addToCart = (product: Producto) => {
     // BLINDAJE: Verificamos que 'navigator' y 'vibrate' existan antes de llamar
-    // Esto evita que la app se rompa en algunos navegadores móviles
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
       try { navigator.vibrate(50); } catch (e) { /* Ignorar error de vibración */ }
     }
@@ -70,9 +69,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       }
       return [...prev, { ...product, cantidad: 1, cant: 1 }];
     });
-    
-    // Opcional: Si prefieres abrir el carrito automáticamente, descomenta la siguiente línea:
-    // setIsOpen(true);
   };
 
   const updateQuantity = (id: string, delta: number) => {
@@ -90,9 +86,19 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const cartCount = cart.reduce((acc, item) => acc + (item.cantidad || item.cant || 0), 0);
   const cartTotal = cart.reduce((acc, item) => acc + item.precio * (item.cantidad || item.cant || 0), 0);
 
+  // --- FUNCIÓN ACTUALIZADA CON DETALLES EXTRA ---
   const sendOrderToWhatsapp = () => {
     let msg = "Hola LV PARTS, mi pedido:\n\n";
-    cart.forEach(i => msg += `▪ ${i.cantidad || i.cant}x ${i.nombre}\n`);
+    
+    cart.forEach(i => {
+      const cantidad = i.cantidad || i.cant || 0;
+      const precioUnitario = Number(i.precio).toFixed(2);
+      // Agregamos (Ref: CODIGO) si existe, y el precio al final
+      const detalleRef = i.codigo_referencia ? `(Ref: ${i.codigo_referencia})` : '';
+      
+      msg += `▪ ${cantidad}x ${i.nombre} ${detalleRef} - $${precioUnitario}\n`;
+    });
+
     msg += `\nTotal: $${cartTotal.toFixed(2)}`;
     window.open(`https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
   };
