@@ -1,10 +1,9 @@
-import { X, ShoppingCart, Check, AlertCircle } from 'lucide-react';
+import { ArrowLeft, X, Plus, ShoppingBag, MessageCircle } from 'lucide-react';
+import { ImageZoom } from './ImageZoom';
+import { optimizarImg } from '../utils/helpers';
 import { Producto } from '../types';
 import { useCart } from '../context/CartContext';
-import { useState, useEffect } from 'react';
-import { optimizarImg } from '../utils/helpers';
-import { ImageZoom } from './ImageZoom';
-import { Helmet } from 'react-helmet-async'; // 1. Importar
+import { APP_CONFIG } from '../config/constants';
 
 interface Props {
   product: Producto | null;
@@ -13,121 +12,108 @@ interface Props {
 
 export const ProductDetailModal = ({ product, onClose }: Props) => {
   const { addToCart } = useCart();
-  const [agregado, setAgregado] = useState(false);
-
-  useEffect(() => {
-    if (product) setAgregado(false);
-  }, [product]);
 
   if (!product) return null;
 
   const handleAdd = () => {
     addToCart(product);
-    setAgregado(true);
-    setTimeout(() => setAgregado(false), 2000);
+    onClose();
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 animate-fade-in">
-      {/* 2. AÑADIR SEO DINÁMICO */}
-      <Helmet>
-        <title>{`${product.nombre} | Catálogo LV PARTS`}</title>
-        <meta name="description" content={`Compra ${product.nombre} al mejor precio. Repuestos de calidad para tu moto.`} />
-      </Helmet>
+  const handleConsult = () => {
+    const precio = Number(product.precio) || 0;
+    const mensaje = `Hola LV PARTS, estoy interesado en este repuesto:
+    
+📌 *${product.nombre}*
+${product.codigo_referencia ? `⚙️ Ref: ${product.codigo_referencia}` : ''}
+💰 Precio: $${precio.toFixed(2)}
 
-      <div 
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" 
-        onClick={onClose}
-      />
-      
-      {/* ... (resto del código del modal igual que antes) ... */}
-       <div className="bg-white w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl relative z-10 overflow-hidden flex flex-col md:flex-row animate-scale-up">
-        {/* Botón cerrar móvil */}
-        <button 
-          onClick={onClose}
-          className="absolute top-3 right-3 z-20 p-2 bg-black/10 hover:bg-black/20 rounded-full text-slate-800 md:hidden backdrop-blur-md"
-        >
-          <X className="w-5 h-5" />
+¿Me pueden confirmar disponibilidad?`;
+
+    const url = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, '_blank');
+  };
+
+  const precioSeguro = Number(product.precio) || 0;
+
+  return (
+    <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center bg-white md:bg-black/60 backdrop-blur-sm animate-fade-in">
+      <button onClick={onClose} className="md:hidden absolute top-4 left-4 z-20 bg-white/80 p-2 rounded-full shadow-sm backdrop-blur-md">
+        <ArrowLeft className="w-6 h-6 text-slate-900" />
+      </button>
+
+      <div className="w-full h-full md:h-auto md:max-w-4xl md:max-h-[90vh] bg-white md:rounded-2xl flex flex-col md:flex-row overflow-hidden relative shadow-2xl">
+        <button onClick={onClose} className="hidden md:block absolute top-4 right-4 z-20 bg-white/90 p-2 rounded-full hover:bg-gray-100 transition-colors">
+          <X className="w-6 h-6 text-slate-500" />
         </button>
 
-        {/* Imagen */}
-        <div className="w-full md:w-1/2 bg-gray-100 relative min-h-[300px] md:min-h-full">
-           <ImageZoom 
-             src={optimizarImg(product.imagen)} 
-             alt={product.nombre} 
-             className="w-full h-full object-contain mix-blend-multiply p-4"
-           />
+        {/* CORRECCIÓN: bg-white en lugar de bg-gray-100 para evitar el "espacio feo" */}
+        <div className="w-full md:w-1/2 h-[45vh] md:h-[500px] bg-white relative shrink-0">
+          <ImageZoom src={optimizarImg(product.imagen)} alt={product.nombre} />
+          <div className="absolute bottom-4 right-4 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-sm pointer-events-none">
+            Toca para zoom
+          </div>
         </div>
 
-        {/* Info */}
-        <div className="w-full md:w-1/2 p-6 md:p-10 flex flex-col overflow-y-auto">
-          <div className="flex justify-between items-start">
-            <div>
-              <span className="text-red-600 font-bold text-xs uppercase tracking-wider bg-red-50 px-2 py-1 rounded-md">
-                {product.categoria || product.seccion}
+        <div className="flex-1 flex flex-col h-full overflow-hidden">
+          <div className="flex-1 overflow-y-auto p-5 md:p-8 pb-32 md:pb-8">
+            <div className="flex justify-between items-start mb-2">
+              <span className="text-xs font-bold text-red-600 uppercase tracking-wider bg-red-50 px-2 py-1 rounded">
+                {product.seccion || 'Repuesto'}
               </span>
-              <h2 className="text-2xl md:text-3xl font-black text-slate-900 mt-3 mb-2 leading-tight">
-                {product.nombre}
-              </h2>
-              {product.codigo_referencia && (
-                <p className="text-gray-400 text-sm font-medium">Ref: {product.codigo_referencia}</p>
-              )}
             </div>
-            <button 
-              onClick={onClose} 
-              className="hidden md:block p-2 hover:bg-gray-100 rounded-full text-gray-400 hover:text-gray-600 transition-colors"
-            >
-              <X className="w-6 h-6" />
-            </button>
-          </div>
 
-          <div className="mt-6 space-y-4">
-             <div className="flex items-baseline gap-2">
-               <span className="text-4xl font-black text-slate-900 tracking-tight">
-                 ${Number(product.precio).toFixed(2)}
-               </span>
-             </div>
-             
-             {product.stock === false ? (
-               <div className="flex items-center gap-2 text-amber-600 bg-amber-50 p-3 rounded-lg border border-amber-100">
-                 <AlertCircle className="w-5 h-5" />
-                 <span className="font-bold text-sm">Producto actualmente agotado</span>
-               </div>
-             ) : (
-               <div className="flex items-center gap-2 text-green-600 bg-green-50 p-2 rounded-lg border border-green-100 w-fit px-3">
-                 <Check className="w-4 h-4" />
-                 <span className="font-bold text-xs uppercase">Disponible en stock</span>
-               </div>
-             )}
-          </div>
+            <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 mb-2 leading-tight">
+              {product.nombre}
+            </h2>
+            
+            {product.codigo_referencia && (
+              <p className="text-sm text-gray-500 font-mono mb-4">Ref: {product.codigo_referencia}</p>
+            )}
 
-          <div className="mt-auto pt-8">
-            <button
-              onClick={handleAdd}
-              disabled={!product.stock && product.stock !== undefined}
-              className={`w-full py-4 px-6 rounded-xl font-bold text-lg flex items-center justify-center gap-3 transition-all transform active:scale-[0.98] shadow-lg ${
-                agregado 
-                  ? 'bg-green-600 text-white shadow-green-200' 
-                  : (!product.stock && product.stock !== undefined)
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'
-                    : 'bg-slate-900 text-white hover:bg-slate-800 shadow-slate-300 hover:shadow-xl'
-              }`}
-            >
-              {agregado ? (
-                <>
-                  <Check className="w-6 h-6" />
-                  ¡Agregado al Carrito!
-                </>
-              ) : (
-                <>
-                  <ShoppingCart className="w-6 h-6" />
-                  {(!product.stock && product.stock !== undefined) ? 'Sin Stock' : 'Agregar al Pedido'}
-                </>
-              )}
-            </button>
-            <p className="text-center text-xs text-gray-400 mt-4">
-              Garantía de calidad LV PARTS • Envíos a todo el país
+            <div className="my-6 border-t border-b border-gray-100 py-4 flex items-center justify-between">
+              <div>
+                <span className="block text-sm text-gray-400 mb-1">Precio Unitario</span>
+                <span className="text-3xl font-extrabold text-slate-900">${precioSeguro.toFixed(2)}</span>
+              </div>
+              <div className="bg-green-50 text-green-700 px-3 py-1 rounded-full text-xs font-bold">
+                Disponible
+              </div>
+            </div>
+
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Repuesto original garantizado para tu motocicleta. Compatible con los modelos especificados.
             </p>
+
+            <div className="hidden md:flex gap-4 mt-8">
+              <button 
+                onClick={handleAdd}
+                className="flex-1 bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-slate-800 transition-all flex items-center justify-center gap-2 active:scale-95"
+              >
+                <Plus className="w-5 h-5" /> Agregar al Pedido
+              </button>
+              <button 
+                onClick={handleConsult}
+                className="flex-1 border-2 border-slate-200 text-slate-700 py-4 rounded-xl font-bold hover:border-slate-900 transition-all active:scale-95"
+              >
+                Consultar WhatsApp
+              </button>
+            </div>
+          </div>
+
+          <div className="md:hidden fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 flex gap-3 z-30 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+            <button 
+              onClick={handleConsult}
+              className="flex-1 bg-white border border-gray-200 text-slate-700 py-3 rounded-xl font-bold flex items-center justify-center gap-2 text-sm active:bg-gray-50"
+            >
+              <MessageCircle className="w-4 h-4" /> Consultar
+            </button>
+            <button 
+              onClick={handleAdd}
+              className="flex-[1.5] bg-red-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-red-200 text-sm active:bg-red-700"
+            >
+              <ShoppingBag className="w-4 h-4" /> Agregar ${precioSeguro.toFixed(2)}
+            </button>
           </div>
         </div>
       </div>
