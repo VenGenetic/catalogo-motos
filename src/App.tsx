@@ -26,7 +26,7 @@ export default function App() {
   // Estado para el modal de producto
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
-  // Sincronizar URL con Modal
+  // Sincronizar URL con Modal (Si compartes un link de producto, se abre solo)
   useEffect(() => {
     if (!loading && productos.length > 0) {
       const prodId = searchParams.get('prod');
@@ -39,32 +39,35 @@ export default function App() {
     }
   }, [searchParams, productos, loading]);
 
-  // Función puente para que tus componentes viejos usen el nuevo Router
+  // Función puente para que el Navbar use el nuevo sistema de rutas
   const handleNavigate = (view: 'home' | 'catalogo' | 'contacto' | 'favoritos') => {
     if (view === 'home') navigate('/');
     else navigate(`/${view}`);
     window.scrollTo(0, 0);
   };
 
+  // Lógica de Favoritos (Restaurada)
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
   });
-  
-  const [busqueda, setBusqueda] = useState('');
-  const [filtroModelo, setFiltroModelo] = useState('');
-  const [filtroSeccion, setFiltroSeccion] = useState('Todos');
 
-  // Lógica de Favoritos
   const toggleFav = (id: string) => {
     const nuevos = favs.includes(id) ? favs.filter(x => x !== id) : [...favs, id];
     setFavs(nuevos);
     localStorage.setItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS, JSON.stringify(nuevos));
   };
 
-  // Filtrado
+  // Variables de estado para los filtros
+  const [busqueda, setBusqueda] = useState('');
+  const [filtroModelo, setFiltroModelo] = useState('');
+  const [filtroSeccion, setFiltroSeccion] = useState('Todos');
+
+  // Filtrado de Productos
   const productosFiltrados = useMemo(() => {
+    // Si estamos en la ruta /favoritos, solo mostramos los guardados
     const isFavView = location.pathname === '/favoritos';
     const lista = isFavView ? productos.filter(p => favs.includes(p.id)) : productos;
+    
     const terminos = limpiarTexto(busqueda).split(' ').filter(t => t.length > 0);
     
     return lista.filter((p: any) => {
@@ -76,16 +79,16 @@ export default function App() {
     });
   }, [productos, busqueda, filtroSeccion, filtroModelo, location.pathname, favs]);
 
-  // Manejadores de Producto
+  // Manejadores de Click
   const handleProductClick = (p: any) => {
-    setSearchParams({ prod: p.id });
+    setSearchParams({ prod: p.id }); // Actualiza la URL
   };
 
   const handleCloseModal = () => {
-    setSearchParams({}); // Limpia la URL al cerrar
+    setSearchParams({}); // Limpia la URL
   };
 
-  // Determinar vista actual para el BottomNav
+  // Detectar vista actual para pintar el botón rojo en el menú inferior
   const currentView = location.pathname === '/' ? 'home' : location.pathname.substring(1);
 
   if (loading) {
