@@ -1,17 +1,16 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-// VOLVEMOS A: BrowserRouter (Para URLs limpias sin #)
-import { BrowserRouter } from 'react-router-dom' 
+import { BrowserRouter } from 'react-router-dom'
+import { HelmetProvider } from 'react-helmet-async' // 1. Importar
 import './index.css'
 import App from './App.tsx'
-import { CartProvider } from './context/CartContext'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter> 
-      <CartProvider>
+    <HelmetProvider> {/* 2. Envolver App */}
+      <BrowserRouter>
         <App />
-      </CartProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </HelmetProvider>
   </StrictMode>,
 )

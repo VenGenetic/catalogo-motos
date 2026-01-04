@@ -1,9 +1,18 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Routes, Route, useSearchParams, Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
+import { Helmet } from 'react-helmet-async'; // Importamos Helmet para SEO
 import './App.css';
+
+// Utilidades y Configuración
 import { limpiarTexto } from './utils/helpers';
 import { APP_CONFIG } from './config/constants';
+
+// Hooks Personalizados
+import { useProducts } from './hooks/useProducts';
+import { useDebounce } from './hooks/useDebounce';
+
+// Componentes
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { CatalogView } from './components/CatalogView';
@@ -15,20 +24,20 @@ import { CartDrawer } from './components/CartDrawer';
 import { Footer } from './components/Footer';
 import { Producto } from './types';
 
-// IMPORTAMOS LOS NUEVOS HOOKS
-import { useProducts } from './hooks/useProducts';
-import { useDebounce } from './hooks/useDebounce';
-
 export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
   
-  // 1. Lógica de datos extraída al Hook
+  // 1. Lógica de datos extraída al Hook (¡Mucho más limpio!)
   const { productos, loading } = useProducts();
   
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
   
   const [favs, setFavs] = useState<string[]>(() => {
-    try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
+    try { 
+      return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); 
+    } catch { 
+      return []; 
+    }
   });
   
   // Estado para filtros
@@ -74,7 +83,7 @@ export default function App() {
     return filtrarLista(productosFavoritos);
   }, [productosFavoritos, busquedaDebounced, filtroSeccion, filtroModelo]);
 
-  // Manejo de URL para modales
+  // Manejo de URL para modales (Deep Linking)
   useEffect(() => {
     if (!loading && productos.length > 0) {
       const prodId = searchParams.get('prod');
@@ -108,12 +117,21 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-800 flex flex-col">
+      {/* SEO Global para la página principal */}
+      <Helmet>
+        <title>Catálogo Motos | LV PARTS</title>
+        <meta name="description" content="Encuentra los mejores repuestos para tu moto en nuestro catálogo digital. Calidad y precio garantizado." />
+      </Helmet>
+
       <Navbar />
+      
       <main className="fade-in flex-1">
         <Routes>
           <Route path="/" element={
             <div>
               <HeroSection />
+              
+              {/* Sección de Banner Promocional */}
               <div className="max-w-7xl mx-auto px-4 py-8">
                 <div className="rounded-2xl overflow-hidden shadow-md relative h-48 md:h-[400px]">
                   <img
@@ -122,6 +140,7 @@ export default function App() {
                     className="w-full h-full object-cover object-center"
                   />
                 </div>
+                
                 <div className="mt-6 text-center">
                   <Link 
                     to="/catalogo" 
@@ -141,7 +160,7 @@ export default function App() {
               toggleFav={toggleFav}
               filtroModelo={filtroModelo} 
               setFiltroModelo={setFiltroModelo}
-              busqueda={busqueda} // Input visual (inmediato)
+              busqueda={busqueda} // Pasamos el valor "real" al input para respuesta inmediata
               setBusqueda={setBusqueda}
               filtroSeccion={filtroSeccion} 
               setFiltroSeccion={setFiltroSeccion}
@@ -187,6 +206,7 @@ export default function App() {
           <Route path="/contacto" element={<ContactView />} />
         </Routes>
       </main>
+
       <ProductDetailModal product={selectedProduct} onClose={handleCloseModal} />
       <CartDrawer />
       <ScrollToTopButton />
