@@ -138,29 +138,29 @@ export default function App() {
           <Route path="/" element={
             <div>
               <HeroSection />
-              <div className="px-4 py-8 max-w-7xl mx-auto">
-                <h2 className="text-xl font-bold mb-4 text-slate-900">Destacados</h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-                  {productos.slice(0, 4).map((p) => (
-                    <div 
-                      key={p.id} 
-                      className="border border-gray-100 rounded-lg p-3 bg-white shadow-sm cursor-pointer hover:shadow-md transition-shadow group" 
-                      onClick={() => handleSearchFromHome(p.nombre)}
-                    >
-                      <div className="overflow-hidden rounded-md mb-2 bg-white relative h-32 flex items-center justify-center border border-gray-50">
-                          <img 
-                            src={optimizarImg(p.imagen)} 
-                            className="w-full h-full object-cover object-top scale-[1.35] origin-top group-hover:scale-[1.45] transition-transform duration-300" 
-                            alt={p.nombre}
-                          />
-                      </div>
-                      {/* CAMBIO: Eliminado 'line-clamp-2' */}
-                      <h3 className="text-xs font-bold mb-1 text-slate-800">{p.nombre}</h3>
-                      <span className="text-red-600 font-bold text-sm">${Number(p.precio).toFixed(2)}</span>
-                    </div>
-                  ))}
+              
+              {/* SECCIÓN NUEVA: Imagen Promocional (Reemplaza a Destacados) */}
+              <div className="max-w-7xl mx-auto px-4 py-8">
+                <div className="rounded-2xl overflow-hidden shadow-md relative h-48 md:h-[400px]">
+                  {/* Usamos banner.png sin opacidad para que se vea claro y brillante */}
+                  <img
+                    src="/banner.png"
+                    alt="Banner Promocional"
+                    className="w-full h-full object-cover object-center"
+                  />
+                </div>
+                
+                {/* Botón opcional debajo de la imagen para llevar al catálogo */}
+                <div className="mt-6 text-center">
+                  <Link 
+                    to="/catalogo" 
+                    className="inline-block px-8 py-3 bg-slate-900 text-white font-bold rounded-full hover:bg-red-600 transition-colors shadow-lg active:scale-95"
+                  >
+                    Ver Todos los Repuestos
+                  </Link>
                 </div>
               </div>
+
             </div>
           } />
           
