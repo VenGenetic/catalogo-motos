@@ -1,16 +1,16 @@
-import { useState, useMemo, useEffect, Suspense, lazy } from 'react'; // Agregamos Suspense y lazy
+import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react'; // IMPORTANTE: useCallback
 import { Routes, Route, useSearchParams, Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
-import { Helmet } from 'react-helmet-async'; // Importamos Helmet para SEO
+import { Helmet } from 'react-helmet-async';
 import './App.css';
 import { limpiarTexto } from './utils/helpers';
 import { APP_CONFIG } from './config/constants';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
-// Componentes lazy (carga diferida)
+
 const CatalogView = lazy(() => import('./components/CatalogView').then(module => ({ default: module.CatalogView })));
 const ContactView = lazy(() => import('./components/ContactView').then(module => ({ default: module.ContactView })));
-// El resto de componentes pequeños se pueden quedar normales
+
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { BottomNav } from './components/BottomNav';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
@@ -20,7 +20,6 @@ import { Producto } from './types';
 import { useProducts } from './hooks/useProducts';
 import { useDebounce } from './hooks/useDebounce';
 
-// Componente de carga para la transición
 const PageLoader = () => (
   <div className="flex h-[50vh] w-full items-center justify-center">
     <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-red-600"></div>
@@ -41,54 +40,58 @@ export default function App() {
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
   const busquedaDebounced = useDebounce(busqueda, 300);
 
-  const toggleFav = (id: string) => {
+  // OPTIMIZACIÓN: useCallback para estabilizar la función
+  const toggleFav = useCallback((id: string) => {
     setFavs(prev => {
       const nuevos = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
       localStorage.setItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS, JSON.stringify(nuevos));
       return nuevos;
     });
-  };
+  }, []);
 
   const productosFavoritos = useMemo(() => {
     return productos.filter(p => favs.includes(p.id));
   }, [productos, favs]);
 
   const filteredProducts = useMemo(() => {
-    const terminos = limpiarTexto(busquedaDebounced).split(' ').filter(t => t.length > 0);
+    // Si no hay búsqueda ni filtros, retornamos todo directo (más rápido)
+    if (!busquedaDebounced && filtroSeccion === 'Todos' && !filtroModelo) return productos;
+
+    const terminos = busquedaDebounced ? limpiarTexto(busquedaDebounced).split(' ').filter(t => t.length > 0) : [];
+    
     return productos.filter((p) => {
       if (!p.precio) return false;
-      if (terminos.length > 0 && !terminos.every((t) => p.textoBusqueda?.includes(t))) return false;
+      // Optimización: checar sección primero (es comparación simple string vs string, muy rápido)
       if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
+      // Checar modelo
       if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
+      // Por último la búsqueda pesada de texto
+      if (terminos.length > 0 && !terminos.every((t) => p.textoBusqueda?.includes(t))) return false;
       return true;
     });
   }, [productos, busquedaDebounced, filtroSeccion, filtroModelo]);
 
-  const filteredFavs = useMemo(() => {
-    // Reutilizamos la misma lógica de filtrado para favoritos si es necesario
-    // O simplificamos si solo queremos mostrar la lista
-    return productosFavoritos; 
-  }, [productosFavoritos]);
-
-  useEffect(() => {
-    if (!loading && productos.length > 0) {
-      const prodId = searchParams.get('prod');
-      if (prodId) {
-        const found = productos.find((p) => p.id === prodId);
-        if (found) setSelectedProduct(found);
-      } else setSelectedProduct(null);
-    }
-  }, [searchParams, productos, loading]);
-
-  const handleProductClick = (p: Producto) => {
+  // OPTIMIZACIÓN: useCallback
+  const handleProductClick = useCallback((p: Producto) => {
     setSelectedProduct(p);
     setSearchParams(prev => { prev.set('prod', p.id); return prev; });
-  };
+  }, [setSearchParams]);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setSelectedProduct(null);
     setSearchParams(prev => { prev.delete('prod'); return prev; });
-  };
+  }, [setSearchParams]);
+
+  // ... (Resto del useEffect de loading se mantiene igual) ...
+  useEffect(() => {
+      if (!loading && productos.length > 0) {
+        const prodId = searchParams.get('prod');
+        if (prodId) {
+          const found = productos.find((p) => p.id === prodId);
+          if (found) setSelectedProduct(found);
+        } else setSelectedProduct(null);
+      }
+  }, [searchParams, productos, loading]);
 
   if (loading) {
     return (
@@ -109,9 +112,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={
               <>
-                <Helmet>
-                  <title>LV PARTS | Repuestos de Moto Ecuador</title>
-                </Helmet>
+                <Helmet><title>LV PARTS | Repuestos de Moto Ecuador</title></Helmet>
                 <HeroSection />
                 <div className="max-w-7xl mx-auto px-4 py-8">
                   <div className="rounded-2xl overflow-hidden shadow-md relative h-48 md:h-[400px]">
@@ -130,7 +131,7 @@ export default function App() {
               <>
                 <Helmet>
                   <title>Catálogo Completo | LV PARTS</title>
-                  <meta name="description" content="Explora nuestro catálogo completo de repuestos para Daytona, Tekken, IGM y más." />
+                  <meta name="description" content="Explora nuestro catálogo completo de repuestos." />
                 </Helmet>
                 <CatalogView 
                   productos={filteredProducts}
@@ -151,14 +152,15 @@ export default function App() {
               <>
                 <Helmet><title>Mis Favoritos | LV PARTS</title></Helmet>
                 {favs.length > 0 ? (
-                  <div className="animate-fade-in">
+                   // ... (Lógica de favoritos reutiliza lo mismo)
+                   <div className="animate-fade-in">
                     <div className="max-w-7xl mx-auto px-4 pt-6 pb-2">
                       <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
                         <Heart className="text-red-600 fill-current" /> Mis Favoritos
                       </h2>
                     </div>
                     <CatalogView 
-                      productos={filteredFavs}
+                      productos={productosFavoritos}
                       isFav={(id) => favs.includes(id)} 
                       toggleFav={toggleFav}
                       filtroModelo={filtroModelo} 
@@ -184,14 +186,7 @@ export default function App() {
               </>
             } />
             
-            <Route path="/contacto" element={
-              <>
-                 <Helmet><title>Contacto | LV PARTS</title></Helmet>
-                 <ContactView />
-              </>
-            } />
-
-            {/* Ruta 404 para URLs incorrectas */}
+            <Route path="/contacto" element={<><Helmet><title>Contacto | LV PARTS</title></Helmet><ContactView /></>} />
             <Route path="*" element={
                <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
                  <h1 className="text-4xl font-bold text-slate-900 mb-4">404</h1>
