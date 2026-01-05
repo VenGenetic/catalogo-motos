@@ -6,10 +6,10 @@ import './App.css';
 import { limpiarTexto } from './utils/helpers';
 import { APP_CONFIG } from './config/constants';
 import { Navbar } from './components/Navbar';
-// Importamos HomeView directamente para que cargue instantáneamente al entrar
 import { HomeView } from './components/HomeView'; 
+// Asegúrate de tener este componente creado (te lo di hace un par de pasos)
+import { WhatsAppButton } from './components/WhatsAppButton'; 
 
-// Lazy loading para rutas secundarias (mejora la velocidad inicial)
 const CatalogView = lazy(() => import('./components/CatalogView').then(module => ({ default: module.CatalogView })));
 const ContactView = lazy(() => import('./components/ContactView').then(module => ({ default: module.ContactView })));
 
@@ -33,7 +33,6 @@ export default function App() {
   const { productos, loading } = useProducts();
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
   
-  // Inicialización segura de favoritos
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
   });
@@ -43,7 +42,6 @@ export default function App() {
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
   const busquedaDebounced = useDebounce(busqueda, 300);
 
-  // useCallback evita renderizados innecesarios al escribir
   const toggleFav = useCallback((id: string) => {
     setFavs(prev => {
       const nuevos = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
@@ -56,19 +54,15 @@ export default function App() {
     return productos.filter(p => favs.includes(p.id));
   }, [productos, favs]);
 
-  // Lógica de filtrado optimizada
   const filteredProducts = useMemo(() => {
-    // Camino rápido: si no hay filtros, retorna todo sin procesar
     if (!busquedaDebounced && filtroSeccion === 'Todos' && !filtroModelo) return productos;
 
     const terminos = busquedaDebounced ? limpiarTexto(busquedaDebounced).split(' ').filter(t => t.length > 0) : [];
     
     return productos.filter((p) => {
       if (!p.precio) return false;
-      // Filtros rápidos primero
       if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
       if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
-      // Búsqueda de texto al final
       if (terminos.length > 0 && !terminos.every((t) => p.textoBusqueda?.includes(t))) return false;
       return true;
     });
@@ -84,7 +78,6 @@ export default function App() {
     setSearchParams(prev => { prev.delete('prod'); return prev; });
   }, [setSearchParams]);
 
-  // Efecto para abrir producto desde URL
   useEffect(() => {
       if (!loading && productos.length > 0) {
         const prodId = searchParams.get('prod');
@@ -112,23 +105,16 @@ export default function App() {
       <main className="fade-in flex-1">
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            {/* RUTA INICIO: Usa el nuevo componente HomeView */}
             <Route path="/" element={
               <>
-                <Helmet>
-                  <title>LV PARTS | Repuestos de Moto Ecuador</title>
-                </Helmet>
+                <Helmet><title>LV PARTS | Repuestos de Moto Ecuador</title></Helmet>
                 <HomeView productos={productos} />
               </>
             } />
             
-            {/* RUTA CATÁLOGO */}
             <Route path="/catalogo" element={
               <>
-                <Helmet>
-                  <title>Catálogo Completo | LV PARTS</title>
-                  <meta name="description" content="Explora nuestro catálogo completo de repuestos." />
-                </Helmet>
+                <Helmet><title>Catálogo | LV PARTS</title></Helmet>
                 <CatalogView 
                   productos={filteredProducts}
                   isFav={(id) => favs.includes(id)} 
@@ -144,7 +130,6 @@ export default function App() {
               </>
             } />
 
-            {/* RUTA FAVORITOS */}
             <Route path="/favoritos" element={
               <>
                 <Helmet><title>Mis Favoritos | LV PARTS</title></Helmet>
@@ -181,23 +166,21 @@ export default function App() {
                 )}
               </>
             } />
-            
             <Route path="/contacto" element={<><Helmet><title>Contacto | LV PARTS</title></Helmet><ContactView /></>} />
-            
-            <Route path="*" element={
-               <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
-                 <h1 className="text-4xl font-bold text-slate-900 mb-4">404</h1>
-                 <p className="text-lg text-gray-600 mb-6">Página no encontrada</p>
-                 <Link to="/" className="text-red-600 font-bold hover:underline">Volver al inicio</Link>
-               </div>
-            } />
+            <Route path="*" element={<div className="p-20 text-center font-bold text-2xl">404 - No encontrado</div>} />
           </Routes>
         </Suspense>
       </main>
       
-      {/* Componentes Globales */}
-      <ProductDetailModal product={selectedProduct} onClose={handleCloseModal} />
+      {/* Componentes Globales ACTUALIZADOS */}
+      <ProductDetailModal 
+        product={selectedProduct} 
+        allProducts={productos}         // NUEVO: Pasamos todo el catálogo
+        onClose={handleCloseModal} 
+        onSelectRelated={handleProductClick} // NUEVO: Acción al hacer clic en un relacionado
+      />
       <CartDrawer />
+      <WhatsAppButton /> {/* NUEVO: Botón flotante siempre visible */}
       <ScrollToTopButton />
       <BottomNav />
       <Footer />
