@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, Heart, Menu } from 'lucide-react'; // Agregué Menu por si quieres menú móvil a futuro
+import { ShoppingBag, Heart } from 'lucide-react'; // <--- CORREGIDO: Se eliminó 'Menu'
 import { useCart } from '../context/CartContext';
 
 export const Navbar = () => {
