@@ -12,6 +12,23 @@ const limpiarPrecio = (valor: unknown): number => {
   return isNaN(numero) ? 0 : numero;
 };
 
+// Función para generar un ID consistente (hash simple)
+// Esto asegura que si recargas la página, el producto "Amortiguador" siga teniendo el mismo ID
+// en lugar de uno nuevo aleatorio, lo que arregla la persistencia en Favoritos y Carrito.
+const generarIdDeterministico = (p: any) => {
+  if (p.id) return String(p.id);
+  
+  // Usa referencia y nombre para crear siempre el mismo ID para el mismo producto
+  // Se usa btoa (Base64) para crear un string seguro y limpio
+  const clave = `${p.codigo_referencia || ''}-${p.nombre}`;
+  try {
+    return btoa(clave).replace(/[^a-zA-Z0-9]/g, '').substring(0, 16);
+  } catch (e) {
+    // Fallback por si la codificación falla (caracteres raros)
+    return String(Math.abs(clave.split('').reduce((a, b) => ((a << 5) - a) + b.charCodeAt(0), 0)));
+  }
+};
+
 export const useProducts = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,7 +51,8 @@ export const useProducts = () => {
           const seccionCalc = detectarSeccion(p);
           return {
             ...p,
-            id: String(p.id || crypto.randomUUID()), // Aseguramos ID
+            // Aquí usamos la nueva función en lugar de crypto.randomUUID()
+            id: generarIdDeterministico(p), 
             precio: limpiarPrecio(p.precio),
             seccion: seccionCalc,
             // Pre-calculamos texto de búsqueda para optimizar filtros
