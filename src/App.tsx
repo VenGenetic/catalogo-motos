@@ -7,9 +7,10 @@ import { limpiarTexto } from './utils/helpers';
 import { APP_CONFIG } from './config/constants';
 import { Navbar } from './components/Navbar';
 import { HomeView } from './components/HomeView'; 
-// Asegúrate de tener este componente creado (te lo di hace un par de pasos)
-import { WhatsAppButton } from './components/WhatsAppButton'; 
+import { WhatsAppButton } from './components/WhatsAppButton';
+import { TopBanner } from './components/TopBanner'; // <--- NUEVO COMPONENTE
 
+// Lazy loading para mejorar el rendimiento inicial
 const CatalogView = lazy(() => import('./components/CatalogView').then(module => ({ default: module.CatalogView })));
 const ContactView = lazy(() => import('./components/ContactView').then(module => ({ default: module.ContactView })));
 
@@ -33,15 +34,18 @@ export default function App() {
   const { productos, loading } = useProducts();
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
   
+  // Manejo de Favoritos (Persistencia en LocalStorage)
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
   });
   
+  // Estados de Filtros y Búsqueda
   const [busqueda, setBusqueda] = useState('');
   const [filtroModelo, setFiltroModelo] = useState('');
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
   const busquedaDebounced = useDebounce(busqueda, 300);
 
+  // Función optimizada para añadir/quitar favoritos
   const toggleFav = useCallback((id: string) => {
     setFavs(prev => {
       const nuevos = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
@@ -54,6 +58,7 @@ export default function App() {
     return productos.filter(p => favs.includes(p.id));
   }, [productos, favs]);
 
+  // Lógica de Filtrado Principal
   const filteredProducts = useMemo(() => {
     if (!busquedaDebounced && filtroSeccion === 'Todos' && !filtroModelo) return productos;
 
@@ -78,6 +83,7 @@ export default function App() {
     setSearchParams(prev => { prev.delete('prod'); return prev; });
   }, [setSearchParams]);
 
+  // Efecto para abrir producto desde la URL (Deep Linking)
   useEffect(() => {
       if (!loading && productos.length > 0) {
         const prodId = searchParams.get('prod');
@@ -101,10 +107,13 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-800 flex flex-col">
+      <TopBanner /> {/* Barra de anuncios superior */}
       <Navbar />
+      
       <main className="fade-in flex-1">
         <Suspense fallback={<PageLoader />}>
           <Routes>
+            {/* INICIO */}
             <Route path="/" element={
               <>
                 <Helmet><title>LV PARTS | Repuestos de Moto Ecuador</title></Helmet>
@@ -112,9 +121,10 @@ export default function App() {
               </>
             } />
             
+            {/* CATÁLOGO */}
             <Route path="/catalogo" element={
               <>
-                <Helmet><title>Catálogo | LV PARTS</title></Helmet>
+                <Helmet><title>Catálogo Completo | LV PARTS</title></Helmet>
                 <CatalogView 
                   productos={filteredProducts}
                   isFav={(id) => favs.includes(id)} 
@@ -130,6 +140,7 @@ export default function App() {
               </>
             } />
 
+            {/* FAVORITOS */}
             <Route path="/favoritos" element={
               <>
                 <Helmet><title>Mis Favoritos | LV PARTS</title></Helmet>
@@ -166,21 +177,22 @@ export default function App() {
                 )}
               </>
             } />
+            
             <Route path="/contacto" element={<><Helmet><title>Contacto | LV PARTS</title></Helmet><ContactView /></>} />
             <Route path="*" element={<div className="p-20 text-center font-bold text-2xl">404 - No encontrado</div>} />
           </Routes>
         </Suspense>
       </main>
       
-      {/* Componentes Globales ACTUALIZADOS */}
+      {/* Elementos Globales y Flotantes */}
       <ProductDetailModal 
         product={selectedProduct} 
-        allProducts={productos}         // NUEVO: Pasamos todo el catálogo
+        allProducts={productos}         // Necesario para los "Relacionados"
         onClose={handleCloseModal} 
-        onSelectRelated={handleProductClick} // NUEVO: Acción al hacer clic en un relacionado
+        onSelectRelated={handleProductClick} 
       />
       <CartDrawer />
-      <WhatsAppButton /> {/* NUEVO: Botón flotante siempre visible */}
+      <WhatsAppButton />
       <ScrollToTopButton />
       <BottomNav />
       <Footer />
