@@ -1,4 +1,4 @@
-import { X, Minus, Plus, MessageCircle } from 'lucide-react';
+import { X, Minus, Plus, MessageCircle, ShieldCheck, Lock } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
 import { LazyImage } from './LazyImage';
@@ -96,8 +96,19 @@ export const CartDrawer = () => {
           )}
         </div>
 
-        {/* Footer */}
+        {/* Footer del Carrito (Mejorado para Confianza) */}
         <div className="p-4 border-t bg-gray-50 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-10">
+          
+          {/* Mensaje de Confianza: Solo visible si hay items */}
+          {cart.length > 0 && (
+            <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 mb-4 flex gap-3">
+              <ShieldCheck className="w-5 h-5 text-blue-600 shrink-0" />
+              <p className="text-xs text-blue-800 leading-tight">
+                <span className="font-bold">Sin cobro automático.</span> Coordinarás el pago y envío directamente con un asesor humano en WhatsApp.
+              </p>
+            </div>
+          )}
+
           <div className="flex justify-between items-center mb-4">
             <span className="text-gray-500 font-medium">Total Estimado</span>
             <span className="text-2xl font-extrabold text-slate-900">
@@ -114,9 +125,16 @@ export const CartDrawer = () => {
                 : 'bg-[#25D366] text-white hover:bg-[#20bd5a] shadow-lg hover:shadow-green-500/30'
             }`}
           >
-            <MessageCircle size={20} className="fill-current" /> 
-            Pedir por WhatsApp
+            {cart.length === 0 ? <Lock size={20} /> : <MessageCircle size={20} className="fill-current" />}
+            {cart.length === 0 ? 'Carrito Vacío' : 'Finalizar Pedido en WhatsApp'}
           </button>
+          
+          {/* Pequeño texto legal debajo del botón */}
+          {cart.length > 0 && (
+            <p className="text-[10px] text-center text-gray-400 mt-2">
+              Al hacer clic, serás redirigido al chat oficial de ventas.
+            </p>
+          )}
         </div>
       </div>
     </div>
