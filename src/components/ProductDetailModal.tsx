@@ -29,7 +29,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
     return () => { document.body.style.overflow = 'unset'; };
   }, [product]);
 
-  // Lógica de Recomendación
   const relacionados = useMemo(() => {
     if (!product || !allProducts) return [];
     return allProducts
@@ -56,7 +55,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
       }`}
       onClick={onClose}
     >
-      
       <button 
         onClick={onClose} 
         className="md:hidden absolute top-4 left-4 z-20 bg-white/90 p-2 rounded-full shadow-lg backdrop-blur-md active:scale-90 transition-transform"
@@ -70,7 +68,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
         }`}
         onClick={e => e.stopPropagation()}
       >
-        
         <button 
           onClick={onClose} 
           className="hidden md:block absolute top-4 right-4 z-20 bg-white/80 p-2 rounded-full hover:bg-red-50 hover:text-red-600 transition-all"
@@ -78,7 +75,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
           <X className="w-6 h-6 text-slate-400" />
         </button>
 
-        {/* COLUMNA IZQUIERDA: Imagen */}
+        {/* Imagen Principal */}
         <div className="w-full md:w-1/2 bg-gray-50 relative shrink-0 flex items-center justify-center h-[35vh] md:h-auto min-h-[300px]">
           <div className="w-full h-full absolute inset-0">
              <ImageZoom src={optimizarImg(product.imagen)} alt={product.nombre} />
@@ -88,11 +85,10 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
           </div>
         </div>
 
-        {/* COLUMNA DERECHA: Info + Relacionados */}
+        {/* Info + Relacionados */}
         <div className="flex-1 flex flex-col h-full overflow-hidden bg-white">
           <div className="flex-1 overflow-y-auto p-6 md:p-8 pb-32 md:pb-8 custom-scrollbar">
             
-            {/* Header Producto */}
             <div className="flex flex-col gap-1 mb-4">
               <span className="text-xs font-bold text-red-600 uppercase tracking-wider w-max bg-red-50 px-2 py-1 rounded-md">
                 {product.seccion}
@@ -115,7 +111,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               </div>
             </div>
 
-            {/* Trust Signals */}
             <div className="grid grid-cols-2 gap-2 mb-8">
               <div className="flex items-center gap-2 text-xs text-gray-600 bg-gray-50 p-2 rounded-lg">
                 <Shield size={14} className="text-blue-600"/> Garantía Asegurada
@@ -125,7 +120,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               </div>
             </div>
 
-            {/* RELACIONADOS CORREGIDO (Imágenes ajustadas) */}
+            {/* SECCIÓN RELACIONADOS AJUSTADA */}
             {relacionados.length > 0 && (
               <div className="mt-8 pt-6 border-t border-gray-100">
                 <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2 text-sm">
@@ -138,13 +133,14 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                       className="group cursor-pointer"
                       onClick={() => onSelectRelated(rel)}
                     >
-                      {/* CORRECCIÓN IMAGEN: aspect-square + object-cover */}
                       <div className="aspect-square rounded-lg bg-gray-50 mb-2 overflow-hidden border border-gray-100 relative">
                         <LazyImage 
                           src={optimizarImg(rel.imagen)} 
                           alt={rel.nombre} 
-                          // AQUÍ EL CAMBIO CLAVE: object-cover
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                          // AJUSTE AQUÍ: cropBottom={true} para mantener consistencia
+                          cropBottom={true}
+                          imageFit="cover"
+                          className="w-full h-full bg-white group-hover:scale-105 transition-transform"
                         />
                       </div>
                       <p className="text-[10px] font-bold text-slate-700 line-clamp-2 leading-tight group-hover:text-red-600">
@@ -169,7 +165,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
             </div>
           </div>
 
-          {/* Sticky Mobile Footer */}
           <div className="md:hidden absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 flex gap-3 z-30 pb-safe shadow-[0_-4px_10px_rgba(0,0,0,0.03)]">
              <button onClick={handleConsult} className="p-3.5 bg-gray-50 text-slate-700 rounded-xl border border-gray-200 active:bg-gray-100">
                <MessageCircle size={20} />

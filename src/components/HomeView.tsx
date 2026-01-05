@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const HomeView = ({ productos }: Props) => {
-  // Tomamos 4 productos aleatorios o los primeros 4 para mostrar como "Destacados"
+  // Tomamos los primeros 4 productos para mostrar como "Destacados"
   const destacados = productos.slice(0, 4);
 
   return (
@@ -22,7 +22,7 @@ export const HomeView = ({ productos }: Props) => {
       {/* 2. Categorías */}
       <FeaturedCategories />
 
-      {/* 3. Banner Promocional Intermedio */}
+      {/* 3. Banner Promocional */}
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="rounded-3xl overflow-hidden shadow-2xl relative h-48 md:h-[350px] group">
           <img 
@@ -34,7 +34,7 @@ export const HomeView = ({ productos }: Props) => {
             <div className="text-white">
               <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 inline-block">OFERTA</span>
               <h3 className="text-3xl font-bold mb-2">Envío Gratis</h3>
-              <p className="text-gray-200 mb-4 max-w-md">En pedidos superiores a $50. Equipa tu moto con los mejores repuestos del mercado.</p>
+              <p className="text-gray-200 mb-4 max-w-md">En pedidos superiores a $50. Equipa tu moto con los mejores repuestos.</p>
               <Link to="/catalogo" className="bg-white text-slate-900 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 transition-colors inline-flex items-center gap-2">
                 Ver Catálogo <ArrowRight size={16} />
               </Link>
@@ -59,13 +59,14 @@ export const HomeView = ({ productos }: Props) => {
           {destacados.map(p => (
             <Link key={p.id} to={`/catalogo?prod=${p.id}`} className="group block">
               <div className="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-                {/* CORRECCIÓN IMAGEN: aspect-square + object-cover */}
                 <div className="aspect-square relative overflow-hidden bg-gray-50">
                   <LazyImage 
                     src={optimizarImg(p.imagen)} 
                     alt={p.nombre} 
-                    // AQUÍ ESTÁ EL CAMBIO CLAVE: object-cover
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    // AJUSTE AQUÍ: cropBottom={true} para igualar al catálogo
+                    cropBottom={true}
+                    imageFit="cover"
+                    className="w-full h-full bg-white transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-[10px] font-bold shadow-sm flex items-center gap-1">
                     <Star size={10} className="fill-yellow-400 text-yellow-400" /> TOP
