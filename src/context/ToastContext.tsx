@@ -28,9 +28,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }, 3000);
   }, []);
 
-  const removeToast = (id: number) => {
-    setToasts(prev => prev.filter(t => t.id !== id));
-  };
+  // SE ELIMINÓ LA FUNCIÓN 'removeToast' QUE CAUSABA EL ERROR
 
   return (
     <ToastContext.Provider value={{ showToast }}>
