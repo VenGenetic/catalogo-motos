@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { ArrowLeft, X, Plus, MessageCircle, Shield, CheckCircle, Package, ShoppingBag, ArrowRight } from 'lucide-react';
+import { ArrowLeft, X, Plus, MessageCircle, Shield, Package, ShoppingBag } from 'lucide-react'; // <--- Imports corregidos
 import { ImageZoom } from './ImageZoom';
 import { optimizarImg } from '../utils/helpers';
 import { Producto } from '../types';
@@ -9,9 +9,9 @@ import { LazyImage } from './LazyImage';
 
 interface Props {
   product: Producto | null;
-  allProducts: Producto[]; // NUEVO: Recibimos todos los productos para buscar relacionados
+  allProducts: Producto[];
   onClose: () => void;
-  onSelectRelated: (p: Producto) => void; // NUEVO: Para cambiar de producto sin cerrar modal
+  onSelectRelated: (p: Producto) => void;
 }
 
 export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRelated }: Props) => {
@@ -29,7 +29,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
     return () => { document.body.style.overflow = 'unset'; };
   }, [product]);
 
-  // Lógica de Recomendación: Misma categoría, excluyendo el actual, aleatorios o primeros 3
+  // Lógica de Recomendación
   const relacionados = useMemo(() => {
     if (!product || !allProducts) return [];
     return allProducts
@@ -92,7 +92,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
         <div className="flex-1 flex flex-col h-full overflow-hidden bg-white">
           <div className="flex-1 overflow-y-auto p-6 md:p-8 pb-32 md:pb-8 custom-scrollbar">
             
-            {/* ... Info del Producto (Igual que antes) ... */}
+            {/* Header Producto */}
             <div className="flex flex-col gap-1 mb-4">
               <span className="text-xs font-bold text-red-600 uppercase tracking-wider w-max bg-red-50 px-2 py-1 rounded-md">
                 {product.seccion}
@@ -115,7 +115,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               </div>
             </div>
 
-            {/* Trust Signals Simplificados */}
+            {/* Trust Signals */}
             <div className="grid grid-cols-2 gap-2 mb-8">
               <div className="flex items-center gap-2 text-xs text-gray-600 bg-gray-50 p-2 rounded-lg">
                 <Shield size={14} className="text-blue-600"/> Garantía Asegurada
@@ -125,7 +125,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               </div>
             </div>
 
-            {/* NUEVO: Sección de Relacionados */}
+            {/* Relacionados */}
             {relacionados.length > 0 && (
               <div className="mt-8 pt-6 border-t border-gray-100">
                 <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2 text-sm">
@@ -136,7 +136,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                     <div 
                       key={rel.id} 
                       className="group cursor-pointer"
-                      onClick={() => onSelectRelated(rel)} // Cambia el producto sin cerrar
+                      onClick={() => onSelectRelated(rel)}
                     >
                       <div className="aspect-square rounded-lg bg-gray-50 mb-2 overflow-hidden border border-gray-100 relative">
                         <LazyImage 
