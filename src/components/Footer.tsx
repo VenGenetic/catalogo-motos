@@ -9,7 +9,7 @@ export const Footer = () => {
         <div className="space-y-4">
           <h3 className="text-white font-bold text-lg">LV PARTS</h3>
           <p className="text-gray-500 leading-relaxed">
-            Especialistas en repuestos de motocicletas. Calidad garantizada y envíos seguros a todo el país.
+            Especialistas en repuestos de motocicletas. Calidad garantizada y asesoría personalizada en cada compra.
           </p>
           <div className="flex gap-4 pt-2">
             <Facebook className="w-5 h-5 hover:text-white cursor-pointer transition-colors" />
@@ -17,47 +17,51 @@ export const Footer = () => {
           </div>
         </div>
 
-        {/* Columna 2: Enlaces de Confianza (Placeholders) */}
+        {/* Columna 2: Enlaces */}
         <div className="space-y-4">
           <h4 className="text-white font-bold">Atención al Cliente</h4>
           <ul className="space-y-2">
             <li className="hover:text-white cursor-pointer transition-colors">Rastrea tu pedido</li>
-            <li className="hover:text-white cursor-pointer transition-colors">Política de Devoluciones</li>
+            <li className="hover:text-white cursor-pointer transition-colors">Política de Envíos</li>
             <li className="hover:text-white cursor-pointer transition-colors">Términos y Condiciones</li>
             <li className="hover:text-white cursor-pointer transition-colors">Preguntas Frecuentes</li>
           </ul>
         </div>
 
-        {/* Columna 3: Seguridad */}
+        {/* Columna 3: Seguridad (CORREGIDO) */}
         <div className="space-y-4">
           <h4 className="text-white font-bold">Compra Segura</h4>
           <ul className="space-y-3">
             <li className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-green-500" />
-              <span>Garantía en todos los productos</span>
+              <span>Garantía de Fábrica</span>
             </li>
             <li className="flex items-center gap-2">
               <Truck className="w-4 h-4 text-blue-400" />
-              <span>Envíos asegurados</span>
+              <span>Envíos a todo el País</span>
             </li>
             <li className="flex items-center gap-2">
               <CreditCard className="w-4 h-4 text-purple-400" />
-              <span>Pago contra entrega o Transferencia</span>
+              {/* Ajuste aquí: Solo métodos reales */}
+              <span>Transferencia o Depósito</span>
             </li>
           </ul>
         </div>
 
-        {/* Columna 4: Contacto Rápido */}
+        {/* Columna 4: Contacto */}
         <div className="space-y-4">
           <h4 className="text-white font-bold">Contacto</h4>
           <p>Lunes a Sábado: 9:00 AM - 6:00 PM</p>
-          <p className="text-gray-500">Pedidos WhatsApp: +593 99 327 9707</p>
+          <p className="text-gray-500">Ventas WhatsApp: +593 99 327 9707</p>
+          <p className="text-xs text-gray-600 pt-2">
+            Despachos seguros previo pago verificado.
+          </p>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 pt-8 border-t border-slate-800 text-center text-xs text-gray-600 flex flex-col md:flex-row justify-between items-center gap-2">
         <p>&copy; {new Date().getFullYear()} LV PARTS. Todos los derechos reservados.</p>
-        <p>Desarrollado con seguridad SSL</p>
+        <p>Sitio seguro y verificado</p>
       </div>
     </footer>
   );

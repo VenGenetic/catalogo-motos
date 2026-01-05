@@ -1,4 +1,4 @@
-import { ArrowLeft, X, Plus, ShoppingBag, MessageCircle } from 'lucide-react';
+import { ArrowLeft, X, Plus, ShoppingBag, MessageCircle, Shield, CheckCircle, Package } from 'lucide-react';
 import { ImageZoom } from './ImageZoom';
 import { optimizarImg } from '../utils/helpers';
 import { Producto } from '../types';
@@ -28,7 +28,7 @@ export const ProductDetailModal = ({ product, onClose }: Props) => {
 ${product.codigo_referencia ? `⚙️ Ref: ${product.codigo_referencia}` : ''}
 💰 Precio: $${precio.toFixed(2)}
 
-¿Me pueden confirmar disponibilidad?`;
+¿Me pueden confirmar disponibilidad y compatibilidad?`;
 
     const url = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, '_blank');
@@ -47,7 +47,6 @@ ${product.codigo_referencia ? `⚙️ Ref: ${product.codigo_referencia}` : ''}
           <X className="w-6 h-6 text-slate-500" />
         </button>
 
-        {/* CORRECCIÓN: bg-white en lugar de bg-gray-100 para evitar el "espacio feo" */}
         <div className="w-full md:w-1/2 h-[45vh] md:h-[500px] bg-white relative shrink-0">
           <ImageZoom src={optimizarImg(product.imagen)} alt={product.nombre} />
           <div className="absolute bottom-4 right-4 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-sm pointer-events-none">
@@ -76,31 +75,60 @@ ${product.codigo_referencia ? `⚙️ Ref: ${product.codigo_referencia}` : ''}
                 <span className="block text-sm text-gray-400 mb-1">Precio Unitario</span>
                 <span className="text-3xl font-extrabold text-slate-900">${precioSeguro.toFixed(2)}</span>
               </div>
-              <div className="bg-green-50 text-green-700 px-3 py-1 rounded-full text-xs font-bold">
-                Disponible
+              <div className="bg-green-50 text-green-700 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"/> Disponible
               </div>
             </div>
 
+            {/* SECCIÓN NUEVA: Badges de Confianza */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+              <div className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                <Shield className="w-5 h-5 text-slate-700 shrink-0" />
+                <div className="flex flex-col">
+                  <span className="text-xs font-bold text-slate-800">Compra Protegida</span>
+                  <span className="text-[10px] text-slate-500">Garantía directa LV PARTS</span>
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                <CheckCircle className="w-5 h-5 text-slate-700 shrink-0" />
+                <div className="flex flex-col">
+                  <span className="text-xs font-bold text-slate-800">Calidad Verificada</span>
+                  <span className="text-[10px] text-slate-500">Compatible con tu moto</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100 sm:col-span-2">
+                <Package className="w-5 h-5 text-slate-700 shrink-0" />
+                <div className="flex flex-col">
+                  <span className="text-xs font-bold text-slate-800">Envíos a todo Ecuador</span>
+                  <span className="text-[10px] text-slate-500">Despacho inmediato tras verificación</span>
+                </div>
+              </div>
+            </div>
+            {/* FIN SECCIÓN NUEVA */}
+
             <p className="text-gray-600 text-sm leading-relaxed">
-              Repuesto original garantizado para tu motocicleta. Compatible con los modelos especificados.
+              Repuesto original garantizado para tu motocicleta. Si tienes dudas sobre la compatibilidad exacta con tu modelo, consúltanos por WhatsApp antes de comprar.
             </p>
 
             <div className="hidden md:flex gap-4 mt-8">
               <button 
                 onClick={handleAdd}
-                className="flex-1 bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-slate-800 transition-all flex items-center justify-center gap-2 active:scale-95"
+                className="flex-1 bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-slate-800 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-lg shadow-slate-200"
               >
                 <Plus className="w-5 h-5" /> Agregar al Pedido
               </button>
               <button 
                 onClick={handleConsult}
-                className="flex-1 border-2 border-slate-200 text-slate-700 py-4 rounded-xl font-bold hover:border-slate-900 transition-all active:scale-95"
+                className="flex-1 border-2 border-slate-200 text-slate-700 py-4 rounded-xl font-bold hover:border-slate-900 hover:text-slate-900 transition-all active:scale-95"
               >
-                Consultar WhatsApp
+                Consultar Dudas
               </button>
             </div>
           </div>
 
+          {/* Botones Móviles */}
           <div className="md:hidden fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 flex gap-3 z-30 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
             <button 
               onClick={handleConsult}
