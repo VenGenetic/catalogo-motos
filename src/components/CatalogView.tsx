@@ -1,259 +1,182 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
-import { Search, Bike, Heart, X, Check } from 'lucide-react';
-import { optimizarImg } from '../utils/helpers';
-import { APP_CONFIG, ORDEN_SECCIONES, MODELOS } from '../config/constants';
-import { Producto } from '../types';
+import { useState, useMemo } from 'react';
+import { Search, SlidersHorizontal, PackageX, ShoppingBag, Eye, Star } from 'lucide-react';
+import { useProducts } from '../hooks/useProducts';
+import { SkeletonLoader } from './SkeletonLoader';
 import { LazyImage } from './LazyImage';
-import { HighlightedText } from './HighlightedText';
+import { optimizarImg } from '../utils/helpers';
+import { CATEGORIAS } from '../utils/categories';
+import { ProductDetailModal } from './ProductDetailModal';
+import { Producto } from '../types';
+import { useCart } from '../context/CartContext';
 
-interface Props {
-  productos: Producto[];
-  isFav: (id: string) => boolean;
-  toggleFav: (id: string) => void;
-  filtroModelo: string;
-  setFiltroModelo: (m: string) => void;
-  busqueda: string;
-  setBusqueda: (s: string) => void;
-  filtroSeccion: string;
-  setFiltroSeccion: (s: string) => void;
-  onProductClick: (p: Producto) => void;
-}
+export const CatalogView = () => {
+  const { products, loading, error } = useProducts();
+  const { addToCart } = useCart();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('Todos');
+  const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
 
-export const CatalogView = ({ 
-  productos, isFav, toggleFav,
-  filtroModelo, setFiltroModelo, 
-  busqueda, setBusqueda,
-  filtroSeccion, setFiltroSeccion,
-  onProductClick
-}: Props) => {
-  const [pagina, setPagina] = useState(1);
-  const [modalModelos, setModalModelos] = useState(false);
-  const [busquedaModelo, setBusquedaModelo] = useState('');
-  
-  const containerRef = useRef<HTMLDivElement>(null);
-  const searchInputRef = useRef<HTMLInputElement>(null);
+  // Filtrado optimizado
+  const filteredProducts = useMemo(() => {
+    return products.filter(product => {
+      const matchesSearch = product.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          (product.codigo_referencia && product.codigo_referencia.toLowerCase().includes(searchTerm.toLowerCase()));
+      const matchesCategory = selectedCategory === 'Todos' || product.seccion === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
+  }, [products, searchTerm, selectedCategory]);
 
-  useEffect(() => { 
-    setPagina(1); 
-    if (busqueda || filtroModelo || filtroSeccion !== 'Todos') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }, [busqueda, filtroModelo, filtroSeccion]);
-
-  useEffect(() => {
-    if (modalModelos) {
-      setTimeout(() => searchInputRef.current?.focus(), 100);
-    }
-  }, [modalModelos]);
-
-  const visibles = useMemo(() => {
-    return productos.slice(0, pagina * APP_CONFIG.ITEMS_PER_PAGE);
-  }, [productos, pagina]);
-
-  const modelosFiltrados = useMemo(() => {
-    return MODELOS.filter(m => m.toLowerCase().includes(busquedaModelo.toLowerCase()));
-  }, [busquedaModelo]);
+  if (error) return (
+    <div className="min-h-[50vh] flex flex-col items-center justify-center text-center px-4">
+      <div className="bg-red-50 p-4 rounded-full mb-4"><PackageX size={48} className="text-red-500" /></div>
+      <h3 className="text-xl font-bold text-slate-800">Error al cargar el catálogo</h3>
+      <p className="text-gray-500 mt-2">Por favor, verifica tu conexión e intenta nuevamente.</p>
+    </div>
+  );
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-gray-50 pb-24 pt-2 md:pt-4 px-0 md:px-8 font-sans scroll-mt-20">
-      <div className="max-w-7xl mx-auto">
-        
-        {/* BARRA DE FILTROS */}
-        <div className="sticky top-[64px] z-30 bg-gray-50/95 backdrop-blur-sm pb-3 pt-2 px-3 md:px-0 transition-all shadow-sm md:shadow-none">
-          <div className="flex gap-2 mb-3">
-            <button 
-              onClick={() => setModalModelos(true)}
-              className={`flex-1 flex items-center justify-center px-4 py-3 rounded-xl transition-all shadow-sm text-sm font-bold border active:scale-95 ${
-                filtroModelo 
-                  ? 'bg-red-600 text-white border-red-600 shadow-red-200' 
-                  : 'bg-white text-slate-800 border-gray-200 hover:border-red-300'
+    <div className="min-h-screen bg-gray-50 pb-20 font-sans">
+      {/* Buscador y Filtros Sticky */}
+      <div className="sticky top-16 z-30 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all">
+        <div className="max-w-7xl mx-auto px-4 py-4 space-y-4">
+          
+          {/* Barra de Búsqueda */}
+          <div className="relative group">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-red-500 transition-colors" size={20} />
+            <input
+              type="text"
+              placeholder="Buscar repuesto (ej: Cilindro, Daytona...)"
+              className="w-full pl-12 pr-4 py-3 bg-gray-100 border-transparent focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 rounded-xl transition-all outline-none font-medium placeholder:text-gray-400"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          {/* Categorías (Scroll horizontal oculto) */}
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+            <button
+              onClick={() => setSelectedCategory('Todos')}
+              className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-bold transition-all border ${
+                selectedCategory === 'Todos'
+                  ? 'bg-slate-900 text-white border-slate-900 shadow-md'
+                  : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
               }`}
             >
-              <Bike className="w-4 h-4 mr-2" />
-              <span className="truncate">{filtroModelo ? filtroModelo : 'Filtrar Moto'}</span>
+              Todos
             </button>
-            <div className="flex-[2] relative">
-              <Search className="absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Buscar repuesto..."
-                className="w-full pl-9 pr-3 py-3 border border-gray-200 rounded-xl bg-white text-base focus:ring-2 focus:ring-red-500 outline-none shadow-sm placeholder:text-gray-400"
-                value={busqueda}
-                onChange={(e) => setBusqueda(e.target.value)}
-              />
-              {busqueda && (
-                <button 
-                  onClick={() => setBusqueda('')}
-                  className="absolute right-3 top-3.5 text-gray-400 hover:text-red-500"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-          </div>
-
-          <div className="overflow-x-auto pb-1 scrollbar-hide scroll-smooth -mx-3 px-3 md:mx-0 md:px-0">
-            <div className="flex space-x-2">
-              {ORDEN_SECCIONES.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setFiltroSeccion(category)}
-                  className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-colors border ${
-                    filtroSeccion === category 
-                      ? 'bg-slate-900 text-white border-slate-900' 
-                      : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-100'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
+            {CATEGORIAS.map(cat => (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.nombre)}
+                className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-bold transition-all border ${
+                  selectedCategory === cat.nombre
+                    ? 'bg-red-600 text-white border-red-600 shadow-md shadow-red-200'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                }`}
+              >
+                {cat.nombre}
+              </button>
+            ))}
           </div>
         </div>
+      </div>
 
-        {/* LISTADO */}
-        {visibles.length > 0 ? (
-          <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6 px-2 md:px-0">
-              {visibles.map((product: Producto) => (
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        {loading ? (
+          <SkeletonLoader />
+        ) : filteredProducts.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+            {filteredProducts.map((product) => (
+              <div 
+                key={product.id} 
+                className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group overflow-hidden relative"
+              >
+                {/* Badge Flotante */}
+                <div className="absolute top-2 left-2 z-10 bg-green-500/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm flex items-center gap-1">
+                   <Star size={10} className="fill-current" /> DISPONIBLE
+                </div>
+
+                {/* Imagen */}
                 <div 
-                  key={product.id} 
-                  className="bg-white rounded-lg shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden relative active:scale-[0.99] transition-transform duration-100"
-                  onClick={() => onProductClick(product)}
+                  className="relative pt-[100%] bg-gray-50 overflow-hidden cursor-pointer"
+                  onClick={() => setSelectedProduct(product)}
                 >
-                  <button 
-                    className={`absolute top-2 right-2 p-1.5 rounded-full z-10 transition-colors ${
-                      isFav(product.id) 
-                        ? 'bg-red-50 text-red-600' 
-                        : 'bg-black/20 text-white hover:bg-black/40 backdrop-blur-sm'
-                    }`}
-                    onClick={(e) => { e.stopPropagation(); toggleFav(product.id); }}
-                  >
-                    <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
-                  </button>
-
-                  <LazyImage 
-                    src={optimizarImg(product.imagen)} 
-                    alt={product.nombre}
-                    className="h-40 md:h-56 bg-white" 
-                    imageFit="cover"
-                    cropBottom={true}
-                  />
-
-                  <div className="p-3 flex flex-col flex-grow relative z-10 bg-white">
-                    <span className="text-[10px] font-bold text-red-600 uppercase tracking-wide mb-1 line-clamp-1">
-                      {product.seccion}
-                    </span>
-                    
-                    {/* CAMBIO: Eliminado 'line-clamp-2' y 'min-h' para mostrar nombre completo */}
-                    <h3 className="text-xs md:text-sm font-bold text-slate-800 mb-1 leading-tight">
-                      <HighlightedText text={product.nombre} highlight={busqueda} />
-                    </h3>
-
-                    <div className="mt-auto pt-2 flex items-end justify-between">
-                       <span className="text-sm md:text-lg font-extrabold text-slate-900">
-                         ${Number(product.precio).toFixed(2)}
-                       </span>
-                       {product.stock === false && (
-                         <span className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">Agotado</span>
-                       )}
-                    </div>
+                  <div className="absolute inset-0 flex items-center justify-center p-4">
+                     <LazyImage 
+                        src={optimizarImg(product.imagen)} 
+                        alt={product.nombre}
+                        className="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500" 
+                      />
+                  </div>
+                  {/* Overlay al hacer hover (solo desktop) */}
+                  <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <div className="bg-white/90 p-2 rounded-full shadow-lg transform scale-50 group-hover:scale-100 transition-transform">
+                          <Eye className="text-slate-900" size={20}/>
+                      </div>
                   </div>
                 </div>
-              ))}
-            </div>
-            
-            <div className="mt-10 text-center px-4 mb-8">
-              <button 
-                onClick={() => setPagina(p => p + 1)}
-                className="w-full md:w-auto px-8 py-3 bg-white border-2 border-slate-100 text-slate-700 font-bold text-sm rounded-full shadow-sm hover:bg-gray-50 hover:border-gray-300 transition-all"
-              >
-                Ver más productos
-              </button>
-            </div>
-          </>
+
+                {/* Info */}
+                <div className="p-3 md:p-4 flex-1 flex flex-col">
+                  <div className="mb-1">
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">{product.seccion}</span>
+                  </div>
+                  <h3 
+                    className="font-bold text-slate-800 text-sm md:text-base leading-tight mb-2 line-clamp-2 cursor-pointer hover:text-red-600 transition-colors"
+                    onClick={() => setSelectedProduct(product)}
+                  >
+                    {product.nombre}
+                  </h3>
+                  
+                  <div className="mt-auto pt-3 border-t border-gray-50 flex items-center justify-between gap-2">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] text-gray-400">Precio</span>
+                      <span className="text-lg font-extrabold text-slate-900">
+                        ${Number(product.precio).toFixed(2)}
+                      </span>
+                    </div>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addToCart(product);
+                      }}
+                      className="bg-slate-900 hover:bg-red-600 text-white p-2.5 rounded-lg transition-colors shadow-lg shadow-slate-200 hover:shadow-red-200 active:scale-95"
+                      aria-label="Agregar al carrito"
+                    >
+                      <ShoppingBag size={18} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
-          <div className="text-center py-24 px-4">
-            <div className="bg-gray-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Search className="h-8 w-8 text-gray-400" />
+          /* Empty State Mejorado */
+          <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-in">
+            <div className="bg-gray-100 p-6 rounded-full mb-6">
+               <Search size={48} className="text-gray-400" />
             </div>
-            <h3 className="text-slate-900 font-bold text-lg">No encontramos resultados</h3>
-            <p className="text-gray-500 text-sm mt-1 mb-6">Intenta con otra palabra o quita los filtros.</p>
+            <h3 className="text-xl font-bold text-slate-900 mb-2">
+              No encontramos "{searchTerm}"
+            </h3>
+            <p className="text-gray-500 max-w-md mx-auto mb-8">
+              Intenta verificar la ortografía o usa términos más generales como "Motor", "Freno" o "Luz".
+            </p>
             <button 
-              onClick={() => { setBusqueda(''); setFiltroModelo(''); setFiltroSeccion('Todos'); }} 
-              className="px-6 py-2 bg-red-600 text-white font-bold rounded-lg text-sm shadow-lg shadow-red-200 hover:bg-red-700 transition-colors"
+              onClick={() => setSearchTerm('')}
+              className="px-6 py-3 bg-white border border-gray-300 text-slate-700 font-bold rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all shadow-sm active:scale-95"
             >
-              Limpiar todo
+              Ver todos los productos
             </button>
           </div>
         )}
       </div>
 
-      {/* MODAL DE FILTROS (Sin cambios) */}
-      {modalModelos && (
-        <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center">
-          <div 
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-            onClick={() => setModalModelos(false)}
-          />
-          <div className="bg-white w-full md:max-w-xl h-[85vh] md:h-[80vh] rounded-t-3xl md:rounded-2xl flex flex-col overflow-hidden shadow-2xl z-10 animate-slide-up transform transition-transform">
-            <div className="md:hidden flex justify-center pt-3 pb-1" onClick={() => setModalModelos(false)}>
-               <div className="w-12 h-1.5 bg-gray-200 rounded-full" />
-            </div>
-            <div className="p-4 border-b flex justify-between items-center bg-white shrink-0">
-              <div>
-                <h3 className="text-lg font-bold text-slate-900">Selecciona tu Moto</h3>
-                <p className="text-xs text-gray-500">Filtrar repuestos compatibles</p>
-              </div>
-              <button onClick={() => setModalModelos(false)} className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors text-gray-600">
-                <X className="w-5 h-5"/>
-              </button>
-            </div>
-            <div className="p-3 bg-gray-50 border-b shrink-0">
-              <div className="relative">
-                <Search className="absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
-                <input 
-                  ref={searchInputRef}
-                  type="text" 
-                  placeholder="Escribe el modelo..." 
-                  className="w-full pl-10 pr-10 py-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-red-500 text-base shadow-sm"
-                  value={busquedaModelo}
-                  onChange={(e) => setBusquedaModelo(e.target.value)}
-                />
-                {busquedaModelo && (
-                  <button onClick={() => setBusquedaModelo('')} className="absolute right-3 top-3.5 text-gray-400 hover:text-red-500 p-0.5">
-                    <X className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
-            </div>
-            <div className="overflow-y-auto p-4 flex-1 bg-white scrollbar-thin">
-               <div className="grid grid-cols-2 gap-2 pb-8">
-                  <button 
-                    onClick={() => { setFiltroModelo(''); setModalModelos(false); }} 
-                    className={`p-3 rounded-xl border-2 text-sm font-bold flex items-center justify-center gap-2 transition-all min-h-[60px] ${
-                      filtroModelo === '' ? 'border-red-600 bg-red-50 text-red-600' : 'border-dashed border-gray-300 bg-gray-50 text-gray-500 hover:bg-white hover:border-gray-400'
-                    }`}
-                  >
-                    {filtroModelo === '' && <Check className="w-4 h-4" />}
-                    TODAS
-                  </button>
-                  {modelosFiltrados.map(m => (
-                    <button
-                      key={m}
-                      onClick={() => { setFiltroModelo(m); setModalModelos(false); }}
-                      className={`p-3 rounded-xl text-left text-xs font-bold border transition-all flex items-center justify-between min-h-[50px] active:scale-[0.98] ${
-                        filtroModelo === m ? 'bg-slate-900 text-white border-slate-900 shadow-md' : 'bg-white text-gray-600 border-gray-100 hover:border-gray-300 hover:shadow-sm'
-                      }`}
-                    >
-                      <span className="truncate">{m}</span>
-                      {filtroModelo === m && <Check className="w-3 h-3 shrink-0 ml-1" />}
-                    </button>
-                  ))}
-               </div>
-            </div>
-          </div>
-        </div>
+      {selectedProduct && (
+        <ProductDetailModal 
+          product={selectedProduct} 
+          onClose={() => setSelectedProduct(null)} 
+        />
       )}
     </div>
   );
