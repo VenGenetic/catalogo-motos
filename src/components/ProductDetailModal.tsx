@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { ArrowLeft, X, Plus, MessageCircle, Shield, Package, ShoppingBag } from 'lucide-react'; // <--- Imports corregidos
+import { ArrowLeft, X, Plus, MessageCircle, Shield, Package, ShoppingBag } from 'lucide-react';
 import { ImageZoom } from './ImageZoom';
 import { optimizarImg } from '../utils/helpers';
 import { Producto } from '../types';
@@ -125,7 +125,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               </div>
             </div>
 
-            {/* Relacionados */}
+            {/* RELACIONADOS CORREGIDO (Imágenes ajustadas) */}
             {relacionados.length > 0 && (
               <div className="mt-8 pt-6 border-t border-gray-100">
                 <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2 text-sm">
@@ -138,10 +138,12 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                       className="group cursor-pointer"
                       onClick={() => onSelectRelated(rel)}
                     >
+                      {/* CORRECCIÓN IMAGEN: aspect-square + object-cover */}
                       <div className="aspect-square rounded-lg bg-gray-50 mb-2 overflow-hidden border border-gray-100 relative">
                         <LazyImage 
                           src={optimizarImg(rel.imagen)} 
                           alt={rel.nombre} 
+                          // AQUÍ EL CAMBIO CLAVE: object-cover
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform"
                         />
                       </div>
