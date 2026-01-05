@@ -1,7 +1,19 @@
 import { Producto } from '../types/index';
 
-// Configuración de palabras clave por categoría
-// Puedes agregar más palabras separadas por |
+// Lista de Categorías para los botones del filtro
+export const CATEGORIAS = [
+  { id: 'motor', nombre: 'Motor e Internos' },
+  { id: 'electrico', nombre: 'Sistema Eléctrico' },
+  { id: 'transmision', nombre: 'Transmisión' },
+  { id: 'frenos', nombre: 'Sistema de Frenos' },
+  { id: 'chasis', nombre: 'Chasis y Suspensión' },
+  { id: 'plasticos', nombre: 'Carrocería y Plásticos' },
+  { id: 'ruedas', nombre: 'Ruedas y Ejes' },
+  { id: 'mantenimiento', nombre: 'Filtros y Mantenimiento' },
+  { id: 'cables', nombre: 'Cables y Mandos' },
+];
+
+// Reglas regex para detectar automáticamente la categoría
 const CATEGORY_RULES: Record<string, RegExp> = {
   'Cables y Mandos': /cable|guaya|manigueta|acelerador|choke|ahogador|puño|manguera|funda/i,
   'Motor e Internos': /motor|pist|cilind|valv|cigue|biela|carter|empaque|cabeza.*fuerza|balancin|anillo|arbol.*leva|cabezote|cadenilla|tensor|guia.*cadenilla|bendix|balanceador|resorte|sello|carburador|inyector|tobera|admision|arranque|stator|estator/i,
@@ -17,8 +29,6 @@ const CATEGORY_RULES: Record<string, RegExp> = {
 export const detectarSeccion = (p: Producto): string => {
   const nombre = p.nombre || '';
   const categoria = p.categoria || '';
-  
-  // Unimos nombre y categoría para buscar en ambos
   const texto = `${nombre} ${categoria}`.toLowerCase();
 
   for (const [seccion, regex] of Object.entries(CATEGORY_RULES)) {
@@ -26,6 +36,5 @@ export const detectarSeccion = (p: Producto): string => {
       return seccion;
     }
   }
-
   return 'Otros Repuestos';
 };

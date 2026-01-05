@@ -1,38 +1,39 @@
-import { useState, useMemo } from 'react';
-import { Search, SlidersHorizontal, PackageX, ShoppingBag, Eye, Star } from 'lucide-react';
-import { useProducts } from '../hooks/useProducts';
-import { SkeletonLoader } from './SkeletonLoader';
+import { Search, PackageX, ShoppingBag, Eye, Star, Heart } from 'lucide-react';
 import { LazyImage } from './LazyImage';
 import { optimizarImg } from '../utils/helpers';
 import { CATEGORIAS } from '../utils/categories';
-import { ProductDetailModal } from './ProductDetailModal';
 import { Producto } from '../types';
 import { useCart } from '../context/CartContext';
 
-export const CatalogView = () => {
-  const { products, loading, error } = useProducts();
+// Definimos qué propiedades espera recibir este componente
+interface Props {
+  productos: Producto[];
+  isFav: (id: string) => boolean;
+  toggleFav: (id: string) => void;
+  filtroModelo: string;
+  setFiltroModelo: (modelo: string) => void;
+  busqueda: string;
+  setBusqueda: (busqueda: string) => void;
+  filtroSeccion: string;
+  setFiltroSeccion: (seccion: string) => void;
+  onProductClick: (producto: Producto) => void;
+}
+
+export const CatalogView = ({
+  productos,
+  isFav,
+  toggleFav,
+  // filtroModelo, setFiltroModelo, // (Opcional si quieres usarlo en UI futura)
+  busqueda,
+  setBusqueda,
+  filtroSeccion,
+  setFiltroSeccion,
+  onProductClick
+}: Props) => {
+  
   const { addToCart } = useCart();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('Todos');
-  const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
 
-  // Filtrado optimizado
-  const filteredProducts = useMemo(() => {
-    return products.filter(product => {
-      const matchesSearch = product.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          (product.codigo_referencia && product.codigo_referencia.toLowerCase().includes(searchTerm.toLowerCase()));
-      const matchesCategory = selectedCategory === 'Todos' || product.seccion === selectedCategory;
-      return matchesSearch && matchesCategory;
-    });
-  }, [products, searchTerm, selectedCategory]);
-
-  if (error) return (
-    <div className="min-h-[50vh] flex flex-col items-center justify-center text-center px-4">
-      <div className="bg-red-50 p-4 rounded-full mb-4"><PackageX size={48} className="text-red-500" /></div>
-      <h3 className="text-xl font-bold text-slate-800">Error al cargar el catálogo</h3>
-      <p className="text-gray-500 mt-2">Por favor, verifica tu conexión e intenta nuevamente.</p>
-    </div>
-  );
+  // Ya no usamos useProducts aquí, porque App.tsx nos manda la data ya lista
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20 font-sans">
@@ -47,29 +48,29 @@ export const CatalogView = () => {
               type="text"
               placeholder="Buscar repuesto (ej: Cilindro, Daytona...)"
               className="w-full pl-12 pr-4 py-3 bg-gray-100 border-transparent focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 rounded-xl transition-all outline-none font-medium placeholder:text-gray-400"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
             />
           </div>
 
-          {/* Categorías (Scroll horizontal oculto) */}
+          {/* Categorías (Scroll horizontal) */}
           <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
             <button
-              onClick={() => setSelectedCategory('Todos')}
+              onClick={() => setFiltroSeccion('Todos')}
               className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-bold transition-all border ${
-                selectedCategory === 'Todos'
+                filtroSeccion === 'Todos'
                   ? 'bg-slate-900 text-white border-slate-900 shadow-md'
                   : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
               }`}
             >
               Todos
             </button>
-            {CATEGORIAS.map(cat => (
+            {CATEGORIAS.map((cat) => (
               <button
                 key={cat.id}
-                onClick={() => setSelectedCategory(cat.nombre)}
+                onClick={() => setFiltroSeccion(cat.nombre)}
                 className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-bold transition-all border ${
-                  selectedCategory === cat.nombre
+                  filtroSeccion === cat.nombre
                     ? 'bg-red-600 text-white border-red-600 shadow-md shadow-red-200'
                     : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                 }`}
@@ -82,24 +83,36 @@ export const CatalogView = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-6">
-        {loading ? (
-          <SkeletonLoader />
-        ) : filteredProducts.length > 0 ? (
+        {productos.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-            {filteredProducts.map((product) => (
+            {productos.map((product) => (
               <div 
                 key={product.id} 
                 className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group overflow-hidden relative"
               >
-                {/* Badge Flotante */}
+                {/* Badge Flotante Disponible */}
                 <div className="absolute top-2 left-2 z-10 bg-green-500/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-sm flex items-center gap-1">
                    <Star size={10} className="fill-current" /> DISPONIBLE
                 </div>
 
+                {/* Botón Favorito Flotante */}
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFav(product.id);
+                  }}
+                  className="absolute top-2 right-2 z-10 p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-colors"
+                >
+                  <Heart 
+                    size={16} 
+                    className={`transition-colors ${isFav(product.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}`} 
+                  />
+                </button>
+
                 {/* Imagen */}
                 <div 
                   className="relative pt-[100%] bg-gray-50 overflow-hidden cursor-pointer"
-                  onClick={() => setSelectedProduct(product)}
+                  onClick={() => onProductClick(product)}
                 >
                   <div className="absolute inset-0 flex items-center justify-center p-4">
                      <LazyImage 
@@ -108,8 +121,8 @@ export const CatalogView = () => {
                         className="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500" 
                       />
                   </div>
-                  {/* Overlay al hacer hover (solo desktop) */}
-                  <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  {/* Overlay Hover */}
+                  <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
                       <div className="bg-white/90 p-2 rounded-full shadow-lg transform scale-50 group-hover:scale-100 transition-transform">
                           <Eye className="text-slate-900" size={20}/>
                       </div>
@@ -123,7 +136,7 @@ export const CatalogView = () => {
                   </div>
                   <h3 
                     className="font-bold text-slate-800 text-sm md:text-base leading-tight mb-2 line-clamp-2 cursor-pointer hover:text-red-600 transition-colors"
-                    onClick={() => setSelectedProduct(product)}
+                    onClick={() => onProductClick(product)}
                   >
                     {product.nombre}
                   </h3>
@@ -151,33 +164,29 @@ export const CatalogView = () => {
             ))}
           </div>
         ) : (
-          /* Empty State Mejorado */
+          /* Empty State */
           <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-in">
             <div className="bg-gray-100 p-6 rounded-full mb-6">
-               <Search size={48} className="text-gray-400" />
+               <PackageX size={48} className="text-gray-400" />
             </div>
             <h3 className="text-xl font-bold text-slate-900 mb-2">
-              No encontramos "{searchTerm}"
+              No encontramos resultados
             </h3>
             <p className="text-gray-500 max-w-md mx-auto mb-8">
-              Intenta verificar la ortografía o usa términos más generales como "Motor", "Freno" o "Luz".
+              Intenta con otros términos o navega por las categorías.
             </p>
             <button 
-              onClick={() => setSearchTerm('')}
+              onClick={() => {
+                setBusqueda('');
+                setFiltroSeccion('Todos');
+              }}
               className="px-6 py-3 bg-white border border-gray-300 text-slate-700 font-bold rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all shadow-sm active:scale-95"
             >
-              Ver todos los productos
+              Limpiar Filtros
             </button>
           </div>
         )}
       </div>
-
-      {selectedProduct && (
-        <ProductDetailModal 
-          product={selectedProduct} 
-          onClose={() => setSelectedProduct(null)} 
-        />
-      )}
     </div>
   );
 };
