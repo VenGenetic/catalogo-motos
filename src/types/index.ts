@@ -1,12 +1,5 @@
 // src/types/index.ts
 
-export interface Motorcycle {
-  make: string;
-  model: string;
-  yearStart?: number;
-  yearEnd?: number;
-}
-
 export interface Producto {
   id: string;
   codigo_referencia: string;
@@ -15,17 +8,13 @@ export interface Producto {
   categoria: string;
   imagen: string;
   stock: boolean;
-  seccion?: string;       
-  textoBusqueda?: string; 
-  
-  // --- CAMPOS CRÍTICOS ---
-  isUniversal?: boolean;           
-  compatibleModels?: Motorcycle[]; 
+  seccion?: string;       // Nueva propiedad para el filtro
+  textoBusqueda?: string; // Nueva propiedad para búsqueda optimizada
 }
 
 export interface ItemCarrito extends Producto {
   cantidad: number;
-  cant?: number; 
+  cant?: number; // Soporte legacy
 }
 
 export interface DataFuente {

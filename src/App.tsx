@@ -1,16 +1,14 @@
-// src/App.tsx
 import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react';
-// IMPORTANTE: Agregamos BrowserRouter aquí
-import { Routes, Route, useSearchParams, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, useSearchParams, Link } from 'react-router-dom';
+import { Heart } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import './App.css';
 import { limpiarTexto } from './utils/helpers';
 import { APP_CONFIG } from './config/constants';
 import { Navbar } from './components/Navbar';
 import { HomeView } from './components/HomeView'; 
+// Asegúrate de tener este componente creado (te lo di hace un par de pasos)
 import { WhatsAppButton } from './components/WhatsAppButton'; 
-
-import { GarageProvider, useGarage } from './context/GarageContext';
 
 const CatalogView = lazy(() => import('./components/CatalogView').then(module => ({ default: module.CatalogView })));
 const ContactView = lazy(() => import('./components/ContactView').then(module => ({ default: module.ContactView })));
@@ -20,7 +18,7 @@ import { BottomNav } from './components/BottomNav';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { CartDrawer } from './components/CartDrawer';
 import { Footer } from './components/Footer';
-import { Producto, Motorcycle } from './types'; // Importamos Motorcycle para el tipado correcto
+import { Producto } from './types';
 import { useProducts } from './hooks/useProducts';
 import { useDebounce } from './hooks/useDebounce';
 
@@ -30,19 +28,17 @@ const PageLoader = () => (
   </div>
 );
 
-// Contenido interno de la App
-const AppContent = () => {
+export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { productos, loading } = useProducts();
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
-  
-  const { vehicle, setVehicle, clearGarage } = useGarage();
   
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
   });
   
   const [busqueda, setBusqueda] = useState('');
+  const [filtroModelo, setFiltroModelo] = useState('');
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
   const busquedaDebounced = useDebounce(busqueda, 300);
 
@@ -58,37 +54,19 @@ const AppContent = () => {
     return productos.filter(p => favs.includes(p.id));
   }, [productos, favs]);
 
-  // Lógica de Filtrado Corregida
   const filteredProducts = useMemo(() => {
-    if (!busquedaDebounced && filtroSeccion === 'Todos' && !vehicle) return productos;
+    if (!busquedaDebounced && filtroSeccion === 'Todos' && !filtroModelo) return productos;
 
     const terminos = busquedaDebounced ? limpiarTexto(busquedaDebounced).split(' ').filter(t => t.length > 0) : [];
     
     return productos.filter((p) => {
       if (!p.precio) return false;
       if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
-      
-      // Filtro por Vehículo
-      if (vehicle) {
-        if (p.isUniversal) return true;
-
-        if (p.compatibleModels && p.compatibleModels.length > 0) {
-           // TypeScript ahora sabe que 'm' es Motorcycle gracias al import en l.22
-           const esCompatible = p.compatibleModels.some((m: Motorcycle) => 
-             m.model.toLowerCase() === vehicle.model.toLowerCase()
-           );
-           if (!esCompatible) return false;
-        } else {
-           // Fallback por nombre si no hay datos de compatibilidad
-           if (!p.nombre.toLowerCase().includes(vehicle.model.toLowerCase())) return false;
-        }
-      }
-
+      if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
       if (terminos.length > 0 && !terminos.every((t) => p.textoBusqueda?.includes(t))) return false;
-      
       return true;
     });
-  }, [productos, busquedaDebounced, filtroSeccion, vehicle]);
+  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo]);
 
   const handleProductClick = useCallback((p: Producto) => {
     setSelectedProduct(p);
@@ -99,15 +77,6 @@ const AppContent = () => {
     setSelectedProduct(null);
     setSearchParams(prev => { prev.delete('prod'); return prev; });
   }, [setSearchParams]);
-
-  const filtroModeloString = vehicle ? vehicle.model : '';
-  const setFiltroModeloString = (modelo: string) => {
-    if (modelo === '') {
-      clearGarage();
-    } else {
-      setVehicle({ make: 'Daytona', model: modelo });
-    }
-  };
 
   useEffect(() => {
       if (!loading && productos.length > 0) {
@@ -142,6 +111,7 @@ const AppContent = () => {
                 <HomeView productos={productos} />
               </>
             } />
+            
             <Route path="/catalogo" element={
               <>
                 <Helmet><title>Catálogo | LV PARTS</title></Helmet>
@@ -149,8 +119,8 @@ const AppContent = () => {
                   productos={filteredProducts}
                   isFav={(id) => favs.includes(id)} 
                   toggleFav={toggleFav}
-                  filtroModelo={filtroModeloString} 
-                  setFiltroModelo={setFiltroModeloString}
+                  filtroModelo={filtroModelo} 
+                  setFiltroModelo={setFiltroModelo}
                   busqueda={busqueda}
                   setBusqueda={setBusqueda}
                   filtroSeccion={filtroSeccion} 
@@ -159,21 +129,41 @@ const AppContent = () => {
                 />
               </>
             } />
+
             <Route path="/favoritos" element={
               <>
                 <Helmet><title>Mis Favoritos | LV PARTS</title></Helmet>
-                <CatalogView 
-                    productos={productosFavoritos}
-                    isFav={(id) => favs.includes(id)} 
-                    toggleFav={toggleFav}
-                    filtroModelo={filtroModeloString} 
-                    setFiltroModelo={setFiltroModeloString}
-                    busqueda={busqueda} 
-                    setBusqueda={setBusqueda}
-                    filtroSeccion={filtroSeccion} 
-                    setFiltroSeccion={setFiltroSeccion}
-                    onProductClick={handleProductClick} 
-                />
+                {favs.length > 0 ? (
+                  <div className="animate-fade-in">
+                    <div className="max-w-7xl mx-auto px-4 pt-6 pb-2">
+                      <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                        <Heart className="text-red-600 fill-current" /> Mis Favoritos
+                      </h2>
+                    </div>
+                    <CatalogView 
+                      productos={productosFavoritos}
+                      isFav={(id) => favs.includes(id)} 
+                      toggleFav={toggleFav}
+                      filtroModelo={filtroModelo} 
+                      setFiltroModelo={setFiltroModelo}
+                      busqueda={busqueda} 
+                      setBusqueda={setBusqueda}
+                      filtroSeccion={filtroSeccion} 
+                      setFiltroSeccion={setFiltroSeccion}
+                      onProductClick={handleProductClick} 
+                    />
+                  </div>
+                ) : (
+                  <div className="min-h-[60vh] flex flex-col items-center justify-center text-center p-4">
+                    <div className="bg-gray-100 p-6 rounded-full mb-4">
+                      <Heart className="w-12 h-12 text-gray-400" />
+                    </div>
+                    <h2 className="text-xl font-bold text-slate-900 mb-2">Aún no tienes favoritos</h2>
+                    <Link to="/catalogo" className="bg-red-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-red-700 transition-colors shadow-lg shadow-red-200">
+                      Explorar Catálogo
+                    </Link>
+                  </div>
+                )}
               </>
             } />
             <Route path="/contacto" element={<><Helmet><title>Contacto | LV PARTS</title></Helmet><ContactView /></>} />
@@ -182,29 +172,18 @@ const AppContent = () => {
         </Suspense>
       </main>
       
+      {/* Componentes Globales ACTUALIZADOS */}
       <ProductDetailModal 
         product={selectedProduct} 
-        allProducts={productos}
+        allProducts={productos}         // NUEVO: Pasamos todo el catálogo
         onClose={handleCloseModal} 
-        onSelectRelated={handleProductClick}
+        onSelectRelated={handleProductClick} // NUEVO: Acción al hacer clic en un relacionado
       />
       <CartDrawer />
-      <WhatsAppButton />
+      <WhatsAppButton /> {/* NUEVO: Botón flotante siempre visible */}
       <ScrollToTopButton />
       <BottomNav />
       <Footer />
     </div>
-  );
-};
-
-// COMPONENTE PRINCIPAL
-// Aquí envolvemos todo con GarageProvider Y BrowserRouter
-export default function App() {
-  return (
-    <GarageProvider>
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
-    </GarageProvider>
   );
 }
