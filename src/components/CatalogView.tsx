@@ -162,19 +162,18 @@ export const CatalogView = memo(({
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
-                  {/* IMAGEN MEJORADA: 
-                      1. 'bg-white' para fondo limpio.
-                      2. Altura reducida (h-36/h-48) para efecto rectangular.
-                      3. Padding (p-4) para que la pieza respire.
+                  {/* IMAGEN RECTANGULAR ESTRECHA
+                      - h-32 (móvil) y md:h-40 (PC): Mucho menos altura que antes (h-56).
+                      - object-cover: Llena todo el ancho (sin bordes blancos a los lados).
+                      - cropBottom={true}: Alinea arriba y corta el sobrante inferior.
                   */}
-                  <div className="relative h-36 md:h-48 bg-white overflow-hidden p-4 flex items-center justify-center">
+                  <div className="relative h-32 md:h-40 bg-white overflow-hidden p-0">
                     <LazyImage 
                       src={optimizarImg(product.imagen)} 
                       alt={product.nombre}
-                      // CAMBIO CLAVE: imageFit="contain" evita cortes a los lados
                       className="w-full h-full transition-transform duration-500 group-hover:scale-105" 
-                      imageFit="contain" 
-                      cropBottom={false}
+                      imageFit="cover" 
+                      cropBottom={true}
                     />
                     
                     {product.stock === false && (
