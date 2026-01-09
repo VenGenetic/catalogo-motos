@@ -5,7 +5,6 @@ import { APP_CONFIG, ORDEN_SECCIONES } from '../config/constants';
 import { Producto } from '../types';
 import { LazyImage } from './LazyImage';
 import { HighlightedText } from './HighlightedText';
-// IMPORTAMOS EL NUEVO COMPONENTE DE FOTOS
 import { MotoSelector } from './MotoSelector';
 
 interface Props {
@@ -31,7 +30,6 @@ export const CatalogView = memo(({
   const [pagina, setPagina] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Resetear paginación al cambiar filtros
   useEffect(() => { 
     setPagina(1); 
     if (busqueda || filtroSeccion !== 'Todos') {
@@ -43,7 +41,6 @@ export const CatalogView = memo(({
     return productos.slice(0, pagina * APP_CONFIG.ITEMS_PER_PAGE);
   }, [productos, pagina]);
 
-  // Función para volver al selector de fotos
   const handleCambiarMoto = () => {
     setFiltroModelo(''); 
     setBusqueda('');
@@ -51,45 +48,45 @@ export const CatalogView = memo(({
     window.scrollTo({ top: 0, behavior: 'auto' });
   };
 
-  // --------------------------------------------------------
-  // 1. SI NO HA ELEGIDO MOTO -> MOSTRAR FOTOS (MotoSelector)
-  // --------------------------------------------------------
-  if (!filtroModelo) {
+  // --- LÓGICA PRINCIPAL MODIFICADA ---
+  // Si NO hay moto Y NO hay búsqueda -> Mostrar Selector
+  if (!filtroModelo && !busqueda) {
     return (
-      <MotoSelector onSelectModel={(modelo) => {
-        setFiltroModelo(modelo);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }} />
+      <MotoSelector 
+        onSelectModel={(modelo) => {
+          setFiltroModelo(modelo);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }} 
+        onSearchGlobal={(termino) => {
+          setBusqueda(termino); // Activa la búsqueda global
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+      />
     );
   }
 
-  // --------------------------------------------------------
-  // 2. SI ELIGIÓ MOTO -> MOSTRAR CATÁLOGO DE REPUESTOS
-  // --------------------------------------------------------
   return (
     <div ref={containerRef} className="min-h-screen bg-gray-50 pb-24 pt-2 md:pt-4 px-0 md:px-8 font-sans scroll-mt-20">
       <div className="max-w-7xl mx-auto">
         
-        {/* BARRA SUPERIOR FIJA */}
+        {/* BARRA SUPERIOR */}
         <div className="sticky top-[64px] z-30 bg-gray-50/95 backdrop-blur-sm pb-3 pt-2 px-3 md:px-0 transition-all shadow-sm md:shadow-none">
           
           <div className="flex gap-2 mb-3">
-            {/* Botón Volver / Cambiar Moto */}
             <button 
               onClick={handleCambiarMoto}
               className="flex items-center justify-center px-3 py-3 rounded-xl bg-slate-900 text-white shadow-lg shadow-slate-200 text-sm font-bold active:scale-95 transition-all hover:bg-slate-800"
             >
               <ArrowLeft className="w-4 h-4 mr-1 md:mr-2" />
-              <span className="hidden md:inline">Cambiar Moto</span>
+              <span className="hidden md:inline">Inicio / Cambiar</span>
               <span className="md:hidden">Atrás</span>
             </button>
 
-            {/* Buscador de repuestos */}
             <div className="flex-[2] relative">
               <Search className="absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
               <input
                 type="text"
-                placeholder={`Repuestos para ${filtroModelo}...`}
+                placeholder={filtroModelo ? `Repuestos para ${filtroModelo}...` : "Buscar en todo el catálogo..."}
                 className="w-full pl-9 pr-3 py-3 border border-gray-200 rounded-xl bg-white text-base focus:ring-2 focus:ring-red-500 outline-none shadow-sm placeholder:text-gray-400"
                 value={busqueda}
                 onChange={(e) => setBusqueda(e.target.value)}
@@ -102,12 +99,16 @@ export const CatalogView = memo(({
             </div>
           </div>
           
-          {/* Aviso visual de moto actual */}
+          {/* Aviso visual */}
           <div className="mb-2 px-1 flex items-center text-xs text-gray-500">
-             Viendo catálogo de: <span className="ml-1 font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-md border border-red-100">{filtroModelo}</span>
+             Viendo: 
+             {filtroModelo ? (
+                <span className="ml-1 font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-md border border-red-100">{filtroModelo}</span>
+             ) : (
+                <span className="ml-1 font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">Catálogo Completo</span>
+             )}
           </div>
 
-          {/* Filtros de Categoría */}
           <div className="overflow-x-auto pb-1 scrollbar-hide scroll-smooth -mx-3 px-3 md:mx-0 md:px-0">
             <div className="flex space-x-2">
               {ORDEN_SECCIONES.map((category) => (
@@ -188,7 +189,9 @@ export const CatalogView = memo(({
               <Search className="h-8 w-8 text-gray-400" />
             </div>
             <h3 className="text-slate-900 font-bold text-lg">No encontramos repuestos</h3>
-            <p className="text-gray-500 text-sm mt-1 mb-6">Prueba con otro nombre o cambia de sección.</p>
+            <p className="text-gray-500 text-sm mt-1 mb-6">
+              {filtroModelo ? `No hay resultados para ${filtroModelo}` : "Prueba con otro nombre."}
+            </p>
             <button 
               onClick={() => { setBusqueda(''); setFiltroSeccion('Todos'); }} 
               className="px-6 py-2 bg-red-600 text-white font-bold rounded-lg text-sm shadow-lg shadow-red-200"

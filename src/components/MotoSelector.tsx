@@ -1,41 +1,80 @@
 import { useState } from 'react';
-import { Search } from 'lucide-react';
+import { Search, Wrench } from 'lucide-react'; // Importamos icono de herramienta
 import { MODELOS } from '../config/constants';
 import { getMotoImage } from '../config/motoImages';
 
+// AQUÍ ESTABA EL ERROR: Faltaba definir 'onSearchGlobal'
 interface Props {
   onSelectModel: (modelo: string) => void;
+  onSearchGlobal: (termino: string) => void; // <--- Esta es la clave
 }
 
-export const MotoSelector = ({ onSelectModel }: Props) => {
+export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [partSearch, setPartSearch] = useState(''); 
 
   const modelosFiltrados = MODELOS.filter(m => 
     m.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleGlobalSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && partSearch.trim()) {
+      onSearchGlobal(partSearch);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 pt-20 pb-12 px-4">
+    <div className="min-h-screen bg-gray-50 pt-16 pb-12 px-4">
       <div className="max-w-7xl mx-auto">
         
         {/* Encabezado */}
         <div className="text-center mb-10">
           <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-3">
-            ¿Qué moto tienes?
+            ¿Qué necesitas hoy?
           </h1>
           <p className="text-gray-500 mb-8 text-lg">
-            Selecciona tu modelo para ver repuestos compatibles
+            Selecciona tu moto o busca el repuesto directamente
           </p>
           
-          {/* Buscador de motos */}
-          <div className="relative max-w-lg mx-auto group">
-            <input
-              type="text"
-              placeholder="Escribe tu modelo (ej. Tekken)..."
-              className="w-full pl-12 pr-4 py-4 rounded-full border-2 border-gray-200 focus:border-red-600 focus:ring-4 focus:ring-red-100 outline-none transition-all text-lg shadow-sm group-hover:shadow-md"
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <Search className="absolute left-4 top-4.5 text-gray-400 w-6 h-6" />
+          <div className="max-w-xl mx-auto space-y-4">
+            
+            {/* 1. BUSCADOR DE MOTOS */}
+            <div className="relative group z-20">
+              <input
+                type="text"
+                placeholder="Busca tu moto (ej. Tekken)..."
+                className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-gray-200 focus:border-red-600 focus:ring-4 focus:ring-red-100 outline-none transition-all text-lg shadow-sm"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <Search className="absolute left-4 top-4.5 text-gray-400 w-6 h-6" />
+            </div>
+
+            <div className="flex items-center justify-center gap-4 text-gray-300 font-bold text-sm">
+              <div className="h-px bg-gray-200 flex-1"></div>
+              O
+              <div className="h-px bg-gray-200 flex-1"></div>
+            </div>
+
+            {/* 2. BUSCADOR DE REPUESTOS */}
+            <div className="relative group z-10">
+              <input
+                type="text"
+                placeholder="Busca un repuesto directo (ej. Bujía)..."
+                className="w-full pl-12 pr-20 py-4 rounded-xl border-2 border-slate-200 bg-slate-50 focus:bg-white focus:border-slate-800 focus:ring-4 focus:ring-slate-100 outline-none transition-all text-lg shadow-sm"
+                value={partSearch}
+                onChange={(e) => setPartSearch(e.target.value)}
+                onKeyDown={handleGlobalSearch}
+              />
+              <Wrench className="absolute left-4 top-4.5 text-slate-400 w-6 h-6" />
+              <button 
+                onClick={() => partSearch.trim() && onSearchGlobal(partSearch)}
+                className="absolute right-2 top-2 bottom-2 bg-slate-900 text-white px-4 rounded-lg font-bold text-sm hover:bg-slate-800 transition-colors"
+              >
+                Buscar
+              </button>
+            </div>
+
           </div>
         </div>
 
@@ -45,14 +84,12 @@ export const MotoSelector = ({ onSelectModel }: Props) => {
             {modelosFiltrados.map((modelo) => (
               <button
                 key={modelo}
-                // --- CAMBIO AQUÍ: Usamos solo la primera palabra para el filtro ---
                 onClick={() => {
-                  const primeraPalabra = modelo.split(' ')[0]; // Ej: "Tekken Evo" -> "Tekken"
+                  const primeraPalabra = modelo.split(' ')[0];
                   onSelectModel(primeraPalabra);
                 }}
                 className="group relative flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden text-left hover:-translate-y-1"
               >
-                {/* Imagen */}
                 <div className="w-full h-40 md:h-48 bg-gray-100 relative overflow-hidden flex items-center justify-center p-2">
                   <img 
                     src={getMotoImage(modelo)} 
@@ -68,8 +105,6 @@ export const MotoSelector = ({ onSelectModel }: Props) => {
                     VER
                   </div>
                 </div>
-
-                {/* Nombre */}
                 <div className="p-4 border-t border-gray-50">
                   <h3 className="font-bold text-slate-800 text-sm md:text-base leading-tight group-hover:text-red-600 transition-colors">
                     {modelo}
