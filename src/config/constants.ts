@@ -13,13 +13,13 @@ export const ORDEN_SECCIONES = [
   'Cables y Mandos', 'Filtros y Mantenimiento', 'Otros Repuestos'
 ];
 
-// ESTA ES LA LISTA EXACTA QUE COINCIDE CON TUS FOTOS
+// LISTA DEFINITIVA (Con TANQ corregido)
 export const MODELOS = [
   // Utilitarias
   "Work Force Anniversary 150CC", "Workforce 150 CC", "Workforce S 150 CC", 
   "Delta 150 CC", "Crucero 150 CC", "Spitfire 150 CC", "Crucero 200 CC",
   // Caballito
-  "CX7 EVO 125 CC", "CX7 PRO 125", "TANQ 125 CC",
+  "CX7 EVO 125 CC", "CX7 PRO 125", "TANQ 125 CC", 
   // Scooters
   "BIT 125CC", "Dynamic Pro 150 CC", "S1 150 CC", "S1 Adventure 180 CC", 
   "S1 180 Crossover", "Agility-X 180CC",
