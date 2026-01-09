@@ -1,11 +1,10 @@
 // src/context/GarageContext.tsx
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import { createContext, useState, useContext, ReactNode } from 'react';
 
-// Definimos la estructura de una moto seleccionada
 export interface SelectedVehicle {
-  year?: number; // Opcional por ahora si no tienes años en tu data
-  make: string;  // Marca (Daytona)
-  model: string; // Modelo (Tekken 250)
+  year?: number;
+  make: string;
+  model: string;
 }
 
 interface GarageContextType {
@@ -17,7 +16,6 @@ interface GarageContextType {
 const GarageContext = createContext<GarageContextType | undefined>(undefined);
 
 export const GarageProvider = ({ children }: { children: ReactNode }) => {
-  // Intentamos leer del localStorage al iniciar para persistir la moto si recarga la página
   const [vehicle, setVehicleState] = useState<SelectedVehicle | null>(() => {
     try {
       const saved = localStorage.getItem('LV_PARTS_GARAGE');
@@ -27,7 +25,6 @@ export const GarageProvider = ({ children }: { children: ReactNode }) => {
     }
   });
 
-  // Guardamos en localStorage cada vez que cambia
   const setVehicle = (v: SelectedVehicle | null) => {
     setVehicleState(v);
     if (v) {

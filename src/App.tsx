@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react';
-import { Routes, Route, useSearchParams, Link } from 'react-router-dom';
-import { Heart } from 'lucide-react';
+import { Routes, Route, useSearchParams } from 'react-router-dom';
+// Eliminado 'Link' y 'Heart' de los imports porque no se usaban aquí
 import { Helmet } from 'react-helmet-async';
 import './App.css';
 import { limpiarTexto } from './utils/helpers';
@@ -9,9 +9,9 @@ import { Navbar } from './components/Navbar';
 import { HomeView } from './components/HomeView'; 
 import { WhatsAppButton } from './components/WhatsAppButton'; 
 
-// IMPORTANTE: Importamos el proveedor y el hook
 import { GarageProvider, useGarage } from './context/GarageContext';
 
+// Lazy loading de componentes
 const CatalogView = lazy(() => import('./components/CatalogView').then(module => ({ default: module.CatalogView })));
 const ContactView = lazy(() => import('./components/ContactView').then(module => ({ default: module.ContactView })));
 
@@ -30,13 +30,11 @@ const PageLoader = () => (
   </div>
 );
 
-// Componente Wrapper interno para poder usar el hook useGarage
 const AppContent = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { productos, loading } = useProducts();
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
   
-  // Usamos el Garage Context en lugar de un estado local simple
   const { vehicle, setVehicle, clearGarage } = useGarage();
   
   const [favs, setFavs] = useState<string[]>(() => {
@@ -59,9 +57,8 @@ const AppContent = () => {
     return productos.filter(p => favs.includes(p.id));
   }, [productos, favs]);
 
-  // --- LÓGICA DE FILTRADO AVANZADA ---
+  // --- LÓGICA DE FILTRADO CORREGIDA ---
   const filteredProducts = useMemo(() => {
-    // 1. Si no hay filtros activos, devolver todo
     if (!busquedaDebounced && filtroSeccion === 'Todos' && !vehicle) return productos;
 
     const terminos = busquedaDebounced ? limpiarTexto(busquedaDebounced).split(' ').filter(t => t.length > 0) : [];
@@ -69,28 +66,22 @@ const AppContent = () => {
     return productos.filter((p) => {
       if (!p.precio) return false;
       
-      // 1. Filtro por Sección (Motor, Chasis, etc.)
       if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
       
-      // 2. Filtro por Moto (COMPATIBILIDAD)
       if (vehicle) {
-        // Si es universal, pasa siempre
         if (p.isUniversal) return true;
 
-        // Si tiene lista de modelos compatibles, verificamos
         if (p.compatibleModels && p.compatibleModels.length > 0) {
+           // Al haber corregido types.ts, TypeScript ya sabe que 'm' es una Motorcycle
            const esCompatible = p.compatibleModels.some(m => 
              m.model.toLowerCase() === vehicle.model.toLowerCase()
            );
            if (!esCompatible) return false;
         } else {
-           // FALLBACK: Si tus datos aún no tienen "compatibleModels", usamos la búsqueda por nombre antigua
-           // para que la app no se rompa mientras actualizas el JSON.
            if (!p.nombre.toLowerCase().includes(vehicle.model.toLowerCase())) return false;
         }
       }
 
-      // 3. Búsqueda por Texto
       if (terminos.length > 0 && !terminos.every((t) => p.textoBusqueda?.includes(t))) return false;
       
       return true;
@@ -107,13 +98,12 @@ const AppContent = () => {
     setSearchParams(prev => { prev.delete('prod'); return prev; });
   }, [setSearchParams]);
 
-  // Adaptador para el CatalogView antiguo que espera strings
   const filtroModeloString = vehicle ? vehicle.model : '';
   const setFiltroModeloString = (modelo: string) => {
     if (modelo === '') {
       clearGarage();
     } else {
-      setVehicle({ make: 'Daytona', model: modelo }); // Asumimos Daytona por defecto en tu selector actual
+      setVehicle({ make: 'Daytona', model: modelo });
     }
   };
 
@@ -158,7 +148,6 @@ const AppContent = () => {
                   productos={filteredProducts}
                   isFav={(id) => favs.includes(id)} 
                   toggleFav={toggleFav}
-                  // Pasamos los adaptadores del contexto
                   filtroModelo={filtroModeloString} 
                   setFiltroModelo={setFiltroModeloString}
                   busqueda={busqueda}
@@ -208,7 +197,6 @@ const AppContent = () => {
   );
 };
 
-// Componente Principal que envuelve todo con el Contexto
 export default function App() {
   return (
     <GarageProvider>
