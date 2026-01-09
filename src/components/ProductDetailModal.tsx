@@ -75,10 +75,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
           <X className="w-6 h-6 text-slate-400" />
         </button>
 
-        {/* IMAGEN ESTRECHA:
-            - h-[30vh] en móvil (antes 35)
-            - md:h-[280px] en PC (antes 400). Esto la hace bien "panorámica" y delgada.
-        */}
+        {/* IMAGEN ESTRECHA (280px) */}
         <div className="w-full bg-gray-50 relative shrink-0 flex items-center justify-center h-[30vh] md:h-[280px]">
           <div className="w-full h-full absolute inset-0">
              <ImageZoom src={optimizarImg(product.imagen)} alt={product.nombre} />
@@ -88,7 +85,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
           </div>
         </div>
 
-        {/* Info + Relacionados */}
         <div className="flex-1 flex flex-col h-full overflow-hidden bg-white relative">
           <div className="flex-1 overflow-y-auto p-6 md:p-8 pb-32 md:pb-8 custom-scrollbar">
             
@@ -123,7 +119,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               </div>
             </div>
 
-            {/* SECCIÓN RELACIONADOS */}
+            {/* RELACIONADOS */}
             {relacionados.length > 0 && (
               <div className="mt-8 pt-6 border-t border-gray-100">
                 <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2 text-sm">

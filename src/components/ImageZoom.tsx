@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react';
 
-// 1. Definimos la interfaz para incluir className como opcional
 interface ImageZoomProps {
   src: string;
   alt: string;
@@ -32,7 +31,6 @@ export const ImageZoom = ({ src, alt, className }: ImageZoomProps) => {
   return (
     <div 
       ref={imgRef}
-      // 2. Aquí añadimos `${className || ''}` al final para aplicar las clases que vienen de fuera
       className={`w-full h-full overflow-hidden relative cursor-zoom-in touch-manipulation bg-white flex items-center justify-center animate-fade-in ${className || ''}`}
       onMouseEnter={() => setIsActive(true)}
       onMouseLeave={() => setIsActive(false)}
@@ -44,10 +42,11 @@ export const ImageZoom = ({ src, alt, className }: ImageZoomProps) => {
         src={src} 
         alt={alt}
         style={{ 
-          clipPath: 'inset(0 0 25% 0)',
           transformOrigin: `${position.x}% ${position.y}%`
+          // ELIMINADO: clipPath que cortaba la parte de abajo
         }}
-        className={`w-full h-full object-cover object-top transition-transform duration-200 ease-out p-1 md:p-0 ${isActive ? 'scale-[2.5]' : 'scale-100'}`}
+        // CAMBIO: 'object-center' para que se vea el centro de la pieza, no solo la parte de arriba
+        className={`w-full h-full object-cover object-center transition-transform duration-200 ease-out p-0 ${isActive ? 'scale-[2.5]' : 'scale-100'}`}
         loading="lazy"
         draggable={false}
       />
