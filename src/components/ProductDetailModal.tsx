@@ -62,7 +62,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
         <ArrowLeft className="w-6 h-6 text-slate-900" />
       </button>
 
-      {/* CAMBIO PRINCIPAL: flex-col SIEMPRE (Quitamos md:flex-row) */}
       <div 
         className={`w-full h-[95vh] md:h-auto md:max-h-[90vh] md:max-w-2xl bg-white rounded-t-3xl md:rounded-2xl flex flex-col overflow-hidden relative shadow-2xl transform transition-transform duration-300 ${
           isVisible ? 'translate-y-0 scale-100' : 'translate-y-full md:translate-y-10 md:scale-95'
@@ -76,10 +75,12 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
           <X className="w-6 h-6 text-slate-400" />
         </button>
 
-        {/* IMAGEN: Ahora es w-full y altura controlada para verse horizontal (panorámica) */}
-        <div className="w-full bg-gray-50 relative shrink-0 flex items-center justify-center h-[35vh] md:h-[400px]">
+        {/* IMAGEN ESTRECHA:
+            - h-[30vh] en móvil (antes 35)
+            - md:h-[280px] en PC (antes 400). Esto la hace bien "panorámica" y delgada.
+        */}
+        <div className="w-full bg-gray-50 relative shrink-0 flex items-center justify-center h-[30vh] md:h-[280px]">
           <div className="w-full h-full absolute inset-0">
-             {/* Usamos ImageZoom que se adapta al contenedor */}
              <ImageZoom src={optimizarImg(product.imagen)} alt={product.nombre} />
           </div>
           <div className="absolute bottom-4 right-4 bg-black/60 text-white text-[10px] font-bold px-3 py-1.5 rounded-full backdrop-blur-sm pointer-events-none flex items-center gap-1">
@@ -156,7 +157,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               </div>
             )}
             
-            {/* Botones de acción (Escritorio) */}
             <div className="hidden md:flex gap-3 mt-8">
               <button onClick={handleAdd} className="flex-1 bg-slate-900 text-white py-3.5 rounded-xl font-bold hover:bg-slate-800 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2">
                 <ShoppingBag size={18} /> Agregar al Carrito
@@ -167,7 +167,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
             </div>
           </div>
 
-          {/* Botones de acción (Móvil) */}
           <div className="md:hidden absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 flex gap-3 z-30 pb-safe shadow-[0_-4px_10px_rgba(0,0,0,0.03)]">
              <button onClick={handleConsult} className="p-3.5 bg-gray-50 text-slate-700 rounded-xl border border-gray-200 active:bg-gray-100">
                <MessageCircle size={20} />
