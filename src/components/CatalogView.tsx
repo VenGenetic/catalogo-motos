@@ -48,7 +48,7 @@ export const CatalogView = memo(({
     window.scrollTo({ top: 0, behavior: 'auto' });
   };
 
-  // 1. MODO SELECTOR (Inicio)
+  // 1. MODO SELECTOR
   if (!filtroModelo && !busqueda) {
     return (
       <MotoSelector 
@@ -69,11 +69,9 @@ export const CatalogView = memo(({
     <div ref={containerRef} className="min-h-screen bg-slate-50 pb-24 pt-2 md:pt-4 px-0 md:px-8 font-sans scroll-mt-20">
       <div className="max-w-7xl mx-auto">
         
-        {/* === BARRA SUPERIOR FIJA === */}
+        {/* BARRA SUPERIOR */}
         <div className="sticky top-[64px] z-30 bg-slate-50/95 backdrop-blur-md pb-4 pt-3 px-3 md:px-0 transition-all border-b border-gray-100/50 md:border-none">
-          
           <div className="flex gap-3 mb-4">
-            {/* Botón Volver */}
             <button 
               onClick={handleCambiarMoto}
               className="flex items-center justify-center px-4 py-3 rounded-xl bg-white border border-gray-200 text-slate-700 shadow-sm font-bold active:scale-95 transition-all hover:bg-gray-50 hover:border-gray-300"
@@ -82,7 +80,6 @@ export const CatalogView = memo(({
               <span className="hidden md:inline">Volver</span>
             </button>
 
-            {/* Buscador */}
             <div className="flex-[2] relative group">
               <Search className="absolute left-4 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-red-500 transition-colors" />
               <input
@@ -100,7 +97,6 @@ export const CatalogView = memo(({
             </div>
           </div>
           
-          {/* Info Contexto */}
           <div className="mb-3 px-1 flex items-center justify-between text-xs text-gray-500">
              <div className="flex items-center gap-2">
                 <span className="hidden md:inline">Catálogo:</span>
@@ -120,7 +116,6 @@ export const CatalogView = memo(({
              </div>
           </div>
 
-          {/* Filtros de Sección */}
           <div className="overflow-x-auto pb-2 scrollbar-hide scroll-smooth -mx-3 px-3 md:mx-0 md:px-0">
             <div className="flex space-x-2">
               {ORDEN_SECCIONES.map((category) => (
@@ -140,18 +135,16 @@ export const CatalogView = memo(({
           </div>
         </div>
 
-        {/* === LISTADO DE PRODUCTOS === */}
+        {/* LISTADO DE PRODUCTOS */}
         {visibles.length > 0 ? (
           <>
-            {/* CORRECCIÓN: Agregamos xl:grid-cols-5 para que en pantallas gigantes haya 5 columnas */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6 px-2 md:px-0">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 px-2 md:px-0">
               {visibles.map((product: Producto) => (
                 <div 
                   key={product.id} 
                   className="group bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-red-100 hover:-translate-y-1"
                   onClick={() => onProductClick(product)}
                 >
-                  {/* Botón Favorito */}
                   <button 
                     className={`absolute top-3 right-3 p-2 rounded-full z-10 transition-all duration-200 backdrop-blur-sm ${
                       isFav(product.id) 
@@ -163,12 +156,8 @@ export const CatalogView = memo(({
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
-                  {/* IMAGEN RECTANGULAR AJUSTADA
-                      - h-32 en móvil
-                      - md:h-36 (Reducido de h-40 para ser más panorámico en PC)
-                      - object-cover para llenar el ancho
-                  */}
-                  <div className="relative h-32 md:h-36 bg-white overflow-hidden p-0">
+                  {/* IMAGEN RECTANGULAR CORRECTA */}
+                  <div className="relative h-32 md:h-40 bg-white overflow-hidden p-0">
                     <LazyImage 
                       src={optimizarImg(product.imagen)} 
                       alt={product.nombre}
@@ -184,7 +173,6 @@ export const CatalogView = memo(({
                     )}
                   </div>
 
-                  {/* Contenido */}
                   <div className="p-4 flex flex-col flex-grow relative z-10 bg-white border-t border-gray-50">
                     <div className="mb-2">
                         <span className="inline-block px-2 py-0.5 rounded-md bg-gray-50 text-gray-400 text-[10px] font-bold uppercase tracking-wide border border-gray-100">
@@ -211,10 +199,7 @@ export const CatalogView = memo(({
             
             {visibles.length < productos.length && (
               <div className="mt-12 text-center px-4 mb-8">
-                <button 
-                    onClick={() => setPagina(p => p + 1)} 
-                    className="w-full md:w-auto px-10 py-3 bg-white border border-gray-200 text-slate-700 font-bold text-sm rounded-full shadow-sm hover:shadow-md hover:border-red-200 hover:text-red-600 transition-all active:scale-95"
-                >
+                <button onClick={() => setPagina(p => p + 1)} className="w-full md:w-auto px-10 py-3 bg-white border border-gray-200 text-slate-700 font-bold text-sm rounded-full shadow-sm hover:shadow-md hover:border-red-200 hover:text-red-600 transition-all active:scale-95">
                   Cargar más repuestos
                 </button>
               </div>
@@ -227,14 +212,9 @@ export const CatalogView = memo(({
              </div>
              <h3 className="text-xl font-bold text-slate-900 mb-2">No encontramos repuestos</h3>
              <p className="text-slate-500 max-w-xs mx-auto mb-8">
-               {filtroModelo 
-                  ? `No hay resultados para "${filtroModelo}" en esta sección.` 
-                  : "Intenta buscando con otro nombre o código."}
+               {filtroModelo ? `No hay resultados para "${filtroModelo}"` : "Intenta buscando con otro nombre."}
              </p>
-             <button 
-              onClick={() => { setBusqueda(''); setFiltroSeccion('Todos'); }} 
-              className="px-8 py-3 bg-slate-900 text-white font-bold rounded-xl shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all hover:-translate-y-1 active:scale-95"
-            >
+             <button onClick={() => { setBusqueda(''); setFiltroSeccion('Todos'); }} className="px-8 py-3 bg-slate-900 text-white font-bold rounded-xl shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all hover:-translate-y-1 active:scale-95">
               Limpiar filtros
             </button>
           </div>

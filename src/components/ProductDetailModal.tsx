@@ -51,7 +51,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
   return (
     <div 
       className={`fixed inset-0 z-[60] flex items-end md:items-center justify-center transition-all duration-300 ${
-        isVisible ? 'bg-black/60 backdrop-blur-sm opacity-100' : 'bg-transparent opacity-0 pointer-events-none'
+        isVisible ? 'bg-black/70 backdrop-blur-md opacity-100' : 'bg-transparent opacity-0 pointer-events-none'
       }`}
       onClick={onClose}
     >
@@ -62,22 +62,24 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
         <ArrowLeft className="w-6 h-6 text-slate-900" />
       </button>
 
+      {/* CAMBIO PRINCIPAL: flex-col SIEMPRE (Quitamos md:flex-row) */}
       <div 
-        className={`w-full h-[90vh] md:h-auto md:max-w-5xl md:max-h-[85vh] bg-white rounded-t-3xl md:rounded-2xl flex flex-col md:flex-row overflow-hidden relative shadow-2xl transform transition-transform duration-300 ${
+        className={`w-full h-[95vh] md:h-auto md:max-h-[90vh] md:max-w-2xl bg-white rounded-t-3xl md:rounded-2xl flex flex-col overflow-hidden relative shadow-2xl transform transition-transform duration-300 ${
           isVisible ? 'translate-y-0 scale-100' : 'translate-y-full md:translate-y-10 md:scale-95'
         }`}
         onClick={e => e.stopPropagation()}
       >
         <button 
           onClick={onClose} 
-          className="hidden md:block absolute top-4 right-4 z-20 bg-white/80 p-2 rounded-full hover:bg-red-50 hover:text-red-600 transition-all"
+          className="hidden md:block absolute top-4 right-4 z-20 bg-white/90 p-2 rounded-full hover:bg-red-50 hover:text-red-600 transition-all shadow-sm"
         >
           <X className="w-6 h-6 text-slate-400" />
         </button>
 
-        {/* Imagen Principal */}
-        <div className="w-full md:w-1/2 bg-gray-50 relative shrink-0 flex items-center justify-center h-[35vh] md:h-auto min-h-[300px]">
+        {/* IMAGEN: Ahora es w-full y altura controlada para verse horizontal (panorámica) */}
+        <div className="w-full bg-gray-50 relative shrink-0 flex items-center justify-center h-[35vh] md:h-[400px]">
           <div className="w-full h-full absolute inset-0">
+             {/* Usamos ImageZoom que se adapta al contenedor */}
              <ImageZoom src={optimizarImg(product.imagen)} alt={product.nombre} />
           </div>
           <div className="absolute bottom-4 right-4 bg-black/60 text-white text-[10px] font-bold px-3 py-1.5 rounded-full backdrop-blur-sm pointer-events-none flex items-center gap-1">
@@ -86,14 +88,14 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
         </div>
 
         {/* Info + Relacionados */}
-        <div className="flex-1 flex flex-col h-full overflow-hidden bg-white">
+        <div className="flex-1 flex flex-col h-full overflow-hidden bg-white relative">
           <div className="flex-1 overflow-y-auto p-6 md:p-8 pb-32 md:pb-8 custom-scrollbar">
             
             <div className="flex flex-col gap-1 mb-4">
               <span className="text-xs font-bold text-red-600 uppercase tracking-wider w-max bg-red-50 px-2 py-1 rounded-md">
                 {product.seccion}
               </span>
-              <h2 className="text-xl md:text-2xl font-extrabold text-slate-900 leading-tight">
+              <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 leading-tight">
                 {product.nombre}
               </h2>
               {product.codigo_referencia && (
@@ -120,7 +122,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               </div>
             </div>
 
-            {/* SECCIÓN RELACIONADOS AJUSTADA */}
+            {/* SECCIÓN RELACIONADOS */}
             {relacionados.length > 0 && (
               <div className="mt-8 pt-6 border-t border-gray-100">
                 <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2 text-sm">
@@ -137,7 +139,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                         <LazyImage 
                           src={optimizarImg(rel.imagen)} 
                           alt={rel.nombre} 
-                          // AJUSTE AQUÍ: cropBottom={true} para mantener consistencia
                           cropBottom={true}
                           imageFit="cover"
                           className="w-full h-full bg-white group-hover:scale-105 transition-transform"
@@ -155,9 +156,10 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               </div>
             )}
             
+            {/* Botones de acción (Escritorio) */}
             <div className="hidden md:flex gap-3 mt-8">
               <button onClick={handleAdd} className="flex-1 bg-slate-900 text-white py-3.5 rounded-xl font-bold hover:bg-slate-800 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2">
-                <ShoppingBag size={18} /> Agregar
+                <ShoppingBag size={18} /> Agregar al Carrito
               </button>
               <button onClick={handleConsult} className="px-6 border-2 border-slate-200 text-slate-700 rounded-xl font-bold hover:border-slate-900 hover:text-slate-900 transition-all active:scale-95">
                 <MessageCircle size={20} />
@@ -165,6 +167,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
             </div>
           </div>
 
+          {/* Botones de acción (Móvil) */}
           <div className="md:hidden absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 flex gap-3 z-30 pb-safe shadow-[0_-4px_10px_rgba(0,0,0,0.03)]">
              <button onClick={handleConsult} className="p-3.5 bg-gray-50 text-slate-700 rounded-xl border border-gray-200 active:bg-gray-100">
                <MessageCircle size={20} />
