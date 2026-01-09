@@ -18,9 +18,9 @@ export interface Producto {
   seccion?: string;       
   textoBusqueda?: string; 
   
-  // --- CAMPOS NUEVOS (Corrección del error TS2339) ---
-  isUniversal?: boolean;           // Indica si sirve para todas las motos
-  compatibleModels?: Motorcycle[]; // Lista de modelos compatibles
+  // --- CAMPOS CRÍTICOS ---
+  isUniversal?: boolean;           
+  compatibleModels?: Motorcycle[]; 
 }
 
 export interface ItemCarrito extends Producto {

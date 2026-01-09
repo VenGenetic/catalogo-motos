@@ -1,6 +1,7 @@
+// src/App.tsx
 import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react';
-import { Routes, Route, useSearchParams } from 'react-router-dom';
-// Eliminado 'Link' y 'Heart' de los imports porque no se usaban aquí
+// IMPORTANTE: Agregamos BrowserRouter aquí
+import { Routes, Route, useSearchParams, BrowserRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import './App.css';
 import { limpiarTexto } from './utils/helpers';
@@ -11,7 +12,6 @@ import { WhatsAppButton } from './components/WhatsAppButton';
 
 import { GarageProvider, useGarage } from './context/GarageContext';
 
-// Lazy loading de componentes
 const CatalogView = lazy(() => import('./components/CatalogView').then(module => ({ default: module.CatalogView })));
 const ContactView = lazy(() => import('./components/ContactView').then(module => ({ default: module.ContactView })));
 
@@ -20,7 +20,7 @@ import { BottomNav } from './components/BottomNav';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { CartDrawer } from './components/CartDrawer';
 import { Footer } from './components/Footer';
-import { Producto } from './types';
+import { Producto, Motorcycle } from './types'; // Importamos Motorcycle para el tipado correcto
 import { useProducts } from './hooks/useProducts';
 import { useDebounce } from './hooks/useDebounce';
 
@@ -30,6 +30,7 @@ const PageLoader = () => (
   </div>
 );
 
+// Contenido interno de la App
 const AppContent = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { productos, loading } = useProducts();
@@ -57,7 +58,7 @@ const AppContent = () => {
     return productos.filter(p => favs.includes(p.id));
   }, [productos, favs]);
 
-  // --- LÓGICA DE FILTRADO CORREGIDA ---
+  // Lógica de Filtrado Corregida
   const filteredProducts = useMemo(() => {
     if (!busquedaDebounced && filtroSeccion === 'Todos' && !vehicle) return productos;
 
@@ -65,19 +66,20 @@ const AppContent = () => {
     
     return productos.filter((p) => {
       if (!p.precio) return false;
-      
       if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
       
+      // Filtro por Vehículo
       if (vehicle) {
         if (p.isUniversal) return true;
 
         if (p.compatibleModels && p.compatibleModels.length > 0) {
-           // Al haber corregido types.ts, TypeScript ya sabe que 'm' es una Motorcycle
-           const esCompatible = p.compatibleModels.some(m => 
+           // TypeScript ahora sabe que 'm' es Motorcycle gracias al import en l.22
+           const esCompatible = p.compatibleModels.some((m: Motorcycle) => 
              m.model.toLowerCase() === vehicle.model.toLowerCase()
            );
            if (!esCompatible) return false;
         } else {
+           // Fallback por nombre si no hay datos de compatibilidad
            if (!p.nombre.toLowerCase().includes(vehicle.model.toLowerCase())) return false;
         }
       }
@@ -140,7 +142,6 @@ const AppContent = () => {
                 <HomeView productos={productos} />
               </>
             } />
-            
             <Route path="/catalogo" element={
               <>
                 <Helmet><title>Catálogo | LV PARTS</title></Helmet>
@@ -158,7 +159,6 @@ const AppContent = () => {
                 />
               </>
             } />
-
             <Route path="/favoritos" element={
               <>
                 <Helmet><title>Mis Favoritos | LV PARTS</title></Helmet>
@@ -197,10 +197,14 @@ const AppContent = () => {
   );
 };
 
+// COMPONENTE PRINCIPAL
+// Aquí envolvemos todo con GarageProvider Y BrowserRouter
 export default function App() {
   return (
     <GarageProvider>
-      <AppContent />
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
     </GarageProvider>
   );
 }
