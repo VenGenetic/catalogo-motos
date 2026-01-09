@@ -143,7 +143,8 @@ export const CatalogView = memo(({
         {/* === LISTADO DE PRODUCTOS === */}
         {visibles.length > 0 ? (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 px-2 md:px-0">
+            {/* CORRECCIÓN: Agregamos xl:grid-cols-5 para que en pantallas gigantes haya 5 columnas */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6 px-2 md:px-0">
               {visibles.map((product: Producto) => (
                 <div 
                   key={product.id} 
@@ -162,12 +163,12 @@ export const CatalogView = memo(({
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
-                  {/* IMAGEN RECTANGULAR ESTRECHA
-                      - h-32 (móvil) y md:h-40 (PC): Mucho menos altura que antes (h-56).
-                      - object-cover: Llena todo el ancho (sin bordes blancos a los lados).
-                      - cropBottom={true}: Alinea arriba y corta el sobrante inferior.
+                  {/* IMAGEN RECTANGULAR AJUSTADA
+                      - h-32 en móvil
+                      - md:h-36 (Reducido de h-40 para ser más panorámico en PC)
+                      - object-cover para llenar el ancho
                   */}
-                  <div className="relative h-32 md:h-40 bg-white overflow-hidden p-0">
+                  <div className="relative h-32 md:h-36 bg-white overflow-hidden p-0">
                     <LazyImage 
                       src={optimizarImg(product.imagen)} 
                       alt={product.nombre}
