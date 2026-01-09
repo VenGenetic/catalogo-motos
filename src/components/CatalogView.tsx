@@ -116,13 +116,16 @@ export const CatalogView = memo(({
              </div>
           </div>
 
-          <div className="overflow-x-auto pb-2 scrollbar-hide scroll-smooth -mx-3 px-3 md:mx-0 md:px-0">
+          {/* --- MEJORA 1: Scroll Snap en Categorías --- */}
+          {/* Se agrega 'snap-x snap-mandatory' para que los botones se "enganchen" al deslizar */}
+          <div className="overflow-x-auto pb-2 scrollbar-hide scroll-smooth -mx-3 px-3 md:mx-0 md:px-0 snap-x snap-mandatory">
             <div className="flex space-x-2">
               {ORDEN_SECCIONES.map((category) => (
                 <button
                   key={category}
                   onClick={() => setFiltroSeccion(category)}
-                  className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-300 border ${
+                  /* Se agrega 'snap-center' a cada botón */
+                  className={`snap-center px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-300 border ${
                     filtroSeccion === category 
                       ? 'bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-200 scale-105' 
                       : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
@@ -142,13 +145,14 @@ export const CatalogView = memo(({
               {visibles.map((product: Producto) => (
                 <div 
                   key={product.id} 
-                  /* --- MEJORA 1: Estilos de Tarjeta Actualizados --- */
-                  /* Se añade hover:shadow-red-500/15, hover:ring-1, hover:border-red-500/30 */
-                  className="group bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-xl hover:shadow-red-500/15 hover:border-red-500/30 hover:ring-1 hover:ring-red-500/30 hover:-translate-y-1"
+                  /* --- MEJORA 4: Feedback Táctil (Active State) --- */
+                  /* Se añade 'active:scale-95' para simular pulsación en móviles */
+                  className="group bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-xl hover:shadow-red-500/15 hover:border-red-500/30 hover:ring-1 hover:ring-red-500/30 hover:-translate-y-1 active:scale-95"
                   onClick={() => onProductClick(product)}
                 >
                   <button 
-                    className={`absolute top-3 right-3 p-2 rounded-full z-10 transition-all duration-200 backdrop-blur-sm ${
+                    /* Aumentamos un poco el padding táctil del corazón */
+                    className={`absolute top-3 right-3 p-2.5 rounded-full z-10 transition-all duration-200 backdrop-blur-sm ${
                       isFav(product.id) 
                         ? 'bg-red-50 text-red-500 scale-110 shadow-sm' 
                         : 'bg-white/80 text-slate-400 hover:bg-white hover:text-red-500 border border-gray-100'
@@ -158,7 +162,6 @@ export const CatalogView = memo(({
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
-                  {/* --- MEJORA 2: Fondo Gris Sutil (bg-slate-50) --- */}
                   <div className="relative h-32 md:h-40 bg-slate-50 overflow-hidden p-0">
                     <LazyImage 
                       src={optimizarImg(product.imagen)} 
