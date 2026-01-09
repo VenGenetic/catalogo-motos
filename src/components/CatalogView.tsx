@@ -120,7 +120,7 @@ export const CatalogView = memo(({
              </div>
           </div>
 
-          {/* Filtros de Sección (Estilo Píldora Mejorado) */}
+          {/* Filtros de Sección */}
           <div className="overflow-x-auto pb-2 scrollbar-hide scroll-smooth -mx-3 px-3 md:mx-0 md:px-0">
             <div className="flex space-x-2">
               {ORDEN_SECCIONES.map((category) => (
@@ -155,49 +155,53 @@ export const CatalogView = memo(({
                     className={`absolute top-3 right-3 p-2 rounded-full z-10 transition-all duration-200 backdrop-blur-sm ${
                       isFav(product.id) 
                         ? 'bg-red-50 text-red-500 scale-110 shadow-sm' 
-                        : 'bg-black/5 text-slate-600 hover:bg-white hover:text-red-500'
+                        : 'bg-white/80 text-slate-400 hover:bg-white hover:text-red-500 border border-gray-100'
                     }`}
                     onClick={(e) => { e.stopPropagation(); toggleFav(product.id); }}
                   >
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
-                  {/* Imagen */}
-                  <div className="relative h-44 md:h-56 bg-gray-50 overflow-hidden">
+                  {/* IMAGEN MEJORADA: 
+                      1. 'bg-white' para fondo limpio.
+                      2. Altura reducida (h-36/h-48) para efecto rectangular.
+                      3. Padding (p-4) para que la pieza respire.
+                  */}
+                  <div className="relative h-36 md:h-48 bg-white overflow-hidden p-4 flex items-center justify-center">
                     <LazyImage 
                       src={optimizarImg(product.imagen)} 
                       alt={product.nombre}
-                      className="w-full h-full transition-transform duration-700 group-hover:scale-110" 
-                      imageFit="cover"
-                      cropBottom={true}
+                      // CAMBIO CLAVE: imageFit="contain" evita cortes a los lados
+                      className="w-full h-full transition-transform duration-500 group-hover:scale-105" 
+                      imageFit="contain" 
+                      cropBottom={false}
                     />
-                    {/* Badge de Stock Agotado */}
+                    
                     {product.stock === false && (
-                         <div className="absolute bottom-0 left-0 right-0 bg-gray-900/80 text-white text-[10px] py-1 text-center font-bold backdrop-blur-sm">
+                         <div className="absolute bottom-0 left-0 right-0 bg-gray-900/90 text-white text-[10px] py-1 text-center font-bold">
                            AGOTADO
                          </div>
                     )}
                   </div>
 
                   {/* Contenido */}
-                  <div className="p-4 flex flex-col flex-grow relative z-10 bg-white">
-                    {/* Etiqueta Categoría */}
+                  <div className="p-4 flex flex-col flex-grow relative z-10 bg-white border-t border-gray-50">
                     <div className="mb-2">
-                        <span className="inline-block px-2 py-0.5 rounded-md bg-gray-100 text-gray-500 text-[10px] font-bold uppercase tracking-wide border border-gray-200">
+                        <span className="inline-block px-2 py-0.5 rounded-md bg-gray-50 text-gray-400 text-[10px] font-bold uppercase tracking-wide border border-gray-100">
                         {product.seccion}
                         </span>
                     </div>
                     
-                    <h3 className="text-sm font-bold text-slate-800 mb-2 leading-snug min-h-[2.5em] group-hover:text-red-600 transition-colors">
+                    <h3 className="text-sm font-bold text-slate-800 mb-2 leading-snug min-h-[2.5em] group-hover:text-red-600 transition-colors line-clamp-2">
                       <HighlightedText text={product.nombre} highlight={busqueda} />
                     </h3>
                     
-                    <div className="mt-auto pt-3 border-t border-gray-50 flex items-center justify-between">
+                    <div className="mt-auto pt-2 flex items-center justify-between">
                        <span className="text-lg font-extrabold text-slate-900">
                          ${Number(product.precio).toFixed(2)}
                        </span>
-                       <span className="text-[10px] font-bold text-red-600 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-2 group-hover:translate-x-0">
-                         VER DETALLE →
+                       <span className="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
+                         VER →
                        </span>
                     </div>
                   </div>
@@ -217,7 +221,6 @@ export const CatalogView = memo(({
             )}
           </>
         ) : (
-          /* ESTADO VACÍO (Empty State) Mejorado */
           <div className="flex flex-col items-center justify-center py-24 px-4 text-center">
              <div className="bg-slate-50 p-6 rounded-full mb-6 animate-pulse">
                 <Search className="h-10 w-10 text-slate-300" />
