@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef, memo } from 'react';
-import { Search, Heart, X, ArrowLeft } from 'lucide-react'; 
+import { Search, Heart, X, ArrowLeft, Filter } from 'lucide-react'; 
 import { optimizarImg } from '../utils/helpers';
 import { APP_CONFIG, ORDEN_SECCIONES } from '../config/constants';
 import { Producto } from '../types';
@@ -48,8 +48,7 @@ export const CatalogView = memo(({
     window.scrollTo({ top: 0, behavior: 'auto' });
   };
 
-  // --- LÓGICA PRINCIPAL MODIFICADA ---
-  // Si NO hay moto Y NO hay búsqueda -> Mostrar Selector
+  // 1. MODO SELECTOR (Inicio)
   if (!filtroModelo && !busqueda) {
     return (
       <MotoSelector 
@@ -58,67 +57,80 @@ export const CatalogView = memo(({
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }} 
         onSearchGlobal={(termino) => {
-          setBusqueda(termino); // Activa la búsqueda global
+          setBusqueda(termino);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
       />
     );
   }
 
+  // 2. MODO CATÁLOGO
   return (
-    <div ref={containerRef} className="min-h-screen bg-gray-50 pb-24 pt-2 md:pt-4 px-0 md:px-8 font-sans scroll-mt-20">
+    <div ref={containerRef} className="min-h-screen bg-slate-50 pb-24 pt-2 md:pt-4 px-0 md:px-8 font-sans scroll-mt-20">
       <div className="max-w-7xl mx-auto">
         
-        {/* BARRA SUPERIOR */}
-        <div className="sticky top-[64px] z-30 bg-gray-50/95 backdrop-blur-sm pb-3 pt-2 px-3 md:px-0 transition-all shadow-sm md:shadow-none">
+        {/* === BARRA SUPERIOR FIJA === */}
+        <div className="sticky top-[64px] z-30 bg-slate-50/95 backdrop-blur-md pb-4 pt-3 px-3 md:px-0 transition-all border-b border-gray-100/50 md:border-none">
           
-          <div className="flex gap-2 mb-3">
+          <div className="flex gap-3 mb-4">
+            {/* Botón Volver */}
             <button 
               onClick={handleCambiarMoto}
-              className="flex items-center justify-center px-3 py-3 rounded-xl bg-slate-900 text-white shadow-lg shadow-slate-200 text-sm font-bold active:scale-95 transition-all hover:bg-slate-800"
+              className="flex items-center justify-center px-4 py-3 rounded-xl bg-white border border-gray-200 text-slate-700 shadow-sm font-bold active:scale-95 transition-all hover:bg-gray-50 hover:border-gray-300"
             >
-              <ArrowLeft className="w-4 h-4 mr-1 md:mr-2" />
-              <span className="hidden md:inline">Inicio / Cambiar</span>
-              <span className="md:hidden">Atrás</span>
+              <ArrowLeft className="w-5 h-5 mr-0 md:mr-2" />
+              <span className="hidden md:inline">Volver</span>
             </button>
 
-            <div className="flex-[2] relative">
-              <Search className="absolute left-3 top-3.5 h-4 w-4 text-gray-400" />
+            {/* Buscador */}
+            <div className="flex-[2] relative group">
+              <Search className="absolute left-4 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-red-500 transition-colors" />
               <input
                 type="text"
-                placeholder={filtroModelo ? `Repuestos para ${filtroModelo}...` : "Buscar en todo el catálogo..."}
-                className="w-full pl-9 pr-3 py-3 border border-gray-200 rounded-xl bg-white text-base focus:ring-2 focus:ring-red-500 outline-none shadow-sm placeholder:text-gray-400"
+                placeholder={filtroModelo ? `Buscar pieza para ${filtroModelo}...` : "Buscar en todo el catálogo..."}
+                className="w-full pl-11 pr-10 py-3 border border-gray-200 rounded-xl bg-white text-base focus:ring-4 focus:ring-red-500/10 focus:border-red-500 outline-none shadow-sm placeholder:text-gray-400 transition-all"
                 value={busqueda}
                 onChange={(e) => setBusqueda(e.target.value)}
               />
               {busqueda && (
-                <button onClick={() => setBusqueda('')} className="absolute right-3 top-3.5 text-gray-400 hover:text-red-500">
+                <button onClick={() => setBusqueda('')} className="absolute right-3 top-3.5 text-gray-400 hover:text-red-500 p-1 rounded-full hover:bg-red-50 transition-colors">
                   <X className="w-4 h-4" />
                 </button>
               )}
             </div>
           </div>
           
-          {/* Aviso visual */}
-          <div className="mb-2 px-1 flex items-center text-xs text-gray-500">
-             Viendo: 
-             {filtroModelo ? (
-                <span className="ml-1 font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-md border border-red-100">{filtroModelo}</span>
-             ) : (
-                <span className="ml-1 font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">Catálogo Completo</span>
-             )}
+          {/* Info Contexto */}
+          <div className="mb-3 px-1 flex items-center justify-between text-xs text-gray-500">
+             <div className="flex items-center gap-2">
+                <span className="hidden md:inline">Catálogo:</span>
+                {filtroModelo ? (
+                    <span className="font-extrabold text-red-600 bg-red-50 px-2 py-1 rounded-md border border-red-100 flex items-center gap-1">
+                      {filtroModelo}
+                    </span>
+                ) : (
+                    <span className="font-bold text-slate-700 bg-white px-2 py-1 rounded-md border border-gray-200 shadow-sm">
+                      Global
+                    </span>
+                )}
+             </div>
+             <div className="flex items-center gap-1 text-gray-400">
+                <Filter className="w-3 h-3" />
+                <span>{filtroSeccion}</span>
+             </div>
           </div>
 
-          <div className="overflow-x-auto pb-1 scrollbar-hide scroll-smooth -mx-3 px-3 md:mx-0 md:px-0">
+          {/* Filtros de Sección (Estilo Píldora Mejorado) */}
+          <div className="overflow-x-auto pb-2 scrollbar-hide scroll-smooth -mx-3 px-3 md:mx-0 md:px-0">
             <div className="flex space-x-2">
               {ORDEN_SECCIONES.map((category) => (
                 <button
                   key={category}
                   onClick={() => setFiltroSeccion(category)}
-                  className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-colors border ${
+                  className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-300 border ${
                     filtroSeccion === category 
-                      ? 'bg-red-600 text-white border-red-600 shadow-sm' 
-                      : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-100'
+                      ? 'bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-200 scale-105' 
+                      : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                   }`}
                 >
                   {category}
@@ -128,47 +140,65 @@ export const CatalogView = memo(({
           </div>
         </div>
 
-        {/* LISTADO DE PRODUCTOS */}
+        {/* === LISTADO DE PRODUCTOS === */}
         {visibles.length > 0 ? (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6 px-2 md:px-0">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 px-2 md:px-0">
               {visibles.map((product: Producto) => (
                 <div 
                   key={product.id} 
-                  className="bg-white rounded-lg shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden relative active:scale-[0.99] transition-transform duration-100"
+                  className="group bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-red-100 hover:-translate-y-1"
                   onClick={() => onProductClick(product)}
                 >
+                  {/* Botón Favorito */}
                   <button 
-                    className={`absolute top-2 right-2 p-2 rounded-full z-10 transition-colors ${
-                      isFav(product.id) ? 'bg-red-50 text-red-600' : 'bg-black/40 text-white hover:bg-black/60'
+                    className={`absolute top-3 right-3 p-2 rounded-full z-10 transition-all duration-200 backdrop-blur-sm ${
+                      isFav(product.id) 
+                        ? 'bg-red-50 text-red-500 scale-110 shadow-sm' 
+                        : 'bg-black/5 text-slate-600 hover:bg-white hover:text-red-500'
                     }`}
                     onClick={(e) => { e.stopPropagation(); toggleFav(product.id); }}
                   >
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
-                  <LazyImage 
-                    src={optimizarImg(product.imagen)} 
-                    alt={product.nombre}
-                    className="h-40 md:h-56 bg-white" 
-                    imageFit="cover"
-                    cropBottom={true}
-                  />
+                  {/* Imagen */}
+                  <div className="relative h-44 md:h-56 bg-gray-50 overflow-hidden">
+                    <LazyImage 
+                      src={optimizarImg(product.imagen)} 
+                      alt={product.nombre}
+                      className="w-full h-full transition-transform duration-700 group-hover:scale-110" 
+                      imageFit="cover"
+                      cropBottom={true}
+                    />
+                    {/* Badge de Stock Agotado */}
+                    {product.stock === false && (
+                         <div className="absolute bottom-0 left-0 right-0 bg-gray-900/80 text-white text-[10px] py-1 text-center font-bold backdrop-blur-sm">
+                           AGOTADO
+                         </div>
+                    )}
+                  </div>
 
-                  <div className="p-3 flex flex-col flex-grow relative z-10 bg-white">
-                    <span className="text-[10px] font-bold text-red-600 uppercase tracking-wide mb-1 line-clamp-1">
-                      {product.seccion}
-                    </span>
-                    <h3 className="text-xs md:text-sm font-bold text-slate-800 mb-1 leading-tight">
+                  {/* Contenido */}
+                  <div className="p-4 flex flex-col flex-grow relative z-10 bg-white">
+                    {/* Etiqueta Categoría */}
+                    <div className="mb-2">
+                        <span className="inline-block px-2 py-0.5 rounded-md bg-gray-100 text-gray-500 text-[10px] font-bold uppercase tracking-wide border border-gray-200">
+                        {product.seccion}
+                        </span>
+                    </div>
+                    
+                    <h3 className="text-sm font-bold text-slate-800 mb-2 leading-snug min-h-[2.5em] group-hover:text-red-600 transition-colors">
                       <HighlightedText text={product.nombre} highlight={busqueda} />
                     </h3>
-                    <div className="mt-auto pt-2 flex items-end justify-between">
-                       <span className="text-sm md:text-lg font-extrabold text-slate-900">
+                    
+                    <div className="mt-auto pt-3 border-t border-gray-50 flex items-center justify-between">
+                       <span className="text-lg font-extrabold text-slate-900">
                          ${Number(product.precio).toFixed(2)}
                        </span>
-                       {product.stock === false && (
-                         <span className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">Agotado</span>
-                       )}
+                       <span className="text-[10px] font-bold text-red-600 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-2 group-hover:translate-x-0">
+                         VER DETALLE →
+                       </span>
                     </div>
                   </div>
                 </div>
@@ -176,27 +206,33 @@ export const CatalogView = memo(({
             </div>
             
             {visibles.length < productos.length && (
-              <div className="mt-10 text-center px-4 mb-8">
-                <button onClick={() => setPagina(p => p + 1)} className="w-full md:w-auto px-8 py-3 bg-white border-2 border-slate-100 text-slate-700 font-bold text-sm rounded-full shadow-sm hover:bg-gray-50">
-                  Ver más productos
+              <div className="mt-12 text-center px-4 mb-8">
+                <button 
+                    onClick={() => setPagina(p => p + 1)} 
+                    className="w-full md:w-auto px-10 py-3 bg-white border border-gray-200 text-slate-700 font-bold text-sm rounded-full shadow-sm hover:shadow-md hover:border-red-200 hover:text-red-600 transition-all active:scale-95"
+                >
+                  Cargar más repuestos
                 </button>
               </div>
             )}
           </>
         ) : (
-          <div className="text-center py-24 px-4">
-             <div className="bg-gray-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Search className="h-8 w-8 text-gray-400" />
-            </div>
-            <h3 className="text-slate-900 font-bold text-lg">No encontramos repuestos</h3>
-            <p className="text-gray-500 text-sm mt-1 mb-6">
-              {filtroModelo ? `No hay resultados para ${filtroModelo}` : "Prueba con otro nombre."}
-            </p>
-            <button 
+          /* ESTADO VACÍO (Empty State) Mejorado */
+          <div className="flex flex-col items-center justify-center py-24 px-4 text-center">
+             <div className="bg-slate-50 p-6 rounded-full mb-6 animate-pulse">
+                <Search className="h-10 w-10 text-slate-300" />
+             </div>
+             <h3 className="text-xl font-bold text-slate-900 mb-2">No encontramos repuestos</h3>
+             <p className="text-slate-500 max-w-xs mx-auto mb-8">
+               {filtroModelo 
+                  ? `No hay resultados para "${filtroModelo}" en esta sección.` 
+                  : "Intenta buscando con otro nombre o código."}
+             </p>
+             <button 
               onClick={() => { setBusqueda(''); setFiltroSeccion('Todos'); }} 
-              className="px-6 py-2 bg-red-600 text-white font-bold rounded-lg text-sm shadow-lg shadow-red-200"
+              className="px-8 py-3 bg-slate-900 text-white font-bold rounded-xl shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all hover:-translate-y-1 active:scale-95"
             >
-              Limpiar búsqueda
+              Limpiar filtros
             </button>
           </div>
         )}
