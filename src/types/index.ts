@@ -8,12 +8,17 @@ export interface Producto {
   categoria: string;
   imagen: string;
   stock: boolean;
-  seccion?: string; // Propiedad opcional para el agrupamiento
+  seccion?: string;       // Nueva propiedad para el filtro
+  textoBusqueda?: string; // Nueva propiedad para búsqueda optimizada
 }
 
 export interface ItemCarrito extends Producto {
-  cantidad: number; // En el carrito necesitamos saber la cantidad
-  cant?: number;    // Soporte legacy por si usas 'cant' en vez de 'cantidad'
+  cantidad: number;
+  cant?: number; // Soporte legacy
+}
+
+export interface DataFuente {
+  RAW_SCRAPED_DATA: Producto[];
 }
 
 export interface ToastMessage {
