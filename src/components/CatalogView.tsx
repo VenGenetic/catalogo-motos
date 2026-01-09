@@ -142,7 +142,9 @@ export const CatalogView = memo(({
               {visibles.map((product: Producto) => (
                 <div 
                   key={product.id} 
-                  className="group bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-red-100 hover:-translate-y-1"
+                  /* --- MEJORA 1: Estilos de Tarjeta Actualizados --- */
+                  /* Se añade hover:shadow-red-500/15, hover:ring-1, hover:border-red-500/30 */
+                  className="group bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-xl hover:shadow-red-500/15 hover:border-red-500/30 hover:ring-1 hover:ring-red-500/30 hover:-translate-y-1"
                   onClick={() => onProductClick(product)}
                 >
                   <button 
@@ -156,8 +158,8 @@ export const CatalogView = memo(({
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
-                  {/* IMAGEN RECTANGULAR CORRECTA */}
-                  <div className="relative h-32 md:h-40 bg-white overflow-hidden p-0">
+                  {/* --- MEJORA 2: Fondo Gris Sutil (bg-slate-50) --- */}
+                  <div className="relative h-32 md:h-40 bg-slate-50 overflow-hidden p-0">
                     <LazyImage 
                       src={optimizarImg(product.imagen)} 
                       alt={product.nombre}
