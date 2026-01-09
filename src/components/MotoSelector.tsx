@@ -45,7 +45,11 @@ export const MotoSelector = ({ onSelectModel }: Props) => {
             {modelosFiltrados.map((modelo) => (
               <button
                 key={modelo}
-                onClick={() => onSelectModel(modelo)}
+                // --- CAMBIO AQUÍ: Usamos solo la primera palabra para el filtro ---
+                onClick={() => {
+                  const primeraPalabra = modelo.split(' ')[0]; // Ej: "Tekken Evo" -> "Tekken"
+                  onSelectModel(primeraPalabra);
+                }}
                 className="group relative flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden text-left hover:-translate-y-1"
               >
                 {/* Imagen */}
