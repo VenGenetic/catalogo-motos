@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { Search, Wrench } from 'lucide-react'; // Importamos icono de herramienta
+import { Search, Wrench } from 'lucide-react';
 import { MODELOS } from '../config/constants';
 import { getMotoImage } from '../config/motoImages';
 
-// AQUÍ ESTABA EL ERROR: Faltaba definir 'onSearchGlobal'
 interface Props {
   onSelectModel: (modelo: string) => void;
-  onSearchGlobal: (termino: string) => void; // <--- Esta es la clave
+  onSearchGlobal: (termino: string) => void;
 }
 
 export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
@@ -33,31 +32,13 @@ export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
             ¿Qué necesitas hoy?
           </h1>
           <p className="text-gray-500 mb-8 text-lg">
-            Selecciona tu moto o busca el repuesto directamente
+            Busca tu repuesto directo o selecciona tu moto
           </p>
           
           <div className="max-w-xl mx-auto space-y-4">
             
-            {/* 1. BUSCADOR DE MOTOS */}
+            {/* 1. PRIMERO: BUSCADOR DE REPUESTOS (Ahora arriba) */}
             <div className="relative group z-20">
-              <input
-                type="text"
-                placeholder="Busca tu moto (ej. Tekken)..."
-                className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-gray-200 focus:border-red-600 focus:ring-4 focus:ring-red-100 outline-none transition-all text-lg shadow-sm"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <Search className="absolute left-4 top-4.5 text-gray-400 w-6 h-6" />
-            </div>
-
-            <div className="flex items-center justify-center gap-4 text-gray-300 font-bold text-sm">
-              <div className="h-px bg-gray-200 flex-1"></div>
-              O
-              <div className="h-px bg-gray-200 flex-1"></div>
-            </div>
-
-            {/* 2. BUSCADOR DE REPUESTOS */}
-            <div className="relative group z-10">
               <input
                 type="text"
                 placeholder="Busca un repuesto directo (ej. Bujía)..."
@@ -65,6 +46,7 @@ export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
                 value={partSearch}
                 onChange={(e) => setPartSearch(e.target.value)}
                 onKeyDown={handleGlobalSearch}
+                autoFocus // Le damos foco automático a este input
               />
               <Wrench className="absolute left-4 top-4.5 text-slate-400 w-6 h-6" />
               <button 
@@ -73,6 +55,25 @@ export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
               >
                 Buscar
               </button>
+            </div>
+
+            {/* DIVISOR */}
+            <div className="flex items-center justify-center gap-4 text-gray-300 font-bold text-sm">
+              <div className="h-px bg-gray-200 flex-1"></div>
+              O ELIGE TU MOTO
+              <div className="h-px bg-gray-200 flex-1"></div>
+            </div>
+
+            {/* 2. SEGUNDO: BUSCADOR DE MOTOS (Ahora abajo) */}
+            <div className="relative group z-10">
+              <input
+                type="text"
+                placeholder="Filtra por modelo (ej. Tekken)..."
+                className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-gray-200 focus:border-red-600 focus:ring-4 focus:ring-red-100 outline-none transition-all text-lg shadow-sm"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <Search className="absolute left-4 top-4.5 text-gray-400 w-6 h-6" />
             </div>
 
           </div>
