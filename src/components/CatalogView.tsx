@@ -180,7 +180,8 @@ export const CatalogView = memo(({
                         </span>
                     </div>
                     
-                    <h3 className="text-sm font-bold text-slate-800 mb-2 leading-snug min-h-[2.5em] group-hover:text-red-600 transition-colors line-clamp-2">
+                    {/* CAMBIO APLICADO: Se eliminó 'line-clamp-2' para mostrar el nombre completo */}
+                    <h3 className="text-sm font-bold text-slate-800 mb-2 leading-snug min-h-[2.5em] group-hover:text-red-600 transition-colors">
                       <HighlightedText text={product.nombre} highlight={busqueda} />
                     </h3>
                     
