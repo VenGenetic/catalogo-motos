@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect, useRef, memo, useCallback } from 'react';
-import { Search, Heart, X, ArrowLeft, Filter, Loader2 } from 'lucide-react'; 
+import { useState, useMemo, useEffect, useRef, memo } from 'react';
+import { Search, Heart, X, ArrowLeft, Filter } from 'lucide-react'; 
 import { optimizarImg } from '../utils/helpers';
 import { APP_CONFIG, ORDEN_SECCIONES } from '../config/constants';
 import { Producto } from '../types';
@@ -29,8 +29,6 @@ export const CatalogView = memo(({
 }: Props) => {
   const [pagina, setPagina] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => { 
     setPagina(1); 
@@ -42,22 +40,6 @@ export const CatalogView = memo(({
   const visibles = useMemo(() => {
     return productos.slice(0, pagina * APP_CONFIG.ITEMS_PER_PAGE);
   }, [productos, pagina]);
-
-  const lastElementRef = useCallback((node: HTMLDivElement) => {
-    if (visibles.length >= productos.length) return;
-    
-    if (observer.current) observer.current.disconnect();
-    
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) {
-        setTimeout(() => {
-            setPagina(prev => prev + 1);
-        }, 300);
-      }
-    });
-    
-    if (node) observer.current.observe(node);
-  }, [visibles.length, productos.length]);
 
   const handleCambiarMoto = () => {
     setFiltroModelo(''); 
@@ -134,13 +116,13 @@ export const CatalogView = memo(({
              </div>
           </div>
 
-          <div className="overflow-x-auto pb-2 scrollbar-hide scroll-smooth -mx-3 px-3 md:mx-0 md:px-0 snap-x snap-mandatory">
+          <div className="overflow-x-auto pb-2 scrollbar-hide scroll-smooth -mx-3 px-3 md:mx-0 md:px-0">
             <div className="flex space-x-2">
               {ORDEN_SECCIONES.map((category) => (
                 <button
                   key={category}
                   onClick={() => setFiltroSeccion(category)}
-                  className={`snap-center px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-300 border ${
+                  className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-300 border ${
                     filtroSeccion === category 
                       ? 'bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-200 scale-105' 
                       : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
@@ -156,15 +138,15 @@ export const CatalogView = memo(({
         {/* LISTADO DE PRODUCTOS */}
         {visibles.length > 0 ? (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6 px-2 md:px-0">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 px-2 md:px-0">
               {visibles.map((product: Producto) => (
                 <div 
                   key={product.id} 
-                  className="group bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-xl hover:shadow-red-500/15 hover:border-red-500/30 hover:ring-1 hover:ring-red-500/30 hover:-translate-y-1 active:scale-95"
+                  className="group bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-red-100 hover:-translate-y-1"
                   onClick={() => onProductClick(product)}
                 >
                   <button 
-                    className={`absolute top-3 right-3 p-2.5 rounded-full z-10 transition-all duration-200 backdrop-blur-sm ${
+                    className={`absolute top-3 right-3 p-2 rounded-full z-10 transition-all duration-200 backdrop-blur-sm ${
                       isFav(product.id) 
                         ? 'bg-red-50 text-red-500 scale-110 shadow-sm' 
                         : 'bg-white/80 text-slate-400 hover:bg-white hover:text-red-500 border border-gray-100'
@@ -174,14 +156,14 @@ export const CatalogView = memo(({
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
-                  <div className="relative h-32 md:h-40 bg-slate-50 overflow-hidden p-0">
+                  {/* IMAGEN RECTANGULAR CORRECTA */}
+                  <div className="relative h-32 md:h-40 bg-white overflow-hidden p-0">
                     <LazyImage 
                       src={optimizarImg(product.imagen)} 
                       alt={product.nombre}
                       className="w-full h-full transition-transform duration-500 group-hover:scale-105" 
-                      /* --- CORRECCIÓN: Quitamos el zoom (cropBottom=false) pero mantenemos cover --- */
                       imageFit="cover" 
-                      cropBottom={false}
+                      cropBottom={true}
                     />
                     
                     {product.stock === false && (
@@ -191,7 +173,7 @@ export const CatalogView = memo(({
                     )}
                   </div>
 
-                  <div className="p-3 md:p-4 flex flex-col flex-grow relative z-10 bg-white border-t border-gray-50">
+                  <div className="p-4 flex flex-col flex-grow relative z-10 bg-white border-t border-gray-50">
                     <div className="mb-2">
                         <span className="inline-block px-2 py-0.5 rounded-md bg-gray-50 text-gray-400 text-[10px] font-bold uppercase tracking-wide border border-gray-100">
                         {product.seccion}
@@ -206,7 +188,7 @@ export const CatalogView = memo(({
                        <span className="text-lg font-extrabold text-slate-900">
                          ${Number(product.precio).toFixed(2)}
                        </span>
-                       <span className="hidden md:inline-block text-[10px] font-bold text-red-600 bg-red-50 px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
+                       <span className="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
                          VER →
                        </span>
                     </div>
@@ -216,18 +198,11 @@ export const CatalogView = memo(({
             </div>
             
             {visibles.length < productos.length && (
-              <div ref={lastElementRef} className="mt-8 py-8 flex flex-col items-center justify-center text-slate-400 animate-pulse">
-                 <Loader2 className="w-6 h-6 animate-spin mb-2 text-red-500" />
-                 <span className="text-xs font-medium">Cargando más repuestos...</span>
+              <div className="mt-12 text-center px-4 mb-8">
+                <button onClick={() => setPagina(p => p + 1)} className="w-full md:w-auto px-10 py-3 bg-white border border-gray-200 text-slate-700 font-bold text-sm rounded-full shadow-sm hover:shadow-md hover:border-red-200 hover:text-red-600 transition-all active:scale-95">
+                  Cargar más repuestos
+                </button>
               </div>
-            )}
-            
-            {visibles.length >= productos.length && visibles.length > 0 && (
-               <div className="mt-12 text-center pb-8">
-                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 text-slate-400 text-xs font-medium">
-                    <span>Has llegado al final del catálogo</span>
-                 </div>
-               </div>
             )}
           </>
         ) : (
