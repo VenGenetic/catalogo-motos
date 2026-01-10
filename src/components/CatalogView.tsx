@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect, useRef, memo, useCallback } from 'react'; // <--- Agregamos useCallback
-import { Search, Heart, X, ArrowLeft, Filter, Loader2 } from 'lucide-react'; // <--- Agregamos Loader2 para feedback visual
+import { useState, useMemo, useEffect, useRef, memo, useCallback } from 'react';
+import { Search, Heart, X, ArrowLeft, Filter, Loader2 } from 'lucide-react'; 
 import { optimizarImg } from '../utils/helpers';
 import { APP_CONFIG, ORDEN_SECCIONES } from '../config/constants';
 import { Producto } from '../types';
@@ -30,7 +30,6 @@ export const CatalogView = memo(({
   const [pagina, setPagina] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Referencia para el Infinite Scroll
   const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => { 
@@ -44,15 +43,13 @@ export const CatalogView = memo(({
     return productos.slice(0, pagina * APP_CONFIG.ITEMS_PER_PAGE);
   }, [productos, pagina]);
 
-  // Callback para detectar el final de la lista
   const lastElementRef = useCallback((node: HTMLDivElement) => {
-    if (visibles.length >= productos.length) return; // Si ya mostramos todo, no observar
+    if (visibles.length >= productos.length) return;
     
     if (observer.current) observer.current.disconnect();
     
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) {
-        // Pequeño delay artificial para que se sienta la carga (opcional, pero se siente bien)
         setTimeout(() => {
             setPagina(prev => prev + 1);
         }, 300);
@@ -159,8 +156,6 @@ export const CatalogView = memo(({
         {/* LISTADO DE PRODUCTOS */}
         {visibles.length > 0 ? (
           <>
-            {/* --- MEJORA 5 (Parte A): Grid Móvil Optimizado --- */}
-            {/* Cambiamos gap-3 a gap-2 en móvil para ganar espacio */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6 px-2 md:px-0">
               {visibles.map((product: Producto) => (
                 <div 
@@ -184,8 +179,9 @@ export const CatalogView = memo(({
                       src={optimizarImg(product.imagen)} 
                       alt={product.nombre}
                       className="w-full h-full transition-transform duration-500 group-hover:scale-105" 
+                      /* --- CORRECCIÓN: Quitamos el zoom (cropBottom=false) pero mantenemos cover --- */
                       imageFit="cover" 
-                      cropBottom={true}
+                      cropBottom={false}
                     />
                     
                     {product.stock === false && (
@@ -219,7 +215,6 @@ export const CatalogView = memo(({
               ))}
             </div>
             
-            {/* --- MEJORA 6: Carga Infinita (Sustituye botón) --- */}
             {visibles.length < productos.length && (
               <div ref={lastElementRef} className="mt-8 py-8 flex flex-col items-center justify-center text-slate-400 animate-pulse">
                  <Loader2 className="w-6 h-6 animate-spin mb-2 text-red-500" />
