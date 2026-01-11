@@ -1,22 +1,27 @@
+// src/types/index.ts
+
 export interface Producto {
   id: string;
+  codigo_referencia: string;
   nombre: string;
-  precio: number | string;
+  precio: number;
   categoria: string;
   imagen: string;
-  stock?: boolean;
-  codigo_referencia?: string;
-  seccion?: string;
-  textoBusqueda: string;
+  stock: boolean;
+  seccion?: string;       // Nueva propiedad para el filtro
+  textoBusqueda?: string; // Nueva propiedad para búsqueda optimizada
 }
 
-export interface Categoria {
-  id: string;
-  nombre: string;
-  imagen: string;
-}
-
-// --- ESTO ES LO QUE FALTABA ---
 export interface ItemCarrito extends Producto {
   cantidad: number;
+  cant?: number; // Soporte legacy
+}
+
+export interface DataFuente {
+  RAW_SCRAPED_DATA: Producto[];
+}
+
+export interface ToastMessage {
+  id: number;
+  message: string;
 }
