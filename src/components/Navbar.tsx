@@ -13,14 +13,22 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           
-          {/* Logo con marca reforzada - IMAGEN COMPLETA */}
-          <Link to="/" className="flex items-center cursor-pointer group">
-            <div className="bg-white p-1 md:p-2 rounded-lg group-hover:bg-gray-100 transition-colors shadow-lg shadow-red-900/20 overflow-hidden">
-              <img 
-                src="/logo.png" 
-                alt="LV PARTS Logo" 
-                className="h-8 md:h-10 w-auto object-contain"
+          {/* Logo con marca reforzada - MÁS COMPACTO EN MÓVIL */}
+          <Link to="/" className="flex items-center gap-2 cursor-pointer group">
+            <div className="bg-red-600 p-1 md:p-1.5 rounded-lg group-hover:bg-red-500 transition-colors shadow-lg shadow-red-900/20 overflow-hidden">
+              <img
+                src="/logo.png"
+                alt="LV PARTS Logo"
+                className="w-5 h-5 md:w-6 md:h-6 object-contain"
               />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-bold text-base md:text-lg tracking-wider leading-none">
+                LV <span className="text-red-500">PARTS</span>
+              </span>
+              <span className="text-[9px] text-gray-400 tracking-widest uppercase hidden md:block">
+                Repuestos Daytona
+              </span>
             </div>
           </Link>
 
