@@ -15,11 +15,11 @@ export const Navbar = () => {
           
           {/* Logo con marca reforzada - MÁS COMPACTO EN MÓVIL */}
           <Link to="/" className="flex items-center gap-2 cursor-pointer group">
-            <div className="bg-red-600 p-1 md:p-1.5 rounded-lg group-hover:bg-red-500 transition-colors shadow-lg shadow-red-900/20 overflow-hidden">
+            <div className="p-1 md:p-1.5 overflow-hidden">
               <img 
                 src="/icono-daytona.png" 
                 alt="LV PARTS Logo" 
-                className="w-5 h-5 md:w-6 md:h-6 object-contain"
+                className="w-8 h-8 md:w-10 md:h-10 object-contain"
               />
             </div>
             <div className="flex flex-col">
