@@ -1,176 +1,240 @@
-import { useEffect, useState, useMemo } from 'react';
-import { ArrowLeft, X, Plus, MessageCircle, Shield, Package, ShoppingBag } from 'lucide-react';
-import { ImageZoom } from './ImageZoom';
-import { optimizarImg } from '../utils/helpers';
-import { Producto } from '../types';
+import { useEffect, useState } from 'react';
+import { X, ShoppingCart, MessageCircle, CheckCircle, AlertTriangle, ChevronRight } from 'lucide-react';
+import { Helmet } from 'react-helmet-async'; // Recuerda: npm install react-helmet-async
+import { Product } from '../types';
+import { useGarage } from '../context/GarageContext';
 import { useCart } from '../context/CartContext';
-import { APP_CONFIG } from '../config/constants';
-import { LazyImage } from './LazyImage';
+import { useToast } from '../context/ToastContext';
+import { ImageZoom } from './ImageZoom'; // Asumiendo que exporta un componente que acepta src y alt
 
-interface Props {
-  product: Producto | null;
-  allProducts: Producto[];
+interface ProductDetailModalProps {
+  product: Product;
+  isOpen: boolean;
   onClose: () => void;
-  onSelectRelated: (p: Producto) => void;
 }
 
-export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRelated }: Props) => {
+export const ProductDetailModal = ({ product, isOpen, onClose }: ProductDetailModalProps) => {
+  const { selectedBike } = useGarage();
   const { addToCart } = useCart();
-  const [isVisible, setIsVisible] = useState(false);
+  const { showToast } = useToast();
+  const [quantity, setQuantity] = useState(1);
 
+  // Resetear cantidad al abrir otro producto
   useEffect(() => {
-    if (product) {
-      setIsVisible(true);
-      document.body.style.overflow = 'hidden';
-    } else {
-      setIsVisible(false);
-      document.body.style.overflow = 'unset';
-    }
-    return () => { document.body.style.overflow = 'unset'; };
+    setQuantity(1);
   }, [product]);
 
-  const relacionados = useMemo(() => {
-    if (!product || !allProducts) return [];
-    return allProducts
-      .filter(p => p.seccion === product.seccion && p.id !== product.id)
-      .slice(0, 3);
-  }, [product, allProducts]);
+  // Bloquear scroll del body cuando el modal está abierto
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
-  if (!product) return null;
+  if (!isOpen) return null;
 
-  const handleAdd = () => addToCart(product);
+  // Lógica de Compatibilidad
+  const isCompatible = selectedBike && product.compatibleModels?.some(model => 
+    model.toLowerCase().includes(selectedBike.model.toLowerCase())
+  );
 
-  const handleConsult = () => {
-    const precio = Number(product.precio) || 0;
-    const mensaje = `Hola, me interesa: *${product.nombre}* ($${precio.toFixed(2)}). ¿Tienen stock?`;
-    window.open(`https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`, '_blank');
+  // Manejadores
+  const handleAddToCart = () => {
+    // Si tu contexto soporta añadir con cantidad, ajusta aquí. 
+    // Si no, hacemos un loop simple o modificas tu CartContext.
+    // Asumiremos que addToCart añade 1, así que lo llamamos N veces o pasamos la cantidad si es posible.
+    // Lo ideal es modificar CartContext para aceptar (product, quantity).
+    // Por ahora, simulamos añadir varias veces o solo una.
+    
+    // Opción A (si CartContext soporta cantidad): addToCart(product, quantity);
+    // Opción B (Standard): 
+    for (let i = 0; i < quantity; i++) {
+        addToCart(product);
+    }
+    
+    showToast(`Agregado al carrito: ${quantity}x ${product.name}`, 'success');
+    onClose();
   };
 
-  const precioSeguro = Number(product.precio) || 0;
+  const handleWhatsAppInquiry = () => {
+    const message = `Hola, me interesa saber más sobre el repuesto: *${product.name}* (ID: ${product.id}).`;
+    const url = `https://wa.me/573000000000?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  };
 
   return (
-    <div 
-      className={`fixed inset-0 z-[60] flex items-end md:items-center justify-center transition-all duration-300 ${
-        isVisible ? 'bg-black/70 backdrop-blur-md opacity-100' : 'bg-transparent opacity-0 pointer-events-none'
-      }`}
-      onClick={onClose}
-    >
-      <button 
-        onClick={onClose} 
-        className="md:hidden absolute top-4 left-4 z-20 bg-white/90 p-2 rounded-full shadow-lg backdrop-blur-md active:scale-90 transition-transform"
-      >
-        <ArrowLeft className="w-6 h-6 text-slate-900" />
-      </button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+      
+      {/* SEO Dinámico para este producto */}
+      <Helmet>
+        <title>{`${product.name} - Vengenetic`}</title>
+        <meta 
+          name="description" 
+          content={`Compra ${product.name} al mejor precio. Compatible con: ${product.compatibleModels?.join(', ') || 'varios modelos'}.`} 
+        />
+      </Helmet>
 
+      {/* Backdrop (Fondo oscuro) */}
       <div 
-        className={`w-full h-[95vh] md:h-auto md:max-h-[90vh] md:max-w-2xl bg-white rounded-t-3xl md:rounded-2xl flex flex-col overflow-hidden relative shadow-2xl transform transition-transform duration-300 ${
-          isVisible ? 'translate-y-0 scale-100' : 'translate-y-full md:translate-y-10 md:scale-95'
-        }`}
-        onClick={e => e.stopPropagation()}
-      >
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" 
+        onClick={onClose}
+      />
+
+      {/* Contenido del Modal */}
+      <div className="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
+        
+        {/* Botón Cerrar (Mobile absoluto) */}
         <button 
-          onClick={onClose} 
-          className="hidden md:block absolute top-4 right-4 z-20 bg-white/90 p-2 rounded-full hover:bg-red-50 hover:text-red-600 transition-all shadow-sm"
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 bg-white/80 rounded-full text-gray-500 hover:text-red-500 hover:bg-white transition z-10 md:hidden"
         >
-          <X className="w-6 h-6 text-slate-400" />
+          <X size={24} />
         </button>
 
-        {/* IMAGEN ESTRECHA (280px) */}
-        <div className="w-full bg-gray-50 relative shrink-0 flex items-center justify-center h-[30vh] md:h-[280px]">
-          <div className="w-full h-full absolute inset-0">
-             <ImageZoom src={optimizarImg(product.imagen)} alt={product.nombre} />
+        {/* 1. Columna Imagen */}
+        <div className="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-8 relative">
+          <div className="w-full max-w-sm aspect-square mix-blend-multiply">
+             {/* Usamos el componente de Zoom si existe, sino fallback a img normal */}
+            <ImageZoom 
+              src={product.image} 
+              alt={product.name} 
+              className="w-full h-full object-contain"
+            />
           </div>
-          <div className="absolute bottom-4 right-4 bg-black/60 text-white text-[10px] font-bold px-3 py-1.5 rounded-full backdrop-blur-sm pointer-events-none flex items-center gap-1">
-            <Plus size={10} /> ZOOM
+          
+          {/* Badge ID flotante */}
+          <div className="absolute bottom-4 left-4 bg-white/90 px-3 py-1 rounded text-xs font-mono text-gray-500 border shadow-sm">
+            SKU: {product.id}
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col h-full overflow-hidden bg-white relative">
-          <div className="flex-1 overflow-y-auto p-6 md:p-8 pb-32 md:pb-8 custom-scrollbar">
-            
-            <div className="flex flex-col gap-1 mb-4">
-              <span className="text-xs font-bold text-red-600 uppercase tracking-wider w-max bg-red-50 px-2 py-1 rounded-md">
-                {product.seccion}
-              </span>
-              <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 leading-tight">
-                {product.nombre}
+        {/* 2. Columna Información (Scrollable) */}
+        <div className="w-full md:w-1/2 flex flex-col h-full bg-white">
+          
+          {/* Header con botón cerrar desktop */}
+          <div className="flex justify-between items-start p-6 pb-2 border-b border-gray-100">
+            <div>
+              <h4 className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-1">
+                {product.category || 'Repuesto'}
+              </h4>
+              <h2 className="text-2xl font-bold text-gray-900 leading-tight">
+                {product.name}
               </h2>
-              {product.codigo_referencia && (
-                <p className="text-sm text-gray-400 font-mono">Ref: {product.codigo_referencia}</p>
-              )}
+            </div>
+            <button 
+              onClick={onClose}
+              className="hidden md:block p-2 text-gray-400 hover:text-red-500 transition"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          {/* Cuerpo Scrollable */}
+          <div className="p-6 overflow-y-auto flex-1 space-y-6">
+            
+            {/* Precio */}
+            <div className="flex items-baseline gap-2">
+              <span className="text-3xl font-bold text-gray-900">
+                ${product.price.toLocaleString()}
+              </span>
+              <span className="text-sm text-gray-500 font-medium">/ unidad</span>
             </div>
 
-            <div className="my-5 border-t border-b border-gray-50 py-4 flex items-center justify-between">
+            {/* Alerta de Compatibilidad (Garage) */}
+            {selectedBike && (
+              <div className={`p-4 rounded-lg border flex gap-3 ${
+                isCompatible 
+                  ? 'bg-green-50 border-green-200 text-green-800' 
+                  : 'bg-yellow-50 border-yellow-200 text-yellow-800'
+              }`}>
+                {isCompatible ? (
+                  <CheckCircle className="shrink-0 text-green-600" size={20} />
+                ) : (
+                  <AlertTriangle className="shrink-0 text-yellow-600" size={20} />
+                )}
+                <div>
+                  <p className="font-bold text-sm">
+                    {isCompatible ? 'Compatible con tu moto' : 'Revisar compatibilidad'}
+                  </p>
+                  <p className="text-xs opacity-90 mt-0.5">
+                    {isCompatible 
+                      ? `Confirmado para ${selectedBike.model}` 
+                      : `Este repuesto no lista explícitamente a ${selectedBike.model}. Consulta antes de comprar.`}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Descripción */}
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-2">Descripción</h3>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                {product.description || "Repuesto original de alta calidad garantizada. Fabricado bajo estándares estrictos para asegurar el máximo rendimiento de tu motocicleta."}
+              </p>
+            </div>
+
+            {/* Lista de Modelos Compatibles */}
+            {product.compatibleModels && product.compatibleModels.length > 0 && (
               <div>
-                <span className="block text-xs font-bold text-gray-400 mb-1 uppercase">Precio Online</span>
-                <span className="text-3xl font-black text-slate-900">${precioSeguro.toFixed(2)}</span>
-              </div>
-              <div className="bg-green-50 text-green-700 px-3 py-1 rounded-full text-xs font-bold border border-green-100">
-                En Stock
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 mb-8">
-              <div className="flex items-center gap-2 text-xs text-gray-600 bg-gray-50 p-2 rounded-lg">
-                <Shield size={14} className="text-blue-600"/> Garantía Asegurada
-              </div>
-              <div className="flex items-center gap-2 text-xs text-gray-600 bg-gray-50 p-2 rounded-lg">
-                <Package size={14} className="text-orange-600"/> Envíos Nacionales
-              </div>
-            </div>
-
-            {/* RELACIONADOS */}
-            {relacionados.length > 0 && (
-              <div className="mt-8 pt-6 border-t border-gray-100">
-                <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2 text-sm">
-                  También te puede interesar
-                </h3>
-                <div className="grid grid-cols-3 gap-3">
-                  {relacionados.map(rel => (
-                    <div 
-                      key={rel.id} 
-                      className="group cursor-pointer"
-                      onClick={() => onSelectRelated(rel)}
-                    >
-                      <div className="aspect-square rounded-lg bg-gray-50 mb-2 overflow-hidden border border-gray-100 relative">
-                        <LazyImage 
-                          src={optimizarImg(rel.imagen)} 
-                          alt={rel.nombre} 
-                          cropBottom={true}
-                          imageFit="cover"
-                          className="w-full h-full bg-white group-hover:scale-105 transition-transform"
-                        />
-                      </div>
-                      <p className="text-[10px] font-bold text-slate-700 line-clamp-2 leading-tight group-hover:text-red-600">
-                        {rel.nombre}
-                      </p>
-                      <p className="text-[10px] font-bold text-slate-900 mt-0.5">
-                        ${Number(rel.precio).toFixed(2)}
-                      </p>
-                    </div>
+                <h3 className="font-semibold text-gray-900 mb-2">Modelos Compatibles</h3>
+                <div className="flex flex-wrap gap-2">
+                  {product.compatibleModels.map((model, idx) => (
+                    <span key={idx} className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-md border border-gray-200">
+                      {model}
+                    </span>
                   ))}
                 </div>
               </div>
             )}
+          </div>
+
+          {/* Footer Fijo con Acciones */}
+          <div className="p-6 border-t border-gray-100 bg-gray-50/50 mt-auto">
             
-            <div className="hidden md:flex gap-3 mt-8">
-              <button onClick={handleAdd} className="flex-1 bg-slate-900 text-white py-3.5 rounded-xl font-bold hover:bg-slate-800 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2">
-                <ShoppingBag size={18} /> Agregar al Carrito
-              </button>
-              <button onClick={handleConsult} className="px-6 border-2 border-slate-200 text-slate-700 rounded-xl font-bold hover:border-slate-900 hover:text-slate-900 transition-all active:scale-95">
+            {/* Selector de Cantidad */}
+            <div className="flex items-center gap-4 mb-4">
+              <span className="text-sm font-medium text-gray-700">Cantidad:</span>
+              <div className="flex items-center border border-gray-300 rounded-lg bg-white">
+                <button 
+                  onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                  className="px-3 py-1 hover:bg-gray-100 text-gray-600 transition"
+                >
+                  -
+                </button>
+                <span className="px-3 py-1 font-semibold text-gray-900 w-8 text-center">{quantity}</span>
+                <button 
+                  onClick={() => setQuantity(q => q + 1)}
+                  className="px-3 py-1 hover:bg-gray-100 text-gray-600 transition"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={handleWhatsAppInquiry}
+                className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-gray-200 text-gray-700 font-bold hover:border-green-500 hover:text-green-600 transition bg-white"
+              >
                 <MessageCircle size={20} />
+                Consultar
+              </button>
+              
+              <button
+                onClick={handleAddToCart}
+                className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 hover:shadow-xl transition active:scale-95"
+              >
+                <ShoppingCart size={20} />
+                Agregar ({quantity})
               </button>
             </div>
           </div>
 
-          <div className="md:hidden absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 flex gap-3 z-30 pb-safe shadow-[0_-4px_10px_rgba(0,0,0,0.03)]">
-             <button onClick={handleConsult} className="p-3.5 bg-gray-50 text-slate-700 rounded-xl border border-gray-200 active:bg-gray-100">
-               <MessageCircle size={20} />
-             </button>
-             <button onClick={handleAdd} className="flex-1 bg-red-600 text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-red-200 text-sm active:scale-95">
-               <ShoppingBag size={18} /> Agregar ${precioSeguro.toFixed(2)}
-             </button>
-          </div>
         </div>
       </div>
     </div>

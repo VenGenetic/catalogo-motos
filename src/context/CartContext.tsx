@@ -1,141 +1,149 @@
-// src/context/CartContext.tsx
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
 import { Producto, ItemCarrito } from '../types';
 import { APP_CONFIG } from '../config/constants';
 
+// Definición del Tipo del Contexto
 interface CartContextType {
   cart: ItemCarrito[];
   isOpen: boolean;
+  total: number;
+  itemCount: number;
   openCart: () => void;
   closeCart: () => void;
-  addToCart: (product: Producto) => void;
-  updateQuantity: (id: string, delta: number) => void;
-  cartCount: number;
-  cartTotal: number;
-  sendOrderToWhatsapp: () => void;
+  addToCart: (product: Producto, quantity?: number) => void;
+  removeFromCart: (productId: string) => void;
+  updateQuantity: (productId: string, quantity: number) => void;
+  clearCart: () => void;
+  checkout: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+// Clave para guardar en LocalStorage
+const CART_STORAGE_KEY = 'vengenetic_cart_v1';
+
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cart, setCart] = useState<ItemCarrito[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
-  
-  // --- Estado para el Toast (Notificación) ---
-  const [toastMsg, setToastMsg] = useState<string | null>(null);
-
-  // Cargar carrito guardado del localStorage
-  useEffect(() => {
-    const savedCart = localStorage.getItem('cart_backup');
-    if (savedCart) {
-      try { setCart(JSON.parse(savedCart)); } catch (e) { console.error(e); }
+  // Estado del carrito inicializado desde localStorage si existe
+  const [cart, setCart] = useState<ItemCarrito[]>(() => {
+    try {
+      const storedCart = localStorage.getItem(CART_STORAGE_KEY);
+      return storedCart ? JSON.parse(storedCart) : [];
+    } catch (error) {
+      console.error("Error cargando el carrito:", error);
+      return [];
     }
-  }, []);
+  });
 
-  // Guardar carrito al cambiar
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Guardar en localStorage cada vez que el carrito cambia
   useEffect(() => {
-    localStorage.setItem('cart_backup', JSON.stringify(cart));
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
   }, [cart]);
 
-  // Temporizador para ocultar el Toast automáticamente
-  useEffect(() => {
-    if (toastMsg) {
-      const timer = setTimeout(() => setToastMsg(null), 2500);
-      return () => clearTimeout(timer);
-    }
-  }, [toastMsg]);
+  // Cálculos derivados (optimizados con useMemo)
+  const total = useMemo(() => {
+    return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  }, [cart]);
 
-  const addToCart = (product: Producto) => {
-    // BLINDAJE: Verificamos que 'navigator' y 'vibrate' existan antes de llamar
-    if (typeof navigator !== 'undefined' && navigator.vibrate) {
-      try { navigator.vibrate(50); } catch (e) { /* Ignorar error de vibración */ }
-    }
-    
-    // Feedback visual (Toast)
-    const nombreCorto = product.nombre.length > 25 
-      ? product.nombre.substring(0, 25) + '...' 
-      : product.nombre;
-      
-    setToastMsg(`Agregado: ${nombreCorto}`);
+  const itemCount = useMemo(() => {
+    return cart.reduce((sum, item) => sum + item.quantity, 0);
+  }, [cart]);
 
-    setCart(prev => {
-      const existing = prev.find(i => i.id === product.id);
-      if (existing) {
-        return prev.map(i => 
-          i.id === product.id 
-            ? { ...i, cantidad: (i.cantidad || i.cant || 0) + 1 } 
-            : i
+  // Acciones
+  const openCart = () => setIsOpen(true);
+  const closeCart = () => setIsOpen(false);
+
+  const addToCart = (product: Producto, quantity: number = 1) => {
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((item) => item.id === product.id);
+
+      if (existingItem) {
+        // Si ya existe, actualizamos la cantidad
+        return prevCart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
         );
+      } else {
+        // Si no existe, lo agregamos como nuevo ItemCarrito
+        const newItem: ItemCarrito = { ...product, quantity };
+        return [...prevCart, newItem];
       }
-      return [...prev, { ...product, cantidad: 1, cant: 1 }];
     });
+    setIsOpen(true); // Opcional: abrir el carrito al agregar
   };
 
-  const updateQuantity = (id: string, delta: number) => {
-    setCart(prev => 
-      prev.map(item => {
-        if (item.id === id) {
-          const newQty = (item.cantidad || item.cant || 0) + delta;
-          return { ...item, cantidad: newQty, cant: newQty };
-        }
-        return item;
-      }).filter(item => (item.cantidad || item.cant || 0) > 0)
+  const removeFromCart = (productId: string) => {
+    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+  };
+
+  const updateQuantity = (productId: string, newQuantity: number) => {
+    if (newQuantity < 1) {
+      removeFromCart(productId);
+      return;
+    }
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.id === productId ? { ...item, quantity: newQuantity } : item
+      )
     );
   };
 
-  const cartCount = cart.reduce((acc, item) => acc + (item.cantidad || item.cant || 0), 0);
-  const cartTotal = cart.reduce((acc, item) => acc + item.precio * (item.cantidad || item.cant || 0), 0);
+  const clearCart = () => {
+    setCart([]);
+    setIsOpen(false);
+  };
 
-  // --- FUNCIÓN ACTUALIZADA CON FORMATO VERTICAL ---
-  const sendOrderToWhatsapp = () => {
-    let msg = "Hola LV PARTS, mi pedido:\n\n";
+  // Generador de Mensaje de WhatsApp
+  const checkout = () => {
+    if (cart.length === 0) return;
+
+    const phoneNumber = APP_CONFIG.WHATSAPP_NUMBER || "573000000000"; // Fallback por seguridad
+    const lineBreak = "%0A";
     
-    cart.forEach(i => {
-      const cantidad = i.cantidad || i.cant || 0;
-      const precioUnitario = Number(i.precio).toFixed(2);
-      
-      // Línea 1: Cantidad y Nombre (Usamos ▪ como viñeta principal)
-      msg += `▪ ${cantidad}x ${i.nombre}\n`;
-      
-      // Línea 2: Referencia (si existe)
-      if (i.codigo_referencia) {
-        msg += `• Ref: ${i.codigo_referencia}\n`;
-      }
-      
-      // Línea 3: Precio
-      msg += `• $${precioUnitario}\n`;
+    let message = `Hola Vengenetic, quiero realizar el siguiente pedido:${lineBreak}${lineBreak}`;
+
+    cart.forEach((item, index) => {
+      const subtotal = (item.price * item.quantity).toLocaleString();
+      // Formato: 1. Nombre (SKU) - Cant x Precio = Subtotal
+      message += `*${index + 1}. ${item.name}*${lineBreak}`;
+      message += `   Ref: ${item.id}${lineBreak}`;
+      message += `   Cant: ${item.quantity} x $${item.price.toLocaleString()} = $${subtotal}${lineBreak}${lineBreak}`;
     });
 
-    msg += `\nTotal: $${cartTotal.toFixed(2)}`;
-    window.open(`https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+    message += `*TOTAL A PAGAR: $${total.toLocaleString()}*`;
+    message += `${lineBreak}${lineBreak}Quedo atento a la confirmación y datos de pago.`;
+
+    const url = `https://wa.me/${phoneNumber}?text=${message}`;
+    window.open(url, '_blank');
   };
 
   return (
-    <CartContext.Provider value={{
-      cart, isOpen, openCart: () => setIsOpen(true), closeCart: () => setIsOpen(false),
-      addToCart, updateQuantity, cartCount, cartTotal, sendOrderToWhatsapp
-    }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        isOpen,
+        total,
+        itemCount,
+        openCart,
+        closeCart,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+        checkout,
+      }}
+    >
       {children}
-      
-      {/* Componente Toast Renderizado Globalmente */}
-      {toastMsg && (
-        <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-[100] animate-fade-in-up w-max max-w-[90%] pointer-events-none">
-          <div className="bg-slate-900/95 backdrop-blur-sm text-white px-5 py-3 rounded-full shadow-2xl flex items-center gap-3 border border-slate-700">
-             <div className="bg-green-500 rounded-full p-0.5">
-               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-               </svg>
-             </div>
-             <span className="text-xs md:text-sm font-bold">{toastMsg}</span>
-          </div>
-        </div>
-      )}
     </CartContext.Provider>
   );
 };
 
 export const useCart = () => {
   const context = useContext(CartContext);
-  if (!context) throw new Error('useCart debe usarse dentro de un CartProvider');
+  if (context === undefined) {
+    throw new Error('useCart debe ser usado dentro de un CartProvider');
+  }
   return context;
 };

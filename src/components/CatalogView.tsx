@@ -1,226 +1,276 @@
-import { useState, useMemo, useEffect, useRef, memo } from 'react';
-import { Search, Heart, X, ArrowLeft, Filter } from 'lucide-react'; 
-import { optimizarImg } from '../utils/helpers';
-import { APP_CONFIG, ORDEN_SECCIONES } from '../config/constants';
-import { Producto } from '../types';
-import { LazyImage } from './LazyImage';
-import { HighlightedText } from './HighlightedText';
-import { MotoSelector } from './MotoSelector';
+import { useState, useMemo, useEffect } from 'react';
+import { Search, Filter, ChevronLeft, ChevronRight, CheckCircle, AlertTriangle, ShoppingCart, Eye } from 'lucide-react';
+import { Product } from '../types';
+import { useGarage } from '../context/GarageContext';
+import { useCart } from '../context/CartContext';
+import { useToast } from '../context/ToastContext';
+import { ProductDetailModal } from './ProductDetailModal';
+import { LazyImage } from './LazyImage'; // Asumiendo que existe según tu estructura
 
-interface Props {
-  productos: Producto[];
-  isFav: (id: string) => boolean;
-  toggleFav: (id: string) => void;
-  filtroModelo: string;
-  setFiltroModelo: (m: string) => void;
-  busqueda: string;
-  setBusqueda: (s: string) => void;
-  filtroSeccion: string;
-  setFiltroSeccion: (s: string) => void;
-  onProductClick: (p: Producto) => void;
+interface CatalogViewProps {
+  products: Product[];
 }
 
-export const CatalogView = memo(({ 
-  productos, isFav, toggleFav,
-  filtroModelo, setFiltroModelo, 
-  busqueda, setBusqueda,
-  filtroSeccion, setFiltroSeccion,
-  onProductClick
-}: Props) => {
-  const [pagina, setPagina] = useState(1);
-  const containerRef = useRef<HTMLDivElement>(null);
+// Categorías extraídas de tus datos o definidas estáticamente
+const CATEGORIES = ['Todos', 'Motor', 'Frenos', 'Suspensión', 'Eléctrico', 'Accesorios', 'Llantas'];
 
-  useEffect(() => { 
-    setPagina(1); 
-    if (busqueda || filtroSeccion !== 'Todos') {
-      window.scrollTo({ top: 0, behavior: 'auto' });
-    }
-  }, [busqueda, filtroModelo, filtroSeccion]);
+export const CatalogView = ({ products }: CatalogViewProps) => {
+  const { selectedBike } = useGarage();
+  const { addToCart } = useCart();
+  const { showToast } = useToast();
 
-  const visibles = useMemo(() => {
-    return productos.slice(0, pagina * APP_CONFIG.ITEMS_PER_PAGE);
-  }, [productos, pagina]);
+  // Estados
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('Todos');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleCambiarMoto = () => {
-    setFiltroModelo(''); 
-    setBusqueda('');
-    setFiltroSeccion('Todos');
-    window.scrollTo({ top: 0, behavior: 'auto' });
+  const itemsPerPage = 12;
+
+  // 1. Lógica de Filtrado (Search + Category)
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      const matchSearch = 
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.id.toLowerCase().includes(searchTerm.toLowerCase()); // Buscar por ID/SKU también
+      
+      const matchCategory = 
+        selectedCategory === 'Todos' || 
+        product.category === selectedCategory; // Asegúrate de que tus productos tengan la propiedad 'category'
+
+      return matchSearch && matchCategory;
+    });
+  }, [searchTerm, selectedCategory, products]);
+
+  // 2. Lógica de Paginación
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  
+  const currentProducts = useMemo(() => {
+    const firstIndex = (currentPage - 1) * itemsPerPage;
+    const lastIndex = firstIndex + itemsPerPage;
+    return filteredProducts.slice(firstIndex, lastIndex);
+  }, [currentPage, filteredProducts]);
+
+  // Resetear a página 1 si cambia el filtro
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory]);
+
+  // Scroll al top al cambiar de página
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // 1. MODO SELECTOR
-  if (!filtroModelo && !busqueda) {
-    return (
-      <MotoSelector 
-        onSelectModel={(modelo) => {
-          setFiltroModelo(modelo);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }} 
-        onSearchGlobal={(termino) => {
-          setBusqueda(termino);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-      />
+  // 3. Verificación de Compatibilidad
+  const checkCompatibility = (product: Product) => {
+    if (!selectedBike) return null;
+    
+    // Asumiendo que 'compatibleModels' es un array de strings en tu tipo Product
+    const isCompatible = product.compatibleModels?.some(model => 
+      model.toLowerCase().includes(selectedBike.model.toLowerCase())
     );
-  }
 
-  // 2. MODO CATÁLOGO
+    return isCompatible;
+  };
+
+  // Handlers
+  const handleAddToCart = (e: React.MouseEvent, product: Product) => {
+    e.stopPropagation();
+    addToCart(product);
+    showToast(`Agregado al carrito: ${product.name}`, 'success');
+  };
+
+  const openModal = (product: Product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
   return (
-    <div ref={containerRef} className="min-h-screen bg-slate-50 pb-24 pt-2 md:pt-4 px-0 md:px-8 font-sans scroll-mt-20">
-      <div className="max-w-7xl mx-auto">
-        
-        {/* BARRA SUPERIOR */}
-        <div className="sticky top-[64px] z-30 bg-slate-50/95 backdrop-blur-md pb-4 pt-3 px-3 md:px-0 transition-all border-b border-gray-100/50 md:border-none">
-          <div className="flex gap-3 mb-4">
-            <button 
-              onClick={handleCambiarMoto}
-              className="flex items-center justify-center px-4 py-3 rounded-xl bg-white border border-gray-200 text-slate-700 shadow-sm font-bold active:scale-95 transition-all hover:bg-gray-50 hover:border-gray-300"
-            >
-              <ArrowLeft className="w-5 h-5 mr-0 md:mr-2" />
-              <span className="hidden md:inline">Volver</span>
-            </button>
-
-            <div className="flex-[2] relative group">
-              <Search className="absolute left-4 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-red-500 transition-colors" />
-              <input
-                type="text"
-                placeholder={filtroModelo ? `Buscar pieza para ${filtroModelo}...` : "Buscar en todo el catálogo..."}
-                className="w-full pl-11 pr-10 py-3 border border-gray-200 rounded-xl bg-white text-base focus:ring-4 focus:ring-red-500/10 focus:border-red-500 outline-none shadow-sm placeholder:text-gray-400 transition-all"
-                value={busqueda}
-                onChange={(e) => setBusqueda(e.target.value)}
-              />
-              {busqueda && (
-                <button onClick={() => setBusqueda('')} className="absolute right-3 top-3.5 text-gray-400 hover:text-red-500 p-1 rounded-full hover:bg-red-50 transition-colors">
-                  <X className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-          </div>
+    <div className="container mx-auto px-4 py-8 min-h-screen">
+      
+      {/* --- Controles Superiores (Buscador y Filtros) --- */}
+      <div className="mb-8 space-y-4">
+        <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
           
-          <div className="mb-3 px-1 flex items-center justify-between text-xs text-gray-500">
-             <div className="flex items-center gap-2">
-                <span className="hidden md:inline">Catálogo:</span>
-                {filtroModelo ? (
-                    <span className="font-extrabold text-red-600 bg-red-50 px-2 py-1 rounded-md border border-red-100 flex items-center gap-1">
-                      {filtroModelo}
-                    </span>
-                ) : (
-                    <span className="font-bold text-slate-700 bg-white px-2 py-1 rounded-md border border-gray-200 shadow-sm">
-                      Global
-                    </span>
-                )}
-             </div>
-             <div className="flex items-center gap-1 text-gray-400">
-                <Filter className="w-3 h-3" />
-                <span>{filtroSeccion}</span>
-             </div>
+          {/* Barra de Búsqueda */}
+          <div className="relative w-full md:w-1/2 lg:w-1/3">
+            <input
+              type="text"
+              placeholder="Buscar repuesto o SKU..."
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Search className="absolute left-3 top-2.5 text-gray-400 h-5 w-5" />
           </div>
 
-          <div className="overflow-x-auto pb-2 scrollbar-hide scroll-smooth -mx-3 px-3 md:mx-0 md:px-0">
-            <div className="flex space-x-2">
-              {ORDEN_SECCIONES.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setFiltroSeccion(category)}
-                  className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-300 border ${
-                    filtroSeccion === category 
-                      ? 'bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-200 scale-105' 
-                      : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
+          {/* Selector de Categorías (Móvil: Select / Desktop: Botones) */}
+          <div className="w-full md:w-auto flex items-center overflow-x-auto pb-2 md:pb-0 gap-2 hide-scrollbar">
+            {CATEGORIES.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition ${
+                  selectedCategory === cat 
+                    ? 'bg-blue-600 text-white shadow-md' 
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* LISTADO DE PRODUCTOS */}
-        {visibles.length > 0 ? (
-          <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 px-2 md:px-0">
-              {visibles.map((product: Producto) => (
-                <div 
-                  key={product.id} 
-                  className="group bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-red-100 hover:-translate-y-1"
-                  onClick={() => onProductClick(product)}
-                >
-                  <button 
-                    className={`absolute top-3 right-3 p-2 rounded-full z-10 transition-all duration-200 backdrop-blur-sm ${
-                      isFav(product.id) 
-                        ? 'bg-red-50 text-red-500 scale-110 shadow-sm' 
-                        : 'bg-white/80 text-slate-400 hover:bg-white hover:text-red-500 border border-gray-100'
-                    }`}
-                    onClick={(e) => { e.stopPropagation(); toggleFav(product.id); }}
-                  >
-                    <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
-                  </button>
+        {/* Resumen de resultados */}
+        <div className="text-sm text-gray-500">
+          Mostrando {currentProducts.length} de {filteredProducts.length} productos
+        </div>
+      </div>
 
-                  {/* IMAGEN RECTANGULAR CORRECTA */}
-                  <div className="relative h-32 md:h-40 bg-white overflow-hidden p-0">
-                    <LazyImage 
-                      src={optimizarImg(product.imagen)} 
-                      alt={product.nombre}
-                      className="w-full h-full transition-transform duration-500 group-hover:scale-105" 
-                      imageFit="cover" 
-                      cropBottom={true}
-                    />
-                    
-                    {product.stock === false && (
-                         <div className="absolute bottom-0 left-0 right-0 bg-gray-900/90 text-white text-[10px] py-1 text-center font-bold">
-                           AGOTADO
-                         </div>
-                    )}
-                  </div>
+      {/* --- Grid de Productos --- */}
+      {currentProducts.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {currentProducts.map((product) => {
+            const isCompatible = checkCompatibility(product);
 
-                  <div className="p-4 flex flex-col flex-grow relative z-10 bg-white border-t border-gray-50">
-                    <div className="mb-2">
-                        <span className="inline-block px-2 py-0.5 rounded-md bg-gray-50 text-gray-400 text-[10px] font-bold uppercase tracking-wide border border-gray-100">
-                        {product.seccion}
-                        </span>
+            return (
+              <div 
+                key={product.id} 
+                className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col group cursor-pointer"
+                onClick={() => openModal(product)}
+              >
+                {/* Imagen */}
+                <div className="relative aspect-square overflow-hidden bg-gray-50">
+                  <LazyImage 
+                    src={product.image} 
+                    alt={product.name} 
+                    className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                  />
+                  
+                  {/* Badge de Garage */}
+                  {selectedBike && isCompatible !== null && (
+                    <div className={`absolute top-2 right-2 px-2 py-1 rounded-md text-xs font-bold flex items-center gap-1 shadow-sm ${
+                      isCompatible ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
+                    }`}>
+                      {isCompatible ? (
+                        <><CheckCircle size={12} /> Compatible</>
+                      ) : (
+                        <><AlertTriangle size={12} /> Revisar</>
+                      )}
                     </div>
+                  )}
+                </div>
+
+                {/* Contenido */}
+                <div className="p-4 flex-1 flex flex-col">
+                  <div className="flex justify-between items-start mb-2">
+                    <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{product.id}</span>
+                    <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
+                      {product.category || 'General'}
+                    </span>
+                  </div>
+                  
+                  <h3 className="font-bold text-gray-800 text-lg mb-1 leading-tight line-clamp-2 min-h-[3rem]">
+                    {product.name}
+                  </h3>
+                  
+                  <div className="mt-auto pt-4 flex items-center justify-between">
+                    <span className="text-xl font-bold text-gray-900">
+                      ${product.price.toLocaleString()}
+                    </span>
                     
-                    {/* CAMBIO APLICADO: Se eliminó 'line-clamp-2' para mostrar el nombre completo */}
-                    <h3 className="text-sm font-bold text-slate-800 mb-2 leading-snug min-h-[2.5em] group-hover:text-red-600 transition-colors">
-                      <HighlightedText text={product.nombre} highlight={busqueda} />
-                    </h3>
-                    
-                    <div className="mt-auto pt-2 flex items-center justify-between">
-                       <span className="text-lg font-extrabold text-slate-900">
-                         ${Number(product.precio).toFixed(2)}
-                       </span>
-                       <span className="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
-                         VER →
-                       </span>
+                    <div className="flex gap-2">
+                      <button 
+                        className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition"
+                        title="Ver detalles"
+                      >
+                        <Eye size={20} />
+                      </button>
+                      <button
+                        onClick={(e) => handleAddToCart(e, product)}
+                        className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 shadow-md hover:shadow-lg transition transform active:scale-95"
+                        title="Agregar al carrito"
+                      >
+                        <ShoppingCart size={20} />
+                      </button>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-            
-            {visibles.length < productos.length && (
-              <div className="mt-12 text-center px-4 mb-8">
-                <button onClick={() => setPagina(p => p + 1)} className="w-full md:w-auto px-10 py-3 bg-white border border-gray-200 text-slate-700 font-bold text-sm rounded-full shadow-sm hover:shadow-md hover:border-red-200 hover:text-red-600 transition-all active:scale-95">
-                  Cargar más repuestos
-                </button>
               </div>
-            )}
-          </>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-24 px-4 text-center">
-             <div className="bg-slate-50 p-6 rounded-full mb-6 animate-pulse">
-                <Search className="h-10 w-10 text-slate-300" />
-             </div>
-             <h3 className="text-xl font-bold text-slate-900 mb-2">No encontramos repuestos</h3>
-             <p className="text-slate-500 max-w-xs mx-auto mb-8">
-               {filtroModelo ? `No hay resultados para "${filtroModelo}"` : "Intenta buscando con otro nombre."}
-             </p>
-             <button onClick={() => { setBusqueda(''); setFiltroSeccion('Todos'); }} className="px-8 py-3 bg-slate-900 text-white font-bold rounded-xl shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all hover:-translate-y-1 active:scale-95">
-              Limpiar filtros
-            </button>
+            );
+          })}
+        </div>
+      ) : (
+        /* Estado Vacío */
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <div className="bg-gray-100 p-6 rounded-full mb-4">
+            <Filter className="h-12 w-12 text-gray-400" />
           </div>
-        )}
-      </div>
+          <h3 className="text-xl font-semibold text-gray-800">No se encontraron productos</h3>
+          <p className="text-gray-500 mt-2">Intenta con otro término de búsqueda o categoría.</p>
+          <button 
+            onClick={() => {setSearchTerm(''); setSelectedCategory('Todos');}}
+            className="mt-6 text-blue-600 hover:underline font-medium"
+          >
+            Limpiar filtros
+          </button>
+        </div>
+      )}
+
+      {/* --- Controles de Paginación --- */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center mt-12 gap-2">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+            className="p-2 rounded-lg border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          
+          {/* Generación de números de página (simplificado) */}
+          <div className="flex gap-1">
+            {Array.from({ length: totalPages }, (_, i) => i + 1)
+              .filter(p => p === 1 || p === totalPages || (p >= currentPage - 1 && p <= currentPage + 1))
+              .map((page, index, array) => (
+                <div key={page} className="flex items-center">
+                  {index > 0 && array[index - 1] !== page - 1 && <span className="px-2 text-gray-400">...</span>}
+                  <button
+                    onClick={() => handlePageChange(page)}
+                    className={`w-10 h-10 rounded-lg font-medium transition ${
+                      currentPage === page
+                        ? 'bg-blue-600 text-white shadow-md'
+                        : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                </div>
+              ))
+            }
+          </div>
+
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => handlePageChange(currentPage + 1)}
+            className="p-2 rounded-lg border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+      )}
+
+      {/* --- Modal de Detalle --- */}
+      {selectedProduct && (
+        <ProductDetailModal
+          product={selectedProduct}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </div>
   );
-});
+};
