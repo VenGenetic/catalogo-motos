@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react';
-import { Routes, Route, useSearchParams, Link } from 'react-router-dom';
+import { Routes, Route, useSearchParams, Link, useLocation } from 'react-router-dom';
 import { Heart, WifiOff } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import './App.css';
@@ -36,6 +36,7 @@ const PageLoader = () => (
 
 export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const { productos, loading } = useProducts();
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
   const [isOnline, setIsOnline] = useState(true);
@@ -334,7 +335,7 @@ export default function App() {
         onSelectRelated={handleProductClick} // NUEVO: Acción al hacer clic en un relacionado
       />
       <CartDrawer />
-      <WhatsAppButton /> {/* NUEVO: Botón flotante siempre visible */}
+      <WhatsAppButton hideWhenModalOpen={!!selectedProduct || location.pathname !== '/'} /> {/* NUEVO: Botón flotante siempre visible */}
       <ScrollToTopButton />
       <BottomNav />
       <Footer />

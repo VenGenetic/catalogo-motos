@@ -2,7 +2,11 @@ import { MessageCircle } from 'lucide-react';
 import { APP_CONFIG } from '../config/constants';
 import { useState, useEffect } from 'react';
 
-export const WhatsAppButton = () => {
+interface WhatsAppButtonProps {
+  hideWhenModalOpen?: boolean;
+}
+
+export const WhatsAppButton = ({ hideWhenModalOpen = false }: WhatsAppButtonProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -16,6 +20,9 @@ export const WhatsAppButton = () => {
   const handleClick = () => {
     window.open(`https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}`, '_blank');
   };
+
+  // Ocultar si se especifica y el modal está abierto
+  if (hideWhenModalOpen) return null;
 
   return (
     <button

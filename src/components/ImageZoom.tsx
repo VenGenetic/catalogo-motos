@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, ZoomIn } from 'lucide-react';
 
 interface ImageZoomProps {
@@ -12,6 +12,33 @@ export const ImageZoom = ({ src, alt, className }: ImageZoomProps) => {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  // Manejar el botón de retroceso del navegador
+  useEffect(() => {
+    if (isModalOpen) {
+      // Push state para manejar el back button
+      window.history.pushState({ imageZoom: true }, '');
+      
+      const handlePopState = (e: PopStateEvent) => {
+        if (e.state && e.state.imageZoom) {
+          closeModal();
+          // Prevenir el comportamiento por defecto del back
+          e.preventDefault();
+        }
+      };
+
+      window.addEventListener('popstate', handlePopState);
+
+      return () => {
+        window.removeEventListener('popstate', handlePopState);
+      };
+    } else {
+      // Si el modal se cierra, quitar el state si existe
+      if (window.history.state && window.history.state.imageZoom) {
+        window.history.back();
+      }
+    }
+  }, [isModalOpen]);
 
   return (
     <>
