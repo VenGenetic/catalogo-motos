@@ -42,19 +42,14 @@ ${itemsList}
 💰 *TOTAL A PAGAR: $${total}*
 
 📋 *Mis Datos de Envío:*
-👤 Nombre: ${formData.nombre}
-📍 Ciudad/Dirección: ${formData.ciudad}
+👤 Nombre: ${formData.nombre.trim() || 'No especificado'}
+📍 Ciudad/Dirección: ${formData.ciudad.trim() || 'No especificado'}
 💳 Método de Pago: ${formData.metodoPago}
 
 ¿Me confirman los datos de cuenta para transferir?`;
   };
 
   const handleCheckout = () => {
-    if (!formData.nombre.trim() || !formData.ciudad.trim()) {
-      alert("Por favor completa tu Nombre y Ciudad para continuar.");
-      return;
-    }
-    
     const mensaje = generarMensajeWhatsApp();
     const url = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, '_blank');
@@ -150,9 +145,10 @@ ${itemsList}
 
               {/* FORMULARIO DE ENVÍO (Nuevo) */}
               <div className="mt-8 pt-6 border-t border-gray-100">
-                <h3 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
                   <User size={16} className="text-red-600" /> Datos para el Envío
                 </h3>
+                <p className="text-xs text-gray-500 mb-4">Todos los campos son opcionales - puedes completar después</p>
                 
                 <div className="space-y-3">
                   <div className="relative">
@@ -160,7 +156,7 @@ ${itemsList}
                     <input
                       type="text"
                       name="nombre"
-                      placeholder="Tu Nombre Completo"
+                      placeholder="Tu Nombre Completo (opcional)"
                       value={formData.nombre}
                       onChange={handleInputChange}
                       className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none transition-all"
@@ -172,7 +168,7 @@ ${itemsList}
                     <input
                       type="text"
                       name="ciudad"
-                      placeholder="Ciudad y Dirección"
+                      placeholder="Ciudad y Dirección (opcional)"
                       value={formData.ciudad}
                       onChange={handleInputChange}
                       className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none transition-all"
@@ -208,7 +204,7 @@ ${itemsList}
             <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 mb-4 flex gap-3">
               <ShieldCheck className="w-5 h-5 text-blue-600 shrink-0" />
               <p className="text-[10px] text-blue-800 leading-tight">
-                Tus datos se enviarán cifrados por WhatsApp. No almacenamos tarjetas ni cobramos automáticamente.
+                Completa los datos opcionales o envía el pedido directamente. Te contactaremos para coordinar los detalles.
               </p>
             </div>
           )}
@@ -230,7 +226,7 @@ ${itemsList}
             }`}
           >
             <MessageCircle size={20} className="fill-current" />
-            {cart.length === 0 ? 'Carrito Vacío' : 'Confirmar Pedido'}
+            {cart.length === 0 ? 'Carrito Vacío' : 'Enviar Pedido por WhatsApp'}
           </button>
         </div>
       </div>
