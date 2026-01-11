@@ -73,8 +73,6 @@ export const useProducts = () => {
         }
 
         const procesados = raw.map((p) => {
-
-        const procesados = raw.map((p) => {
           const seccionCalc = detectarSeccion(p);
           
           // Lógica para construir el nombre de la imagen local
