@@ -19,7 +19,7 @@ export const Navbar = () => {
               <img 
                 src="/icono-daytona.png" 
                 alt="LV PARTS Logo" 
-                className="w-8 h-8 md:w-10 md:h-10 object-contain"
+                className="w-12 h-12 md:w-14 md:h-14 object-contain"
               />
             </div>
             <div className="flex flex-col">
