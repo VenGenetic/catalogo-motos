@@ -374,9 +374,10 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
             <div className="hidden md:flex gap-4 mt-8">
               <button
                 onClick={handleConsult}
-               className="p-4 bg-gradient-to-r from-green-50 to-green-100 text-green-700 rounded-2xl border border-green-200 active:scale-95 transition-all shadow-sm"
-             >
-               <MessageCircle size={22} />
+                className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-4 rounded-2xl font-bold hover:from-green-600 hover:to-green-700 transition-all shadow-lg shadow-green-200 active:scale-95 flex items-center justify-center gap-3 text-base border-2 border-green-400"
+              >
+                <MessageCircle size={20} />
+                Consultar Repuesto
               </button>
               <button
                 onClick={handleAdd}
