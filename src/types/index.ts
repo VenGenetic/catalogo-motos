@@ -7,11 +7,16 @@ export interface Producto {
   stock?: boolean;
   codigo_referencia?: string;
   seccion?: string;
-  textoBusqueda: string; // <--- Agregamos esto como obligatorio
+  textoBusqueda: string;
 }
 
 export interface Categoria {
   id: string;
   nombre: string;
   imagen: string;
+}
+
+// --- ESTO ES LO QUE FALTABA ---
+export interface ItemCarrito extends Producto {
+  cantidad: number;
 }
