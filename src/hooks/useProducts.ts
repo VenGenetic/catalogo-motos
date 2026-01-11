@@ -49,7 +49,7 @@ export const useProducts = () => {
           // Asumimos que las guardas en public/imagenes_repuestos/
           // Si están en otra carpeta, cambia '/imagenes_repuestos/' por la ruta correcta.
           const nombreImagenLocal = p.codigo_referencia 
-            ? `/imagenes_repuestos/${p.codigo_referencia}_cut.jpg`
+            ? `/imagenes_repuestos/${p.codigo_referencia}_cut.webp`
             : null;
 
           return {
