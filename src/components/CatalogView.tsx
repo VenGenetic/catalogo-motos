@@ -1,10 +1,12 @@
 import { useState, useMemo, useEffect, useRef, memo } from 'react';
-import { Heart, ArrowLeft, Filter } from 'lucide-react'; 
+import { Heart, ArrowLeft, Filter, Search } from 'lucide-react'; 
 import { optimizarImg } from '../utils/helpers';
 import { APP_CONFIG, ORDEN_SECCIONES } from '../config/constants';
 import { Producto } from '../types';
 import { LazyImage } from './LazyImage';
 import { SearchBar } from './SearchBar';
+import { HighlightedText } from './HighlightedText';
+import { MotoSelector } from './MotoSelector';
 
 interface Props {
   productos: Producto[];
@@ -51,11 +53,11 @@ export const CatalogView = memo(({
   if (!filtroModelo && !busqueda) {
     return (
       <MotoSelector 
-        onSelectModel={(modelo) => {
+        onSelectModel={(modelo: string) => {
           setFiltroModelo(modelo);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }} 
-        onSearchGlobal={(termino) => {
+        onSearchGlobal={(termino: string) => {
           setBusqueda(termino);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}

@@ -1,7 +1,14 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { Search, X, Mic, MicOff, TrendingUp } from 'lucide-react';
 import { Producto } from '../types';
-import { limpiarTexto } from '../utils/helpers';
+
+// Declaraciones de tipos para Speech Recognition API
+declare global {
+  interface Window {
+    SpeechRecognition: typeof SpeechRecognition;
+    webkitSpeechRecognition: typeof SpeechRecognition;
+  }
+}
 
 interface SearchBarProps {
   busqueda: string;
@@ -47,7 +54,7 @@ export const SearchBar = ({
       });
 
       // Sugerencias de categorías/secciones
-      if (producto.seccion.toLowerCase().includes(terminoLower)) {
+      if (producto.seccion && producto.seccion.toLowerCase().includes(terminoLower)) {
         sugerenciasSet.add(producto.seccion);
       }
 
@@ -84,7 +91,7 @@ export const SearchBar = ({
       recognitionRef.current.interimResults = false;
       recognitionRef.current.lang = 'es-ES'; // Español de Ecuador
 
-      recognitionRef.current.onresult = (event) => {
+      recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
         const transcript = event.results[0][0].transcript;
         setBusqueda(transcript);
         setIsListening(false);
