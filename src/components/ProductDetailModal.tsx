@@ -75,7 +75,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
           <X className="w-6 h-6 text-slate-400" />
         </button>
 
-        {/* IMAGEN ESTRECHA (280px) */}
+        {/* IMAGEN PRINCIPAL */}
         <div className="w-full bg-gray-50 relative shrink-0 flex items-center justify-center h-[30vh] md:h-[280px]">
           <div className="w-full h-full absolute inset-0">
              <ImageZoom src={optimizarImg(product.imagen)} alt={product.nombre} />
@@ -136,8 +136,8 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                         <LazyImage 
                           src={optimizarImg(rel.imagen)} 
                           alt={rel.nombre} 
-                          cropBottom={true}
-                          imageFit="cover"
+                          // CAMBIO: Quitamos cropBottom y ponemos contain
+                          imageFit="contain"
                           className="w-full h-full bg-white group-hover:scale-105 transition-transform"
                         />
                       </div>
