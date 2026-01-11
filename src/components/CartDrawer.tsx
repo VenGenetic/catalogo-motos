@@ -112,9 +112,7 @@ ${itemsList}
                       <LazyImage 
                         src={optimizarImg(item.imagen)} 
                         alt={item.nombre}
-                        // CAMBIO: Aseguramos que la miniatura se vea completa
-                        imageFit="contain"
-                        className="w-16 h-16 rounded-lg bg-gray-50 shrink-0" 
+                        className="w-16 h-16 rounded-lg bg-gray-50 shrink-0 object-cover" 
                       />
 
                       <div className="flex-1 flex flex-col justify-between py-0.5">
@@ -150,7 +148,7 @@ ${itemsList}
                 })}
               </div>
 
-              {/* FORMULARIO DE ENVÍO */}
+              {/* FORMULARIO DE ENVÍO (Nuevo) */}
               <div className="mt-8 pt-6 border-t border-gray-100">
                 <h3 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
                   <User size={16} className="text-red-600" /> Datos para el Envío

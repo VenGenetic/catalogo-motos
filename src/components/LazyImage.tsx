@@ -6,15 +6,15 @@ interface Props {
   className?: string;
   style?: React.CSSProperties;
   onClick?: () => void;
-  // Eliminamos cropBottom de la interfaz
+  cropBottom?: boolean; 
   imageFit?: 'cover' | 'contain';
 }
 
-export const LazyImage = ({ src, alt, className, style, onClick, imageFit = 'contain' }: Props) => {
+export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = false, imageFit = 'cover' }: Props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  // Eliminamos la lógica de cropClasses (scale, origin-top, etc.)
+  const cropClasses = cropBottom ? 'scale-[1.35] origin-top' : '';
   const fitClass = imageFit === 'contain' ? 'object-contain' : 'object-cover';
 
   return (
@@ -31,13 +31,11 @@ export const LazyImage = ({ src, alt, className, style, onClick, imageFit = 'con
         src={hasError ? 'https://via.placeholder.com/400x300?text=Sin+Imagen' : src}
         alt={alt || 'Producto'}
         loading="lazy"
-        decoding="async"
+        decoding="async" // Ayuda al navegador a decodificar fuera del hilo principal
         onLoad={() => setIsLoaded(true)}
         onError={() => { setHasError(true); setIsLoaded(true); }}
-        // CAMBIOS: 
-        // 1. Quitamos ${cropClasses}
-        // 2. Cambiamos object-top por object-center para que se centre naturalmente
-        className={`w-full h-full ${fitClass} object-center transition-opacity duration-500 ease-out ${
+        // CAMBIO: transition-opacity en lugar de transition-all para mejor rendimiento
+        className={`w-full h-full ${fitClass} ${cropClasses} object-top transition-opacity duration-500 ease-out ${
           isLoaded ? 'opacity-100' : 'opacity-0'
         }`}
       />
