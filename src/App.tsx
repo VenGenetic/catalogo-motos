@@ -1,9 +1,9 @@
 import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react';
-import { BrowserRouter as Router, Routes, Route, useSearchParams } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom'; // Se eliminó 'BrowserRouter' y 'useSearchParams'
 import { Helmet } from 'react-helmet';
 import { useProducts } from './hooks/useProducts';
 import { useDebounce } from './hooks/useDebounce';
-import { useGarage } from './context/GarageContext'; // <--- NUEVO
+import { useGarage } from './context/GarageContext';
 import { APP_CONFIG } from './config/constants';
 import { Producto } from './types';
 
@@ -17,11 +17,9 @@ import { CartDrawer } from './components/CartDrawer';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { SkeletonLoader } from './components/SkeletonLoader';
 
-// Lazy loading de vistas
 const HomeView = lazy(() => import('./components/HomeView').then(m => ({ default: m.HomeView })));
 const CatalogView = lazy(() => import('./components/CatalogView').then(m => ({ default: m.CatalogView })));
 
-// Loader simple
 const PageLoader = () => (
   <div className="pt-24 px-4 max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
     {[...Array(8)].map((_, i) => <SkeletonLoader key={i} />)}
@@ -29,9 +27,9 @@ const PageLoader = () => (
 );
 
 export default function App() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  // Se eliminó searchParams porque no se usaba y causaba error de build
   const { productos, loading } = useProducts();
-  const { vehicle, setVehicle } = useGarage(); // <--- Usamos Contexto
+  const { vehicle, setVehicle } = useGarage();
 
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
   const [favs, setFavs] = useState<string[]>(() => {
@@ -43,12 +41,11 @@ export default function App() {
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
   const busquedaDebounced = useDebounce(busqueda, 300);
 
-  // Sincronizar Garage con Filtro
   useEffect(() => {
     if (vehicle?.model && !filtroModelo) {
       setFiltroModelo(vehicle.model);
     }
-  }, [vehicle]);
+  }, [vehicle, filtroModelo]);
 
   const handleSelectMoto = useCallback((modelo: string) => {
     setFiltroModelo(modelo);
@@ -59,13 +56,11 @@ export default function App() {
 
   const handleResetMoto = useCallback(() => {
     setFiltroModelo(''); 
-    // setVehicle(null); // Descomenta si quieres "olvidar" la moto al volver
     setBusqueda('');
     setFiltroSeccion('Todos');
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, []);
 
-  // Lógica de favoritos y productos...
   const toggleFav = useCallback((id: string) => {
     setFavs(prev => {
       const next = prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id];
@@ -77,16 +72,16 @@ export default function App() {
   const handleProductClick = useCallback((p: Producto) => setSelectedProduct(p), []);
   const handleCloseModal = useCallback(() => setSelectedProduct(null), []);
 
-  // Filtrado
   const filteredProducts = useMemo(() => {
     let result = productos;
     if (filtroModelo) {
       const term = filtroModelo.toLowerCase();
-      result = result.filter(p => p.textoBusqueda.includes(term));
+      // Verificamos que textoBusqueda exista (aunque ya lo forzamos en types)
+      result = result.filter(p => (p.textoBusqueda || '').includes(term));
     }
     if (busquedaDebounced) {
       const term = busquedaDebounced.toLowerCase();
-      result = result.filter(p => p.textoBusqueda.includes(term));
+      result = result.filter(p => (p.textoBusqueda || '').includes(term));
     }
     if (filtroSeccion !== 'Todos') {
       result = result.filter(p => p.seccion === filtroSeccion);
@@ -108,12 +103,12 @@ export default function App() {
                 <Helmet><title>Catálogo | LV PARTS</title></Helmet>
                 <CatalogView 
                   productos={filteredProducts}
-                  allProducts={productos} // <--- Pasamos todo para el conteo
+                  allProducts={productos}
                   isFav={(id) => favs.includes(id)}
                   toggleFav={toggleFav}
                   filtroModelo={filtroModelo}
-                  setFiltroModelo={handleSelectMoto} // <--- Nueva función
-                  onResetMoto={handleResetMoto}      // <--- Nueva función
+                  setFiltroModelo={handleSelectMoto}
+                  onResetMoto={handleResetMoto}
                   busqueda={busqueda}
                   setBusqueda={setBusqueda}
                   filtroSeccion={filtroSeccion}

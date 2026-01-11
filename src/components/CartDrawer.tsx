@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { X, Minus, Plus, MessageCircle, ShieldCheck, User, MapPin, CreditCard, ArrowRight } from 'lucide-react';
+// Se eliminó 'ShieldCheck' de los imports
+import { X, Minus, Plus, MessageCircle, User, MapPin, CreditCard, ArrowRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
 import { LazyImage } from './LazyImage';
@@ -14,7 +15,6 @@ export const CartDrawer = () => {
     metodoPago: 'Transferencia Bancaria'
   });
 
-  // 1. CARGAR DATOS GUARDADOS AL ABRIR
   useEffect(() => {
     const saved = localStorage.getItem('lv_user_data');
     if (saved) {
@@ -24,12 +24,10 @@ export const CartDrawer = () => {
     }
   }, []);
 
-  // 2. GUARDAR DATOS AL ESCRIBIR
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const newFormData = { ...formData, [e.target.name]: e.target.value };
     setFormData(newFormData);
     
-    // Guardamos solo nombre y ciudad
     localStorage.setItem('lv_user_data', JSON.stringify({
       nombre: newFormData.nombre,
       ciudad: newFormData.ciudad
@@ -74,7 +72,6 @@ ${itemsList}
       <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onClick={closeCart} />
       <div className="relative w-full md:max-w-md bg-white h-full shadow-2xl flex flex-col animate-slide-in-right">
         
-        {/* Header */}
         <div className="p-4 border-b flex justify-between items-center bg-gray-50 shadow-sm z-10">
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
             <MessageCircle className="w-5 h-5" /> Tu Pedido
@@ -84,7 +81,6 @@ ${itemsList}
           </button>
         </div>
 
-        {/* Content */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white">
           {cart.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-[60%] text-gray-400 gap-4">
@@ -115,7 +111,6 @@ ${itemsList}
                 ))}
               </div>
 
-              {/* Formulario */}
               <div className="mt-8 pt-6 border-t border-gray-100">
                 <h3 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2"><User size={16} className="text-red-600" /> Datos de Envío</h3>
                 <div className="space-y-3">
@@ -141,7 +136,6 @@ ${itemsList}
           )}
         </div>
 
-        {/* Footer */}
         <div className="p-4 border-t bg-white pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-10">
           <div className="flex justify-between items-center mb-4">
             <span className="text-gray-500 font-medium text-sm">Total Estimado</span>
