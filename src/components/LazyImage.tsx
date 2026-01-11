@@ -14,7 +14,7 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  const cropClasses = cropBottom ? 'scale-[1.35] origin-top' : '';
+  const cropClasses = cropBottom ? 'scale-[1.2] origin-center' : '';
   const fitClass = imageFit === 'contain' ? 'object-contain' : 'object-cover';
 
   return (
@@ -35,7 +35,7 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
         onLoad={() => setIsLoaded(true)}
         onError={() => { setHasError(true); setIsLoaded(true); }}
         // CAMBIO: transition-opacity en lugar de transition-all para mejor rendimiento
-        className={`w-full h-full ${fitClass} ${cropClasses} object-top transition-opacity duration-500 ease-out ${
+        className={`w-full h-full ${fitClass} ${cropClasses} object-center transition-opacity duration-500 ease-out ${
           isLoaded ? 'opacity-100' : 'opacity-0'
         }`}
       />

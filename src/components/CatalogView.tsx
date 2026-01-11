@@ -138,11 +138,11 @@ export const CatalogView = memo(({
         {/* LISTADO DE PRODUCTOS */}
         {visibles.length > 0 ? (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 px-2 md:px-0">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4 px-2 md:px-0">
               {visibles.map((product: Producto) => (
                 <div 
                   key={product.id} 
-                  className="group bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-red-100 hover:-translate-y-1"
+                  className="group bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-[0_12px_40px_rgb(0,0,0,0.1)] hover:border-red-200 hover:-translate-y-2"
                   onClick={() => onProductClick(product)}
                 >
                   <button 
@@ -156,12 +156,12 @@ export const CatalogView = memo(({
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
                   </button>
 
-                  {/* IMAGEN RECTANGULAR CORRECTA */}
-                  <div className="relative h-32 md:h-40 bg-white overflow-hidden p-0">
+                  {/* IMAGEN CON MEJOR ENCUADRE */}
+                  <div className="relative aspect-square bg-white overflow-hidden p-2">
                     <LazyImage 
                       src={optimizarImg(product.imagen)} 
                       alt={product.nombre}
-                      className="w-full h-full transition-transform duration-500 group-hover:scale-105" 
+                      className="w-full h-full rounded-lg transition-transform duration-500 group-hover:scale-105" 
                       imageFit="cover" 
                       cropBottom={true}
                     />
@@ -173,7 +173,7 @@ export const CatalogView = memo(({
                     )}
                   </div>
 
-                  <div className="p-4 flex flex-col flex-grow relative z-10 bg-white border-t border-gray-50">
+                  <div className="p-3 flex flex-col flex-grow relative z-10 bg-white border-t border-gray-50">
                     <div className="mb-2">
                         <span className="inline-block px-2 py-0.5 rounded-md bg-gray-50 text-gray-400 text-[10px] font-bold uppercase tracking-wide border border-gray-100">
                         {product.seccion}
