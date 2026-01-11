@@ -14,18 +14,18 @@ declare global {
   }
 
   interface SpeechRecognitionResultList {
-    [index: number]: SpeechRecognitionResult;
-    length: number;
+    readonly [index: number]: SpeechRecognitionResult;
+    readonly length: number;
   }
 
   interface SpeechRecognitionResult {
-    [index: number]: SpeechRecognitionAlternative;
-    length: number;
+    readonly [index: number]: SpeechRecognitionAlternative;
+    readonly length: number;
   }
 
   interface SpeechRecognitionAlternative {
-    transcript: string;
-    confidence: number;
+    readonly transcript: string;
+    readonly confidence: number;
   }
 }
 

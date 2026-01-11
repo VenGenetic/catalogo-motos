@@ -17,13 +17,6 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
   const cropClasses = cropBottom ? '' : '';
   const fitClass = imageFit === 'contain' ? 'object-contain' : 'object-cover';
 
-export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = false, imageFit = 'cover' }: Props) => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [hasError, setHasError] = useState(false);
-
-  const cropClasses = cropBottom ? '' : '';
-  const fitClass = imageFit === 'contain' ? 'object-contain' : 'object-cover';
-
   // Detectar si es conexión lenta (para móviles)
   const isSlowConnection = typeof navigator !== 'undefined' &&
     'connection' in navigator &&
@@ -59,5 +52,4 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
       />
     </div>
   );
-};
 };

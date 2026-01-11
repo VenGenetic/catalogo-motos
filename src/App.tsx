@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react';
 import { Routes, Route, useSearchParams, Link } from 'react-router-dom';
-import { Heart, Wifi, WifiOff } from 'lucide-react';
+import { Heart, WifiOff } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import './App.css';
 import { limpiarTexto } from './utils/helpers';
@@ -210,12 +210,12 @@ export default function App() {
 
   const handleProductClick = useCallback((p: Producto) => {
     setSelectedProduct(p);
-    setSearchParams(prev => { prev.set('prod', p.id); return prev; });
+    setSearchParams((prev: URLSearchParams) => { prev.set('prod', p.id); return prev; });
   }, [setSearchParams]);
 
   const handleCloseModal = useCallback(() => {
     setSelectedProduct(null);
-    setSearchParams(prev => { prev.delete('prod'); return prev; });
+    setSearchParams((prev: URLSearchParams) => { prev.delete('prod'); return prev; });
   }, [setSearchParams]);
 
   useEffect(() => {

@@ -18,10 +18,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
   const { addToCart } = useCart();
   const [isVisible, setIsVisible] = useState(false);
 
-export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRelated }: Props) => {
-  const { addToCart } = useCart();
-  const [isVisible, setIsVisible] = useState(false);
-
   useEffect(() => {
     if (product) {
       setIsVisible(true);
