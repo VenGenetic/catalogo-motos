@@ -12,19 +12,14 @@ const limpiarPrecio = (valor: unknown): number => {
   return isNaN(numero) ? 0 : numero;
 };
 
-// Función para generar un ID consistente (hash simple)
-// Esto asegura que si recargas la página, el producto "Amortiguador" siga teniendo el mismo ID
-// en lugar de uno nuevo aleatorio, lo que arregla la persistencia en Favoritos y Carrito.
+// Función para generar un ID consistente
 const generarIdDeterministico = (p: any) => {
   if (p.id) return String(p.id);
   
-  // Usa referencia y nombre para crear siempre el mismo ID para el mismo producto
-  // Se usa btoa (Base64) para crear un string seguro y limpio
   const clave = `${p.codigo_referencia || ''}-${p.nombre}`;
   try {
     return btoa(clave).replace(/[^a-zA-Z0-9]/g, '').substring(0, 16);
   } catch (e) {
-    // Fallback por si la codificación falla (caracteres raros)
     return String(Math.abs(clave.split('').reduce((a, b) => ((a << 5) - a) + b.charCodeAt(0), 0)));
   }
 };
@@ -49,13 +44,21 @@ export const useProducts = () => {
 
         const procesados = raw.map((p) => {
           const seccionCalc = detectarSeccion(p);
+          
+          // Lógica para construir el nombre de la imagen local
+          // Asumimos que las guardas en public/imagenes_repuestos/
+          // Si están en otra carpeta, cambia '/imagenes_repuestos/' por la ruta correcta.
+          const nombreImagenLocal = p.codigo_referencia 
+            ? `/imagenes_repuestos/${p.codigo_referencia}_cut.jpg`
+            : null;
+
           return {
             ...p,
-            // Aquí usamos la nueva función en lugar de crypto.randomUUID()
             id: generarIdDeterministico(p), 
             precio: limpiarPrecio(p.precio),
             seccion: seccionCalc,
-            // Pre-calculamos texto de búsqueda para optimizar filtros
+            // AQUÍ EL CAMBIO: Usamos la imagen local si hay código, sino dejamos la original o vacío
+            imagen: nombreImagenLocal || p.imagen,
             textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc}`)
           };
         });
