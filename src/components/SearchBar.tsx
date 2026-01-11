@@ -5,8 +5,27 @@ import { Producto } from '../types';
 // Declaraciones de tipos para Speech Recognition API
 declare global {
   interface Window {
-    SpeechRecognition: typeof SpeechRecognition;
-    webkitSpeechRecognition: typeof SpeechRecognition;
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+
+  interface SpeechRecognitionEvent extends Event {
+    results: SpeechRecognitionResultList;
+  }
+
+  interface SpeechRecognitionResultList {
+    [index: number]: SpeechRecognitionResult;
+    length: number;
+  }
+
+  interface SpeechRecognitionResult {
+    [index: number]: SpeechRecognitionAlternative;
+    length: number;
+  }
+
+  interface SpeechRecognitionAlternative {
+    transcript: string;
+    confidence: number;
   }
 }
 
@@ -28,7 +47,7 @@ export const SearchBar = ({
   const [isFocused, setIsFocused] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<any>(null);
 
   // Generar sugerencias inteligentes basadas en productos
   const sugerencias = useMemo(() => {
@@ -85,13 +104,13 @@ export const SearchBar = ({
   // Inicializar reconocimiento de voz
   useEffect(() => {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       recognitionRef.current = new SpeechRecognition();
       recognitionRef.current.continuous = false;
       recognitionRef.current.interimResults = false;
       recognitionRef.current.lang = 'es-ES'; // Español de Ecuador
 
-      recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
+      recognitionRef.current.onresult = (event: any) => {
         const transcript = event.results[0][0].transcript;
         setBusqueda(transcript);
         setIsListening(false);
