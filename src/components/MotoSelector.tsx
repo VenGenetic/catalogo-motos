@@ -23,26 +23,26 @@ export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16 pb-12 px-4">
+    <div className="min-h-screen bg-gray-50 pt-12 md:pt-16 pb-8 md:pb-12 px-3 md:px-4">
       <div className="max-w-7xl mx-auto">
         
-        {/* Encabezado */}
-        <div className="text-center mb-10">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-3">
+        {/* Encabezado - MÁS COMPACTO EN MÓVIL */}
+        <div className="text-center mb-6 md:mb-10">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-900 mb-2 md:mb-3">
             ¿Qué necesitas hoy?
           </h1>
-          <p className="text-gray-500 mb-8 text-lg">
+          <p className="text-gray-500 mb-4 md:mb-8 text-sm md:text-lg px-2">
             Busca tu repuesto directo o selecciona tu moto
           </p>
           
-          <div className="max-w-xl mx-auto space-y-4">
+          <div className="max-w-xl mx-auto space-y-3 md:space-y-4">
             
             {/* 1. PRIMERO: BUSCADOR DE REPUESTOS (Ahora arriba) */}
             <div className="relative group z-20">
               <input
                 type="text"
-                placeholder="Busca un repuesto directo (ej. Bujía)..."
-                className="w-full pl-12 pr-20 py-4 rounded-xl border-2 border-slate-200 bg-slate-50 focus:bg-white focus:border-slate-800 focus:ring-4 focus:ring-slate-100 outline-none transition-all text-lg shadow-sm"
+                placeholder="Busca un repuesto (ej. Bujía)..."
+                className="w-full pl-10 md:pl-12 pr-16 md:pr-20 py-3 md:py-4 rounded-lg md:rounded-xl border-2 border-slate-200 bg-slate-50 focus:bg-white focus:border-slate-800 focus:ring-4 focus:ring-slate-100 outline-none transition-all text-sm md:text-lg shadow-sm"
                 value={partSearch}
                 onChange={(e) => setPartSearch(e.target.value)}
                 onKeyDown={handleGlobalSearch}

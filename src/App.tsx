@@ -23,8 +23,14 @@ import { useProducts } from './hooks/useProducts';
 import { useDebounce } from './hooks/useDebounce';
 
 const PageLoader = () => (
-  <div className="flex h-[50vh] w-full items-center justify-center">
-    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-red-600"></div>
+  <div className="flex h-[60vh] w-full items-center justify-center">
+    <div className="flex flex-col items-center gap-4">
+      <div className="relative">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-red-200 border-t-red-600"></div>
+        <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-red-400 animate-spin animation-delay-300"></div>
+      </div>
+      <p className="text-gray-500 font-medium animate-pulse">Cargando catálogo...</p>
+    </div>
   </div>
 );
 
@@ -91,9 +97,15 @@ export default function App() {
   if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-white">
-        <div className="flex flex-col items-center gap-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
-          <p className="text-gray-500 font-medium animate-pulse">Cargando catálogo...</p>
+        <div className="flex flex-col items-center gap-6">
+          <div className="relative">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-red-200 border-t-red-600"></div>
+            <div className="absolute inset-2 rounded-full border-4 border-transparent border-t-red-400 animate-spin animation-delay-300"></div>
+          </div>
+          <div className="text-center">
+            <p className="text-gray-600 font-bold text-lg animate-pulse">Cargando catálogo</p>
+            <p className="text-gray-400 text-sm mt-1">Preparando repuestos...</p>
+          </div>
         </div>
       </div>
     );
