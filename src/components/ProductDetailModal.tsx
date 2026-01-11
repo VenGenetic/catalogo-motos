@@ -72,23 +72,24 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
   };
 
   const relacionados = useMemo(() => {
+    if (!product) return [];
 
-    const modelosProductoActual = extraerModelos(product.nombre);
+    const modelosProductoActual = extraerModelos(product!.nombre);
 
     // Si el producto es universal o no tiene modelos específicos, usar sección
-    const esUniversal = product.nombre.toUpperCase().includes('UNIVERSAL') ||
-                       product.nombre.toUpperCase().includes('GENÉRICO') ||
+    const esUniversal = product!.nombre.toUpperCase().includes('UNIVERSAL') ||
+                       product!.nombre.toUpperCase().includes('GENÉRICO') ||
                        modelosProductoActual.length === 0;
 
     if (esUniversal || modelosProductoActual.length === 0) {
       return allProducts
-        .filter(p => p.seccion === product.seccion && p.id !== product.id)
+        .filter(p => p.seccion === product!.seccion && p.id !== product!.id)
         .slice(0, 3);
     }
 
     // Filtrar productos que compartan al menos un modelo
     const productosRelacionados = allProducts.filter(p => {
-      if (p.id === product.id) return false;
+      if (p.id === product!.id) return false;
 
       // Si el producto relacionado es universal, incluirlo
       if (p.nombre.toUpperCase().includes('UNIVERSAL') ||
@@ -108,8 +109,8 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
     if (productosRelacionados.length < 3) {
       const adicionales = allProducts
         .filter(p =>
-          p.seccion === product.seccion &&
-          p.id !== product.id &&
+          p.seccion === product!.seccion &&
+          p.id !== product!.id &&
           !productosRelacionados.some(rel => rel.id === p.id)
         )
         .slice(0, 3 - productosRelacionados.length);
@@ -122,15 +123,15 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
 
   if (!product) return null;
 
-  const handleAdd = () => addToCart(product);
+  const handleAdd = () => addToCart(product!);
 
   const handleConsult = () => {
-    const precio = Number(product.precio) || 0;
-    const mensaje = `Hola, me interesa: *${product.nombre}* ($${precio.toFixed(2)}). ¿Tienen stock?`;
+    const precio = Number(product!.precio) || 0;
+    const mensaje = `Hola, me interesa: *${product!.nombre}* ($${precio.toFixed(2)}). ¿Tienen stock?`;
     window.open(`https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`, '_blank');
   };
 
-  const precioSeguro = Number(product.precio) || 0;
+  const precioSeguro = Number(product!.precio) || 0;
 
   return (
     <div
@@ -163,12 +164,12 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
         <div className="w-full bg-gradient-to-br from-gray-50 to-gray-100 relative shrink-0 flex items-center justify-center h-[45vh] md:h-[400px] overflow-hidden">
           <div className="w-full h-full absolute inset-0 bg-gradient-to-t from-black/5 to-transparent"></div>
           <div className="w-full h-full absolute inset-0 flex items-center justify-center p-4">
-             <ImageZoom src={optimizarImg(product.imagen)} alt={product.nombre} />
+             <ImageZoom src={optimizarImg(product!.imagen)} alt={product!.nombre} />
           </div>
           <div className="absolute bottom-4 right-4 bg-black/70 text-white text-[10px] font-bold px-3 py-2 rounded-full backdrop-blur-sm pointer-events-none flex items-center gap-1.5 shadow-lg">
             <Plus size={12} className="text-white" /> Toca para ampliar
           </div>
-          {product.stock === false && (
+          {product!.stock === false && (
             <div className="absolute top-4 left-4 bg-red-600/90 text-white text-xs font-bold px-3 py-1.5 rounded-full backdrop-blur-sm shadow-lg">
               AGOTADO
             </div>
@@ -183,16 +184,16 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <span className="text-xs font-bold text-red-600 uppercase tracking-wider w-max bg-red-50 px-3 py-1.5 rounded-full border border-red-100 mb-3 inline-block">
-                    {product.seccion}
+                    {product!.seccion}
                   </span>
                   <h2 className="text-xl md:text-3xl font-extrabold text-slate-900 leading-tight mb-2">
-                    {product.nombre}
+                    {product!.nombre}
                   </h2>
-                  {product.codigo_referencia && (
+                  {product!.codigo_referencia && (
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-gray-500 font-medium">Código:</span>
                       <code className="text-xs bg-gray-100 px-2 py-1 rounded font-mono text-slate-700 border">
-                        {product.codigo_referencia}
+                        {product!.codigo_referencia}
                       </code>
                     </div>
                   )}
@@ -296,22 +297,22 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Categoría:</span>
-                  <span className="font-medium text-slate-900">{product.categoria}</span>
+                  <span className="font-medium text-slate-900">{product!.categoria}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Sección:</span>
-                  <span className="font-medium text-slate-900">{product.seccion}</span>
+                  <span className="font-medium text-slate-900">{product!.seccion}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Disponibilidad:</span>
-                  <span className={`font-medium ${product.stock ? 'text-green-600' : 'text-red-600'}`}>
-                    {product.stock ? 'En stock' : 'Agotado'}
+                  <span className={`font-medium ${product!.stock ? 'text-green-600' : 'text-red-600'}`}>
+                    {product!.stock ? 'En stock' : 'Agotado'}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Código:</span>
                   <span className="font-medium text-slate-900 font-mono text-xs">
-                    {product.codigo_referencia || 'N/A'}
+                    {product!.codigo_referencia || 'N/A'}
                   </span>
                 </div>
               </div>
@@ -322,7 +323,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               <div className="mt-8 pt-6 border-t border-gray-100">
                 <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2 text-base">
                   <span className="w-1 h-4 bg-red-500 rounded-full"></span>
-                  Más repuestos {extraerModelos(product.nombre).length > 0 ? `para ${extraerModelos(product.nombre)[0]}` : `de ${product.seccion.toLowerCase()}`}
+                  Más repuestos {product ? (extraerModelos(product!.nombre).length > 0 ? `para ${extraerModelos(product!.nombre)[0]}` : `de ${(product!.seccion || 'repuestos').toLowerCase()}`) : ''}
                 </h3>
                 <div className="grid grid-cols-3 gap-4">
                   {relacionados.map(rel => (
@@ -356,11 +357,11 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
             <div className="hidden md:flex gap-4 mt-8">
               <button
                 onClick={handleAdd}
-                disabled={!product.stock}
+                disabled={!product!.stock}
                 className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-4 rounded-2xl font-bold hover:from-red-700 hover:to-red-800 transition-all shadow-lg shadow-red-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 flex items-center justify-center gap-3 text-base"
               >
                 <ShoppingBag size={20} />
-                {product.stock ? 'Agregar al Carrito' : 'Producto Agotado'}
+                {product!.stock ? 'Agregar al Carrito' : 'Producto Agotado'}
               </button>
               <button
                 onClick={handleConsult}
@@ -385,7 +386,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-3 shadow-lg shadow-red-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 text-base"
              >
                <ShoppingBag size={20} />
-               {product.stock ? `Agregar $${precioSeguro.toFixed(2)}` : 'Agotado'}
+               {product!.stock ? `Agregar $${precioSeguro.toFixed(2)}` : 'Agotado'}
              </button>
           </div>
         </div>
