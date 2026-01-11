@@ -18,15 +18,32 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
   const { addToCart } = useCart();
   const [isVisible, setIsVisible] = useState(false);
 
+export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRelated }: Props) => {
+  const { addToCart } = useCart();
+  const [isVisible, setIsVisible] = useState(false);
+
   useEffect(() => {
     if (product) {
       setIsVisible(true);
+      // Prevenir scroll en body y mejorar rendimiento en móviles
       document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.height = '100%';
     } else {
       setIsVisible(false);
+      // Restaurar scroll normal
       document.body.style.overflow = 'unset';
+      document.body.style.position = 'unset';
+      document.body.style.width = 'unset';
+      document.body.style.height = 'unset';
     }
-    return () => { document.body.style.overflow = 'unset'; };
+    return () => {
+      document.body.style.overflow = 'unset';
+      document.body.style.position = 'unset';
+      document.body.style.width = 'unset';
+      document.body.style.height = 'unset';
+    };
   }, [product]);
 
   // Función para extraer modelos del nombre del producto

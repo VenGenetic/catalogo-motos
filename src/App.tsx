@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react';
 import { Routes, Route, useSearchParams, Link } from 'react-router-dom';
-import { Heart } from 'lucide-react';
+import { Heart, Wifi, WifiOff } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import './App.css';
 import { limpiarTexto } from './utils/helpers';
@@ -38,6 +38,7 @@ export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { productos, loading } = useProducts();
   const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
+  const [isOnline, setIsOnline] = useState(true);
   
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
@@ -47,6 +48,23 @@ export default function App() {
   const [filtroModelo, setFiltroModelo] = useState('');
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
   const busquedaDebounced = useDebounce(busqueda, 300);
+
+  // Monitorear estado de conexión
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    // Estado inicial
+    setIsOnline(navigator.onLine);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   const toggleFav = useCallback((id: string) => {
     setFavs(prev => {
@@ -229,6 +247,14 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-800 flex flex-col">
+      {/* Indicador de conexión para móviles */}
+      {!isOnline && (
+        <div className="md:hidden bg-red-600 text-white text-center py-2 px-4 flex items-center justify-center gap-2 text-sm font-medium">
+          <WifiOff size={16} />
+          Sin conexión a internet
+        </div>
+      )}
+
       <Navbar />
       <main className="fade-in flex-1">
         <Suspense fallback={<PageLoader />}>

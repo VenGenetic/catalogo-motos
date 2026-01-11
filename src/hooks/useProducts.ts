@@ -32,15 +32,47 @@ export const useProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('/data.json');
-        if (!res.ok) throw new Error('Error al cargar datos');
-        
+        // Verificar conectividad antes de hacer la petición
+        if (typeof navigator !== 'undefined' && !navigator.onLine) {
+          throw new Error('Sin conexión a internet. Verifica tu conexión y recarga la página.');
+        }
+
+        // Timeout para conexiones lentas (especialmente útil en móviles)
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 segundos
+
+        const res = await fetch('/data.json', {
+          signal: controller.signal,
+          // Agregar headers para mejor compatibilidad
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!res.ok) {
+          if (res.status === 404) {
+            throw new Error('Archivo de datos no encontrado. Contacta al soporte.');
+          } else if (res.status >= 500) {
+            throw new Error('Error del servidor. Intenta nuevamente en unos minutos.');
+          } else {
+            throw new Error(`Error al cargar datos (${res.status})`);
+          }
+        }
+
         const data = await res.json();
         let raw: any[] = [];
-        
+
         if (Array.isArray(data)) raw = data;
         else if (Array.isArray(data.RAW_SCRAPED_DATA)) raw = data.RAW_SCRAPED_DATA;
         else if (Array.isArray(data.products)) raw = data.products;
+
+        if (raw.length === 0) {
+          throw new Error('No se encontraron productos en la base de datos.');
+        }
+
+        const procesados = raw.map((p) => {
 
         const procesados = raw.map((p) => {
           const seccionCalc = detectarSeccion(p);

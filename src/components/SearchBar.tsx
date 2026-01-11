@@ -49,6 +49,9 @@ export const SearchBar = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<any>(null);
 
+  // Detectar si es dispositivo móvil
+  const isMobile = typeof window !== 'undefined' && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
   // Generar sugerencias inteligentes basadas en productos
   const sugerencias = useMemo(() => {
     if (!busqueda.trim() || busqueda.length < 2) return [];
@@ -101,46 +104,117 @@ export const SearchBar = ({
     'escape'
   ];
 
-  // Inicializar reconocimiento de voz
+  // Inicializar reconocimiento de voz de manera segura
   useEffect(() => {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    // Solo inicializar si estamos en un navegador y es seguro
+    if (typeof window === 'undefined') return;
+
+    try {
+      // Verificar si la API está disponible
+      const hasSpeechRecognition = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+
+      if (!hasSpeechRecognition) {
+        console.warn('Speech Recognition API no disponible en este navegador');
+        return;
+      }
+
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+      if (!SpeechRecognition) {
+        console.warn('No se pudo acceder a SpeechRecognition');
+        return;
+      }
+
       recognitionRef.current = new SpeechRecognition();
+
+      // Configuración segura para móviles
       recognitionRef.current.continuous = false;
       recognitionRef.current.interimResults = false;
-      recognitionRef.current.lang = 'es-ES'; // Español de Ecuador
+      recognitionRef.current.lang = 'es-ES'; // Español
+      recognitionRef.current.maxAlternatives = 1;
 
       recognitionRef.current.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript;
-        setBusqueda(transcript);
-        setIsListening(false);
+        try {
+          if (event.results && event.results[0] && event.results[0][0]) {
+            const transcript = event.results[0][0].transcript;
+            if (transcript && transcript.trim()) {
+              setBusqueda(transcript.trim());
+            }
+          }
+        } catch (error) {
+          console.error('Error procesando resultado de voz:', error);
+        } finally {
+          setIsListening(false);
+        }
       };
 
       recognitionRef.current.onend = () => {
         setIsListening(false);
       };
 
-      recognitionRef.current.onerror = () => {
+      recognitionRef.current.onerror = (event: any) => {
+        console.error('Error en reconocimiento de voz:', event.error);
         setIsListening(false);
+
+        // Mostrar mensaje amigable al usuario solo para errores críticos
+        if (event.error === 'not-allowed') {
+          alert('Permiso de micrófono denegado. Revisa la configuración de tu navegador.');
+        } else if (event.error === 'network') {
+          alert('Error de conexión. Verifica tu conexión a internet.');
+        }
+        // Otros errores se manejan silenciosamente
       };
+
+      recognitionRef.current.onstart = () => {
+        setIsListening(true);
+      };
+
+    } catch (error) {
+      console.error('Error inicializando reconocimiento de voz:', error);
     }
 
     return () => {
       if (recognitionRef.current) {
-        recognitionRef.current.stop();
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {
+          // Ignorar errores al detener
+        }
       }
     };
   }, [setBusqueda]);
 
   const handleVoiceSearch = () => {
-    if (!recognitionRef.current) return;
+    // En móviles, mostrar un mensaje más claro sobre permisos
+    if (isMobile) {
+      if (!confirm('La búsqueda por voz necesita acceso al micrófono. ¿Permitir acceso?')) {
+        return;
+      }
+    }
 
-    if (isListening) {
-      recognitionRef.current.stop();
+    // Verificar si estamos en un entorno seguro (HTTPS o localhost)
+    if (typeof window !== 'undefined' && !window.location.protocol.includes('https') && !window.location.hostname.includes('localhost')) {
+      alert('La búsqueda por voz requiere una conexión segura (HTTPS)');
+      return;
+    }
+
+    if (!recognitionRef.current) {
+      alert('La búsqueda por voz no está disponible en este navegador');
+      return;
+    }
+
+    try {
+      if (isListening) {
+        recognitionRef.current.stop();
+        setIsListening(false);
+      } else {
+        recognitionRef.current.start();
+        setIsListening(true);
+      }
+    } catch (error) {
+      console.error('Error con reconocimiento de voz:', error);
       setIsListening(false);
-    } else {
-      recognitionRef.current.start();
-      setIsListening(true);
+      alert('Error al iniciar el reconocimiento de voz. Intenta nuevamente.');
     }
   };
 
