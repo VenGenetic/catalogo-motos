@@ -92,9 +92,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
         </div>
 
         <div className="flex-1 flex flex-col h-full overflow-hidden bg-white relative">
-          <div className="flex-1 overflow-y-auto p-6 md:p-8 pb-32 md:pb-8 custom-scrollbar">
-            
-        <div className="flex-1 flex flex-col h-full overflow-hidden bg-white relative">
           <div className="flex-1 overflow-y-auto p-5 md:p-8 pb-36 md:pb-8 custom-scrollbar">
 
             {/* HEADER DEL PRODUCTO */}
