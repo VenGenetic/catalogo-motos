@@ -356,6 +356,12 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
             {/* BOTONES DESKTOP */}
             <div className="hidden md:flex gap-4 mt-8">
               <button
+                onClick={handleConsult}
+               className="p-4 bg-gradient-to-r from-green-50 to-green-100 text-green-700 rounded-2xl border border-green-200 active:scale-95 transition-all shadow-sm"
+             >
+               <MessageCircle size={22} />
+              </button>
+              <button
                 onClick={handleAdd}
                 disabled={!product!.stock}
                 className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-4 rounded-2xl font-bold hover:from-red-700 hover:to-red-800 transition-all shadow-lg shadow-red-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 flex items-center justify-center gap-3 text-base"
@@ -363,31 +369,29 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                 <ShoppingBag size={20} />
                 {product!.stock ? 'Agregar al Carrito' : 'Producto Agotado'}
               </button>
-              <button
-                onClick={handleConsult}
-                className="px-8 bg-white border-2 border-slate-200 text-slate-700 rounded-2xl font-bold hover:border-slate-900 hover:text-slate-900 hover:bg-slate-50 transition-all active:scale-95 flex items-center justify-center shadow-sm"
-              >
-                <MessageCircle size={20} />
-              </button>
             </div>
           </div>
 
           {/* BOTONES MÓVIL FIJOS */}
-          <div className="md:hidden absolute bottom-0 left-0 right-0 p-5 bg-white/95 backdrop-blur-lg border-t border-gray-200 flex gap-3 z-30 pb-safe shadow-[0_-8px_25px_rgba(0,0,0,0.08)]">
-             <button
-               onClick={handleConsult}
-               className="p-4 bg-gradient-to-r from-green-50 to-green-100 text-green-700 rounded-2xl border border-green-200 active:scale-95 transition-all shadow-sm"
-             >
-               <MessageCircle size={22} />
-             </button>
-             <button
-               onClick={handleAdd}
-               disabled={!product.stock}
-               className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-3 shadow-lg shadow-red-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 text-base"
-             >
-               <ShoppingBag size={20} />
-               {product!.stock ? `Agregar $${precioSeguro.toFixed(2)}` : 'Agotado'}
-             </button>
+          <div className="md:hidden absolute bottom-0 left-0 right-0 p-5 bg-white/95 backdrop-blur-lg border-t border-gray-200 z-30 pb-safe shadow-[0_-8px_25px_rgba(0,0,0,0.08)]">
+            {/* BOTÓN PRINCIPAL DE CONSULTAR - MÁS VISIBLE */}
+            <button
+              onClick={handleConsult}
+              className="w-full mb-3 bg-gradient-to-r from-green-500 to-green-600 text-white py-4 rounded-2xl font-bold hover:from-green-600 hover:to-green-700 transition-all shadow-lg shadow-green-200 active:scale-95 flex items-center justify-center gap-3 text-base border-2 border-green-400"
+            >
+              <MessageCircle size={22} />
+              Consultar Repuesto
+            </button>
+            
+            {/* BOTÓN SECUNDARIO DE AGREGAR */}
+            <button
+              onClick={handleAdd}
+              disabled={!product!.stock}
+              className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-red-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 text-sm"
+            >
+              <ShoppingBag size={18} />
+              {product!.stock ? `Agregar $${precioSeguro.toFixed(2)}` : 'Agotado'}
+            </button>
           </div>
         </div>
       </div>
