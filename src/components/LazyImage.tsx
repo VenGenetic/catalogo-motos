@@ -14,7 +14,7 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  const cropClasses = cropBottom ? 'scale-[1.2] origin-center' : '';
+  const cropClasses = cropBottom ? '' : '';
   const fitClass = imageFit === 'contain' ? 'object-contain' : 'object-cover';
 
   return (
