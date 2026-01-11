@@ -1,11 +1,10 @@
 import { useState, useMemo, useEffect, useRef, memo } from 'react';
-import { Search, Heart, X, ArrowLeft, Filter } from 'lucide-react'; 
+import { Heart, ArrowLeft, Filter } from 'lucide-react'; 
 import { optimizarImg } from '../utils/helpers';
 import { APP_CONFIG, ORDEN_SECCIONES } from '../config/constants';
 import { Producto } from '../types';
 import { LazyImage } from './LazyImage';
-import { HighlightedText } from './HighlightedText';
-import { MotoSelector } from './MotoSelector';
+import { SearchBar } from './SearchBar';
 
 interface Props {
   productos: Producto[];
@@ -80,19 +79,12 @@ export const CatalogView = memo(({
             </button>
 
             <div className="flex-1 relative group">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-red-500 transition-colors" />
-              <input
-                type="text"
-                placeholder={filtroModelo ? `Buscar en ${filtroModelo}...` : "Buscar repuestos..."}
-                className="w-full pl-9 pr-9 py-2.5 border border-gray-200 rounded-lg bg-white text-sm focus:ring-2 focus:ring-red-500/20 focus:border-red-500 outline-none shadow-sm placeholder:text-gray-400 transition-all"
-                value={busqueda}
-                onChange={(e) => setBusqueda(e.target.value)}
+              <SearchBar
+                busqueda={busqueda}
+                setBusqueda={setBusqueda}
+                productos={productos}
+                filtroModelo={filtroModelo}
               />
-              {busqueda && (
-                <button onClick={() => setBusqueda('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 p-1 rounded-full hover:bg-red-50 transition-colors">
-                  <X className="w-4 h-4" />
-                </button>
-              )}
             </div>
           </div>
           
@@ -217,13 +209,38 @@ export const CatalogView = memo(({
              <div className="bg-slate-50 p-6 rounded-full mb-6 animate-pulse">
                 <Search className="h-10 w-10 text-slate-300" />
              </div>
-             <h3 className="text-xl font-bold text-slate-900 mb-2">No encontramos repuestos</h3>
-             <p className="text-slate-500 max-w-xs mx-auto mb-8">
-               {filtroModelo ? `No hay resultados para "${filtroModelo}"` : "Intenta buscando con otro nombre."}
+             <h3 className="text-xl font-bold text-slate-900 mb-2">
+               {busqueda ? "No encontramos repuestos" : "Sin resultados"}
+             </h3>
+             <p className="text-slate-500 max-w-xs mx-auto mb-6">
+               {busqueda ? (
+                 <>
+                   No hay resultados para "<strong>{busqueda}</strong>".
+                   <br />
+                   <span className="text-sm mt-2 block">
+                     Prueba con términos más generales o verifica la ortografía.
+                   </span>
+                 </>
+               ) : (
+                 filtroModelo ? `No hay resultados para "${filtroModelo}"` : "No se encontraron productos con los filtros actuales."
+               )}
              </p>
-             <button onClick={() => { setBusqueda(''); setFiltroSeccion('Todos'); }} className="px-8 py-3 bg-slate-900 text-white font-bold rounded-xl shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all hover:-translate-y-1 active:scale-95">
-              Limpiar filtros
-            </button>
+             <div className="flex gap-3">
+               {busqueda && (
+                 <button 
+                   onClick={() => setBusqueda('')} 
+                   className="px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors"
+                 >
+                  Limpiar búsqueda
+                 </button>
+               )}
+               <button 
+                 onClick={() => { setBusqueda(''); setFiltroSeccion('Todos'); }} 
+                 className="px-6 py-2 bg-slate-900 text-white font-bold rounded-xl shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all hover:-translate-y-1 active:scale-95"
+               >
+                Ver todos los productos
+               </button>
+             </div>
           </div>
         )}
       </div>

@@ -63,15 +63,131 @@ export default function App() {
   const filteredProducts = useMemo(() => {
     if (!busquedaDebounced && filtroSeccion === 'Todos' && !filtroModelo) return productos;
 
+    // Función para expandir términos con sinónimos
+    const expandirTerminos = (terminos: string[]): string[] => {
+      const sinonimos: Record<string, string[]> = {
+        'freno': ['frenos', 'frenado', 'pastilla', 'pastillas', 'disco', 'tambor'],
+        'filtro': ['filtro', 'filtrar', 'filtrado'],
+        'aceite': ['aceite', 'lubricante', 'motor oil'],
+        'bateria': ['batería', 'baterías', 'acumulador'],
+        'cadena': ['cadena', 'transmisión', 'piñón'],
+        'amortiguador': ['amortiguadores', 'suspensión', 'shock'],
+        'llanta': ['llantas', 'neumático', 'neumáticos', 'rueda', 'ruedas'],
+        'faro': ['faros', 'luz', 'luces', 'farola'],
+        'escape': ['escape', 'silenciador', 'tubo', 'caño'],
+        'motor': ['motor', 'cilindro', 'cilindros', 'piston', 'pistones'],
+        'clutch': ['clutch', 'embrague', 'clutches'],
+        'velocimetro': ['velocímetro', 'velocimetros', 'instrumentos', 'panel'],
+        'carburador': ['carburador', 'carburadores', 'inyección', 'inyector'],
+        'arranque': ['arranque', 'starter', 'partida'],
+        'electrico': ['eléctrico', 'eléctrica', 'eléctricos', 'eléctricas', 'electricidad']
+      };
+
+      const expandidos = new Set<string>();
+
+      terminos.forEach(termino => {
+        expandidos.add(termino);
+        // Agregar sinónimos
+        Object.entries(sinonimos).forEach(([clave, valores]) => {
+          if (clave.includes(termino) || valores.some(v => v.includes(termino))) {
+            valores.forEach(sinonimo => expandidos.add(sinonimo));
+          }
+        });
+      });
+
+      return Array.from(expandidos);
+    };
+
+    // Función para calcular puntuación de relevancia
+    const calcularRelevancia = (producto: Producto, terminos: string[]): number => {
+      if (!producto.textoBusqueda) return 0;
+
+      const textoBusqueda = producto.textoBusqueda.toLowerCase();
+      const nombre = producto.nombre.toLowerCase();
+      const codigo = producto.codigo_referencia?.toLowerCase() || '';
+      let puntuacion = 0;
+
+      // Expandir términos con sinónimos
+      const terminosExpandidos = expandirTerminos(terminos);
+
+      // Búsqueda exacta por código si está entre comillas
+      if (busquedaDebounced.includes('"')) {
+        const match = busquedaDebounced.match(/"([^"]+)"/);
+        if (match && codigo.includes(match[1].toLowerCase())) {
+          return 1000; // Puntuación máxima para coincidencia exacta de código
+        }
+      }
+
+      // Calcular puntuación por cada término (original y expandido)
+      for (const termino of [...terminos, ...terminosExpandidos]) {
+        const terminoLower = termino.toLowerCase();
+
+        // Coincidencia exacta en código de referencia (muy alta puntuación)
+        if (codigo.includes(terminoLower)) {
+          puntuacion += 50;
+        }
+
+        // Coincidencia al inicio del nombre (alta puntuación)
+        if (nombre.startsWith(terminoLower)) {
+          puntuacion += 30;
+        }
+
+        // Coincidencia en el nombre (puntuación media)
+        if (nombre.includes(terminoLower)) {
+          puntuacion += 20;
+        }
+
+        // Coincidencia en cualquier campo (puntuación baja)
+        if (textoBusqueda.includes(terminoLower)) {
+          puntuacion += 10;
+        }
+
+        // Bonus por posición: términos que aparecen más temprano tienen más peso
+        const posicion = textoBusqueda.indexOf(terminoLower);
+        if (posicion >= 0) {
+          puntuacion += Math.max(0, 10 - Math.floor(posicion / 10));
+        }
+      }
+
+      // Penalización por productos sin stock
+      if (producto.stock === false) {
+        puntuacion *= 0.7;
+      }
+
+      return puntuacion;
+    };
+
     const terminos = busquedaDebounced ? limpiarTexto(busquedaDebounced).split(' ').filter(t => t.length > 0) : [];
-    
-    return productos.filter((p) => {
-      if (!p.precio) return false;
-      if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
-      if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
-      if (terminos.length > 0 && !terminos.every((t) => p.textoBusqueda?.includes(t))) return false;
-      return true;
-    });
+
+    // Filtrar y puntuar productos
+    const productosConPuntuacion = productos
+      .filter((p) => {
+        if (!p.precio) return false;
+        if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
+        if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
+
+        // Si hay términos de búsqueda, debe tener al menos puntuación mínima
+        if (terminos.length > 0) {
+          const puntuacion = calcularRelevancia(p, terminos);
+          return puntuacion > 3; // Umbral más bajo para incluir sinónimos
+        }
+
+        return true;
+      })
+      .map((p) => ({
+        ...p,
+        relevancia: terminos.length > 0 ? calcularRelevancia(p, terminos) : 0
+      }))
+      .sort((a, b) => {
+        // Si hay búsqueda, ordenar por relevancia descendente
+        if (terminos.length > 0) {
+          return b.relevancia - a.relevancia;
+        }
+        // Si no hay búsqueda, mantener orden original
+        return 0;
+      });
+
+    return productosConPuntuacion;
   }, [productos, busquedaDebounced, filtroSeccion, filtroModelo]);
 
   const handleProductClick = useCallback((p: Producto) => {
