@@ -29,11 +29,95 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
     return () => { document.body.style.overflow = 'unset'; };
   }, [product]);
 
+  // Función para extraer modelos del nombre del producto
+  const extraerModelos = (nombre: string): string[] => {
+    const modelos: string[] = [];
+    const nombreUpper = nombre.toUpperCase();
+
+    // Lista ampliada de modelos conocidos
+    const modelosConocidos = [
+      // Deportivas
+      'TEKKEN EVO', 'AXXO TRACKER', 'WING EVO', 'GTR', 'PREDATOR', 'SPITFIRE',
+      'WOLF', 'GP1', 'XPOWER', 'COMMANDER', 'CAFE RACER', 'SUPER WOLF',
+
+      // Utilitarias
+      'WORK FORCE', 'WORKFORCE', 'DELTA', 'CRUCERO',
+
+      // Clásicas
+      'SCRAMBLER REVOLUTION', 'SCRAMBLER MAX',
+
+      // Doble propósito
+      'DK NATIVA', 'MONTANA', 'SHARK', 'FORCE DS', 'EVEREST', 'XEXPEDITION',
+
+      // Enduro
+      'EAGLE', 'SCORPION',
+
+      // Scooters
+      'DYNAMIC PRO', 'S1', 'AGILITY-X', 'BIT',
+
+      // Caballito
+      'CX7', 'TANQ',
+
+      // Cuadrón
+      'HUNTER'
+    ];
+
+    modelosConocidos.forEach(modelo => {
+      if (nombreUpper.includes(modelo)) {
+        modelos.push(modelo);
+      }
+    });
+
+    return modelos;
+  };
+
   const relacionados = useMemo(() => {
-    if (!product || !allProducts) return [];
-    return allProducts
-      .filter(p => p.seccion === product.seccion && p.id !== product.id)
-      .slice(0, 3);
+
+    const modelosProductoActual = extraerModelos(product.nombre);
+
+    // Si el producto es universal o no tiene modelos específicos, usar sección
+    const esUniversal = product.nombre.toUpperCase().includes('UNIVERSAL') ||
+                       product.nombre.toUpperCase().includes('GENÉRICO') ||
+                       modelosProductoActual.length === 0;
+
+    if (esUniversal || modelosProductoActual.length === 0) {
+      return allProducts
+        .filter(p => p.seccion === product.seccion && p.id !== product.id)
+        .slice(0, 3);
+    }
+
+    // Filtrar productos que compartan al menos un modelo
+    const productosRelacionados = allProducts.filter(p => {
+      if (p.id === product.id) return false;
+
+      // Si el producto relacionado es universal, incluirlo
+      if (p.nombre.toUpperCase().includes('UNIVERSAL') ||
+          p.nombre.toUpperCase().includes('GENÉRICO')) {
+        return true;
+      }
+
+      const modelosRelacionado = extraerModelos(p.nombre);
+      const modelosCompartidos = modelosProductoActual.filter(modelo =>
+        modelosRelacionado.includes(modelo)
+      );
+
+      return modelosCompartidos.length > 0;
+    });
+
+    // Si no hay suficientes productos del mismo modelo, agregar algunos de la misma sección
+    if (productosRelacionados.length < 3) {
+      const adicionales = allProducts
+        .filter(p =>
+          p.seccion === product.seccion &&
+          p.id !== product.id &&
+          !productosRelacionados.some(rel => rel.id === p.id)
+        )
+        .slice(0, 3 - productosRelacionados.length);
+
+      productosRelacionados.push(...adicionales);
+    }
+
+    return productosRelacionados.slice(0, 3);
   }, [product, allProducts]);
 
   if (!product) return null;
@@ -82,7 +166,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
              <ImageZoom src={optimizarImg(product.imagen)} alt={product.nombre} />
           </div>
           <div className="absolute bottom-4 right-4 bg-black/70 text-white text-[10px] font-bold px-3 py-2 rounded-full backdrop-blur-sm pointer-events-none flex items-center gap-1.5 shadow-lg">
-            <Plus size={12} className="text-white" /> Toca para zoom
+            <Plus size={12} className="text-white" /> Toca para ampliar
           </div>
           {product.stock === false && (
             <div className="absolute top-4 left-4 bg-red-600/90 text-white text-xs font-bold px-3 py-1.5 rounded-full backdrop-blur-sm shadow-lg">
@@ -238,7 +322,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               <div className="mt-8 pt-6 border-t border-gray-100">
                 <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2 text-base">
                   <span className="w-1 h-4 bg-red-500 rounded-full"></span>
-                  También te puede interesar
+                  Más repuestos {extraerModelos(product.nombre).length > 0 ? `para ${extraerModelos(product.nombre)[0]}` : `de ${product.seccion.toLowerCase()}`}
                 </h3>
                 <div className="grid grid-cols-3 gap-4">
                   {relacionados.map(rel => (
