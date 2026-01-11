@@ -19,7 +19,7 @@ export const Navbar = () => {
               <img 
                 src="/logo.png" 
                 alt="LV PARTS Logo" 
-                className="w-5 h-5 md:w-6 md:h-6 object-contain"
+                className="w-8 h-5 md:w-10 md:h-6 object-contain"
               />
             </div>
             <div className="flex flex-col">
