@@ -15,12 +15,8 @@ export const Navbar = () => {
           
           {/* Logo con marca reforzada - MÁS COMPACTO EN MÓVIL */}
           <Link to="/" className="flex items-center gap-2 cursor-pointer group">
-            <div className="bg-red-600 p-1 md:p-1.5 rounded-lg group-hover:bg-red-500 transition-colors shadow-lg shadow-red-900/20 overflow-hidden">
-              <img
-                src="/logo.png"
-                alt="LV PARTS Logo"
-                className="w-5 h-5 md:w-6 md:h-6 object-contain"
-              />
+            <div className="bg-red-600 p-1.5 md:p-2 rounded-lg group-hover:bg-red-500 transition-colors shadow-lg shadow-red-900/20">
+              <ShoppingBag className="w-4 h-4 md:w-5 md:h-5 text-white" />
             </div>
             <div className="flex flex-col">
               <span className="font-bold text-base md:text-lg tracking-wider leading-none">
