@@ -85,7 +85,6 @@ export const CatalogView = memo(({
                 busqueda={busqueda}
                 setBusqueda={setBusqueda}
                 productos={productos}
-                filtroModelo={filtroModelo}
               />
             </div>
           </div>
