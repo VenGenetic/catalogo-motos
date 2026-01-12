@@ -82,33 +82,255 @@ export default function App() {
   const filteredProducts = useMemo(() => {
     if (!busquedaDebounced && filtroSeccion === 'Todos' && !filtroModelo) return productos;
 
-    // Función para expandir términos con sinónimos
-    const expandirTerminos = (terminos: string[]): string[] => {
-      const sinonimos: Record<string, string[]> = {
-        'freno': ['frenos', 'frenado', 'pastilla', 'pastillas', 'disco', 'tambor'],
-        'filtro': ['filtro', 'filtrar', 'filtrado'],
-        'aceite': ['aceite', 'lubricante', 'motor oil'],
-        'bateria': ['batería', 'baterías', 'acumulador'],
-        'cadena': ['cadena', 'transmisión', 'piñón'],
-        'amortiguador': ['amortiguadores', 'suspensión', 'shock'],
-        'llanta': ['llantas', 'neumático', 'neumáticos', 'rueda', 'ruedas'],
-        'faro': ['faros', 'luz', 'luces', 'farola'],
-        'escape': ['escape', 'silenciador', 'tubo', 'caño'],
-        'motor': ['motor', 'cilindro', 'cilindros', 'piston', 'pistones'],
-        'clutch': ['clutch', 'embrague', 'clutches'],
-        'velocimetro': ['velocímetro', 'velocimetros', 'instrumentos', 'panel'],
-        'carburador': ['carburador', 'carburadores', 'inyección', 'inyector'],
-        'arranque': ['arranque', 'starter', 'partida'],
-        'electrico': ['eléctrico', 'eléctrica', 'eléctricos', 'eléctricas', 'electricidad']
-      };
+    // Mapeo de palabras clave a categorías estándar basado en la tabla proporcionada
+    const keywordToCategoryMap: Record<string, string> = {
+      // Instrumentos / Velocímetro
+      'tablero': 'Instrumentos / Velocímetro',
+      'velocímetro': 'Instrumentos / Velocímetro',
+      'tacómetro': 'Instrumentos / Velocímetro',
+      'relojes': 'Instrumentos / Velocímetro',
+      'panel de instrumentos': 'Instrumentos / Velocímetro',
+      'cuenta kilómetros': 'Instrumentos / Velocímetro',
 
+      // Motor / Culata
+      'cabezote': 'Motor / Culata',
+      'culata': 'Motor / Culata',
+      'tapa de cilindro': 'Motor / Culata',
+      'cabeza de fuerza': 'Motor / Culata',
+      'tapa de compresión': 'Motor / Culata',
+
+      // Sistema Eléctrico / Bujía
+      'candela': 'Sistema Eléctrico / Bujía',
+      'bujía': 'Sistema Eléctrico / Bujía',
+      'spark plug': 'Sistema Eléctrico / Bujía',
+      'chispero': 'Sistema Eléctrico / Bujía',
+
+      // Carburador / Sistema de Aire
+      'choke': 'Carburador / Sistema de Aire',
+      'ahogador': 'Carburador / Sistema de Aire',
+      'estrangulador': 'Carburador / Sistema de Aire',
+      'válvula de aire': 'Carburador / Sistema de Aire',
+      'choque': 'Carburador / Sistema de Aire',
+
+      // Sistema Eléctrico / CDI - ECU
+      'cerebro': 'Sistema Eléctrico / CDI - ECU',
+      'cdi': 'Sistema Eléctrico / CDI - ECU',
+      'ecu': 'Sistema Eléctrico / CDI - ECU',
+      'computadora': 'Sistema Eléctrico / CDI - ECU',
+      'módulo de encendido': 'Sistema Eléctrico / CDI - ECU',
+      'caja negra': 'Sistema Eléctrico / CDI - ECU',
+      'tci': 'Sistema Eléctrico / CDI - ECU',
+
+      // Sistema Eléctrico / Relé de Arranque
+      'chancho': 'Sistema Eléctrico / Relé de Arranque',
+      'chanchito': 'Sistema Eléctrico / Relé de Arranque',
+      'marrano': 'Sistema Eléctrico / Relé de Arranque',
+      'relé de arranque': 'Sistema Eléctrico / Relé de Arranque',
+      'solenoide de partida': 'Sistema Eléctrico / Relé de Arranque',
+      'relay': 'Sistema Eléctrico / Relé de Arranque',
+      'automático de arranque': 'Sistema Eléctrico / Relé de Arranque',
+      'cochinito': 'Sistema Eléctrico / Relé de Arranque',
+
+      // Iluminación / Faro Delantero
+      'farola': 'Iluminación / Faro Delantero',
+      'faro': 'Iluminación / Faro Delantero',
+      'ojo': 'Iluminación / Faro Delantero',
+      'luz delantera': 'Iluminación / Faro Delantero',
+      'foco delantero': 'Iluminación / Faro Delantero',
+      'lámpara principal': 'Iluminación / Faro Delantero',
+      'farol': 'Iluminación / Faro Delantero',
+
+      // Iluminación / Luz Trasera
+      'stop': 'Iluminación / Luz Trasera',
+      'luz de freno': 'Iluminación / Luz Trasera',
+      'piloto trasero': 'Iluminación / Luz Trasera',
+      'luz trasera': 'Iluminación / Luz Trasera',
+      'calavera': 'Iluminación / Luz Trasera',
+      'farol trasero': 'Iluminación / Luz Trasera',
+
+      // Iluminación / Direccionales
+      'guías': 'Iluminación / Direccionales',
+      'direccionales': 'Iluminación / Direccionales',
+      'intermitentes': 'Iluminación / Direccionales',
+      'pidevías': 'Iluminación / Direccionales',
+      'luces de giro': 'Iluminación / Direccionales',
+      'flasher': 'Iluminación / Direccionales',
+
+      // Sistema Eléctrico / Estator
+      'bobinas': 'Sistema Eléctrico / Estator',
+      'corona de bobinas': 'Sistema Eléctrico / Estator',
+      'plato de bobinas': 'Sistema Eléctrico / Estator',
+      'estator': 'Sistema Eléctrico / Estator',
+      'generador': 'Sistema Eléctrico / Estator',
+      'magneto': 'Sistema Eléctrico / Estator',
+      'campo': 'Sistema Eléctrico / Estator',
+
+      // Transmisión / Kit de Arrastre
+      'kit de arrastre': 'Transmisión / Kit de Arrastre',
+      'kit de transmisión': 'Transmisión / Kit de Arrastre',
+      'catalina y piñón': 'Transmisión / Kit de Arrastre',
+      'sprocket kit': 'Transmisión / Kit de Arrastre',
+      'relación': 'Transmisión / Kit de Arrastre',
+      'transmisión final': 'Transmisión / Kit de Arrastre',
+
+      // Transmisión / Corona (Catalina)
+      'catalina': 'Transmisión / Corona (Catalina)',
+      'corona trasera': 'Transmisión / Corona (Catalina)',
+      'sprocket trasero': 'Transmisión / Corona (Catalina)',
+      'engranaje trasero': 'Transmisión / Corona (Catalina)',
+      'plato dentado': 'Transmisión / Corona (Catalina)',
+
+      // Transmisión / Piñón
+      'piñón de ataque': 'Transmisión / Piñón',
+      'piñón de salida': 'Transmisión / Piñón',
+      'piñón delantero': 'Transmisión / Piñón',
+      'sprocket delantero': 'Transmisión / Piñón',
+      'piñón de motor': 'Transmisión / Piñón',
+
+      // Mandos / Cables de Control
+      'guaya': 'Mandos / Cables de Control',
+      'cable': 'Mandos / Cables de Control',
+      'piola': 'Mandos / Cables de Control',
+      'alambre': 'Mandos / Cables de Control',
+      'chicote': 'Mandos / Cables de Control',
+
+      // Suspensión / Horquilla Delantera
+      'barras': 'Suspensión / Horquilla Delantera',
+      'telescópicas': 'Suspensión / Horquilla Delantera',
+      'suspensión delantera': 'Suspensión / Horquilla Delantera',
+      'botellas': 'Suspensión / Horquilla Delantera',
+      'tubos de suspensión': 'Suspensión / Horquilla Delantera',
+      'amortiguador delantero': 'Suspensión / Horquilla Delantera',
+
+      // Suspensión / Basculante
+      'tijera': 'Suspensión / Basculante',
+      'basculante': 'Suspensión / Basculante',
+      'horquilla trasera': 'Suspensión / Basculante',
+      'brazo oscilante': 'Suspensión / Basculante',
+      'cuadro trasero': 'Suspensión / Basculante',
+
+      // Chasis / Soporte Lateral
+      'pata de cabra': 'Chasis / Soporte Lateral',
+      'pata lateral': 'Chasis / Soporte Lateral',
+      'soporte lateral': 'Chasis / Soporte Lateral',
+      'pata': 'Chasis / Soporte Lateral',
+      'muleta': 'Chasis / Soporte Lateral',
+
+      // Chasis / Soporte Central
+      'gato central': 'Chasis / Soporte Central',
+      'caballete': 'Chasis / Soporte Central',
+      'burro': 'Chasis / Soporte Central',
+      'soporte central': 'Chasis / Soporte Central',
+      'parador central': 'Chasis / Soporte Central',
+      'doble pata': 'Chasis / Soporte Central',
+
+      // Frenos / Pastillas (Disco)
+      'pastillas': 'Frenos / Pastillas (Disco)',
+      'pastas de freno': 'Frenos / Pastillas (Disco)',
+      'caliper pads': 'Frenos / Pastillas (Disco)',
+      'balatas': 'Frenos / Pastillas (Disco)',
+
+      // Frenos / Zapatas (Tambor)
+      'bandas': 'Frenos / Zapatas (Tambor)',
+      'zapatas': 'Frenos / Zapatas (Tambor)',
+      'frenos de tambor': 'Frenos / Zapatas (Tambor)',
+      'balatas de tambor': 'Frenos / Zapatas (Tambor)',
+
+      // Ruedas / Neumáticos
+      'llantas': 'Ruedas / Neumáticos',
+      'cauchos': 'Ruedas / Neumáticos',
+      'neumáticos': 'Ruedas / Neumáticos',
+      'gomas': 'Ruedas / Neumáticos',
+      'cubierta': 'Ruedas / Neumáticos',
+      'cubiertas': 'Ruedas / Neumáticos',
+
+      // Ruedas / Aros
+      'aros': 'Ruedas / Aros',
+      'rines': 'Ruedas / Aros',
+      'ruedas metálicas': 'Ruedas / Aros',
+
+      // Motor-Chasis / Rulimanes
+      'rulimanes': 'Motor-Chasis / Rulimanes',
+      'rodamientos': 'Motor-Chasis / Rulimanes',
+      'baleros': 'Motor-Chasis / Rulimanes',
+      'cojinetes': 'Motor-Chasis / Rulimanes',
+      'bearings': 'Motor-Chasis / Rulimanes',
+      'bolilleros': 'Motor-Chasis / Rulimanes',
+
+      // Carrocería / Carenado
+      'plásticos': 'Carrocería / Carenado',
+      'carenado': 'Carrocería / Carenado',
+      'cachas': 'Carrocería / Carenado',
+      'tapas': 'Carrocería / Carenado',
+      'cubiertas': 'Carrocería / Carenado',
+      'vestidura': 'Carrocería / Carenado',
+      'cowl': 'Carrocería / Carenado',
+      'guardafangos': 'Carrocería / Carenado',
+
+      // Mandos / Manubrio
+      'volante': 'Mandos / Manubrio',
+      'manubrio': 'Mandos / Manubrio',
+      'manillar': 'Mandos / Manubrio',
+      'timón': 'Mandos / Manubrio',
+      'dirección': 'Mandos / Manubrio',
+      'tubo de dirección': 'Mandos / Manubrio',
+
+      // Mandos / Puños
+      'puños': 'Mandos / Puños',
+      'mangos': 'Mandos / Puños',
+      'empuñaduras': 'Mandos / Puños',
+      'gomas de manubrio': 'Mandos / Puños',
+      'grips': 'Mandos / Puños',
+
+      // Mandos / Manetas
+      'maniguetas': 'Mandos / Manetas',
+      'manillas': 'Mandos / Manetas',
+      'palancas de freno': 'Mandos / Manetas',
+      'levas': 'Mandos / Manetas',
+
+      // Motor / Sistema de Escape
+      'mofle': 'Motor / Sistema de Escape',
+      'escape': 'Motor / Sistema de Escape',
+      'tubo de escape': 'Motor / Sistema de Escape',
+      'exhosto': 'Motor / Sistema de Escape',
+      'silenciador': 'Motor / Sistema de Escape',
+      'bala': 'Motor / Sistema de Escape'
+    };
+
+    // Función para expandir términos con sinónimos y mapeo de categorías
+    const expandirTerminos = (terminos: string[]): string[] => {
       const expandidos = new Set<string>();
 
       terminos.forEach(termino => {
+        const terminoLower = termino.toLowerCase();
         expandidos.add(termino);
-        // Agregar sinónimos
+
+        // Agregar mapeo de categoría si existe
+        if (keywordToCategoryMap[terminoLower]) {
+          expandidos.add(keywordToCategoryMap[terminoLower]);
+        }
+
+        // Agregar sinónimos existentes (mantener compatibilidad)
+        const sinonimos: Record<string, string[]> = {
+          'freno': ['frenos', 'frenado', 'pastilla', 'pastillas', 'disco', 'tambor'],
+          'filtro': ['filtro', 'filtrar', 'filtrado'],
+          'aceite': ['aceite', 'lubricante', 'motor oil'],
+          'bateria': ['batería', 'baterías', 'acumulador'],
+          'cadena': ['cadena', 'transmisión', 'piñón'],
+          'amortiguador': ['amortiguadores', 'suspensión', 'shock'],
+          'llanta': ['llantas', 'neumático', 'neumáticos', 'rueda', 'ruedas'],
+          'faro': ['faros', 'luz', 'luces', 'farola'],
+          'escape': ['escape', 'silenciador', 'tubo', 'caño'],
+          'motor': ['motor', 'cilindro', 'cilindros', 'piston', 'pistones'],
+          'clutch': ['clutch', 'embrague', 'clutches'],
+          'velocimetro': ['velocímetro', 'velocimetros', 'instrumentos', 'panel'],
+          'carburador': ['carburador', 'carburadores', 'inyección', 'inyector'],
+          'arranque': ['arranque', 'starter', 'partida'],
+          'electrico': ['eléctrico', 'eléctrica', 'eléctricos', 'eléctricas', 'electricidad']
+        };
+
         Object.entries(sinonimos).forEach(([clave, valores]) => {
-          if (clave.includes(termino) || valores.some(v => v.includes(termino))) {
+          if (clave.includes(terminoLower) || valores.some(v => v.includes(terminoLower))) {
             valores.forEach(sinonimo => expandidos.add(sinonimo));
           }
         });
@@ -124,6 +346,7 @@ export default function App() {
       const textoBusqueda = producto.textoBusqueda.toLowerCase();
       const nombre = producto.nombre.toLowerCase();
       const codigo = producto.codigo_referencia?.toLowerCase() || '';
+      const seccion = producto.seccion?.toLowerCase() || '';
       let puntuacion = 0;
 
       // Expandir términos con sinónimos
@@ -156,6 +379,11 @@ export default function App() {
           puntuacion += 20;
         }
 
+        // Coincidencia en sección/categoría (alta puntuación para términos mapeados)
+        if (seccion.includes(terminoLower) || terminoLower.includes(seccion)) {
+          puntuacion += 25;
+        }
+
         // Coincidencia en cualquier campo (puntuación baja)
         if (textoBusqueda.includes(terminoLower)) {
           puntuacion += 10;
@@ -167,6 +395,15 @@ export default function App() {
           puntuacion += Math.max(0, 10 - Math.floor(posicion / 10));
         }
       }
+
+      // Bonus adicional para productos que coinciden con categorías mapeadas
+      terminos.forEach(termino => {
+        const terminoLower = termino.toLowerCase();
+        const categoriaMapeada = keywordToCategoryMap[terminoLower];
+        if (categoriaMapeada && seccion.includes(categoriaMapeada.toLowerCase())) {
+          puntuacion += 40; // Bonus significativo para coincidencias de categoría mapeada
+        }
+      });
 
       // Penalización por productos sin stock
       if (producto.stock === false) {
