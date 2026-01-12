@@ -54,10 +54,13 @@ export const SearchBar = ({
 
   // Generar sugerencias inteligentes basadas en productos
   const sugerencias = useMemo(() => {
-    if (!busqueda.trim() || busqueda.length < 2) return [];
+    if (!busqueda.trim()) return [];
 
     const terminoLower = busqueda.toLowerCase();
     const sugerenciasSet = new Set<string>();
+
+    // Para búsquedas muy cortas, ser más agresivo
+    const esBusquedaCorta = busqueda.length < 3;
 
     productos.forEach(producto => {
       // Sugerencias de códigos de referencia
@@ -67,10 +70,9 @@ export const SearchBar = ({
       }
 
       // Sugerencias de nombres de productos
-      const palabrasNombre = producto.nombre.split(' ').filter(p => p.length > 2);
+      const palabrasNombre = producto.nombre.split(' ').filter(p => p.length > (esBusquedaCorta ? 1 : 2));
       palabrasNombre.forEach(palabra => {
-        if (palabra.toLowerCase().includes(terminoLower) &&
-            palabra.length > terminoLower.length) {
+        if (palabra.toLowerCase().includes(terminoLower)) {
           sugerenciasSet.add(palabra);
         }
       });
@@ -87,7 +89,48 @@ export const SearchBar = ({
           sugerenciasSet.add(modelo);
         }
       });
+
+      // Para búsquedas cortas, incluir nombres completos que empiecen con el término
+      if (esBusquedaCorta && producto.nombre.toLowerCase().startsWith(terminoLower)) {
+        const nombreCorto = producto.nombre.split(' ').slice(0, 4).join(' ');
+        if (nombreCorto.length > terminoLower.length) {
+          sugerenciasSet.add(nombreCorto);
+        }
+      }
+
+      // Incluir marcas o primeras palabras del nombre
+      if (esBusquedaCorta) {
+        const primeraPalabra = producto.nombre.split(' ')[0];
+        if (primeraPalabra && primeraPalabra.toLowerCase().startsWith(terminoLower)) {
+          sugerenciasSet.add(primeraPalabra);
+        }
+      }
     });
+
+    // Si no hay suficientes sugerencias, agregar algunas genéricas basadas en categorías comunes
+    if (sugerenciasSet.size < 3 && esBusquedaCorta) {
+      const sugerenciasGenericas: Record<string, string[]> = {
+        'f': ['freno', 'filtro', 'farola'],
+        'b': ['bateria', 'bujia', 'basculante'],
+        'm': ['motor', 'manubrio', 'amortiguador'],
+        'c': ['cadena', 'culata', 'carburador'],
+        'a': ['amortiguador', 'arranque'],
+        't': ['tablero', 'tacometro'],
+        'l': ['llanta', 'luz'],
+        'p': ['pastilla', 'piñon'],
+        'r': ['reloj', 'radiador'],
+        'e': ['escape', 'estator']
+      };
+
+      const letra = terminoLower[0];
+      if (sugerenciasGenericas[letra]) {
+        sugerenciasGenericas[letra].forEach((sugerencia: string) => {
+          if (sugerencia.toLowerCase().startsWith(terminoLower)) {
+            sugerenciasSet.add(sugerencia);
+          }
+        });
+      }
+    }
 
     return Array.from(sugerenciasSet).slice(0, 8);
   }, [busqueda, productos]);
@@ -224,7 +267,7 @@ export const SearchBar = ({
     inputRef.current?.blur();
   };
 
-  const showSuggestions = isFocused && (sugerencias.length > 0 || (!busqueda && busquedasPopulares.length > 0));
+  const showSuggestions = isFocused && (sugerencias.length > 0 || busqueda.trim() || (!busqueda && busquedasPopulares.length > 0));
 
   return (
     <div className="relative group">
