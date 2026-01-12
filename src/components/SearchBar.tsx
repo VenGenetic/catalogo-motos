@@ -101,7 +101,14 @@ export const SearchBar = ({
     'amortiguador',
     'llanta',
     'faro',
-    'escape'
+    'escape',
+    'pastillas',
+    'bujía',
+    'velocímetro',
+    'culata',
+    'estator',
+    'piñón',
+    'manubrio'
   ];
 
   // Inicializar reconocimiento de voz de manera segura
