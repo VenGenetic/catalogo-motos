@@ -262,7 +262,6 @@ export default function App() {
       'carenado': 'Carrocería / Carenado',
       'cachas': 'Carrocería / Carenado',
       'tapas': 'Carrocería / Carenado',
-      'cubiertas': 'Carrocería / Carenado',
       'vestidura': 'Carrocería / Carenado',
       'cowl': 'Carrocería / Carenado',
       'guardafangos': 'Carrocería / Carenado',
