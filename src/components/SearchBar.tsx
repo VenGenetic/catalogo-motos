@@ -300,7 +300,8 @@ export const SearchBar = ({
 
       {/* Panel de sugerencias mejorado */}
       {showSuggestions && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-md border border-gray-200/60 rounded-xl shadow-xl z-50 max-h-96 overflow-hidden animate-in slide-in-from-top-2 duration-200">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-md border border-gray-200/60 rounded-xl shadow-xl z-50 max-h-96 overflow-hidden opacity-0 animate-pulse transition-opacity duration-200"
+             style={{ opacity: showSuggestions ? 1 : 0 }}>
           {/* Búsquedas populares cuando no hay búsqueda */}
           {!busqueda && busquedasPopulares.length > 0 && (
             <div className="p-4 border-b border-gray-100/80 bg-gradient-to-r from-gray-50/50 to-white">
@@ -311,12 +312,11 @@ export const SearchBar = ({
                 BÚSQUEDAS POPULARES
               </div>
               <div className="flex flex-wrap gap-2">
-                {busquedasPopulares.map((popular, index) => (
+                {busquedasPopulares.map((popular) => (
                   <button
                     key={popular}
                     onClick={() => handleSuggestionClick(popular)}
                     className="px-3 py-1.5 text-sm bg-white hover:bg-red-50 text-gray-700 hover:text-red-700 rounded-lg border border-gray-200 hover:border-red-200 transition-all duration-200 hover:shadow-sm hover:scale-105 font-medium"
-                    style={{ animationDelay: `${index * 50}ms` }}
                   >
                     {popular}
                   </button>
@@ -332,12 +332,11 @@ export const SearchBar = ({
                 <Search className="w-3 h-3" />
                 SUGERENCIAS
               </div>
-              {sugerencias.map((sugerencia, index) => (
+              {sugerencias.map((sugerencia) => (
                 <button
-                  key={index}
+                  key={sugerencia}
                   onClick={() => handleSuggestionClick(sugerencia)}
                   className="w-full text-left px-3 py-2.5 text-sm hover:bg-gradient-to-r hover:from-red-50 hover:to-white rounded-lg transition-all duration-200 flex items-center gap-3 group/suggestion"
-                  style={{ animationDelay: `${index * 30}ms` }}
                 >
                   <div className="p-1 bg-gray-100 group-hover/suggestion:bg-red-100 rounded-md transition-colors">
                     <Search className="w-3 h-3 text-gray-400 group-hover/suggestion:text-red-500" />
