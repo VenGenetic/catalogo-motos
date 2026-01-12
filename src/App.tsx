@@ -82,259 +82,33 @@ export default function App() {
   const filteredProducts = useMemo(() => {
     if (!busquedaDebounced && filtroSeccion === 'Todos' && !filtroModelo) return productos;
 
-    // Mapeo de términos de búsqueda a variantes relacionadas basado en la tabla proporcionada
-    const keywordToTermsMap: Record<string, string[]> = {
-      // Instrumentos / Velocímetro
-      'tablero': ['velocímetro', 'tacómetro', 'tacometro', 'relojes', 'panel de instrumentos', 'cuenta kilómetros'],
-      'velocímetro': ['tablero', 'tacómetro', 'tacometro', 'relojes', 'panel de instrumentos', 'cuenta kilómetros'],
-      'tacómetro': ['tablero', 'velocímetro', 'tacometro', 'relojes', 'panel de instrumentos', 'cuenta kilómetros'],
-      'tacometro': ['tablero', 'velocímetro', 'tacómetro', 'relojes', 'panel de instrumentos', 'cuenta kilómetros'],
-      'relojes': ['tablero', 'velocímetro', 'tacómetro', 'tacometro', 'panel de instrumentos', 'cuenta kilómetros'],
-      'panel de instrumentos': ['tablero', 'velocímetro', 'tacómetro', 'tacometro', 'relojes', 'cuenta kilómetros'],
-      'cuenta kilómetros': ['tablero', 'velocímetro', 'tacómetro', 'tacometro', 'relojes', 'panel de instrumentos'],
-
-      // Motor / Culata
-      'cabezote': ['culata', 'tapa de cilindro', 'cabeza de fuerza', 'tapa de compresión'],
-      'culata': ['cabezote', 'tapa de cilindro', 'cabeza de fuerza', 'tapa de compresión'],
-      'tapa de cilindro': ['cabezote', 'culata', 'cabeza de fuerza', 'tapa de compresión'],
-      'cabeza de fuerza': ['cabezote', 'culata', 'tapa de cilindro', 'tapa de compresión'],
-      'tapa de compresión': ['cabezote', 'culata', 'tapa de cilindro', 'cabeza de fuerza'],
-
-      // Sistema Eléctrico / Bujía
-      'candela': ['bujía', 'spark plug', 'chispero'],
-      'bujía': ['candela', 'spark plug', 'chispero'],
-      'spark plug': ['candela', 'bujía', 'chispero'],
-      'chispero': ['candela', 'bujía', 'spark plug'],
-
-      // Carburador / Sistema de Aire
-      'choke': ['ahogador', 'estrangulador', 'válvula de aire', 'choque'],
-      'ahogador': ['choke', 'estrangulador', 'válvula de aire', 'choque'],
-      'estrangulador': ['choke', 'ahogador', 'válvula de aire', 'choque'],
-      'válvula de aire': ['choke', 'ahogador', 'estrangulador', 'choque'],
-      'choque': ['choke', 'ahogador', 'estrangulador', 'válvula de aire'],
-
-      // Sistema Eléctrico / CDI - ECU
-      'cerebro': ['cdi', 'ecu', 'computadora', 'módulo de encendido', 'caja negra', 'tci'],
-      'cdi': ['cerebro', 'ecu', 'computadora', 'módulo de encendido', 'caja negra', 'tci'],
-      'ecu': ['cerebro', 'cdi', 'computadora', 'módulo de encendido', 'caja negra', 'tci'],
-      'computadora': ['cerebro', 'cdi', 'ecu', 'módulo de encendido', 'caja negra', 'tci'],
-      'módulo de encendido': ['cerebro', 'cdi', 'ecu', 'computadora', 'caja negra', 'tci'],
-      'caja negra': ['cerebro', 'cdi', 'ecu', 'computadora', 'módulo de encendido', 'tci'],
-      'tci': ['cerebro', 'cdi', 'ecu', 'computadora', 'módulo de encendido', 'caja negra'],
-
-      // Sistema Eléctrico / Relé de Arranque
-      'chancho': ['chanchito', 'marrano', 'relé de arranque', 'solenoide de partida', 'relay', 'automático de arranque', 'cochinito'],
-      'chanchito': ['chancho', 'marrano', 'relé de arranque', 'solenoide de partida', 'relay', 'automático de arranque', 'cochinito'],
-      'marrano': ['chancho', 'chanchito', 'relé de arranque', 'solenoide de partida', 'relay', 'automático de arranque', 'cochinito'],
-      'relé de arranque': ['chancho', 'chanchito', 'marrano', 'solenoide de partida', 'relay', 'automático de arranque', 'cochinito'],
-      'solenoide de partida': ['chancho', 'chanchito', 'marrano', 'relé de arranque', 'relay', 'automático de arranque', 'cochinito'],
-      'relay': ['chancho', 'chanchito', 'marrano', 'relé de arranque', 'solenoide de partida', 'automático de arranque', 'cochinito'],
-      'automático de arranque': ['chancho', 'chanchito', 'marrano', 'relé de arranque', 'solenoide de partida', 'relay', 'cochinito'],
-      'cochinito': ['chancho', 'chanchito', 'marrano', 'relé de arranque', 'solenoide de partida', 'relay', 'automático de arranque'],
-
-      // Iluminación / Faro Delantero
-      'farola': ['faro', 'ojo', 'luz delantera', 'foco delantero', 'lámpara principal', 'farol'],
-      'faro': ['farola', 'ojo', 'luz delantera', 'foco delantero', 'lámpara principal', 'farol'],
-      'ojo': ['farola', 'faro', 'luz delantera', 'foco delantero', 'lámpara principal', 'farol'],
-      'luz delantera': ['farola', 'faro', 'ojo', 'foco delantero', 'lámpara principal', 'farol'],
-      'foco delantero': ['farola', 'faro', 'ojo', 'luz delantera', 'lámpara principal', 'farol'],
-      'lámpara principal': ['farola', 'faro', 'ojo', 'luz delantera', 'foco delantero', 'farol'],
-      'farol': ['farola', 'faro', 'ojo', 'luz delantera', 'foco delantero', 'lámpara principal'],
-
-      // Iluminación / Luz Trasera
-      'stop': ['luz de freno', 'piloto trasero', 'luz trasera', 'calavera', 'farol trasero'],
-      'luz de freno': ['stop', 'piloto trasero', 'luz trasera', 'calavera', 'farol trasero'],
-      'piloto trasero': ['stop', 'luz de freno', 'luz trasera', 'calavera', 'farol trasero'],
-      'luz trasera': ['stop', 'luz de freno', 'piloto trasero', 'calavera', 'farol trasero'],
-      'calavera': ['stop', 'luz de freno', 'piloto trasero', 'luz trasera', 'farol trasero'],
-      'farol trasero': ['stop', 'luz de freno', 'piloto trasero', 'luz trasera', 'calavera'],
-
-      // Iluminación / Direccionales
-      'guías': ['direccionales', 'intermitentes', 'pidevías', 'luces de giro', 'flasher'],
-      'direccionales': ['guías', 'intermitentes', 'pidevías', 'luces de giro', 'flasher'],
-      'intermitentes': ['guías', 'direccionales', 'pidevías', 'luces de giro', 'flasher'],
-      'pidevías': ['guías', 'direccionales', 'intermitentes', 'luces de giro', 'flasher'],
-      'luces de giro': ['guías', 'direccionales', 'intermitentes', 'pidevías', 'flasher'],
-      'flasher': ['guías', 'direccionales', 'intermitentes', 'pidevías', 'luces de giro'],
-
-      // Sistema Eléctrico / Estator
-      'bobinas': ['corona de bobinas', 'plato de bobinas', 'estator', 'generador', 'magneto', 'campo'],
-      'corona de bobinas': ['bobinas', 'plato de bobinas', 'estator', 'generador', 'magneto', 'campo'],
-      'plato de bobinas': ['bobinas', 'corona de bobinas', 'estator', 'generador', 'magneto', 'campo'],
-      'estator': ['bobinas', 'corona de bobinas', 'plato de bobinas', 'generador', 'magneto', 'campo'],
-      'generador': ['bobinas', 'corona de bobinas', 'plato de bobinas', 'estator', 'magneto', 'campo'],
-      'magneto': ['bobinas', 'corona de bobinas', 'plato de bobinas', 'estator', 'generador', 'campo'],
-      'campo': ['bobinas', 'corona de bobinas', 'plato de bobinas', 'estator', 'generador', 'magneto'],
-
-      // Transmisión / Kit de Arrastre
-      'kit de arrastre': ['kit de transmisión', 'catalina y piñón', 'sprocket kit', 'relación', 'transmisión final'],
-      'kit de transmisión': ['kit de arrastre', 'catalina y piñón', 'sprocket kit', 'relación', 'transmisión final'],
-      'catalina y piñón': ['kit de arrastre', 'kit de transmisión', 'sprocket kit', 'relación', 'transmisión final'],
-      'sprocket kit': ['kit de arrastre', 'kit de transmisión', 'catalina y piñón', 'relación', 'transmisión final'],
-      'relación': ['kit de arrastre', 'kit de transmisión', 'catalina y piñón', 'sprocket kit', 'transmisión final'],
-      'transmisión final': ['kit de arrastre', 'kit de transmisión', 'catalina y piñón', 'sprocket kit', 'relación'],
-
-      // Transmisión / Corona (Catalina)
-      'catalina': ['corona trasera', 'sprocket trasero', 'engranaje trasero', 'plato dentado'],
-      'corona trasera': ['catalina', 'sprocket trasero', 'engranaje trasero', 'plato dentado'],
-      'sprocket trasero': ['catalina', 'corona trasera', 'engranaje trasero', 'plato dentado'],
-      'engranaje trasero': ['catalina', 'corona trasera', 'sprocket trasero', 'plato dentado'],
-      'plato dentado': ['catalina', 'corona trasera', 'sprocket trasero', 'engranaje trasero'],
-
-      // Transmisión / Piñón
-      'piñón de ataque': ['piñón de salida', 'piñón delantero', 'sprocket delantero', 'piñón de motor'],
-      'piñón de salida': ['piñón de ataque', 'piñón delantero', 'sprocket delantero', 'piñón de motor'],
-      'piñón delantero': ['piñón de ataque', 'piñón de salida', 'sprocket delantero', 'piñón de motor'],
-      'sprocket delantero': ['piñón de ataque', 'piñón de salida', 'piñón delantero', 'piñón de motor'],
-      'piñón de motor': ['piñón de ataque', 'piñón de salida', 'piñón delantero', 'sprocket delantero'],
-
-      // Mandos / Cables de Control
-      'guaya': ['cable', 'piola', 'alambre', 'chicote'],
-      'cable': ['guaya', 'piola', 'alambre', 'chicote'],
-      'piola': ['guaya', 'cable', 'alambre', 'chicote'],
-      'alambre': ['guaya', 'cable', 'piola', 'chicote'],
-      'chicote': ['guaya', 'cable', 'piola', 'alambre'],
-
-      // Suspensión / Horquilla Delantera
-      'barras': ['telescópicas', 'suspensión delantera', 'botellas', 'tubos de suspensión', 'amortiguador delantero'],
-      'telescópicas': ['barras', 'suspensión delantera', 'botellas', 'tubos de suspensión', 'amortiguador delantero'],
-      'suspensión delantera': ['barras', 'telescópicas', 'botellas', 'tubos de suspensión', 'amortiguador delantero'],
-      'botellas': ['barras', 'telescópicas', 'suspensión delantera', 'tubos de suspensión', 'amortiguador delantero'],
-      'tubos de suspensión': ['barras', 'telescópicas', 'suspensión delantera', 'botellas', 'amortiguador delantero'],
-      'amortiguador delantero': ['barras', 'telescópicas', 'suspensión delantera', 'botellas', 'tubos de suspensión'],
-
-      // Suspensión / Basculante
-      'tijera': ['basculante', 'horquilla trasera', 'brazo oscilante', 'cuadro trasero'],
-      'basculante': ['tijera', 'horquilla trasera', 'brazo oscilante', 'cuadro trasero'],
-      'horquilla trasera': ['tijera', 'basculante', 'brazo oscilante', 'cuadro trasero'],
-      'brazo oscilante': ['tijera', 'basculante', 'horquilla trasera', 'cuadro trasero'],
-      'cuadro trasero': ['tijera', 'basculante', 'horquilla trasera', 'brazo oscilante'],
-
-      // Chasis / Soporte Lateral
-      'pata de cabra': ['pata lateral', 'soporte lateral', 'pata', 'muleta'],
-      'pata lateral': ['pata de cabra', 'soporte lateral', 'pata', 'muleta'],
-      'soporte lateral': ['pata de cabra', 'pata lateral', 'pata', 'muleta'],
-      'pata': ['pata de cabra', 'pata lateral', 'soporte lateral', 'muleta'],
-      'muleta': ['pata de cabra', 'pata lateral', 'soporte lateral', 'pata'],
-
-      // Chasis / Soporte Central
-      'gato central': ['caballete', 'burro', 'soporte central', 'parador central', 'doble pata'],
-      'caballete': ['gato central', 'burro', 'soporte central', 'parador central', 'doble pata'],
-      'burro': ['gato central', 'caballete', 'soporte central', 'parador central', 'doble pata'],
-      'soporte central': ['gato central', 'caballete', 'burro', 'parador central', 'doble pata'],
-      'parador central': ['gato central', 'caballete', 'burro', 'soporte central', 'doble pata'],
-      'doble pata': ['gato central', 'caballete', 'burro', 'soporte central', 'parador central'],
-
-      // Frenos / Pastillas (Disco)
-      'pastillas': ['pastas de freno', 'caliper pads', 'balatas'],
-      'pastas de freno': ['pastillas', 'caliper pads', 'balatas'],
-      'caliper pads': ['pastillas', 'pastas de freno', 'balatas'],
-      'balatas': ['pastillas', 'pastas de freno', 'caliper pads'],
-
-      // Frenos / Zapatas (Tambor)
-      'bandas': ['zapatas', 'frenos de tambor', 'balatas de tambor'],
-      'zapatas': ['bandas', 'frenos de tambor', 'balatas de tambor'],
-      'frenos de tambor': ['bandas', 'zapatas', 'balatas de tambor'],
-      'balatas de tambor': ['bandas', 'zapatas', 'frenos de tambor'],
-
-      // Ruedas / Neumáticos
-      'llantas': ['cauchos', 'neumáticos', 'neumaticos', 'gomas', 'cubierta', 'cubiertas'],
-      'cauchos': ['llantas', 'neumáticos', 'neumaticos', 'gomas', 'cubierta', 'cubiertas'],
-      'neumáticos': ['llantas', 'cauchos', 'neumaticos', 'gomas', 'cubierta', 'cubiertas'],
-      'neumaticos': ['llantas', 'cauchos', 'neumáticos', 'gomas', 'cubierta', 'cubiertas'],
-      'gomas': ['llantas', 'cauchos', 'neumáticos', 'neumaticos', 'cubierta', 'cubiertas'],
-      'cubierta': ['llantas', 'cauchos', 'neumáticos', 'neumaticos', 'gomas', 'cubiertas'],
-      'cubiertas': ['llantas', 'cauchos', 'neumáticos', 'neumaticos', 'gomas', 'cubierta'],
-
-      // Ruedas / Aros
-      'aros': ['rines', 'ruedas metálicas'],
-      'rines': ['aros', 'ruedas metálicas'],
-      'ruedas metálicas': ['aros', 'rines'],
-
-      // Motor-Chasis / Rulimanes
-      'rulimanes': ['rodamientos', 'baleros', 'cojinetes', 'bearings', 'bolilleros'],
-      'rodamientos': ['rulimanes', 'baleros', 'cojinetes', 'bearings', 'bolilleros'],
-      'baleros': ['rulimanes', 'rodamientos', 'cojinetes', 'bearings', 'bolilleros'],
-      'cojinetes': ['rulimanes', 'rodamientos', 'baleros', 'bearings', 'bolilleros'],
-      'bearings': ['rulimanes', 'rodamientos', 'baleros', 'cojinetes', 'bolilleros'],
-      'bolilleros': ['rulimanes', 'rodamientos', 'baleros', 'cojinetes', 'bearings'],
-
-      // Carrocería / Carenado
-      'plásticos': ['carenado', 'cachas', 'tapas', 'vestidura', 'cowl', 'guardafangos'],
-      'carenado': ['plásticos', 'cachas', 'tapas', 'vestidura', 'cowl', 'guardafangos'],
-      'cachas': ['plásticos', 'carenado', 'tapas', 'vestidura', 'cowl', 'guardafangos'],
-      'tapas': ['plásticos', 'carenado', 'cachas', 'vestidura', 'cowl', 'guardafangos'],
-      'vestidura': ['plásticos', 'carenado', 'cachas', 'tapas', 'cowl', 'guardafangos'],
-      'cowl': ['plásticos', 'carenado', 'cachas', 'tapas', 'vestidura', 'guardafangos'],
-      'guardafangos': ['plásticos', 'carenado', 'cachas', 'tapas', 'vestidura', 'cowl'],
-
-      // Mandos / Manubrio
-      'volante': ['manubrio', 'manillar', 'timón', 'dirección', 'tubo de dirección'],
-      'manubrio': ['volante', 'manillar', 'timón', 'dirección', 'tubo de dirección'],
-      'manillar': ['volante', 'manubrio', 'timón', 'dirección', 'tubo de dirección'],
-      'timón': ['volante', 'manubrio', 'manillar', 'dirección', 'tubo de dirección'],
-      'dirección': ['volante', 'manubrio', 'manillar', 'timón', 'tubo de dirección'],
-      'tubo de dirección': ['volante', 'manubrio', 'manillar', 'timón', 'dirección'],
-
-      // Mandos / Puños
-      'puños': ['mangos', 'empuñaduras', 'gomas de manubrio', 'grips'],
-      'mangos': ['puños', 'empuñaduras', 'gomas de manubrio', 'grips'],
-      'empuñaduras': ['puños', 'mangos', 'gomas de manubrio', 'grips'],
-      'gomas de manubrio': ['puños', 'mangos', 'empuñaduras', 'grips'],
-      'grips': ['puños', 'mangos', 'empuñaduras', 'gomas de manubrio'],
-
-      // Mandos / Manetas
-      'maniguetas': ['manillas', 'palancas de freno', 'levas'],
-      'manillas': ['maniguetas', 'palancas de freno', 'levas'],
-      'palancas de freno': ['maniguetas', 'manillas', 'levas'],
-      'levas': ['maniguetas', 'manillas', 'palancas de freno'],
-
-      // Motor / Sistema de Escape
-      'mofle': ['escape', 'tubo de escape', 'exhosto', 'silenciador', 'silenciadores', 'bala'],
-      'escape': ['mofle', 'tubo de escape', 'exhosto', 'silenciador', 'silenciadores', 'bala'],
-      'tubo de escape': ['mofle', 'escape', 'exhosto', 'silenciador', 'silenciadores', 'bala'],
-      'exhosto': ['mofle', 'escape', 'tubo de escape', 'silenciador', 'silenciadores', 'bala'],
-      'silenciador': ['mofle', 'escape', 'tubo de escape', 'exhosto', 'silenciadores', 'bala'],
-      'silenciadores': ['mofle', 'escape', 'tubo de escape', 'exhosto', 'silenciador', 'bala'],
-      'bala': ['mofle', 'escape', 'tubo de escape', 'exhosto', 'silenciador', 'silenciadores']
-    };
-
-    // Función para expandir términos con sinónimos y términos relacionados
+    // Función para expandir términos con sinónimos
     const expandirTerminos = (terminos: string[]): string[] => {
+      const sinonimos: Record<string, string[]> = {
+        'freno': ['frenos', 'frenado', 'pastilla', 'pastillas', 'disco', 'tambor'],
+        'filtro': ['filtro', 'filtrar', 'filtrado'],
+        'aceite': ['aceite', 'lubricante', 'motor oil'],
+        'bateria': ['batería', 'baterías', 'acumulador'],
+        'cadena': ['cadena', 'transmisión', 'piñón'],
+        'amortiguador': ['amortiguadores', 'suspensión', 'shock'],
+        'llanta': ['llantas', 'neumático', 'neumáticos', 'rueda', 'ruedas'],
+        'faro': ['faros', 'luz', 'luces', 'farola'],
+        'escape': ['escape', 'silenciador', 'tubo', 'caño'],
+        'motor': ['motor', 'cilindro', 'cilindros', 'piston', 'pistones'],
+        'clutch': ['clutch', 'embrague', 'clutches'],
+        'velocimetro': ['velocímetro', 'velocimetros', 'instrumentos', 'panel'],
+        'carburador': ['carburador', 'carburadores', 'inyección', 'inyector'],
+        'arranque': ['arranque', 'starter', 'partida'],
+        'electrico': ['eléctrico', 'eléctrica', 'eléctricos', 'eléctricas', 'electricidad']
+      };
+
       const expandidos = new Set<string>();
 
       terminos.forEach(termino => {
-        const terminoLower = termino.toLowerCase();
         expandidos.add(termino);
-
-        // Agregar términos relacionados si existen
-        if (keywordToTermsMap[terminoLower]) {
-          keywordToTermsMap[terminoLower].forEach(terminoRelacionado => {
-            expandidos.add(terminoRelacionado);
-          });
-        }
-
-        // Agregar sinónimos existentes (mantener compatibilidad)
-        const sinonimos: Record<string, string[]> = {
-          'freno': ['frenos', 'frenado', 'pastilla', 'pastillas', 'disco', 'tambor'],
-          'filtro': ['filtro', 'filtrar', 'filtrado'],
-          'aceite': ['aceite', 'lubricante', 'motor oil'],
-          'bateria': ['batería', 'baterías', 'acumulador'],
-          'cadena': ['cadena', 'transmisión', 'piñón'],
-          'amortiguador': ['amortiguadores', 'suspensión', 'shock'],
-          'llanta': ['llantas', 'neumático', 'neumáticos', 'rueda', 'ruedas'],
-          'faro': ['faros', 'luz', 'luces', 'farola'],
-          'escape': ['escape', 'silenciador', 'tubo', 'caño'],
-          'motor': ['motor', 'cilindro', 'cilindros', 'piston', 'pistones'],
-          'clutch': ['clutch', 'embrague', 'clutches'],
-          'velocimetro': ['velocímetro', 'velocimetros', 'instrumentos', 'panel'],
-          'carburador': ['carburador', 'carburadores', 'inyección', 'inyector'],
-          'arranque': ['arranque', 'starter', 'partida'],
-          'electrico': ['eléctrico', 'eléctrica', 'eléctricos', 'eléctricas', 'electricidad']
-        };
-
+        // Agregar sinónimos
         Object.entries(sinonimos).forEach(([clave, valores]) => {
-          if (clave.includes(terminoLower) || valores.some(v => v.includes(terminoLower))) {
+          if (clave.includes(termino) || valores.some(v => v.includes(termino))) {
             valores.forEach(sinonimo => expandidos.add(sinonimo));
           }
         });
@@ -350,7 +124,6 @@ export default function App() {
       const textoBusqueda = producto.textoBusqueda.toLowerCase();
       const nombre = producto.nombre.toLowerCase();
       const codigo = producto.codigo_referencia?.toLowerCase() || '';
-      const seccion = producto.seccion?.toLowerCase() || '';
       let puntuacion = 0;
 
       // Expandir términos con sinónimos
@@ -383,11 +156,6 @@ export default function App() {
           puntuacion += 20;
         }
 
-        // Coincidencia en sección/categoría (alta puntuación para términos mapeados)
-        if (seccion.includes(terminoLower) || terminoLower.includes(seccion)) {
-          puntuacion += 25;
-        }
-
         // Coincidencia en cualquier campo (puntuación baja)
         if (textoBusqueda.includes(terminoLower)) {
           puntuacion += 10;
@@ -399,8 +167,6 @@ export default function App() {
           puntuacion += Math.max(0, 10 - Math.floor(posicion / 10));
         }
       }
-
-
 
       // Penalización por productos sin stock
       if (producto.stock === false) {
