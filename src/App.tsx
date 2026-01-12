@@ -85,12 +85,13 @@ export default function App() {
     // Mapeo de términos de búsqueda a variantes relacionadas basado en la tabla proporcionada
     const keywordToTermsMap: Record<string, string[]> = {
       // Instrumentos / Velocímetro
-      'tablero': ['velocímetro', 'tacómetro', 'relojes', 'panel de instrumentos', 'cuenta kilómetros'],
-      'velocímetro': ['tablero', 'tacómetro', 'relojes', 'panel de instrumentos', 'cuenta kilómetros'],
-      'tacómetro': ['tablero', 'velocímetro', 'relojes', 'panel de instrumentos', 'cuenta kilómetros'],
-      'relojes': ['tablero', 'velocímetro', 'tacómetro', 'panel de instrumentos', 'cuenta kilómetros'],
-      'panel de instrumentos': ['tablero', 'velocímetro', 'tacómetro', 'relojes', 'cuenta kilómetros'],
-      'cuenta kilómetros': ['tablero', 'velocímetro', 'tacómetro', 'relojes', 'panel de instrumentos'],
+      'tablero': ['velocímetro', 'tacómetro', 'tacometro', 'relojes', 'panel de instrumentos', 'cuenta kilómetros'],
+      'velocímetro': ['tablero', 'tacómetro', 'tacometro', 'relojes', 'panel de instrumentos', 'cuenta kilómetros'],
+      'tacómetro': ['tablero', 'velocímetro', 'tacometro', 'relojes', 'panel de instrumentos', 'cuenta kilómetros'],
+      'tacometro': ['tablero', 'velocímetro', 'tacómetro', 'relojes', 'panel de instrumentos', 'cuenta kilómetros'],
+      'relojes': ['tablero', 'velocímetro', 'tacómetro', 'tacometro', 'panel de instrumentos', 'cuenta kilómetros'],
+      'panel de instrumentos': ['tablero', 'velocímetro', 'tacómetro', 'tacometro', 'relojes', 'cuenta kilómetros'],
+      'cuenta kilómetros': ['tablero', 'velocímetro', 'tacómetro', 'tacometro', 'relojes', 'panel de instrumentos'],
 
       // Motor / Culata
       'cabezote': ['culata', 'tapa de cilindro', 'cabeza de fuerza', 'tapa de compresión'],
@@ -237,12 +238,13 @@ export default function App() {
       'balatas de tambor': ['bandas', 'zapatas', 'frenos de tambor'],
 
       // Ruedas / Neumáticos
-      'llantas': ['cauchos', 'neumáticos', 'gomas', 'cubierta', 'cubiertas'],
-      'cauchos': ['llantas', 'neumáticos', 'gomas', 'cubierta', 'cubiertas'],
-      'neumáticos': ['llantas', 'cauchos', 'gomas', 'cubierta', 'cubiertas'],
-      'gomas': ['llantas', 'cauchos', 'neumáticos', 'cubierta', 'cubiertas'],
-      'cubierta': ['llantas', 'cauchos', 'neumáticos', 'gomas', 'cubiertas'],
-      'cubiertas': ['llantas', 'cauchos', 'neumáticos', 'gomas', 'cubierta'],
+      'llantas': ['cauchos', 'neumáticos', 'neumaticos', 'gomas', 'cubierta', 'cubiertas'],
+      'cauchos': ['llantas', 'neumáticos', 'neumaticos', 'gomas', 'cubierta', 'cubiertas'],
+      'neumáticos': ['llantas', 'cauchos', 'neumaticos', 'gomas', 'cubierta', 'cubiertas'],
+      'neumaticos': ['llantas', 'cauchos', 'neumáticos', 'gomas', 'cubierta', 'cubiertas'],
+      'gomas': ['llantas', 'cauchos', 'neumáticos', 'neumaticos', 'cubierta', 'cubiertas'],
+      'cubierta': ['llantas', 'cauchos', 'neumáticos', 'neumaticos', 'gomas', 'cubiertas'],
+      'cubiertas': ['llantas', 'cauchos', 'neumáticos', 'neumaticos', 'gomas', 'cubierta'],
 
       // Ruedas / Aros
       'aros': ['rines', 'ruedas metálicas'],
@@ -288,12 +290,13 @@ export default function App() {
       'levas': ['maniguetas', 'manillas', 'palancas de freno'],
 
       // Motor / Sistema de Escape
-      'mofle': ['escape', 'tubo de escape', 'exhosto', 'silenciador', 'bala'],
-      'escape': ['mofle', 'tubo de escape', 'exhosto', 'silenciador', 'bala'],
-      'tubo de escape': ['mofle', 'escape', 'exhosto', 'silenciador', 'bala'],
-      'exhosto': ['mofle', 'escape', 'tubo de escape', 'silenciador', 'bala'],
-      'silenciador': ['mofle', 'escape', 'tubo de escape', 'exhosto', 'bala'],
-      'bala': ['mofle', 'escape', 'tubo de escape', 'exhosto', 'silenciador']
+      'mofle': ['escape', 'tubo de escape', 'exhosto', 'silenciador', 'silenciadores', 'bala'],
+      'escape': ['mofle', 'tubo de escape', 'exhosto', 'silenciador', 'silenciadores', 'bala'],
+      'tubo de escape': ['mofle', 'escape', 'exhosto', 'silenciador', 'silenciadores', 'bala'],
+      'exhosto': ['mofle', 'escape', 'tubo de escape', 'silenciador', 'silenciadores', 'bala'],
+      'silenciador': ['mofle', 'escape', 'tubo de escape', 'exhosto', 'silenciadores', 'bala'],
+      'silenciadores': ['mofle', 'escape', 'tubo de escape', 'exhosto', 'silenciador', 'bala'],
+      'bala': ['mofle', 'escape', 'tubo de escape', 'exhosto', 'silenciador', 'silenciadores']
     };
 
     // Función para expandir términos con sinónimos y términos relacionados
