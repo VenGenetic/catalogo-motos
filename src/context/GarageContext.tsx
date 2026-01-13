@@ -1,47 +1,43 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+// src/context/GarageContext.tsx
+import { createContext, useState, useContext, ReactNode } from 'react';
 
-// Definimos la forma de una Moto (ajusta según necesites)
-export interface Moto {
-  id: string;
-  name: string;
-  image?: string;
+export interface SelectedVehicle {
+  year?: number;
+  make: string;
+  model: string;
 }
 
 interface GarageContextType {
-  selectedMoto: Moto | null;
-  selectMoto: (moto: Moto | null) => void;
-  myGarage: Moto[];
-  addToGarage: (moto: Moto) => void;
-  removeFromGarage: (motoId: string) => void;
+  vehicle: SelectedVehicle | null;
+  setVehicle: (vehicle: SelectedVehicle | null) => void;
+  clearGarage: () => void;
 }
 
 const GarageContext = createContext<GarageContextType | undefined>(undefined);
 
 export const GarageProvider = ({ children }: { children: ReactNode }) => {
-  const [selectedMoto, setSelectedMoto] = useState<Moto | null>(null);
-  const [myGarage, setMyGarage] = useState<Moto[]>([]);
+  const [vehicle, setVehicleState] = useState<SelectedVehicle | null>(() => {
+    try {
+      const saved = localStorage.getItem('LV_PARTS_GARAGE');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
 
-  const addToGarage = (moto: Moto) => {
-    if (!myGarage.find(m => m.id === moto.id)) {
-      setMyGarage([...myGarage, moto]);
+  const setVehicle = (v: SelectedVehicle | null) => {
+    setVehicleState(v);
+    if (v) {
+      localStorage.setItem('LV_PARTS_GARAGE', JSON.stringify(v));
+    } else {
+      localStorage.removeItem('LV_PARTS_GARAGE');
     }
   };
 
-  const removeFromGarage = (motoId: string) => {
-    setMyGarage(myGarage.filter(m => m.id !== motoId));
-    if (selectedMoto?.id === motoId) {
-      setSelectedMoto(null);
-    }
-  };
-
-  const selectMoto = (moto: Moto | null) => {
-    setSelectedMoto(moto);
-  };
+  const clearGarage = () => setVehicle(null);
 
   return (
-    <GarageContext.Provider 
-      value={{ selectedMoto, selectMoto, myGarage, addToGarage, removeFromGarage }}
-    >
+    <GarageContext.Provider value={{ vehicle, setVehicle, clearGarage }}>
       {children}
     </GarageContext.Provider>
   );
@@ -49,8 +45,6 @@ export const GarageProvider = ({ children }: { children: ReactNode }) => {
 
 export const useGarage = () => {
   const context = useContext(GarageContext);
-  if (context === undefined) {
-    throw new Error('useGarage debe ser usado dentro de un GarageProvider');
-  }
+  if (!context) throw new Error('useGarage debe usarse dentro de GarageProvider');
   return context;
 };
