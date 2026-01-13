@@ -1,7 +1,7 @@
 // src/components/CartDrawer.tsx
 import { useState } from 'react';
-// AGREGAMOS: Iconos de Copy, Check y FileText
-import { X, Minus, Plus, MessageCircle, ShieldCheck, User, MapPin, CreditCard, ArrowRight, Copy, Check, FileText } from 'lucide-react';
+// CORRECCIÓN: Se eliminó 'Copy' de los imports porque no se estaba usando (causaba error de build)
+import { X, Minus, Plus, MessageCircle, ShieldCheck, User, MapPin, CreditCard, ArrowRight, Check, FileText } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
 import { LazyImage } from './LazyImage';
@@ -23,7 +23,7 @@ export const CartDrawer = () => {
     metodoPago: 'Transferencia'
   });
 
-  // NUEVO: Estado para feedback de copiado
+  // Estado para feedback de copiado
   const [copied, setCopied] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -55,7 +55,7 @@ ${itemsList}
 ¿Me confirman los datos de cuenta para transferir?`;
   };
 
-  // 2. NUEVA Lógica para Proforma (Formato Formal para Copiar)
+  // 2. Lógica para Proforma (Formato Formal para Copiar)
   const generarTextoProforma = () => {
     const date = new Date().toLocaleDateString('es-EC', { year: 'numeric', month: 'long', day: 'numeric' });
     const itemsList = cart.map(item => 
@@ -85,7 +85,7 @@ ${itemsList}
     window.open(url, '_blank');
   };
 
-  // NUEVO: Función para copiar al portapapeles
+  // Función para copiar al portapapeles
   const handleCopyProforma = async () => {
     const texto = generarTextoProforma();
     try {
