@@ -1,5 +1,7 @@
+// src/components/CatalogView.tsx
 import { useState, useMemo, useEffect, useRef, memo } from 'react';
-import { Heart, ArrowLeft, Filter, Search } from 'lucide-react'; 
+// AGREGADO: Importamos ShoppingBag para el botón de compra rápida
+import { Heart, ArrowLeft, Filter, Search, ShoppingBag } from 'lucide-react'; 
 import { optimizarImg } from '../utils/helpers';
 import { APP_CONFIG, ORDEN_SECCIONES } from '../config/constants';
 import { Producto } from '../types';
@@ -7,6 +9,8 @@ import { LazyImage } from './LazyImage';
 import { SearchBar } from './SearchBar';
 import { HighlightedText } from './HighlightedText';
 import { MotoSelector } from './MotoSelector';
+// AGREGADO: Importamos el hook del carrito
+import { useCart } from '../context/CartContext';
 
 interface Props {
   productos: Producto[];
@@ -30,6 +34,9 @@ export const CatalogView = memo(({
 }: Props) => {
   const [pagina, setPagina] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  // AGREGADO: Usamos el hook para la función de agregar rápido
+  const { addToCart } = useCart();
 
   useEffect(() => { 
     setPagina(1); 
@@ -47,6 +54,12 @@ export const CatalogView = memo(({
     setBusqueda('');
     setFiltroSeccion('Todos');
     window.scrollTo({ top: 0, behavior: 'auto' });
+  };
+
+  // Función para agregar rápido sin abrir el modal (StopPropagation es clave)
+  const handleQuickAdd = (e: React.MouseEvent, product: Producto) => {
+    e.stopPropagation();
+    addToCart(product);
   };
 
   // 1. MODO SELECTOR
@@ -70,7 +83,7 @@ export const CatalogView = memo(({
     <div ref={containerRef} className="min-h-screen bg-slate-50 pb-20 pt-2 md:pt-4 px-2 md:px-8 font-sans scroll-mt-20">
       <div className="max-w-7xl mx-auto">
         
-        {/* BARRA SUPERIOR MEJORADA PARA MÓVIL */}
+        {/* BARRA SUPERIOR (Sin cambios) */}
         <div className="sticky top-[64px] z-30 bg-slate-50/95 backdrop-blur-md pb-3 pt-2 px-2 md:px-0 transition-all border-b border-gray-100/50 md:border-none">
           <div className="flex gap-2 mb-3">
             <button 
@@ -112,7 +125,6 @@ export const CatalogView = memo(({
              </div>
           </div>
 
-          {/* FILTROS MEJORADOS PARA MÓVIL */}
           <div className="overflow-x-auto pb-2 scrollbar-hide scroll-smooth -mx-2 px-2 md:mx-0 md:px-0">
             <div className="flex space-x-2 min-w-max">
               {ORDEN_SECCIONES.map((category) => (
@@ -142,18 +154,20 @@ export const CatalogView = memo(({
                   className="group bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-[0_4px_20px_rgb(0,0,0,0.08)] hover:border-red-100 hover:-translate-y-0.5 active:scale-95"
                   onClick={() => onProductClick(product)}
                 >
+                  
+                  {/* --- CAMBIO 1: Corazón Favorito MÁS PEQUEÑO Y SUTIL --- */}
                   <button 
-                    className={`absolute top-3 right-3 p-2 rounded-full z-10 transition-all duration-200 backdrop-blur-sm ${
+                    className={`absolute top-2 right-2 p-1.5 rounded-full z-20 transition-all duration-200 ${
                       isFav(product.id) 
-                        ? 'bg-red-50 text-red-500 scale-110 shadow-sm' 
-                        : 'bg-white/80 text-slate-400 hover:bg-white hover:text-red-500 border border-gray-100'
+                        ? 'text-red-500 scale-110' 
+                        : 'text-gray-300 bg-transparent hover:text-red-400'
                     }`}
                     onClick={(e) => { e.stopPropagation(); toggleFav(product.id); }}
                   >
-                    <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} />
+                    {/* Icono reducido a w-3.5 h-3.5 (14px) */}
+                    <Heart className={`w-3.5 h-3.5 ${isFav(product.id) ? 'fill-current' : ''}`} strokeWidth={2.5} />
                   </button>
 
-                  {/* IMAGEN COMPLETA SIN RECORTE */}
                   <div className="relative h-24 md:h-40 bg-white overflow-hidden p-1">
                     <LazyImage 
                       src={optimizarImg(product.imagen)} 
@@ -176,18 +190,29 @@ export const CatalogView = memo(({
                         </span>
                     </div>
                     
-                    {/* CAMBIO APLICADO: Se eliminó 'line-clamp-2' para mostrar el nombre completo */}
                     <h3 className="text-xs md:text-sm font-bold text-slate-800 mb-1 leading-snug min-h-[2em] group-hover:text-red-600 transition-colors">
                       <HighlightedText text={product.nombre} highlight={busqueda} />
                     </h3>
                     
-                    <div className="mt-auto pt-1 flex items-center justify-between">
+                    {/* --- CAMBIO 2: Precio + Botón de Agregar Rápido --- */}
+                    <div className="mt-auto pt-2 flex items-center justify-between">
                        <span className="text-sm md:text-lg font-extrabold text-slate-900">
                          ${Number(product.precio).toFixed(2)}
                        </span>
-                       <span className="text-[9px] md:text-[10px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition-all transform translate-x-1 group-hover:translate-x-0">
-                         VER →
-                       </span>
+                       
+                       {/* Botón Circular Pequeño */}
+                       <button
+                         onClick={(e) => handleQuickAdd(e, product)}
+                         disabled={!product.stock}
+                         className={`p-1.5 rounded-full transition-all shadow-sm flex items-center justify-center ${
+                            product.stock 
+                              ? 'bg-slate-900 text-white hover:bg-red-600 hover:scale-110 hover:shadow-red-200' 
+                              : 'bg-gray-100 text-gray-300 cursor-not-allowed'
+                         }`}
+                         title="Agregar al carrito"
+                       >
+                         <ShoppingBag size={14} strokeWidth={2.5} />
+                       </button>
                     </div>
                   </div>
                 </div>
