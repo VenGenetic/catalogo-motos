@@ -1,13 +1,15 @@
 // src/components/HeroSection.tsx
 import { Link } from 'react-router-dom';
-import { ChevronRight, ShieldCheck, Truck, Users, MessageCircle } from 'lucide-react'; // <--- 1. Agregamos MessageCircle
-import { APP_CONFIG } from '../config/constants'; // <--- 2. Importamos la config para el número
+import { ChevronRight, ShieldCheck, Truck, Users, MessageCircle } from 'lucide-react'; 
+import { APP_CONFIG } from '../config/constants';
 
 export const HeroSection = () => {
   
   // Función para abrir WhatsApp directo
   const handleWhatsappClick = () => {
-    const mensaje = "Hola LV PARTS, vi su anuncio en Google. Quiero cotizar unos repuestos.";
+    // CAMBIO APLICADO: Mensaje neutral, sin mencionar anuncios
+    const mensaje = "Hola LV PARTS, quisiera cotizar unos repuestos.";
+    
     const url = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, '_blank');
   };
@@ -45,13 +47,12 @@ export const HeroSection = () => {
             Especialistas en la marca Daytona. Recibe asesoría técnica personalizada y envíos seguros a todo el Ecuador.
           </p>
 
-          {/* --- BOTONES DE ACCIÓN (MODIFICADO) --- */}
+          {/* --- BOTONES DE ACCIÓN --- */}
           <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-in-up delay-300">
               <Link to="/catalogo" className="inline-flex items-center justify-center px-8 py-4 text-base md:text-lg font-bold rounded-xl text-white bg-red-600 hover:bg-red-700 transition-all shadow-lg hover:shadow-red-500/25 active:scale-95 group">
                 Ver Repuestos <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               
-              {/* CAMBIO APLICADO AQUÍ: Botón WhatsApp Directo */}
               <button 
                 onClick={handleWhatsappClick}
                 className="inline-flex items-center justify-center px-8 py-4 text-base md:text-lg font-bold rounded-xl text-white border-2 border-green-500 bg-green-500/10 hover:bg-green-600 hover:border-green-600 transition-all active:scale-95 gap-2 shadow-lg shadow-green-900/20"
