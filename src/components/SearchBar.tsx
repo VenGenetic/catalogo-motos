@@ -1,4 +1,3 @@
-// src/components/SearchBar.tsx
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { Search, X, Mic, MicOff, TrendingUp, ChevronRight, History } from 'lucide-react';
 import { Producto } from '../types';
@@ -44,8 +43,6 @@ export const SearchBar = ({
   const [isListening, setIsListening] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<any>(null);
-
-  const isMobile = typeof window !== 'undefined' && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
   const sugerencias = useMemo(() => {
     if (!busqueda.trim()) return [];

@@ -7,11 +7,12 @@ import { limpiarTexto } from './utils/helpers';
 import { APP_CONFIG } from './config/constants';
 import { Navbar } from './components/Navbar';
 import { HomeView } from './components/HomeView'; 
-// Asegúrate de tener este componente creado (te lo di hace un par de pasos)
 import { WhatsAppButton } from './components/WhatsAppButton'; 
 
+// Carga Diferida (Lazy Loading)
 const CatalogView = lazy(() => import('./components/CatalogView').then(module => ({ default: module.CatalogView })));
-const ContactView = lazy(() => import('./components/ContactView').then(module => ({ default: module.ContactView })));
+// CORRECCIÓN: Ahora importamos ContactView como default para evitar el error TS2339
+const ContactView = lazy(() => import('./components/ContactView'));
 
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { BottomNav } from './components/BottomNav';
@@ -50,7 +51,6 @@ export default function App() {
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
   const busquedaDebounced = useDebounce(busqueda, 300);
 
-  // Monitorear estado de conexión
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
@@ -58,7 +58,6 @@ export default function App() {
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
-    // Estado inicial
     setIsOnline(navigator.onLine);
 
     return () => {
@@ -82,7 +81,6 @@ export default function App() {
   const filteredProducts = useMemo(() => {
     if (!busquedaDebounced && filtroSeccion === 'Todos' && !filtroModelo) return productos;
 
-    // Función para expandir términos con sinónimos
     const expandirTerminos = (terminos: string[]): string[] => {
       const sinonimos: Record<string, string[]> = {
         'freno': ['frenos', 'frenado', 'pastilla', 'pastillas', 'disco', 'tambor'],
@@ -106,7 +104,6 @@ export default function App() {
 
       terminos.forEach(termino => {
         expandidos.add(termino);
-        // Agregar sinónimos
         Object.entries(sinonimos).forEach(([clave, valores]) => {
           if (clave.includes(termino) || valores.some(v => v.includes(termino))) {
             valores.forEach(sinonimo => expandidos.add(sinonimo));
@@ -117,7 +114,6 @@ export default function App() {
       return Array.from(expandidos);
     };
 
-    // Función para calcular puntuación de relevancia
     const calcularRelevancia = (producto: Producto, terminos: string[]): number => {
       if (!producto.textoBusqueda) return 0;
 
@@ -126,49 +122,29 @@ export default function App() {
       const codigo = producto.codigo_referencia?.toLowerCase() || '';
       let puntuacion = 0;
 
-      // Expandir términos con sinónimos
       const terminosExpandidos = expandirTerminos(terminos);
 
-      // Búsqueda exacta por código si está entre comillas
       if (busquedaDebounced.includes('"')) {
         const match = busquedaDebounced.match(/"([^"]+)"/);
         if (match && codigo.includes(match[1].toLowerCase())) {
-          return 1000; // Puntuación máxima para coincidencia exacta de código
+          return 1000;
         }
       }
 
-      // Calcular puntuación por cada término (original y expandido)
       for (const termino of [...terminos, ...terminosExpandidos]) {
         const terminoLower = termino.toLowerCase();
 
-        // Coincidencia exacta en código de referencia (muy alta puntuación)
-        if (codigo.includes(terminoLower)) {
-          puntuacion += 50;
-        }
+        if (codigo.includes(terminoLower)) puntuacion += 50;
+        if (nombre.startsWith(terminoLower)) puntuacion += 30;
+        if (nombre.includes(terminoLower)) puntuacion += 20;
+        if (textoBusqueda.includes(terminoLower)) puntuacion += 10;
 
-        // Coincidencia al inicio del nombre (alta puntuación)
-        if (nombre.startsWith(terminoLower)) {
-          puntuacion += 30;
-        }
-
-        // Coincidencia en el nombre (puntuación media)
-        if (nombre.includes(terminoLower)) {
-          puntuacion += 20;
-        }
-
-        // Coincidencia en cualquier campo (puntuación baja)
-        if (textoBusqueda.includes(terminoLower)) {
-          puntuacion += 10;
-        }
-
-        // Bonus por posición: términos que aparecen más temprano tienen más peso
         const posicion = textoBusqueda.indexOf(terminoLower);
         if (posicion >= 0) {
           puntuacion += Math.max(0, 10 - Math.floor(posicion / 10));
         }
       }
 
-      // Penalización por productos sin stock
       if (producto.stock === false) {
         puntuacion *= 0.7;
       }
@@ -178,17 +154,15 @@ export default function App() {
 
     const terminos = busquedaDebounced ? limpiarTexto(busquedaDebounced).split(' ').filter(t => t.length > 0) : [];
 
-    // Filtrar y puntuar productos
     const productosConPuntuacion = productos
       .filter((p) => {
         if (!p.precio) return false;
         if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
         if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
 
-        // Si hay términos de búsqueda, debe tener al menos puntuación mínima
         if (terminos.length > 0) {
           const puntuacion = calcularRelevancia(p, terminos);
-          return puntuacion > 3; // Umbral más bajo para incluir sinónimos
+          return puntuacion > 3;
         }
 
         return true;
@@ -198,11 +172,9 @@ export default function App() {
         relevancia: terminos.length > 0 ? calcularRelevancia(p, terminos) : 0
       }))
       .sort((a, b) => {
-        // Si hay búsqueda, ordenar por relevancia descendente
         if (terminos.length > 0) {
           return b.relevancia - a.relevancia;
         }
-        // Si no hay búsqueda, mantener orden original
         return 0;
       });
 
@@ -248,7 +220,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-800 flex flex-col">
-      {/* Indicador de conexión para móviles */}
       {!isOnline && (
         <div className="md:hidden bg-red-600 text-white text-center py-2 px-4 flex items-center justify-center gap-2 text-sm font-medium">
           <WifiOff size={16} />
@@ -327,15 +298,14 @@ export default function App() {
         </Suspense>
       </main>
       
-      {/* Componentes Globales ACTUALIZADOS */}
       <ProductDetailModal 
         product={selectedProduct} 
-        allProducts={productos}         // NUEVO: Pasamos todo el catálogo
+        allProducts={productos}         
         onClose={handleCloseModal} 
-        onSelectRelated={handleProductClick} // NUEVO: Acción al hacer clic en un relacionado
+        onSelectRelated={handleProductClick}
       />
       <CartDrawer />
-      <WhatsAppButton hideWhenModalOpen={!!selectedProduct || location.pathname !== '/'} /> {/* NUEVO: Botón flotante siempre visible */}
+      <WhatsAppButton hideWhenModalOpen={!!selectedProduct || location.pathname !== '/'} /> 
       <ScrollToTopButton />
       <BottomNav />
       <Footer />
