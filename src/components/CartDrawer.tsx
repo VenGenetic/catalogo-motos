@@ -1,6 +1,7 @@
 // src/components/CartDrawer.tsx
 import { useState } from 'react';
-import { X, Minus, Plus, MessageCircle, ShieldCheck, User, MapPin, CreditCard, ArrowRight, Check, FileText, Truck } from 'lucide-react';
+// CORRECCIÓN: Se eliminaron 'ShieldCheck', 'MapPin' y 'CreditCard' de los imports
+import { X, Minus, Plus, MessageCircle, User, ArrowRight, Check, FileText, Truck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
 import { LazyImage } from './LazyImage';
@@ -26,7 +27,7 @@ export const CartDrawer = () => {
 
   const [copied, setCopied] = useState(false);
   
-  // NUEVO: Estado para el envío
+  // Estado para el envío
   const [conEnvio, setConEnvio] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -105,13 +106,16 @@ ${conEnvio ? `ENVÍO:    $${COSTO_ENVIO.toFixed(2)}` : ''}
 
   return (
     <div className="fixed inset-0 z-[100] flex justify-end">
+      {/* Overlay */}
       <div 
         className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" 
         onClick={closeCart}
       />
 
+      {/* Panel */}
       <div className="relative w-full md:max-w-md bg-white h-full shadow-2xl flex flex-col animate-slide-in-right">
         
+        {/* Header */}
         <div className="p-4 border-b flex justify-between items-center bg-gray-50 shadow-sm z-10">
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
             <MessageCircle className="w-5 h-5" /> Tu Pedido
@@ -124,6 +128,7 @@ ${conEnvio ? `ENVÍO:    $${COSTO_ENVIO.toFixed(2)}` : ''}
           </button>
         </div>
 
+        {/* Lista de Productos (Scrollable) */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white">
           {cart.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-[60%] text-gray-400 gap-4">
@@ -137,6 +142,7 @@ ${conEnvio ? `ENVÍO:    $${COSTO_ENVIO.toFixed(2)}` : ''}
             </div>
           ) : (
             <>
+              {/* Lista de Items */}
               <div className="space-y-3">
                 {cart.map(item => {
                   const subtotal = (Number(item.precio) || 0) * (item.cantidad || item.cant || 0);
@@ -167,7 +173,7 @@ ${conEnvio ? `ENVÍO:    $${COSTO_ENVIO.toFixed(2)}` : ''}
                 })}
               </div>
 
-              {/* OPCIONES DE ENVÍO - NUEVO */}
+              {/* OPCIONES DE ENVÍO */}
               <div className="mt-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -190,6 +196,7 @@ ${conEnvio ? `ENVÍO:    $${COSTO_ENVIO.toFixed(2)}` : ''}
                 )}
               </div>
 
+              {/* FORMULARIO DE CLIENTE (Sin iconos extra para evitar errores) */}
               <div className="mt-6 pt-6 border-t border-gray-100">
                 <h3 className="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
                   <User size={16} className="text-red-600" /> Datos del Cliente
@@ -211,6 +218,7 @@ ${conEnvio ? `ENVÍO:    $${COSTO_ENVIO.toFixed(2)}` : ''}
           )}
         </div>
 
+        {/* Footer del Carrito */}
         <div className="p-4 border-t bg-white pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-10">
           <div className="space-y-1 mb-4">
              <div className="flex justify-between items-center text-gray-500 text-sm">
