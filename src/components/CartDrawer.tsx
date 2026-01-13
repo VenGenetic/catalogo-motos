@@ -1,11 +1,13 @@
 // src/components/CartDrawer.tsx
 import { useState } from 'react';
-// CORRECCIÓN: Se eliminó 'Copy' de los imports porque no se estaba usando (causaba error de build)
-import { X, Minus, Plus, MessageCircle, ShieldCheck, User, MapPin, CreditCard, ArrowRight, Check, FileText } from 'lucide-react';
+import { X, Minus, Plus, MessageCircle, ShieldCheck, User, MapPin, CreditCard, ArrowRight, Check, FileText, Truck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
 import { LazyImage } from './LazyImage';
 import { APP_CONFIG } from '../config/constants';
+
+// Puedes cambiar este valor al precio real de tu envío
+const COSTO_ENVIO = 5.00; 
 
 export const CartDrawer = () => {
   const { 
@@ -16,15 +18,16 @@ export const CartDrawer = () => {
     cartTotal
   } = useCart();
 
-  // Estado para el formulario
   const [formData, setFormData] = useState({
     nombre: '',
     ciudad: '',
     metodoPago: 'Transferencia'
   });
 
-  // Estado para feedback de copiado
   const [copied, setCopied] = useState(false);
+  
+  // NUEVO: Estado para el envío
+  const [conEnvio, setConEnvio] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
@@ -33,36 +36,36 @@ export const CartDrawer = () => {
     });
   };
 
-  // 1. Lógica para mensaje de WhatsApp (Formato Chat)
+  // Calculamos el total final dinámicamente
+  const totalFinal = conEnvio ? cartTotal + COSTO_ENVIO : cartTotal;
+
+  // 1. Lógica WhatsApp (Actualizada con Envío)
   const generarMensajeWhatsApp = () => {
     const itemsList = cart.map(item => 
       `▪️ *${item.cantidad}x* ${item.nombre} ($${(item.cantidad * (Number(item.precio) || 0)).toFixed(2)})`
     ).join('\n');
 
-    const total = Number(cartTotal).toFixed(2);
-
     return `👋 Hola LV PARTS, quiero confirmar el siguiente pedido:
 
 ${itemsList}
+${conEnvio ? `▪️ *Envío / Transporte:* $${COSTO_ENVIO.toFixed(2)}` : ''}
 
-💰 *TOTAL A PAGAR: $${total}*
+💰 *TOTAL A PAGAR: $${totalFinal.toFixed(2)}*
 
-📋 *Mis Datos de Envío:*
+📋 *Datos de Envío:*
 👤 Nombre: ${formData.nombre.trim() || 'No especificado'}
 📍 Ciudad/Dirección: ${formData.ciudad.trim() || 'No especificado'}
-💳 Método de Pago: ${formData.metodoPago}
+💳 Pago: ${formData.metodoPago}
 
-¿Me confirman los datos de cuenta para transferir?`;
+¿Me confirman para transferir?`;
   };
 
-  // 2. Lógica para Proforma (Formato Formal para Copiar)
+  // 2. Lógica Proforma (Actualizada con Envío)
   const generarTextoProforma = () => {
     const date = new Date().toLocaleDateString('es-EC', { year: 'numeric', month: 'long', day: 'numeric' });
     const itemsList = cart.map(item => 
       `Cant: ${item.cantidad} | ${item.nombre} | $${(item.cantidad * (Number(item.precio) || 0)).toFixed(2)}`
     ).join('\n');
-
-    const total = Number(cartTotal).toFixed(2);
 
     return `📄 *COTIZACIÓN / PROFORMA - LV PARTS*
 📅 Fecha: ${date}
@@ -73,9 +76,11 @@ ${itemsList}
 --------------------------------
 ${itemsList}
 --------------------------------
-💰 *TOTAL A PAGAR: $${total}*
-💳 Método Sugerido: ${formData.metodoPago}
+SUBTOTAL: $${cartTotal.toFixed(2)}
+${conEnvio ? `ENVÍO:    $${COSTO_ENVIO.toFixed(2)}` : ''}
+*TOTAL:    $${totalFinal.toFixed(2)}*
 
+💳 Método Sugerido: ${formData.metodoPago}
 ⚠️ *Precios sujetos a disponibilidad.*`;
   };
 
@@ -85,13 +90,12 @@ ${itemsList}
     window.open(url, '_blank');
   };
 
-  // Función para copiar al portapapeles
   const handleCopyProforma = async () => {
     const texto = generarTextoProforma();
     try {
       await navigator.clipboard.writeText(texto);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000); // Resetear estado después de 2s
+      setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error('Error al copiar', err);
     }
@@ -101,16 +105,13 @@ ${itemsList}
 
   return (
     <div className="fixed inset-0 z-[100] flex justify-end">
-      {/* Overlay */}
       <div 
         className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" 
         onClick={closeCart}
       />
 
-      {/* Panel */}
       <div className="relative w-full md:max-w-md bg-white h-full shadow-2xl flex flex-col animate-slide-in-right">
         
-        {/* Header */}
         <div className="p-4 border-b flex justify-between items-center bg-gray-50 shadow-sm z-10">
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
             <MessageCircle className="w-5 h-5" /> Tu Pedido
@@ -123,7 +124,6 @@ ${itemsList}
           </button>
         </div>
 
-        {/* Lista de Productos (Scrollable) */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white">
           {cart.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-[60%] text-gray-400 gap-4">
@@ -137,13 +137,9 @@ ${itemsList}
             </div>
           ) : (
             <>
-              {/* Lista de Items */}
               <div className="space-y-3">
                 {cart.map(item => {
-                  const precioItem = Number(item.precio) || 0;
-                  const cantidad = item.cantidad || item.cant || 0;
-                  const subtotal = precioItem * cantidad;
-
+                  const subtotal = (Number(item.precio) || 0) * (item.cantidad || item.cant || 0);
                   return (
                     <div key={item.id} className="flex gap-3 p-2 border border-gray-100 rounded-xl bg-white shadow-sm hover:border-gray-200 transition-colors">
                       <LazyImage 
@@ -151,7 +147,6 @@ ${itemsList}
                         alt={item.nombre}
                         className="w-16 h-16 rounded-lg bg-gray-50 shrink-0 object-cover" 
                       />
-
                       <div className="flex-1 flex flex-col justify-between py-0.5">
                         <div className="flex justify-between items-start gap-2">
                           <h4 className="text-xs font-bold line-clamp-2 text-slate-800 leading-tight">
@@ -161,23 +156,10 @@ ${itemsList}
                             ${subtotal.toFixed(2)}
                           </span>
                         </div>
-                        
                         <div className="flex items-center gap-3 mt-2 self-start">
-                          <button 
-                            onClick={() => updateQuantity(item.id, -1)} 
-                            className="w-6 h-6 bg-gray-100 hover:bg-gray-200 rounded flex items-center justify-center transition-colors text-slate-600 active:scale-95"
-                          >
-                            <Minus size={12}/>
-                          </button>
-                          <span className="text-xs font-bold w-4 text-center text-slate-900">
-                            {cantidad}
-                          </span>
-                          <button 
-                            onClick={() => updateQuantity(item.id, 1)} 
-                            className="w-6 h-6 bg-slate-900 hover:bg-slate-800 text-white rounded flex items-center justify-center transition-colors active:scale-95"
-                          >
-                            <Plus size={12}/>
-                          </button>
+                          <button onClick={() => updateQuantity(item.id, -1)} className="w-6 h-6 bg-gray-100 hover:bg-gray-200 rounded flex items-center justify-center transition-colors text-slate-600 active:scale-95"><Minus size={12}/></button>
+                          <span className="text-xs font-bold w-4 text-center text-slate-900">{item.cantidad || item.cant || 0}</span>
+                          <button onClick={() => updateQuantity(item.id, 1)} className="w-6 h-6 bg-slate-900 hover:bg-slate-800 text-white rounded flex items-center justify-center transition-colors active:scale-95"><Plus size={12}/></button>
                         </div>
                       </div>
                     </div>
@@ -185,53 +167,43 @@ ${itemsList}
                 })}
               </div>
 
-              {/* FORMULARIO DE ENVÍO */}
-              <div className="mt-8 pt-6 border-t border-gray-100">
+              {/* OPCIONES DE ENVÍO - NUEVO */}
+              <div className="mt-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Truck className="text-slate-700 w-5 h-5" />
+                    <span className="text-sm font-bold text-slate-800">Incluir Envío</span>
+                  </div>
+                  
+                  {/* SWITCH CUSTOMIZADO */}
+                  <button 
+                    onClick={() => setConEnvio(!conEnvio)}
+                    className={`w-11 h-6 flex items-center rounded-full transition-colors duration-300 ${conEnvio ? 'bg-red-600' : 'bg-gray-300'}`}
+                  >
+                    <span className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ${conEnvio ? 'translate-x-6' : 'translate-x-1'}`} />
+                  </button>
+                </div>
+                {conEnvio && (
+                  <p className="text-xs text-gray-500 mt-2 text-right">
+                    Costo adicional: <span className="font-bold text-slate-900">${COSTO_ENVIO.toFixed(2)}</span>
+                  </p>
+                )}
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-100">
                 <h3 className="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
-                  <User size={16} className="text-red-600" /> Datos para el Pedido/Proforma
+                  <User size={16} className="text-red-600" /> Datos del Cliente
                 </h3>
-                <p className="text-xs text-gray-500 mb-4">Útil si vas a copiar la proforma para un cliente.</p>
-                
                 <div className="space-y-3">
+                  <input type="text" name="nombre" placeholder="Nombre (opcional)" value={formData.nombre} onChange={handleInputChange} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:border-red-500 outline-none transition-all" />
+                  <input type="text" name="ciudad" placeholder="Ciudad / Dirección" value={formData.ciudad} onChange={handleInputChange} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:border-red-500 outline-none transition-all" />
                   <div className="relative">
-                    <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                    <input
-                      type="text"
-                      name="nombre"
-                      placeholder="Nombre del Cliente (opcional)"
-                      value={formData.nombre}
-                      onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none transition-all"
-                    />
-                  </div>
-
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                    <input
-                      type="text"
-                      name="ciudad"
-                      placeholder="Ciudad / Dirección"
-                      value={formData.ciudad}
-                      onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none transition-all"
-                    />
-                  </div>
-
-                  <div className="relative">
-                    <CreditCard className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                    <select
-                      name="metodoPago"
-                      value={formData.metodoPago}
-                      onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:border-red-500 outline-none appearance-none"
-                    >
+                    <select name="metodoPago" value={formData.metodoPago} onChange={handleInputChange} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:border-red-500 outline-none appearance-none">
                       <option value="Transferencia Bancaria">Transferencia Bancaria</option>
                       <option value="Depósito">Depósito en Agente</option>
                       <option value="Efectivo en Local">Efectivo en Local</option>
                     </select>
-                    <div className="absolute right-3 top-3.5 pointer-events-none">
-                      <ArrowRight size={14} className="text-gray-400 rotate-90" />
-                    </div>
+                    <ArrowRight size={14} className="absolute right-3 top-3.5 text-gray-400 rotate-90 pointer-events-none" />
                   </div>
                 </div>
               </div>
@@ -239,28 +211,27 @@ ${itemsList}
           )}
         </div>
 
-        {/* Footer del Carrito */}
         <div className="p-4 border-t bg-white pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-10">
-          
-          {cart.length > 0 && (
-            <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 mb-4 flex gap-3">
-              <ShieldCheck className="w-5 h-5 text-blue-600 shrink-0" />
-              <p className="text-[10px] text-blue-800 leading-tight">
-                Genera el pedido y envíalo por WhatsApp o copia la proforma para enviarla por otro medio.
-              </p>
-            </div>
-          )}
-
-          <div className="flex justify-between items-center mb-4">
-            <span className="text-gray-500 font-medium text-sm">Total Estimado</span>
-            <span className="text-2xl font-extrabold text-slate-900">
-              ${(Number(cartTotal) || 0).toFixed(2)}
-            </span>
+          <div className="space-y-1 mb-4">
+             <div className="flex justify-between items-center text-gray-500 text-sm">
+                <span>Subtotal</span>
+                <span>${cartTotal.toFixed(2)}</span>
+             </div>
+             {conEnvio && (
+               <div className="flex justify-between items-center text-slate-700 text-sm font-medium">
+                  <span>Envío</span>
+                  <span>${COSTO_ENVIO.toFixed(2)}</span>
+               </div>
+             )}
+             <div className="flex justify-between items-center pt-2 border-t border-gray-100 mt-2">
+                <span className="text-gray-900 font-bold">Total</span>
+                <span className="text-2xl font-extrabold text-slate-900">
+                  ${totalFinal.toFixed(2)}
+                </span>
+             </div>
           </div>
           
-          {/* BOTONES DE ACCIÓN: GRID DE 2 COLUMNAS */}
           <div className="grid grid-cols-[1fr_2fr] gap-3">
-            {/* Botón 1: Copiar Proforma */}
             <button
                onClick={handleCopyProforma}
                disabled={cart.length === 0}
@@ -274,7 +245,6 @@ ${itemsList}
                <span className="text-sm">{copied ? '¡Copiado!' : 'Copiar'}</span>
             </button>
 
-            {/* Botón 2: Enviar WhatsApp */}
             <button 
               onClick={handleCheckout} 
               disabled={cart.length === 0}
