@@ -11,7 +11,6 @@ import { WhatsAppButton } from './components/WhatsAppButton';
 
 // Carga Diferida (Lazy Loading)
 const CatalogView = lazy(() => import('./components/CatalogView').then(module => ({ default: module.CatalogView })));
-// CORRECCIÓN: Ahora importamos ContactView como default para evitar el error TS2339
 const ContactView = lazy(() => import('./components/ContactView'));
 
 import { ProductDetailModal } from './components/ProductDetailModal';
@@ -49,7 +48,9 @@ export default function App() {
   const [busqueda, setBusqueda] = useState('');
   const [filtroModelo, setFiltroModelo] = useState('');
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
-  const busquedaDebounced = useDebounce(busqueda, 300);
+  
+  // CAMBIO CLAVE: Reducimos el tiempo de espera a 50ms para que se sienta INSTANTÁNEO
+  const busquedaDebounced = useDebounce(busqueda, 50);
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
