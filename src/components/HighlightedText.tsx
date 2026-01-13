@@ -1,53 +1,45 @@
-// src/components/HighlightedText.tsx
+import { memo } from 'react';
 
-interface Props {
+interface HighlightedTextProps {
   text: string;
   highlight: string;
 }
 
-export const HighlightedText = ({ text, highlight }: Props) => {
-  // Protección contra textos vacíos o nulos
-  if (!text) return null;
-  if (!highlight || !highlight.trim()) return <span>{text}</span>;
+export const HighlightedText = memo(({ text, highlight }: HighlightedTextProps) => {
+  if (!highlight?.trim()) {
+    return <span>{text}</span>;
+  }
 
-  // Función para "escapar" caracteres peligrosos de Regex (., *, +, ?, etc.)
+  // Función segura para escapar caracteres especiales de Regex (como +, *, ?, etc.)
   const escapeRegExp = (string: string) => {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   };
 
   try {
-    // Dividir el highlight en múltiples términos
-    const terms = highlight.trim().split(/\s+/).filter(term => term.length > 0);
+    // Creamos una expresión regular que separa el texto buscando la coincidencia (case insensitive)
+    // El paréntesis () es vital: hace que el .split incluya también el separador (la coincidencia) en el array
+    const regex = new RegExp(`(${escapeRegExp(highlight)})`, 'gi');
     
-    if (terms.length === 0) return <span>{text}</span>;
-
-    // Crear un patrón que combine todos los términos
-    const patterns = terms.map(term => `(${escapeRegExp(term)})`);
-    const combinedPattern = new RegExp(`(${patterns.join('|')})`, 'gi');
-    
-    const parts = text.split(combinedPattern);
+    const parts = text.split(regex);
 
     return (
-      <span>
-        {parts.map((part, i) => {
-          // Verificar si esta parte coincide con alguno de los términos
-          const isMatch = terms.some(term => 
-            new RegExp(`^${escapeRegExp(term)}$`, 'i').test(part)
-          );
-          
-          return isMatch ? (
-            <mark key={i} className="bg-yellow-200 text-slate-900 rounded-sm px-0.5 font-bold mx-0.5">
+      <span className="truncate block">
+        {parts.map((part, i) => 
+          regex.test(part) ? (
+            // Si la parte coincide con la búsqueda, la resaltamos
+            <span key={i} className="bg-yellow-200 text-slate-900 font-extrabold px-0.5 rounded-sm mx-0.5 shadow-sm">
               {part}
-            </mark>
+            </span>
           ) : (
-            part
-          );
-        })}
+            // Si no coincide, devolvemos el texto normal
+            <span key={i}>{part}</span>
+          )
+        )}
       </span>
     );
   } catch (e) {
-    // Si algo falla, devolvemos el texto normal para no romper la app
-    console.error("Error en resaltado:", e);
+    // Fallback de seguridad por si falla el Regex
+    console.error("Error highlighting text", e);
     return <span>{text}</span>;
   }
-};
+});
