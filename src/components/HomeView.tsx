@@ -9,19 +9,20 @@ interface HomeViewProps {
   productos: Producto[];
 }
 
-export const HomeView = ({ productos }: HomeViewProps) => {
+// CORRECCIÓN: Renombramos 'productos' a '_productos' para silenciar el error de variable no usada
+export const HomeView = ({ productos: _productos }: HomeViewProps) => {
   
   // DATOS DEL NEGOCIO LOCAL (Schema.org)
   const businessSchema = {
     "@context": "https://schema.org",
-    "@type": "AutoPartsStore", // Google entiende esto específicamente como tienda de repuestos
+    "@type": "AutoPartsStore",
     "name": "LV PARTS",
     "image": `${window.location.origin}/hero-nueva.png`,
     "description": "Distribuidor autorizado de repuestos para motos Daytona, Tekken, IGM y más en Ecuador.",
     "telephone": APP_CONFIG.WHATSAPP_NUMBER,
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "Ecuador", // Puedes poner tu ciudad real aquí (ej: "Quito")
+      "addressLocality": "Ecuador",
       "addressCountry": "EC"
     },
     "url": window.location.origin,

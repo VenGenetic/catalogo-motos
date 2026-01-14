@@ -1,12 +1,13 @@
 import { useEffect, useRef, useMemo } from 'react';
 import { X, ShoppingCart, Check, AlertCircle, Share2, Tag, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Helmet } from 'react-helmet-async'; // <--- IMPORTANTE: Para el SEO
+import { Helmet } from 'react-helmet-async';
 import { Producto } from '../types';
 import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
-import { APP_CONFIG } from '../config/constants';
 import { LazyImage } from './LazyImage';
+
+// CORRECCIÓN: Se eliminó el import de APP_CONFIG que no se estaba usando
 
 interface Props {
   product: Producto | null;
@@ -33,11 +34,10 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
     return () => { document.body.style.overflow = 'unset'; };
   }, [product]);
 
-  // Encontrar productos relacionados (misma categoría o nombre similar)
+  // Encontrar productos relacionados
   const relacionados = useMemo(() => {
     if (!product) return [];
     
-    // 1. Extraer palabras clave del nombre (ej: "CARBURADOR", "TEKKEN")
     const palabras = product.nombre.split(' ').filter(p => p.length > 3).slice(0, 2);
     
     return allProducts
@@ -45,12 +45,12 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
         p.id !== product.id && 
         (p.seccion === product.seccion || palabras.some(w => p.nombre.includes(w)))
       )
-      .slice(0, 4); // Mostrar máximo 4 relacionados
+      .slice(0, 4);
   }, [product, allProducts]);
 
   if (!product) return null;
 
-  // --- DATOS ESTRUCTURADOS (JSON-LD) PARA GOOGLE ---
+  // SEO Schema
   const structuredData = {
     "@context": "https://schema.org/",
     "@type": "Product",
@@ -74,7 +74,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
     <AnimatePresence>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
         
-        {/* SEO DINÁMICO */}
         <Helmet>
           <title>{`${product.nombre} | LV PARTS`}</title>
           <meta name="description" content={`Compra ${product.nombre} al mejor precio. Repuestos originales Daytona en Ecuador. Stock disponible: ${product.stock ? 'SÍ' : 'NO'}.`} />
@@ -190,7 +189,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               </div>
             </div>
 
-            {/* RELACIONADOS (Cross-Selling) */}
+            {/* RELACIONADOS */}
             {relacionados.length > 0 && (
               <div className="mt-8 pt-6 border-t border-gray-100">
                 <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">
