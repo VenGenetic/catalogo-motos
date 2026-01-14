@@ -1,11 +1,11 @@
 import { useEffect, useRef, useMemo } from 'react';
-import { X, ShoppingCart, Check, AlertCircle, Share2, Tag, Info } from 'lucide-react';
+import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info } from 'lucide-react'; // Cambié Share2 por MessageCircle
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { Producto } from '../types';
 import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
-// IMPORTANTE: Recuperamos ImageZoom para la imagen principal y LazyImage para las miniaturas
+import { APP_CONFIG } from '../config/constants';
 import { ImageZoom } from './ImageZoom';
 import { LazyImage } from './LazyImage';
 
@@ -18,14 +18,15 @@ interface Props {
 
 export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRelated }: Props) => {
   const { addToCart } = useCart();
-  const modalRef = useRef<HTMLDivElement>(null);
-
+  
+  // Cerrar con ESC
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, [onClose]);
 
+  // Bloquear scroll del body (fondo) para evitar doble barra
   useEffect(() => {
     if (product) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
@@ -45,194 +46,209 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
 
   if (!product) return null;
 
+  // Acción para el botón de WhatsApp Directo
+  const handleDirectQuote = () => {
+    const message = `Hola LV PARTS, me interesa este repuesto: ${product.nombre} (Ref: ${product.codigo_referencia || 'S/N'}). ¿Me confirman precio y stock?`;
+    const url = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  };
+
+  // Schema SEO
   const structuredData = {
     "@context": "https://schema.org/",
     "@type": "Product",
     "name": product.nombre,
     "image": [`${window.location.origin}${optimizarImg(product.imagen)}`],
-    "description": `Repuesto original ${product.nombre}. Categoría: ${product.categoria}.`,
+    "description": `Repuesto ${product.nombre}. Categoría: ${product.categoria}.`,
     "sku": product.codigo_referencia || product.id,
     "offers": {
       "@type": "Offer",
-      "url": window.location.href,
       "priceCurrency": "USD",
       "price": product.precio,
-      "availability": product.stock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      "itemCondition": "https://schema.org/NewCondition"
+      "availability": product.stock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
     }
   };
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+      {/* WRAPPER PRINCIPAL:
+         - z-50: Encima de todo
+         - fixed inset-0: Ocupa toda la pantalla
+         - overflow-y-auto: PERMITE EL SCROLL NATIVO (Crucial para móvil)
+      */}
+      <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm">
         
         <Helmet>
           <title>{`${product.nombre} | LV PARTS`}</title>
-          <meta name="description" content={`Compra ${product.nombre}. Stock: ${product.stock ? 'SÍ' : 'NO'}.`} />
           <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         </Helmet>
 
-        <motion.div 
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-          className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-          onClick={onClose}
-        />
-
-        <motion.div 
-          initial={{ y: '100%' }} 
-          animate={{ y: 0 }} 
-          exit={{ y: '100%' }}
-          transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-5xl bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row h-[90vh] md:h-auto md:max-h-[90vh]"
-          ref={modalRef}
-        >
-          <button 
-            onClick={onClose}
-            className="absolute top-4 right-4 z-20 p-2 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-800 transition-colors shadow-sm"
+        {/* CONTENEDOR FLEX: Centra en desktop, full width en móvil */}
+        <div className="flex min-h-full items-end sm:items-center justify-center p-0 sm:p-4 text-center sm:text-left">
+          
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95, y: 50 }} 
+            animate={{ opacity: 1, scale: 1, y: 0 }} 
+            exit={{ opacity: 0, scale: 0.95, y: 50 }}
+            transition={{ type: "spring", duration: 0.5 }}
+            className="relative w-full max-w-5xl bg-white sm:rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden text-left"
+            onClick={(e) => e.stopPropagation()} // Evita cerrar al hacer click dentro
           >
-            <X size={24} />
-          </button>
+            
+            {/* Botón Cerrar Flotante */}
+            <button 
+              onClick={onClose}
+              className="absolute top-3 right-3 z-30 p-2 bg-white/80 hover:bg-white rounded-full text-slate-800 shadow-md backdrop-blur-md transition-all active:scale-90"
+            >
+              <X size={24} />
+            </button>
 
-          {/* COLUMNA IZQUIERDA: IMAGEN CON ZOOM */}
-          <div className="w-full md:w-3/5 bg-white flex flex-col justify-center relative border-b md:border-b-0 md:border-r border-gray-100">
-             
-             {/* CORRECCIÓN CLAVE:
-                Usamos aspect-[1024/535] para respetar EXACTAMENTE la medida de tus fotos.
-                Esto evita recortes y asegura que se vean perfectas en móvil y PC.
-             */}
-             <div className="w-full aspect-[1024/535] bg-gray-50 relative">
-               <ImageZoom 
-                 src={optimizarImg(product.imagen)} 
-                 alt={product.nombre}
-                 className="w-full h-full" 
-               />
-               
-               {!product.stock && (
-                 <div className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 text-xs font-bold rounded shadow-md z-10 pointer-events-none">
-                   AGOTADO
+            {/* --- COLUMNA 1: IMAGEN (ARRIBA EN MÓVIL) --- */}
+            <div className="w-full md:w-3/5 bg-gray-50 relative border-b md:border-b-0 md:border-r border-gray-100">
+               {/* Aspect Ratio EXACTO 1024/535 */}
+               <div className="w-full aspect-[1024/535] relative group">
+                 <ImageZoom 
+                   src={optimizarImg(product.imagen)} 
+                   alt={product.nombre}
+                   className="w-full h-full" 
+                 />
+                 
+                 {/* Badge de Stock sobre la imagen */}
+                 <div className="absolute top-4 left-4">
+                   {!product.stock ? (
+                     <span className="bg-red-600 text-white px-3 py-1 text-xs font-bold rounded shadow-md">AGOTADO</span>
+                   ) : (
+                     <span className="bg-green-600 text-white px-3 py-1 text-xs font-bold rounded shadow-md flex items-center gap-1">
+                        <Check size={12} strokeWidth={4} /> STOCK
+                     </span>
+                   )}
                  </div>
-               )}
-             </div>
-          </div>
+               </div>
+            </div>
 
-          {/* COLUMNA DERECHA: DETALLES */}
-          <div className="w-full md:w-2/5 flex flex-col h-full bg-white">
-            <div className="flex-1 overflow-y-auto p-5 md:p-8">
+            {/* --- COLUMNA 2: INFO (ABAJO EN MÓVIL) --- */}
+            {/* pb-24 en móvil para dar espacio a los botones fijos */}
+            <div className="w-full md:w-2/5 flex flex-col bg-white pb-24 md:pb-0">
               
-              <div className="flex items-center gap-2 mb-4">
-                 <span className="bg-slate-100 text-slate-700 px-2 py-1 rounded text-xs font-bold uppercase tracking-wide border border-slate-200">
-                   {product.seccion}
-                 </span>
-                 {product.codigo_referencia && (
-                   <span className="text-sm text-slate-500 font-mono flex items-center gap-1 bg-gray-50 px-2 py-1 rounded border border-gray-100">
-                     <Tag size={12} /> {product.codigo_referencia}
-                   </span>
-                 )}
-              </div>
-              
-              <h2 className="text-xl md:text-2xl font-black text-slate-900 leading-snug mb-6">
-                {product.nombre}
-              </h2>
-
-              <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 mb-6 flex items-center justify-between">
+              <div className="p-5 md:p-8 space-y-5">
+                
+                {/* Header Info */}
                 <div>
-                   <span className="text-xs text-gray-500 font-bold uppercase block mb-1">Precio Unitario</span>
-                   <span className="text-3xl font-black text-slate-900 tracking-tight">
-                     ${Number(product.precio).toFixed(2)}
-                   </span>
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <span className="bg-slate-100 text-slate-700 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide border border-slate-200">
+                      {product.seccion}
+                    </span>
+                    {product.codigo_referencia && (
+                      <span className="text-xs text-slate-500 font-mono flex items-center gap-1 bg-gray-50 px-2 py-1 rounded border border-gray-100">
+                        <Tag size={12} /> {product.codigo_referencia}
+                      </span>
+                    )}
+                  </div>
+                  <h2 className="text-xl md:text-2xl font-black text-slate-900 leading-snug">
+                    {product.nombre}
+                  </h2>
                 </div>
-                {product.stock ? (
-                    <div className="text-right">
-                       <span className="text-xs text-green-600 font-bold uppercase block mb-1">Estado</span>
-                       <span className="flex items-center justify-end gap-1.5 text-green-700 font-bold text-sm">
-                         <Check size={16} strokeWidth={3} /> En Bodega
-                       </span>
+
+                {/* Precio */}
+                <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 flex items-center justify-between">
+                  <div>
+                     <span className="text-[10px] text-gray-500 font-bold uppercase block">Precio</span>
+                     <span className="text-3xl font-black text-slate-900 tracking-tight">
+                       ${Number(product.precio).toFixed(2)}
+                     </span>
+                  </div>
+                  <div className="text-right">
+                     <span className="text-[10px] text-gray-400 font-bold uppercase block">Disponibilidad</span>
+                     {product.stock ? (
+                         <span className="text-sm font-bold text-green-600">En Bodega</span>
+                     ) : (
+                         <span className="text-sm font-bold text-red-500 flex items-center gap-1">
+                           <AlertCircle size={14}/> Agotado
+                         </span>
+                     )}
+                  </div>
+                </div>
+
+                <div className="flex gap-3 p-3 bg-blue-50/50 rounded-lg border border-blue-100 text-xs md:text-sm text-blue-800 leading-relaxed">
+                   <Info size={18} className="shrink-0 mt-0.5" />
+                   <p>Asegúrate de que la foto coincida con tu repuesto. ¿Dudas? Usa el botón de WhatsApp.</p>
+                </div>
+
+                {/* Relacionados */}
+                {relacionados.length > 0 && (
+                  <div className="pt-4 border-t border-gray-100">
+                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+                      Relacionados
+                    </h3>
+                    <div className="grid grid-cols-2 gap-2">
+                       {relacionados.slice(0, 2).map(rel => (
+                         <div 
+                            key={rel.id} 
+                            className="cursor-pointer group flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-200 transition-all"
+                            onClick={() => onSelectRelated(rel)}
+                         >
+                            <div className="w-10 h-10 bg-white rounded border border-gray-100 shrink-0 overflow-hidden">
+                               <LazyImage 
+                                  src={optimizarImg(rel.imagen)} 
+                                  alt={rel.nombre}
+                                  className="w-full h-full" 
+                                  imageFit="contain"
+                                  cropBottom={false}
+                               />
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-[10px] font-bold text-slate-700 truncate group-hover:text-red-600">
+                                {rel.nombre}
+                              </p>
+                              <p className="text-[10px] font-bold text-slate-900">
+                                ${Number(rel.precio).toFixed(2)}
+                              </p>
+                            </div>
+                         </div>
+                       ))}
                     </div>
-                ) : (
-                    <div className="text-right">
-                       <span className="text-xs text-red-500 font-bold uppercase block mb-1">Estado</span>
-                       <span className="flex items-center justify-end gap-1.5 text-red-600 font-bold text-sm">
-                         <AlertCircle size={16} /> Agotado
-                       </span>
-                    </div>
+                  </div>
                 )}
               </div>
 
-              <div className="flex items-start gap-3 p-3 bg-blue-50/50 rounded-lg border border-blue-100 text-sm text-blue-800 mb-8">
-                 <Info size={18} className="shrink-0 mt-0.5" />
-                 <p className="leading-relaxed">
-                   Haz clic en la imagen para verla en pantalla completa y revisar los detalles técnicos.
-                 </p>
-              </div>
-
-              {/* RELACIONADOS */}
-              {relacionados.length > 0 && (
-                <div className="pt-6 border-t border-gray-100">
-                  <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">
-                    Relacionados
-                  </h3>
-                  <div className="grid grid-cols-2 gap-3">
-                     {relacionados.slice(0, 2).map(rel => (
-                       <div 
-                          key={rel.id} 
-                          className="cursor-pointer group flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-200 transition-all"
-                          onClick={() => onSelectRelated(rel)}
-                       >
-                          <div className="w-12 h-12 bg-white rounded border border-gray-100 shrink-0 overflow-hidden">
-                             {/* Aquí usamos LazyImage porque son miniaturas */}
-                             <LazyImage 
-                                src={optimizarImg(rel.imagen)} 
-                                alt={rel.nombre}
-                                className="w-full h-full" 
-                                imageFit="contain"
-                                cropBottom={false}
-                             />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="text-xs font-bold text-slate-700 truncate group-hover:text-red-600">
-                              {rel.nombre}
-                            </p>
-                            <p className="text-xs font-bold text-slate-900">
-                              ${Number(rel.precio).toFixed(2)}
-                            </p>
-                          </div>
-                       </div>
-                     ))}
-                  </div>
-                </div>
-              )}
             </div>
 
-            {/* FOOTER FIJO */}
-            <div className="p-4 border-t border-gray-100 bg-white pb-safe md:pb-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-10">
-              <div className="flex gap-3">
+            {/* --- FOOTER DE ACCIONES (STICKY EN MÓVIL) --- 
+               Se pega al fondo de la pantalla en móvil para acceso rápido
+            */}
+            <div className="fixed bottom-0 left-0 right-0 p-3 bg-white border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] md:static md:shadow-none md:p-6 md:border-t z-40 pb-safe">
+              <div className="flex gap-2 max-w-5xl mx-auto w-full">
+                
+                {/* Botón 1: Cotizar Directo (WhatsApp) */}
+                <button 
+                  onClick={handleDirectQuote}
+                  className="flex-1 py-3.5 px-4 rounded-xl font-bold text-sm bg-green-500 text-white hover:bg-green-600 shadow-lg shadow-green-500/20 active:scale-95 transition-all flex items-center justify-center gap-2"
+                >
+                  <MessageCircle size={20} className="fill-current" />
+                  <span className="line-clamp-1">Cotizar</span>
+                </button>
+
+                {/* Botón 2: Agregar al Carrito */}
                 <button 
                   onClick={() => addToCart(product)}
                   disabled={!product.stock}
-                  className={`flex-1 py-4 px-6 rounded-xl font-bold text-base flex items-center justify-center gap-2 transition-all shadow-lg active:scale-95 ${
+                  className={`flex-1 py-3.5 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 ${
                     product.stock 
-                      ? 'bg-slate-900 text-white hover:bg-slate-800 shadow-slate-200' 
+                      ? 'bg-slate-900 text-white hover:bg-slate-800 shadow-lg shadow-slate-900/20' 
                       : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                   }`}
                 >
                   <ShoppingCart size={20} />
-                  {product.stock ? 'Agregar' : 'Sin Stock'}
+                  <span className="line-clamp-1">
+                    {product.stock ? 'Agregar' : 'Sin Stock'}
+                  </span>
                 </button>
-                
-                <button 
-                  className="p-4 rounded-xl border border-gray-200 text-slate-600 hover:text-slate-900 hover:border-slate-300 hover:bg-gray-50 transition-all active:scale-95"
-                  onClick={() => {
-                    navigator.clipboard.writeText(window.location.href);
-                    alert('Enlace copiado');
-                  }}
-                >
-                  <Share2 size={20} />
-                </button>
+
               </div>
             </div>
-          </div>
 
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
     </AnimatePresence>
   );
