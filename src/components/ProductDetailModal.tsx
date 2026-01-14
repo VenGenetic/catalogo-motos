@@ -1,5 +1,6 @@
-import { useEffect, useRef, useMemo } from 'react';
-import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info } from 'lucide-react'; // Cambié Share2 por MessageCircle
+// CORRECCIÓN: Se eliminó 'useRef' de los imports
+import { useEffect, useMemo } from 'react';
+import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { Producto } from '../types';
@@ -26,7 +27,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
     return () => window.removeEventListener('keydown', handleEsc);
   }, [onClose]);
 
-  // Bloquear scroll del body (fondo) para evitar doble barra
+  // Bloquear scroll del body
   useEffect(() => {
     if (product) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
@@ -46,14 +47,12 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
 
   if (!product) return null;
 
-  // Acción para el botón de WhatsApp Directo
   const handleDirectQuote = () => {
     const message = `Hola LV PARTS, me interesa este repuesto: ${product.nombre} (Ref: ${product.codigo_referencia || 'S/N'}). ¿Me confirman precio y stock?`;
     const url = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   };
 
-  // Schema SEO
   const structuredData = {
     "@context": "https://schema.org/",
     "@type": "Product",
@@ -71,11 +70,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
 
   return (
     <AnimatePresence>
-      {/* WRAPPER PRINCIPAL:
-         - z-50: Encima de todo
-         - fixed inset-0: Ocupa toda la pantalla
-         - overflow-y-auto: PERMITE EL SCROLL NATIVO (Crucial para móvil)
-      */}
       <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm">
         
         <Helmet>
@@ -83,7 +77,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
           <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         </Helmet>
 
-        {/* CONTENEDOR FLEX: Centra en desktop, full width en móvil */}
         <div className="flex min-h-full items-end sm:items-center justify-center p-0 sm:p-4 text-center sm:text-left">
           
           <motion.div 
@@ -92,10 +85,9 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
             exit={{ opacity: 0, scale: 0.95, y: 50 }}
             transition={{ type: "spring", duration: 0.5 }}
             className="relative w-full max-w-5xl bg-white sm:rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden text-left"
-            onClick={(e) => e.stopPropagation()} // Evita cerrar al hacer click dentro
+            onClick={(e) => e.stopPropagation()} 
           >
             
-            {/* Botón Cerrar Flotante */}
             <button 
               onClick={onClose}
               className="absolute top-3 right-3 z-30 p-2 bg-white/80 hover:bg-white rounded-full text-slate-800 shadow-md backdrop-blur-md transition-all active:scale-90"
@@ -103,9 +95,8 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               <X size={24} />
             </button>
 
-            {/* --- COLUMNA 1: IMAGEN (ARRIBA EN MÓVIL) --- */}
+            {/* COLUMNA 1: IMAGEN */}
             <div className="w-full md:w-3/5 bg-gray-50 relative border-b md:border-b-0 md:border-r border-gray-100">
-               {/* Aspect Ratio EXACTO 1024/535 */}
                <div className="w-full aspect-[1024/535] relative group">
                  <ImageZoom 
                    src={optimizarImg(product.imagen)} 
@@ -113,7 +104,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                    className="w-full h-full" 
                  />
                  
-                 {/* Badge de Stock sobre la imagen */}
                  <div className="absolute top-4 left-4">
                    {!product.stock ? (
                      <span className="bg-red-600 text-white px-3 py-1 text-xs font-bold rounded shadow-md">AGOTADO</span>
@@ -126,13 +116,11 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                </div>
             </div>
 
-            {/* --- COLUMNA 2: INFO (ABAJO EN MÓVIL) --- */}
-            {/* pb-24 en móvil para dar espacio a los botones fijos */}
+            {/* COLUMNA 2: INFO */}
             <div className="w-full md:w-2/5 flex flex-col bg-white pb-24 md:pb-0">
               
               <div className="p-5 md:p-8 space-y-5">
                 
-                {/* Header Info */}
                 <div>
                   <div className="flex flex-wrap items-center gap-2 mb-2">
                     <span className="bg-slate-100 text-slate-700 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide border border-slate-200">
@@ -149,7 +137,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                   </h2>
                 </div>
 
-                {/* Precio */}
                 <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 flex items-center justify-between">
                   <div>
                      <span className="text-[10px] text-gray-500 font-bold uppercase block">Precio</span>
@@ -174,7 +161,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                    <p>Asegúrate de que la foto coincida con tu repuesto. ¿Dudas? Usa el botón de WhatsApp.</p>
                 </div>
 
-                {/* Relacionados */}
                 {relacionados.length > 0 && (
                   <div className="pt-4 border-t border-gray-100">
                     <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
@@ -213,13 +199,10 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
 
             </div>
 
-            {/* --- FOOTER DE ACCIONES (STICKY EN MÓVIL) --- 
-               Se pega al fondo de la pantalla en móvil para acceso rápido
-            */}
+            {/* FOOTER DE ACCIONES STICKY */}
             <div className="fixed bottom-0 left-0 right-0 p-3 bg-white border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] md:static md:shadow-none md:p-6 md:border-t z-40 pb-safe">
               <div className="flex gap-2 max-w-5xl mx-auto w-full">
                 
-                {/* Botón 1: Cotizar Directo (WhatsApp) */}
                 <button 
                   onClick={handleDirectQuote}
                   className="flex-1 py-3.5 px-4 rounded-xl font-bold text-sm bg-green-500 text-white hover:bg-green-600 shadow-lg shadow-green-500/20 active:scale-95 transition-all flex items-center justify-center gap-2"
@@ -228,7 +211,6 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                   <span className="line-clamp-1">Cotizar</span>
                 </button>
 
-                {/* Botón 2: Agregar al Carrito */}
                 <button 
                   onClick={() => addToCart(product)}
                   disabled={!product.stock}
