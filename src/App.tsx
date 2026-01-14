@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react';
-import { Routes, Route, useSearchParams, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, useSearchParams, Link } from 'react-router-dom';
 import { Heart, WifiOff } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import './App.css';
@@ -36,7 +36,6 @@ const PageLoader = () => (
 
 export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const location = useLocation();
   const { productos, loading } = useProducts();
   
   // Derivamos el producto seleccionado de la URL
