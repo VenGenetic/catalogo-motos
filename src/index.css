@@ -16,6 +16,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background-color: #f8fafc; /* Slate 50 */
+  -webkit-tap-highlight-color: transparent; /* Quitar flash azul en tap */
 }
 
 html {

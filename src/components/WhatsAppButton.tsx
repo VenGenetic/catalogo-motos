@@ -37,9 +37,9 @@ export const WhatsAppButton = ({ hideWhenModalOpen = false }: WhatsAppButtonProp
     >
       <MessageCircle className="w-6 h-6 fill-current animate-bounce-slow" />
       
-      {/* Texto visible solo al pasar el mouse en PC */}
+      {/* Texto: mostrar 'Whatsapp' en pantallas medianas+ y al hover en desktop */}
       <span className="font-bold text-sm pr-1 hidden group-hover:inline-block md:inline-block">
-        ¿Necesitas ayuda?
+        Whatsapp
       </span>
       
       {/* Punto de notificación rojo */}

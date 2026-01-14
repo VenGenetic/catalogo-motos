@@ -215,7 +215,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                   className="flex-1 py-3.5 px-2 rounded-xl font-bold text-sm bg-green-500 text-white hover:bg-green-600 shadow-lg shadow-green-500/20 active:scale-95 transition-all flex items-center justify-center gap-2 min-w-0"
                 >
                   <MessageCircle size={20} className="fill-current shrink-0" />
-                  <span className="truncate">Preguntar WhatsApp</span>
+                  <span className="truncate">Whatsapp</span>
                 </button>
 
                 <button 
