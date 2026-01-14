@@ -7,8 +7,6 @@ import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
 import { LazyImage } from './LazyImage';
 
-// CORRECCIÓN: Se eliminó el import de APP_CONFIG que no se estaba usando
-
 interface Props {
   product: Producto | null;
   allProducts: Producto[];
@@ -20,26 +18,21 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
   const { addToCart } = useCart();
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Cerrar con tecla ESC
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, [onClose]);
 
-  // Bloquear scroll de fondo
   useEffect(() => {
     if (product) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
     return () => { document.body.style.overflow = 'unset'; };
   }, [product]);
 
-  // Encontrar productos relacionados
   const relacionados = useMemo(() => {
     if (!product) return [];
-    
     const palabras = product.nombre.split(' ').filter(p => p.length > 3).slice(0, 2);
-    
     return allProducts
       .filter(p => 
         p.id !== product.id && 
@@ -50,15 +43,12 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
 
   if (!product) return null;
 
-  // SEO Schema
   const structuredData = {
     "@context": "https://schema.org/",
     "@type": "Product",
     "name": product.nombre,
-    "image": [
-      `${window.location.origin}${optimizarImg(product.imagen)}`
-    ],
-    "description": `Repuesto original ${product.nombre}. Categoría: ${product.categoria}. Compatible con motos Daytona y otras marcas en Ecuador.`,
+    "image": [`${window.location.origin}${optimizarImg(product.imagen)}`],
+    "description": `Repuesto original ${product.nombre}. Categoría: ${product.categoria}.`,
     "sku": product.codigo_referencia || product.id,
     "offers": {
       "@type": "Offer",
@@ -72,154 +62,172 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+      <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
         
         <Helmet>
           <title>{`${product.nombre} | LV PARTS`}</title>
-          <meta name="description" content={`Compra ${product.nombre} al mejor precio. Repuestos originales Daytona en Ecuador. Stock disponible: ${product.stock ? 'SÍ' : 'NO'}.`} />
-          <script type="application/ld+json">
-            {JSON.stringify(structuredData)}
-          </script>
+          <meta name="description" content={`Compra ${product.nombre}. Stock: ${product.stock ? 'SÍ' : 'NO'}.`} />
+          <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         </Helmet>
 
         <motion.div 
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-          className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          className="absolute inset-0 bg-black/80 backdrop-blur-sm"
           onClick={onClose}
         />
 
         <motion.div 
-          initial={{ scale: 0.95, opacity: 0, y: 20 }} 
-          animate={{ scale: 1, opacity: 1, y: 0 }} 
-          exit={{ scale: 0.95, opacity: 0, y: 20 }}
-          className="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[90vh] md:max-h-[80vh]"
+          initial={{ y: '100%' }} 
+          animate={{ y: 0 }} 
+          exit={{ y: '100%' }}
+          transition={{ type: "spring", damping: 25, stiffness: 300 }}
+          className="relative w-full max-w-5xl bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row h-[90vh] md:h-auto md:max-h-[85vh]"
           ref={modalRef}
         >
           <button 
             onClick={onClose}
-            className="absolute top-4 right-4 z-10 p-2 bg-black/10 hover:bg-black/20 rounded-full text-slate-800 transition-colors"
+            className="absolute top-4 right-4 z-20 p-2 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-800 transition-colors shadow-sm"
           >
             <X size={24} />
           </button>
 
-          {/* COLUMNA IZQUIERDA: IMAGEN */}
-          <div className="w-full md:w-1/2 bg-gray-50 p-4 md:p-8 flex items-center justify-center relative">
-             <div className="w-full aspect-square max-w-sm mix-blend-multiply">
+          {/* COLUMNA IZQUIERDA: IMAGEN (CORREGIDO: Sin recortes) */}
+          <div className="w-full md:w-3/5 bg-white p-4 flex items-center justify-center relative border-b md:border-b-0 md:border-r border-gray-100">
+             {/* CORRECCIÓN TÉCNICA:
+                1. Quitamos 'aspect-square' para que no fuerce cuadrados.
+                2. Quitamos 'mix-blend-multiply' para ver el repuesto tal cual es.
+                3. Usamos 'h-full' y 'object-contain' estricto.
+             */}
+             <div className="w-full h-[40vh] md:h-[500px] flex items-center justify-center">
                <LazyImage 
                  src={optimizarImg(product.imagen)} 
                  alt={product.nombre}
-                 className="w-full h-full object-contain drop-shadow-xl hover:scale-105 transition-transform duration-500"
+                 // IMPORTANTE: cropBottom={false} para asegurar que se vea todo
+                 cropBottom={false} 
+                 className="w-full h-full object-contain"
                />
              </div>
+             
              {!product.stock && (
-               <div className="absolute top-6 left-6 bg-red-600 text-white px-3 py-1 text-xs font-bold rounded shadow-sm">
+               <div className="absolute top-6 left-6 bg-red-600 text-white px-4 py-1.5 text-sm font-bold rounded shadow-md z-10">
                  AGOTADO
                </div>
              )}
           </div>
 
           {/* COLUMNA DERECHA: DETALLES */}
-          <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col overflow-y-auto bg-white">
-            <div className="mb-6">
-              <div className="flex items-center gap-2 mb-3">
-                 <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border border-slate-200">
+          <div className="w-full md:w-2/5 flex flex-col h-full bg-white">
+            <div className="flex-1 overflow-y-auto p-6 md:p-8">
+              
+              <div className="flex items-center gap-2 mb-4">
+                 <span className="bg-slate-100 text-slate-700 px-2 py-1 rounded text-xs font-bold uppercase tracking-wide border border-slate-200">
                    {product.seccion}
                  </span>
                  {product.codigo_referencia && (
-                   <span className="text-xs text-gray-400 font-mono flex items-center gap-1">
-                     <Tag size={10} /> {product.codigo_referencia}
+                   <span className="text-sm text-slate-500 font-mono flex items-center gap-1 bg-gray-50 px-2 py-1 rounded border border-gray-100">
+                     <Tag size={12} /> {product.codigo_referencia}
                    </span>
                  )}
               </div>
               
-              <h2 className="text-xl md:text-2xl font-extrabold text-slate-900 leading-tight mb-4">
+              <h2 className="text-xl md:text-2xl font-black text-slate-900 leading-snug mb-6">
                 {product.nombre}
               </h2>
 
-              <div className="flex items-end gap-3 mb-6 pb-6 border-b border-gray-100">
-                <span className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
-                  ${Number(product.precio).toFixed(2)}
-                </span>
-                <span className="text-sm text-gray-500 font-medium mb-1.5">USD / unidad</span>
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 mb-6 flex items-center justify-between">
+                <div>
+                   <span className="text-xs text-gray-500 font-bold uppercase block mb-1">Precio Unitario</span>
+                   <span className="text-3xl font-black text-slate-900 tracking-tight">
+                     ${Number(product.precio).toFixed(2)}
+                   </span>
+                </div>
+                {product.stock ? (
+                    <div className="text-right">
+                       <span className="text-xs text-green-600 font-bold uppercase block mb-1">Estado</span>
+                       <span className="flex items-center justify-end gap-1.5 text-green-700 font-bold text-sm">
+                         <Check size={16} strokeWidth={3} /> En Bodega
+                       </span>
+                    </div>
+                ) : (
+                    <div className="text-right">
+                       <span className="text-xs text-red-500 font-bold uppercase block mb-1">Estado</span>
+                       <span className="flex items-center justify-end gap-1.5 text-red-600 font-bold text-sm">
+                         <AlertCircle size={16} /> Agotado
+                       </span>
+                    </div>
+                )}
               </div>
 
-              <div className="space-y-3 mb-8">
-                <div className="flex items-center gap-3 text-sm">
-                  {product.stock ? (
-                    <span className="flex items-center gap-2 text-green-600 font-bold bg-green-50 px-3 py-1.5 rounded-lg border border-green-100">
-                      <Check size={16} strokeWidth={3} /> Disponible en bodega
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-2 text-red-500 font-bold bg-red-50 px-3 py-1.5 rounded-lg border border-red-100">
-                      <AlertCircle size={16} /> Agotado temporalmente
-                    </span>
-                  )}
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-500">
-                   <Info size={16} className="text-blue-500" />
-                   <span>Garantía de fábrica incluida</span>
-                </div>
+              <div className="flex items-start gap-3 p-3 bg-blue-50/50 rounded-lg border border-blue-100 text-sm text-blue-800 mb-8">
+                 <Info size={18} className="shrink-0 mt-0.5" />
+                 <p className="leading-relaxed">
+                   Verifica que el código o la imagen coincidan con tu repuesto usado. Si tienes dudas, consulta con nuestro asesor.
+                 </p>
               </div>
 
-              {/* BOTONES DE ACCIÓN */}
-              <div className="flex gap-3 mt-auto">
+              {/* RELACIONADOS */}
+              {relacionados.length > 0 && (
+                <div className="pt-6 border-t border-gray-100">
+                  <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">
+                    Relacionados
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3">
+                     {relacionados.slice(0, 2).map(rel => (
+                       <div 
+                          key={rel.id} 
+                          className="cursor-pointer group flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-200 transition-all"
+                          onClick={() => onSelectRelated(rel)}
+                       >
+                          <div className="w-12 h-12 bg-white rounded border border-gray-100 shrink-0 p-0.5">
+                             <LazyImage 
+                                src={optimizarImg(rel.imagen)} 
+                                alt={rel.nombre}
+                                className="w-full h-full object-contain" 
+                                cropBottom={false}
+                             />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs font-bold text-slate-700 truncate group-hover:text-red-600">
+                              {rel.nombre}
+                            </p>
+                            <p className="text-xs font-bold text-slate-900">
+                              ${Number(rel.precio).toFixed(2)}
+                            </p>
+                          </div>
+                       </div>
+                     ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* FOOTER FIJO CON BOTONES */}
+            <div className="p-4 border-t border-gray-100 bg-white pb-safe md:pb-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-10">
+              <div className="flex gap-3">
                 <button 
                   onClick={() => addToCart(product)}
                   disabled={!product.stock}
-                  className={`flex-1 py-3.5 px-6 rounded-xl font-bold text-sm md:text-base flex items-center justify-center gap-2 transition-all shadow-lg active:scale-95 ${
+                  className={`flex-1 py-4 px-6 rounded-xl font-bold text-base flex items-center justify-center gap-2 transition-all shadow-lg active:scale-95 ${
                     product.stock 
                       ? 'bg-slate-900 text-white hover:bg-slate-800 shadow-slate-200' 
                       : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                   }`}
                 >
                   <ShoppingCart size={20} />
-                  {product.stock ? 'Agregar al Pedido' : 'Sin Stock'}
+                  {product.stock ? 'Agregar' : 'Sin Stock'}
                 </button>
                 
                 <button 
-                  className="p-3.5 rounded-xl border border-gray-200 text-gray-500 hover:text-slate-900 hover:border-gray-300 hover:bg-gray-50 transition-all active:scale-95"
-                  title="Compartir enlace"
+                  className="p-4 rounded-xl border border-gray-200 text-slate-600 hover:text-slate-900 hover:border-slate-300 hover:bg-gray-50 transition-all active:scale-95"
                   onClick={() => {
                     navigator.clipboard.writeText(window.location.href);
-                    alert('Enlace copiado al portapapeles');
+                    alert('Enlace copiado');
                   }}
                 >
                   <Share2 size={20} />
                 </button>
               </div>
             </div>
-
-            {/* RELACIONADOS */}
-            {relacionados.length > 0 && (
-              <div className="mt-8 pt-6 border-t border-gray-100">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">
-                  También te puede interesar
-                </h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                   {relacionados.map(rel => (
-                     <div 
-                        key={rel.id} 
-                        className="cursor-pointer group"
-                        onClick={() => onSelectRelated(rel)}
-                     >
-                        <div className="bg-gray-50 rounded-lg p-1 mb-2 border border-transparent group-hover:border-red-200 transition-colors">
-                           <LazyImage 
-                              src={optimizarImg(rel.imagen)} 
-                              alt={rel.nombre}
-                              className="w-full aspect-square object-contain mix-blend-multiply" 
-                           />
-                        </div>
-                        <p className="text-[10px] font-bold text-slate-700 leading-tight line-clamp-2 group-hover:text-red-600">
-                          {rel.nombre}
-                        </p>
-                        <p className="text-[10px] font-bold text-slate-900 mt-1">
-                          ${Number(rel.precio).toFixed(2)}
-                        </p>
-                     </div>
-                   ))}
-                </div>
-              </div>
-            )}
           </div>
 
         </motion.div>
