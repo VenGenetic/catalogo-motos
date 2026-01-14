@@ -5,6 +5,8 @@ import { Helmet } from 'react-helmet-async';
 import { Producto } from '../types';
 import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
+// IMPORTANTE: Recuperamos ImageZoom para la imagen principal y LazyImage para las miniaturas
+import { ImageZoom } from './ImageZoom';
 import { LazyImage } from './LazyImage';
 
 interface Props {
@@ -81,7 +83,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
           animate={{ y: 0 }} 
           exit={{ y: '100%' }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-5xl bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row h-[90vh] md:h-auto md:max-h-[85vh]"
+          className="relative w-full max-w-5xl bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row h-[90vh] md:h-auto md:max-h-[90vh]"
           ref={modalRef}
         >
           <button 
@@ -91,33 +93,31 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
             <X size={24} />
           </button>
 
-          {/* COLUMNA IZQUIERDA: IMAGEN (CORREGIDO: Sin recortes) */}
-          <div className="w-full md:w-3/5 bg-white p-4 flex items-center justify-center relative border-b md:border-b-0 md:border-r border-gray-100">
-             {/* CORRECCIÓN TÉCNICA:
-                1. Quitamos 'aspect-square' para que no fuerce cuadrados.
-                2. Quitamos 'mix-blend-multiply' para ver el repuesto tal cual es.
-                3. Usamos 'h-full' y 'object-contain' estricto.
+          {/* COLUMNA IZQUIERDA: IMAGEN CON ZOOM */}
+          <div className="w-full md:w-3/5 bg-white flex flex-col justify-center relative border-b md:border-b-0 md:border-r border-gray-100">
+             
+             {/* CORRECCIÓN CLAVE:
+                Usamos aspect-[1024/535] para respetar EXACTAMENTE la medida de tus fotos.
+                Esto evita recortes y asegura que se vean perfectas en móvil y PC.
              */}
-             <div className="w-full h-[40vh] md:h-[500px] flex items-center justify-center">
-               <LazyImage 
+             <div className="w-full aspect-[1024/535] bg-gray-50 relative">
+               <ImageZoom 
                  src={optimizarImg(product.imagen)} 
                  alt={product.nombre}
-                 // IMPORTANTE: cropBottom={false} para asegurar que se vea todo
-                 cropBottom={false} 
-                 className="w-full h-full object-contain"
+                 className="w-full h-full" 
                />
+               
+               {!product.stock && (
+                 <div className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 text-xs font-bold rounded shadow-md z-10 pointer-events-none">
+                   AGOTADO
+                 </div>
+               )}
              </div>
-             
-             {!product.stock && (
-               <div className="absolute top-6 left-6 bg-red-600 text-white px-4 py-1.5 text-sm font-bold rounded shadow-md z-10">
-                 AGOTADO
-               </div>
-             )}
           </div>
 
           {/* COLUMNA DERECHA: DETALLES */}
           <div className="w-full md:w-2/5 flex flex-col h-full bg-white">
-            <div className="flex-1 overflow-y-auto p-6 md:p-8">
+            <div className="flex-1 overflow-y-auto p-5 md:p-8">
               
               <div className="flex items-center gap-2 mb-4">
                  <span className="bg-slate-100 text-slate-700 px-2 py-1 rounded text-xs font-bold uppercase tracking-wide border border-slate-200">
@@ -161,7 +161,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               <div className="flex items-start gap-3 p-3 bg-blue-50/50 rounded-lg border border-blue-100 text-sm text-blue-800 mb-8">
                  <Info size={18} className="shrink-0 mt-0.5" />
                  <p className="leading-relaxed">
-                   Verifica que el código o la imagen coincidan con tu repuesto usado. Si tienes dudas, consulta con nuestro asesor.
+                   Haz clic en la imagen para verla en pantalla completa y revisar los detalles técnicos.
                  </p>
               </div>
 
@@ -178,11 +178,13 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                           className="cursor-pointer group flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-200 transition-all"
                           onClick={() => onSelectRelated(rel)}
                        >
-                          <div className="w-12 h-12 bg-white rounded border border-gray-100 shrink-0 p-0.5">
+                          <div className="w-12 h-12 bg-white rounded border border-gray-100 shrink-0 overflow-hidden">
+                             {/* Aquí usamos LazyImage porque son miniaturas */}
                              <LazyImage 
                                 src={optimizarImg(rel.imagen)} 
                                 alt={rel.nombre}
-                                className="w-full h-full object-contain" 
+                                className="w-full h-full" 
+                                imageFit="contain"
                                 cropBottom={false}
                              />
                           </div>
@@ -201,7 +203,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               )}
             </div>
 
-            {/* FOOTER FIJO CON BOTONES */}
+            {/* FOOTER FIJO */}
             <div className="p-4 border-t border-gray-100 bg-white pb-safe md:pb-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-10">
               <div className="flex gap-3">
                 <button 
