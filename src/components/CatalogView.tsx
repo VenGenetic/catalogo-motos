@@ -85,7 +85,7 @@ export const CatalogView = memo(({
 
   // 2. MODO CATÁLOGO
   return (
-    <div ref={containerRef} className="min-h-screen bg-slate-50 pb-20 pt-2 md:pt-4 px-2 md:px-8 font-sans scroll-mt-20">
+    <div ref={containerRef} className="min-h-screen bg-slate-50 pb-32 pt-2 md:pt-4 px-2 md:px-8 font-sans scroll-mt-20">
       <div className="max-w-7xl mx-auto">
         
         {/* BARRA SUPERIOR */}

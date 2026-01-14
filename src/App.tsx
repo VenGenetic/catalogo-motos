@@ -299,7 +299,8 @@ export default function App() {
         onSelectRelated={handleProductClick}
       />
       <CartDrawer />
-      <WhatsAppButton hideWhenModalOpen={!!selectedProduct || location.pathname !== '/'} /> 
+      {/* Botón Flotante: Visible en todas las pantallas excepto al abrir un producto (ya tiene su propio botón) */}
+      <WhatsAppButton hideWhenModalOpen={!!selectedProduct} /> 
       <ScrollToTopButton />
       <BottomNav />
       <Footer />

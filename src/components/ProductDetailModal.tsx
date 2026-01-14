@@ -92,18 +92,18 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
           onClick={(e) => e.stopPropagation()} 
         >
             
-            {/* Botón Cerrar */}
-            <button 
-              onClick={onClose}
-              className="absolute top-3 right-3 z-30 p-2 bg-white/90 hover:bg-white rounded-full text-slate-800 shadow-sm backdrop-blur-md active:scale-90"
-            >
-              <X size={24} />
-            </button>
+            {/* Botón Cerrar: Ajustado para respetar el Notch/Safe Region en móviles */}
+            <div className="absolute top-0 right-0 p-3 z-30 pt-[calc(0.75rem+env(safe-area-inset-top))]">
+              <button 
+                onClick={onClose}
+                className="p-2 bg-white/90 hover:bg-white rounded-full text-slate-800 shadow-sm backdrop-blur-md active:scale-90 transition-transform"
+              >
+                <X size={24} />
+              </button>
+            </div>
 
-            {/* ÁREA SCROLLABLE (Imagen + Info) 
-               flex-1 hace que ocupe todo el espacio disponible menos el footer
-            */}
-            <div className="flex-1 overflow-y-auto flex flex-col md:flex-row">
+            {/* ÁREA SCROLLABLE (Imagen + Info) */}
+            <div className="flex-1 overflow-y-auto flex flex-col md:flex-row pb-safe">
               
               {/* COLUMNA 1: IMAGEN */}
               <div className="w-full md:w-3/5 bg-gray-50 relative border-b md:border-b-0 md:border-r border-gray-100 shrink-0">
@@ -212,23 +212,23 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                 
                 <button 
                   onClick={handleDirectQuote}
-                  className="flex-1 py-4 px-4 rounded-xl font-bold text-sm bg-green-500 text-white hover:bg-green-600 shadow-lg shadow-green-500/20 active:scale-95 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 py-3.5 px-2 rounded-xl font-bold text-sm bg-green-500 text-white hover:bg-green-600 shadow-lg shadow-green-500/20 active:scale-95 transition-all flex items-center justify-center gap-2 min-w-0"
                 >
-                  <MessageCircle size={20} className="fill-current" />
-                  <span className="line-clamp-1">Preguntar WhatsApp</span>
+                  <MessageCircle size={20} className="fill-current shrink-0" />
+                  <span className="truncate">Preguntar WhatsApp</span>
                 </button>
 
                 <button 
                   onClick={() => addToCart(product)}
                   disabled={!product.stock}
-                  className={`flex-1 py-4 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 ${
+                  className={`flex-1 py-3.5 px-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 min-w-0 ${
                     product.stock 
                       ? 'bg-slate-900 text-white hover:bg-slate-800 shadow-lg shadow-slate-900/20' 
                       : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                   }`}
                 >
-                  <ShoppingCart size={20} />
-                  <span className="line-clamp-1">
+                  <ShoppingCart size={20} className="shrink-0" />
+                  <span className="truncate">
                     {product.stock ? 'Agregar' : 'Sin Stock'}
                   </span>
                 </button>
