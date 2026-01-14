@@ -1,4 +1,3 @@
-// CORRECCIÓN: Se eliminó 'useRef' de los imports
 import { useEffect, useMemo } from 'react';
 import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -48,7 +47,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
   if (!product) return null;
 
   const handleDirectQuote = () => {
-    const message = `Hola LV PARTS, me interesa este repuesto: ${product.nombre} (Ref: ${product.codigo_referencia || 'S/N'}). ¿Me confirman precio y stock?`;
+    const message = `Hola LV PARTS, vi este repuesto en la web: ${product.nombre} (Ref: ${product.codigo_referencia || 'S/N'}). ¿Me ayudan con más info?`;
     const url = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   };
@@ -199,16 +198,17 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
 
             </div>
 
-            {/* FOOTER DE ACCIONES STICKY */}
+            {/* FOOTER DE ACCIONES */}
             <div className="fixed bottom-0 left-0 right-0 p-3 bg-white border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] md:static md:shadow-none md:p-6 md:border-t z-40 pb-safe">
               <div className="flex gap-2 max-w-5xl mx-auto w-full">
                 
+                {/* CAMBIO: Texto del botón actualizado */}
                 <button 
                   onClick={handleDirectQuote}
                   className="flex-1 py-3.5 px-4 rounded-xl font-bold text-sm bg-green-500 text-white hover:bg-green-600 shadow-lg shadow-green-500/20 active:scale-95 transition-all flex items-center justify-center gap-2"
                 >
                   <MessageCircle size={20} className="fill-current" />
-                  <span className="line-clamp-1">Cotizar</span>
+                  <span className="line-clamp-1">Preguntar WhatsApp</span>
                 </button>
 
                 <button 
