@@ -77,8 +77,8 @@ export const ImageZoom = ({ src, alt, className }: ImageZoomProps) => {
             <X size={24} />
           </button>
 
-          {/* Imagen en pantalla completa */}
-          <div className="w-full h-full max-w-5xl max-h-[90vh] p-4 flex items-center justify-center">
+          {/* Imagen en pantalla completa - Optimizada para el aspecto ratio 1024x535 */}
+          <div className="w-full h-full max-w-6xl max-h-[95vh] p-2 md:p-4 flex items-center justify-center">
             <img
               src={src}
               alt={alt}

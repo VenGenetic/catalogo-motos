@@ -87,8 +87,8 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ type: "spring", duration: 0.4 }}
           // CLAVE MÓVIL: w-full h-full (ocupa toda la pantalla)
-          // CLAVE DESKTOP: h-auto max-h-[90vh] max-w-5xl
-          className="relative w-full h-full md:h-auto md:max-h-[90vh] md:max-w-5xl bg-white md:rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+          // CLAVE DESKTOP: Ancho máximo más generoso para mostrar bien la imagen 1024x535
+          className="relative w-full h-full md:h-auto md:max-h-[95vh] md:max-w-6xl lg:max-w-7xl bg-white md:rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           onClick={(e) => e.stopPropagation()} 
         >
             
@@ -105,8 +105,8 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
             {/* ÁREA SCROLLABLE (Imagen + Info) */}
             <div className="flex-1 overflow-y-auto flex flex-col md:flex-row pb-safe">
               
-              {/* COLUMNA 1: IMAGEN */}
-              <div className="w-full md:w-3/5 bg-gray-50 relative border-b md:border-b-0 md:border-r border-gray-100 shrink-0">
+              {/* COLUMNA 1: IMAGEN - Mayor en desktop para mejor visualización */}
+              <div className="w-full md:w-7/12 lg:w-3/5 bg-gray-50 relative border-b md:border-b-0 md:border-r border-gray-100 shrink-0">
                  {/* Aspect Ratio 1024/535 */}
                  <div className="w-full aspect-[1024/535] relative group bg-white">
                    <ImageZoom 
@@ -128,7 +128,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               </div>
 
               {/* COLUMNA 2: INFO */}
-              <div className="w-full md:w-2/5 p-5 md:p-8 space-y-6 bg-white">
+              <div className="w-full md:w-5/12 lg:w-2/5 p-5 md:p-8 space-y-6 bg-white overflow-y-auto">
                   <div>
                     <div className="flex flex-wrap items-center gap-2 mb-2">
                       <span className="bg-slate-100 text-slate-700 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide border border-slate-200">
