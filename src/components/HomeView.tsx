@@ -10,7 +10,7 @@ interface HomeViewProps {
 }
 
 // CORRECCIÓN: Renombramos 'productos' a '_productos' para silenciar el error de variable no usada
-export const HomeView = ({ productos: _productos }: HomeViewProps) => {
+export const HomeView = ({ productos: _ }: HomeViewProps) => {
   
   // DATOS DEL NEGOCIO LOCAL (Schema.org)
   const businessSchema = {

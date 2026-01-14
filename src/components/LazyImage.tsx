@@ -20,8 +20,10 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
   // Detectar si es conexión lenta (para móviles)
   const isSlowConnection = typeof navigator !== 'undefined' &&
     'connection' in navigator &&
-    (navigator as any).connection?.effectiveType === 'slow-2g' ||
-    (navigator as any).connection?.effectiveType === '2g';
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ((navigator as any).connection?.effectiveType === 'slow-2g' ||
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (navigator as any).connection?.effectiveType === '2g');
 
   return (
     <div

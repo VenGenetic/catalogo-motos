@@ -15,26 +15,28 @@ export const HighlightedText = memo(({ text, highlight }: HighlightedTextProps) 
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   };
 
+  let content;
   try {
     const regex = new RegExp(`(${escapeRegExp(highlight)})`, 'gi');
     const parts = text.split(regex);
 
-    return (
-      // CORRECCIÓN: Quitamos "truncate" y "block". Usamos "break-words" para que el texto baje de línea si es necesario.
-      <span className="break-words">
-        {parts.map((part, i) => 
-          regex.test(part) ? (
-            <span key={i} className="bg-yellow-200 text-slate-900 px-0.5 rounded-sm shadow-sm">
-              {part}
-            </span>
-          ) : (
-            <span key={i}>{part}</span>
-          )
-        )}
-      </span>
+    content = parts.map((part, i) => 
+      regex.test(part) ? (
+        <span key={i} className="bg-yellow-200 text-slate-900 px-0.5 rounded-sm shadow-sm">
+          {part}
+        </span>
+      ) : (
+        <span key={i}>{part}</span>
+      )
     );
   } catch (e) {
     console.error("Error highlighting text", e);
-    return <span>{text}</span>;
+    content = text;
   }
+
+  return (
+    <span className="break-words">
+      {content}
+    </span>
+  );
 });

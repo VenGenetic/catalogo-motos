@@ -34,8 +34,18 @@ export const CatalogView = memo(({
   
   const { addToCart } = useCart();
 
+  // Resetear página cuando cambian los filtros
+  const [prevFilters, setPrevFilters] = useState({ busqueda, filtroModelo, filtroSeccion });
+  if (
+    prevFilters.busqueda !== busqueda || 
+    prevFilters.filtroModelo !== filtroModelo || 
+    prevFilters.filtroSeccion !== filtroSeccion
+  ) {
+    setPrevFilters({ busqueda, filtroModelo, filtroSeccion });
+    setPagina(1);
+  }
+
   useEffect(() => { 
-    setPagina(1); 
     if (busqueda || filtroSeccion !== 'Todos') {
       window.scrollTo({ top: 0, behavior: 'auto' });
     }

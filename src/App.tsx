@@ -38,8 +38,14 @@ export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const { productos, loading } = useProducts();
-  const [selectedProduct, setSelectedProduct] = useState<Producto | null>(null);
-  const [isOnline, setIsOnline] = useState(true);
+  
+  // Derivamos el producto seleccionado de la URL
+  const prodId = searchParams.get('prod');
+  const selectedProduct = useMemo(() => 
+    prodId ? productos.find(p => p.id === prodId) || null : null
+  , [productos, prodId]);
+
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
   
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
@@ -59,8 +65,6 @@ export default function App() {
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
-    setIsOnline(navigator.onLine);
-
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
@@ -79,41 +83,42 @@ export default function App() {
     return productos.filter(p => favs.includes(p.id));
   }, [productos, favs]);
 
+  // Memoizar la función de expansión de términos
+  const expandirTerminos = useMemo(() => (terminos: string[]): string[] => {
+    const sinonimos: Record<string, string[]> = {
+      'freno': ['frenos', 'frenado', 'pastilla', 'pastillas', 'disco', 'tambor'],
+      'filtro': ['filtro', 'filtrar', 'filtrado'],
+      'aceite': ['aceite', 'lubricante', 'motor oil'],
+      'bateria': ['batería', 'baterías', 'acumulador'],
+      'cadena': ['cadena', 'transmisión', 'piñón'],
+      'amortiguador': ['amortiguadores', 'suspensión', 'shock'],
+      'llanta': ['llantas', 'neumático', 'neumáticos', 'rueda', 'ruedas'],
+      'faro': ['faros', 'luz', 'luces', 'farola'],
+      'escape': ['escape', 'silenciador', 'tubo', 'caño'],
+      'motor': ['motor', 'cilindro', 'cilindros', 'piston', 'pistones'],
+      'clutch': ['clutch', 'embrague', 'clutches'],
+      'velocimetro': ['velocímetro', 'velocimetros', 'instrumentos', 'panel'],
+      'carburador': ['carburador', 'carburadores', 'inyección', 'inyector'],
+      'arranque': ['arranque', 'starter', 'partida'],
+      'electrico': ['eléctrico', 'eléctrica', 'eléctricos', 'eléctricas', 'electricidad']
+    };
+
+    const expandidos = new Set<string>();
+
+    terminos.forEach(termino => {
+      expandidos.add(termino);
+      Object.entries(sinonimos).forEach(([clave, valores]) => {
+        if (clave.includes(termino) || valores.some(v => v.includes(termino))) {
+          valores.forEach(sinonimo => expandidos.add(sinonimo));
+        }
+      });
+    });
+
+    return Array.from(expandidos);
+  }, []);
+
   const filteredProducts = useMemo(() => {
     if (!busquedaDebounced && filtroSeccion === 'Todos' && !filtroModelo) return productos;
-
-    const expandirTerminos = (terminos: string[]): string[] => {
-      const sinonimos: Record<string, string[]> = {
-        'freno': ['frenos', 'frenado', 'pastilla', 'pastillas', 'disco', 'tambor'],
-        'filtro': ['filtro', 'filtrar', 'filtrado'],
-        'aceite': ['aceite', 'lubricante', 'motor oil'],
-        'bateria': ['batería', 'baterías', 'acumulador'],
-        'cadena': ['cadena', 'transmisión', 'piñón'],
-        'amortiguador': ['amortiguadores', 'suspensión', 'shock'],
-        'llanta': ['llantas', 'neumático', 'neumáticos', 'rueda', 'ruedas'],
-        'faro': ['faros', 'luz', 'luces', 'farola'],
-        'escape': ['escape', 'silenciador', 'tubo', 'caño'],
-        'motor': ['motor', 'cilindro', 'cilindros', 'piston', 'pistones'],
-        'clutch': ['clutch', 'embrague', 'clutches'],
-        'velocimetro': ['velocímetro', 'velocimetros', 'instrumentos', 'panel'],
-        'carburador': ['carburador', 'carburadores', 'inyección', 'inyector'],
-        'arranque': ['arranque', 'starter', 'partida'],
-        'electrico': ['eléctrico', 'eléctrica', 'eléctricos', 'eléctricas', 'electricidad']
-      };
-
-      const expandidos = new Set<string>();
-
-      terminos.forEach(termino => {
-        expandidos.add(termino);
-        Object.entries(sinonimos).forEach(([clave, valores]) => {
-          if (clave.includes(termino) || valores.some(v => v.includes(termino))) {
-            valores.forEach(sinonimo => expandidos.add(sinonimo));
-          }
-        });
-      });
-
-      return Array.from(expandidos);
-    };
 
     const calcularRelevancia = (producto: Producto, terminos: string[]): number => {
       if (!producto.textoBusqueda) return 0;
@@ -180,27 +185,15 @@ export default function App() {
       });
 
     return productosConPuntuacion;
-  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo]);
+  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo, expandirTerminos]);
 
   const handleProductClick = useCallback((p: Producto) => {
-    setSelectedProduct(p);
     setSearchParams((prev: URLSearchParams) => { prev.set('prod', p.id); return prev; });
   }, [setSearchParams]);
 
   const handleCloseModal = useCallback(() => {
-    setSelectedProduct(null);
     setSearchParams((prev: URLSearchParams) => { prev.delete('prod'); return prev; });
   }, [setSearchParams]);
-
-  useEffect(() => {
-      if (!loading && productos.length > 0) {
-        const prodId = searchParams.get('prod');
-        if (prodId) {
-          const found = productos.find((p) => p.id === prodId);
-          if (found) setSelectedProduct(found);
-        } else setSelectedProduct(null);
-      }
-  }, [searchParams, productos, loading]);
 
   if (loading) {
     return (

@@ -5,7 +5,7 @@ export const limpiarTexto = (texto: string) => {
   return String(texto).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 };
 
-export const optimizarImg = (url: any) => {
+export const optimizarImg = (url: string | null | undefined) => {
   // 1. BLINDAJE: Si no es string válida, devolvemos placeholder
   if (!url || typeof url !== 'string' || url.trim() === '' || url === 'No imagen') {
     return 'https://via.placeholder.com/400x300.webp?text=Sin+Imagen';
@@ -23,7 +23,7 @@ export const optimizarImg = (url: any) => {
   // 4. Optimización LIMPIA (Para URLs externas)
   try {
     return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=500&q=80&output=webp`;
-  } catch (e) {
+  } catch {
     return 'https://via.placeholder.com/400x300.webp?text=Error+Img';
   }
 };

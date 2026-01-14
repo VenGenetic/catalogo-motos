@@ -4,7 +4,9 @@ import { Producto } from '../types';
 
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     SpeechRecognition: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     webkitSpeechRecognition: any;
   }
   interface SpeechRecognitionEvent extends Event {
@@ -41,7 +43,11 @@ export const SearchBar = ({
 }: SearchBarProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [hasSpeechSupport] = useState(() => {
+     return typeof window !== 'undefined' && !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+  });
   const inputRef = useRef<HTMLInputElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null);
 
   const sugerencias = useMemo(() => {
@@ -77,13 +83,13 @@ export const SearchBar = ({
   useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (SpeechRecognition) {
         recognitionRef.current = new SpeechRecognition();
         recognitionRef.current.continuous = false;
         recognitionRef.current.interimResults = false;
         recognitionRef.current.lang = 'es-ES';
-        recognitionRef.current.onresult = (event: any) => {
+        recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
             const transcript = event.results[0]?.[0]?.transcript;
             if (transcript) setBusqueda(transcript.trim());
             setIsListening(false);
@@ -151,7 +157,7 @@ export const SearchBar = ({
           {/* Divisor vertical suave */}
           <div className="h-6 w-px bg-gray-200 mx-1"></div>
 
-          {recognitionRef.current && (
+          {hasSpeechSupport && (
             <button
               onClick={handleVoiceSearch}
               className={`p-2.5 rounded-xl transition-all active:scale-95 ${

@@ -13,13 +13,14 @@ const limpiarPrecio = (valor: unknown): number => {
 };
 
 // Función para generar un ID consistente
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const generarIdDeterministico = (p: any) => {
   if (p.id) return String(p.id);
   
   const clave = `${p.codigo_referencia || ''}-${p.nombre}`;
   try {
     return btoa(clave).replace(/[^a-zA-Z0-9]/g, '').substring(0, 16);
-  } catch (e) {
+  } catch {
     return String(Math.abs(clave.split('').reduce((a, b) => ((a << 5) - a) + b.charCodeAt(0), 0)));
   }
 };
@@ -30,7 +31,10 @@ export const useProducts = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    let retryCount = 0;
+    const MAX_RETRIES = 3;
+
+    const fetchProducts = async (): Promise<void> => {
       try {
         // Verificar conectividad antes de hacer la petición
         if (typeof navigator !== 'undefined' && !navigator.onLine) {
@@ -43,9 +47,10 @@ export const useProducts = () => {
 
         const res = await fetch('/data.json', {
           signal: controller.signal,
-          // Agregar headers para mejor compatibilidad
+          // Agregar headers para mejor compatibilidad y cache
           headers: {
-            'Cache-Control': 'no-cache'
+            'Cache-Control': 'max-age=300', // Cache por 5 minutos
+            'Accept': 'application/json'
           }
         });
 
@@ -62,6 +67,7 @@ export const useProducts = () => {
         }
 
         const data = await res.json();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let raw: any[] = [];
 
         if (Array.isArray(data)) raw = data;
@@ -96,7 +102,17 @@ export const useProducts = () => {
         setProductos(procesados);
       } catch (err) {
         console.error("Error cargando productos:", err);
-        setError(err instanceof Error ? err.message : 'Error desconocido');
+        
+        // Implementar reintentos automáticos en caso de error de red
+        if (retryCount < MAX_RETRIES && err instanceof Error && 
+            (err.name === 'AbortError' || err.message.includes('Failed to fetch'))) {
+          retryCount++;
+          console.log(`Reintentando carga de productos (${retryCount}/${MAX_RETRIES})...`);
+          setTimeout(() => fetchProducts(), 2000 * retryCount); // Backoff exponencial
+          return;
+        }
+        
+        setError(err instanceof Error ? err.message : 'Error desconocido al cargar productos');
       } finally {
         setLoading(false);
       }
