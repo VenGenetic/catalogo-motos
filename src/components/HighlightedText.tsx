@@ -6,39 +6,34 @@ interface HighlightedTextProps {
 }
 
 export const HighlightedText = memo(({ text, highlight }: HighlightedTextProps) => {
-  if (!highlight?.trim()) {
+  // Si no hay nada que resaltar, devolvemos el texto normal
+  if (!highlight || !highlight.trim()) {
     return <span>{text}</span>;
   }
 
-  // Función segura para escapar caracteres especiales de Regex (como +, *, ?, etc.)
   const escapeRegExp = (string: string) => {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   };
 
   try {
-    // Creamos una expresión regular que separa el texto buscando la coincidencia (case insensitive)
-    // El paréntesis () es vital: hace que el .split incluya también el separador (la coincidencia) en el array
     const regex = new RegExp(`(${escapeRegExp(highlight)})`, 'gi');
-    
     const parts = text.split(regex);
 
     return (
-      <span className="truncate block">
+      // CORRECCIÓN: Quitamos "truncate" y "block". Usamos "break-words" para que el texto baje de línea si es necesario.
+      <span className="break-words">
         {parts.map((part, i) => 
           regex.test(part) ? (
-            // Si la parte coincide con la búsqueda, la resaltamos
-            <span key={i} className="bg-yellow-200 text-slate-900 font-extrabold px-0.5 rounded-sm mx-0.5 shadow-sm">
+            <span key={i} className="bg-yellow-200 text-slate-900 px-0.5 rounded-sm shadow-sm">
               {part}
             </span>
           ) : (
-            // Si no coincide, devolvemos el texto normal
             <span key={i}>{part}</span>
           )
         )}
       </span>
     );
   } catch (e) {
-    // Fallback de seguridad por si falla el Regex
     console.error("Error highlighting text", e);
     return <span>{text}</span>;
   }
