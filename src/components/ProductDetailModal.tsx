@@ -161,6 +161,22 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                              <AlertCircle size={14}/> Agotado
                            </span>
                        )}
+                       {product.origenes?.length ? (
+                         <div className="mt-1 flex flex-wrap gap-1 justify-end">
+                           {product.origenes.map((origen) => (
+                             <span
+                               key={origen}
+                               className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                                 origen.toLowerCase().includes('guayaquil')
+                                   ? 'bg-green-50 text-green-700 border-green-100'
+                                   : 'bg-amber-50 text-amber-700 border-amber-100'
+                               }`}
+                             >
+                               {origen}
+                             </span>
+                           ))}
+                         </div>
+                       ) : null}
                     </div>
                   </div>
 

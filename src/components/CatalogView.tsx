@@ -192,6 +192,23 @@ export const CatalogView = memo(({
                         {product.seccion}
                         </span>
                     </div>
+
+                    {product.origenes?.length ? (
+                      <div className="mt-1 flex flex-wrap gap-1">
+                        {product.origenes.map((origen) => (
+                          <span
+                            key={origen}
+                            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                              origen.toLowerCase().includes('guayaquil')
+                                ? 'bg-green-50 text-green-700 border-green-100'
+                                : 'bg-amber-50 text-amber-700 border-amber-100'
+                            }`}
+                          >
+                            {origen}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
                     
                     {/* Título: Muestra TODO el texto (sin truncate) */}
                     <h3 className="text-xs md:text-sm font-bold text-slate-800 mb-2 leading-snug group-hover:text-red-600 transition-colors">
