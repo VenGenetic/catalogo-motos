@@ -38,7 +38,7 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
       )}
 
       <img
-        src={hasError ? 'https://via.placeholder.com/400x300?text=Sin+Imagen' : src}
+        src={hasError ? '/sin_imagen.webp' : src}
         alt={alt || 'Producto'}
         loading={isSlowConnection ? 'eager' : 'lazy'}
         decoding="async"
