@@ -1,6 +1,6 @@
 // src/components/CartDrawer.tsx
 import { useState } from 'react';
-import { X, Minus, Plus, MessageCircle, User, ArrowRight, Check, FileText, Trash2, MapPin } from 'lucide-react';
+import { X, Minus, Plus, MessageCircle, User, ArrowRight, Check, FileText, Trash2, MapPin, Truck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
 import { LazyImage } from './LazyImage';
@@ -22,6 +22,11 @@ export const CartDrawer = () => {
   });
 
   const [copied, setCopied] = useState(false);
+  
+  // Estado para el modal de envío
+  const [isShippingModalOpen, setIsShippingModalOpen] = useState(false);
+  const [hasShipping, setHasShipping] = useState(false);
+  const [shippingCost, setShippingCost] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
@@ -84,24 +89,21 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
     window.open(url, '_blank');
   };
 
-  const handleCopyProforma = async () => {
-    // Preguntar al usuario sobre el envío
-    const opcionEnvio = window.prompt(
-      '💵 Ingresa el costo de envío (o deja en blanco / 0 si no aplica):',
-      '0'
-    );
+  const handleCopyClick = () => {
+    setIsShippingModalOpen(true);
+    setHasShipping(false);
+    setShippingCost('');
+  };
+
+  const handleConfirmCopy = async () => {
+    const finalShippingCost = hasShipping ? (parseFloat(shippingCost) || 0) : 0;
+    const texto = generarTextoProforma(finalShippingCost);
     
-    // Si el usuario cancela, no hacer nada
-    if (opcionEnvio === null) return;
-    
-    // Convertir a número, por defecto 0 si no es válido
-    const costoEnvio = parseFloat(opcionEnvio) || 0;
-    
-    const texto = generarTextoProforma(costoEnvio);
     try {
       await navigator.clipboard.writeText(texto);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+      setIsShippingModalOpen(false);
     } catch (err) {
       console.error('Error al copiar', err);
     }
@@ -274,7 +276,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
           
           <div className="grid grid-cols-[1fr_2fr] gap-3 h-14">
             <button
-               onClick={handleCopyProforma}
+               onClick={handleCopyClick}
                disabled={cart.length === 0}
                className={`rounded-xl flex flex-col justify-center items-center border transition-all active:scale-95 ${
                  copied 
@@ -301,6 +303,87 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
           </div>
         </div>
       </div>
+
+      {/* --- MODAL DE ENVÍO (Beautiful Mobile First) --- */}
+      {isShippingModalOpen && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+          <div 
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in"
+            onClick={() => setIsShippingModalOpen(false)}
+          />
+          
+          <div className="bg-white w-full max-w-sm rounded-[2rem] shadow-2xl p-6 relative z-10 animate-scale-up border border-gray-100">
+            <button 
+              onClick={() => setIsShippingModalOpen(false)}
+              className="absolute top-4 right-4 p-2 bg-gray-50 text-gray-400 rounded-full hover:bg-gray-100 hover:text-slate-900 transition-all"
+            >
+              <X size={20} />
+            </button>
+            
+            <div className="flex flex-col items-center mb-6">
+              <div className="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-3 shadow-sm">
+                <Truck size={28} />
+              </div>
+              <h3 className="text-xl font-extrabold text-slate-900 text-center">
+                Opciones de Envío
+              </h3>
+              <p className="text-gray-500 text-center text-sm mt-1">
+                Personaliza tu proforma antes de copiar
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              {/* Switch Bonito */}
+              <div 
+                onClick={() => setHasShipping(!hasShipping)}
+                className={`flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all active:scale-[0.98] ${
+                  hasShipping 
+                    ? 'border-blue-500 bg-blue-50/50' 
+                    : 'border-gray-100 bg-gray-50'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${
+                    hasShipping ? 'bg-blue-500 border-blue-500' : 'border-gray-300 bg-white'
+                  }`}>
+                    {hasShipping && <Check size={12} className="text-white" strokeWidth={3} />}
+                  </div>
+                  <span className={`font-bold ${hasShipping ? 'text-blue-700' : 'text-gray-600'}`}>
+                    ¿Incluir costo de envío?
+                  </span>
+                </div>
+              </div>
+
+              {/* Input Condicional con Animación */}
+              <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                hasShipping ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0'
+              }`}>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">$</span>
+                  <input
+                    type="number"
+                    placeholder="0.00"
+                    value={shippingCost}
+                    onChange={(e) => setShippingCost(e.target.value)}
+                    className="w-full pl-8 pr-4 py-4 bg-white border-2 border-blue-100 rounded-xl text-xl font-bold text-slate-800 placeholder:text-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all"
+                    autoFocus={hasShipping}
+                  />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400 uppercase">USD</span>
+                </div>
+              </div>
+
+              {/* Botón de Acción Principal */}
+              <button
+                onClick={handleConfirmCopy}
+                className="w-full py-4 bg-slate-900 text-white font-bold rounded-xl shadow-lg shadow-slate-200 active:scale-95 transition-all text-lg flex items-center justify-center gap-2 hover:bg-slate-800"
+              >
+                <FileText size={20} />
+                Copiar Proforma
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
