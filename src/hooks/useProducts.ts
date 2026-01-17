@@ -42,7 +42,7 @@ export const useProducts = () => {
         }
 
         const fuentes = [
-          { url: '/data.json', origen: 'Bajo pedido (Cuenca)' },
+          { url: '/data.json', origen: 'Cuenca (bajo pedido)' },
           { url: '/data_guayaquil.json', origen: 'Guayaquil' }
         ];
 
