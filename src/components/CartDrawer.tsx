@@ -171,17 +171,17 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
                       <LazyImage 
                         src={optimizarImg(item.imagen)} 
                         alt={item.nombre}
-                        className="w-20 h-20 rounded-xl bg-gray-50 dark:bg-slate-700 shrink-0 object-cover border border-gray-100 dark:border-slate-600" 
+                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-gray-50 dark:bg-slate-700 shrink-0 object-cover border border-gray-100 dark:border-slate-600" 
                       />
                       
                       <div className="flex-1 flex flex-col justify-between">
                         <div className="flex justify-between items-start gap-2">
-                          <h4 className="text-sm font-bold text-slate-800 dark:text-gray-200 leading-snug line-clamp-2">
+                          <h4 className="text-xs sm:text-sm font-bold text-slate-800 dark:text-gray-200 leading-tight line-clamp-2">
                             {item.nombre}
                           </h4>
                           <button 
                              onClick={() => updateQuantity(item.id, -1000)} // Eliminar
-                             className="text-gray-300 hover:text-red-500 p-1 -mt-1 -mr-1"
+                             className="text-gray-300 hover:text-red-500 p-1 -mt-1 -mr-1 shrink-0"
                           >
                              <Trash2 size={16} />
                           </button>
