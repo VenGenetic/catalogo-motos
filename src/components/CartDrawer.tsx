@@ -1,13 +1,10 @@
 // src/components/CartDrawer.tsx
 import { useState } from 'react';
-import { X, Minus, Plus, MessageCircle, User, ArrowRight, Check, FileText, Truck, Trash2, MapPin } from 'lucide-react';
+import { X, Minus, Plus, MessageCircle, User, ArrowRight, Check, FileText, Trash2, MapPin } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
 import { LazyImage } from './LazyImage';
-import { APP_CONFIG } from '../config/constants';
-
-// Puedes cambiar este valor al precio real de tu envío
-const COSTO_ENVIO = 5.00; 
+import { APP_CONFIG } from '../config/constants'; 
 
 export const CartDrawer = () => {
   const { 
@@ -25,7 +22,6 @@ export const CartDrawer = () => {
   });
 
   const [copied, setCopied] = useState(false);
-  const [conEnvio, setConEnvio] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
@@ -34,18 +30,18 @@ export const CartDrawer = () => {
     });
   };
 
-  const totalFinal = conEnvio ? cartTotal + COSTO_ENVIO : cartTotal;
-
   // --- LÓGICA DE MENSAJES ---
-  const generarMensajeWhatsApp = () => {
+  const generarMensajeWhatsApp = (costoEnvio: number) => {
     const itemsList = cart.map(item => 
       `▪️ *${item.cantidad}x* ${item.nombre} ($${(item.cantidad * (Number(item.precio) || 0)).toFixed(2)})`
     ).join('\n');
 
+    const totalFinal = costoEnvio > 0 ? cartTotal + costoEnvio : cartTotal;
+
     return `👋 Hola LV PARTS, quiero confirmar el siguiente pedido:
 
 ${itemsList}
-${conEnvio ? `▪️ *Envío / Transporte:* $${COSTO_ENVIO.toFixed(2)}` : ''}
+${costoEnvio > 0 ? `▪️ *Envío / Transporte:* $${costoEnvio.toFixed(2)}` : ''}
 
 💰 *TOTAL A PAGAR: $${totalFinal.toFixed(2)}*
 
@@ -57,11 +53,13 @@ ${conEnvio ? `▪️ *Envío / Transporte:* $${COSTO_ENVIO.toFixed(2)}` : ''}
 ¿Me confirman para transferir?`;
   };
 
-  const generarTextoProforma = () => {
+  const generarTextoProforma = (costoEnvio: number) => {
     const date = new Date().toLocaleDateString('es-EC', { year: 'numeric', month: 'long', day: 'numeric' });
     const itemsList = cart.map(item => 
       `Cant: ${item.cantidad} | ${item.nombre} | $${(item.cantidad * (Number(item.precio) || 0)).toFixed(2)}`
     ).join('\n');
+
+    const totalFinal = costoEnvio > 0 ? cartTotal + costoEnvio : cartTotal;
 
     return `📄 *COTIZACIÓN / PROFORMA - LV PARTS*
 📅 Fecha: ${date}
@@ -73,7 +71,7 @@ ${conEnvio ? `▪️ *Envío / Transporte:* $${COSTO_ENVIO.toFixed(2)}` : ''}
 ${itemsList}
 --------------------------------
 SUBTOTAL: $${cartTotal.toFixed(2)}
-${conEnvio ? `ENVÍO:    $${COSTO_ENVIO.toFixed(2)}` : ''}
+${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
 *TOTAL:    $${totalFinal.toFixed(2)}*
 
 💳 Método Sugerido: ${formData.metodoPago}
@@ -81,13 +79,25 @@ ${conEnvio ? `ENVÍO:    $${COSTO_ENVIO.toFixed(2)}` : ''}
   };
 
   const handleCheckout = () => {
-    const mensaje = generarMensajeWhatsApp();
+    const mensaje = generarMensajeWhatsApp(0); // Sin envío por defecto
     const url = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, '_blank');
   };
 
   const handleCopyProforma = async () => {
-    const texto = generarTextoProforma();
+    // Preguntar al usuario sobre el envío
+    const opcionEnvio = window.prompt(
+      '💵 Ingresa el costo de envío (o deja en blanco / 0 si no aplica):',
+      '0'
+    );
+    
+    // Si el usuario cancela, no hacer nada
+    if (opcionEnvio === null) return;
+    
+    // Convertir a número, por defecto 0 si no es válido
+    const costoEnvio = parseFloat(opcionEnvio) || 0;
+    
+    const texto = generarTextoProforma(costoEnvio);
     try {
       await navigator.clipboard.writeText(texto);
       setCopied(true);
@@ -205,35 +215,6 @@ ${conEnvio ? `ENVÍO:    $${COSTO_ENVIO.toFixed(2)}` : ''}
                 })}
               </div>
 
-              {/* OPCIONES DE ENVÍO (Tarjeta Interactiva) */}
-              <div 
-                onClick={() => setConEnvio(!conEnvio)}
-                className={`flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all duration-300 active:scale-[0.98] ${
-                  conEnvio 
-                    ? 'bg-red-50 border-red-500 shadow-md shadow-red-100' 
-                    : 'bg-white border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <div className="flex items-center gap-4">
-                  <div className={`p-2.5 rounded-full ${conEnvio ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-500'}`}>
-                    <Truck size={24} />
-                  </div>
-                  <div>
-                    <p className={`font-bold text-sm ${conEnvio ? 'text-red-700' : 'text-slate-700'}`}>
-                      Envío a Domicilio / Transporte
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {conEnvio ? 'Se sumará al total' : 'Lo recojo en el local'}
-                    </p>
-                  </div>
-                </div>
-                <div className="text-right">
-                   <span className={`text-lg font-bold ${conEnvio ? 'text-red-600' : 'text-gray-300'}`}>
-                     +${COSTO_ENVIO.toFixed(2)}
-                   </span>
-                </div>
-              </div>
-
               {/* FORMULARIO DE CLIENTE */}
               <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm space-y-4">
                 <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 mb-2">
@@ -285,10 +266,9 @@ ${conEnvio ? `ENVÍO:    $${COSTO_ENVIO.toFixed(2)}` : ''}
           <div className="flex justify-between items-end mb-4 px-1">
              <div className="space-y-0.5">
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total a Pagar</p>
-                {conEnvio && <p className="text-[10px] text-red-500 font-medium">+ Envío incluído</p>}
              </div>
              <div className="text-3xl font-extrabold text-slate-900 tracking-tight">
-               ${totalFinal.toFixed(2)}
+               ${cartTotal.toFixed(2)}
              </div>
           </div>
           
