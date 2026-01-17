@@ -13,21 +13,31 @@ export const ORDEN_SECCIONES = [
   'Cables y Mandos', 'Filtros y Mantenimiento', 'Otros Repuestos'
 ];
 
+// LISTA DEFINITIVA (Con TANQ corregido)
 export const MODELOS = [
-  "Tekken", "Tekken Evo", "Axxo Tracker", "DK Nativa", "Scrambler", "Scrambler Clasica", 
-  "Scrambler Revolution", "Axxo Scrambler", "Scorpion", "Axxo TRX", "TH Mig25", "DK250-D Sport",
-  "Bull", "Shark", "Shark II", "Shark III", "Maverick", "Wolf", "Adventure", "Adventure R 250", 
-  "Adventure 200", "Hunter", "GP1", "Tundra Veloce", "Thunder Veloce", "Crossfire", "Xtreem", 
-  "Thunder F16", "DK Hornet", "IGM Wind", "Z1 V8200", "Tundra Ghost", "Axxo Asfalt", "Axxo F51",
-  "Ranger CFZ", "Honda CB190", "Honda CB1", "Force", "DK XTZ", "Axxo TR1", "DK200B", "SHM Armi150",
-  "Axxo Viper", "Ranger 150BWSM", "Bultaco Storm", "Z1 Super", "Sukida Joy", "Agility", "Agility X",
-  "Boneville", "Axxo Milano", "Bultaco Freedom", "Tanq", "Dynamic", "Dynamic Pro", "SHM Jedi",
-  "Feroce", "Predator", "Eivissa", "Viper", "CX7", "Comander", "Crucero", "Spitfire", "Delta", 
-  "Montana", "Workforce", "GTR", "Panther", "Cafe Racer", "Eagle", "Speed", "Everest",
-  "Wing Evo", "Scooter Evo 2 180", "S1"
-];
-
-export const MODELOS_FIJOS = [
-  "Tekken", "Crucero", "Spitfire", "Shark", "Adventure", 
-  "GP1R", "Delta", "Wing Evo", "Montana", "Scorpion", "Workforce"
+  // Utilitarias
+  "Work Force Anniversary 150CC", "Workforce 150 CC", "Workforce S 150 CC", 
+  "Delta 150 CC", "Crucero 150 CC", "Spitfire 150 CC", "Crucero 200 CC",
+  // Caballito
+  "CX7 EVO 125 CC", "CX7 PRO 125", "TANQ 125 CC", 
+  // Scooters
+  "BIT 125CC", "Dynamic Pro 150 CC", "S1 150 CC", "S1 Adventure 180 CC", 
+  "S1 180 Crossover", "Agility-X 180CC",
+  // Deportivas
+  "Wing EVO 2 200 CC", "GTR 200 CC", "GTR Roadster 200CC", "Predator 200 CC", 
+  "Spitfire 250 CC", "Crossfire 250 CC", "Wolf 250 CC", "Wolf Evolution 250 CC", 
+  "GP1 250 CC", "Xpower 250 CC", "GP1 R 250CC", "Feroce 250CC", "Super Wolf 300 CC",
+  // Doble Propósito
+  "Montana 150CC", "Shark 1 200 CC", "Shark 2 200 CC", "Shark 3 200CC", 
+  "Force DS 200CC", "Tekken EVO 250 CC", "Arctic 250 CC", "Adventure 300 CC", 
+  "Adventure 300R CC", "Everest Off Road 300 CC", "Everest Dual Sport 300 CC", 
+  "Tekken Discovery 300 CC", "Xpedition 300 CC",
+  // Enduro
+  "Eagle 3 150 CC", "Eagle 5 150 CC", "Eagle Z 200 CC", "Scorpion 200 CC", 
+  "Scorpion 250 CC",
+  // Clásicas
+  "Cafe Racer 170 CC", "Commander 200 CC", "Scrambler Revolution 250 CC", 
+  "Scrambler Max 300 CC",
+  // Cuadrón
+  "Hunter 4 200 CC"
 ];

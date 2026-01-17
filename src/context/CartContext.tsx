@@ -18,19 +18,16 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cart, setCart] = useState<ItemCarrito[]>([]);
+  const [cart, setCart] = useState<ItemCarrito[]>(() => {
+    try {
+      const saved = localStorage.getItem('cart_backup');
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
   const [isOpen, setIsOpen] = useState(false);
   
   // --- Estado para el Toast (Notificación) ---
   const [toastMsg, setToastMsg] = useState<string | null>(null);
-
-  // Cargar carrito guardado del localStorage
-  useEffect(() => {
-    const savedCart = localStorage.getItem('cart_backup');
-    if (savedCart) {
-      try { setCart(JSON.parse(savedCart)); } catch (e) { console.error(e); }
-    }
-  }, []);
 
   // Guardar carrito al cambiar
   useEffect(() => {
@@ -47,8 +44,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const addToCart = (product: Producto) => {
     // BLINDAJE: Verificamos que 'navigator' y 'vibrate' existan antes de llamar
-    if (typeof navigator !== 'undefined' && navigator.vibrate) {
-      try { navigator.vibrate(50); } catch (e) { /* Ignorar error de vibración */ }
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator && typeof navigator.vibrate === 'function') {
+      try { navigator.vibrate(50); } catch { /* Ignorar error de vibración */ }
     }
     
     // Feedback visual (Toast)

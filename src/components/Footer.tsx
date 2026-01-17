@@ -12,8 +12,12 @@ export const Footer = () => {
             Especialistas en repuestos de motocicletas. Calidad garantizada y asesoría personalizada en cada compra.
           </p>
           <div className="flex gap-4 pt-2">
-            <Facebook className="w-5 h-5 hover:text-white cursor-pointer transition-colors" />
-            <Instagram className="w-5 h-5 hover:text-white cursor-pointer transition-colors" />
+            <a href="https://www.facebook.com/profile.php?id=61583611217559" target="_blank" rel="noopener noreferrer" title="Facebook">
+              <Facebook className="w-5 h-5 hover:text-white cursor-pointer transition-colors" />
+            </a>
+            <a href="https://www.instagram.com/love_daytona_oficial/" target="_blank" rel="noopener noreferrer" title="Instagram">
+              <Instagram className="w-5 h-5 hover:text-white cursor-pointer transition-colors" />
+            </a>
           </div>
         </div>
 

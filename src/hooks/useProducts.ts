@@ -12,19 +12,15 @@ const limpiarPrecio = (valor: unknown): number => {
   return isNaN(numero) ? 0 : numero;
 };
 
-// Función para generar un ID consistente (hash simple)
-// Esto asegura que si recargas la página, el producto "Amortiguador" siga teniendo el mismo ID
-// en lugar de uno nuevo aleatorio, lo que arregla la persistencia en Favoritos y Carrito.
+// Función para generar un ID consistente
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const generarIdDeterministico = (p: any) => {
   if (p.id) return String(p.id);
   
-  // Usa referencia y nombre para crear siempre el mismo ID para el mismo producto
-  // Se usa btoa (Base64) para crear un string seguro y limpio
   const clave = `${p.codigo_referencia || ''}-${p.nombre}`;
   try {
     return btoa(clave).replace(/[^a-zA-Z0-9]/g, '').substring(0, 16);
-  } catch (e) {
-    // Fallback por si la codificación falla (caracteres raros)
+  } catch {
     return String(Math.abs(clave.split('').reduce((a, b) => ((a << 5) - a) + b.charCodeAt(0), 0)));
   }
 };
@@ -35,35 +31,128 @@ export const useProducts = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await fetch('/data.json');
-        if (!res.ok) throw new Error('Error al cargar datos');
-        
-        const data = await res.json();
-        let raw: any[] = [];
-        
-        if (Array.isArray(data)) raw = data;
-        else if (Array.isArray(data.RAW_SCRAPED_DATA)) raw = data.RAW_SCRAPED_DATA;
-        else if (Array.isArray(data.products)) raw = data.products;
+    let retryCount = 0;
+    const MAX_RETRIES = 3;
 
-        const procesados = raw.map((p) => {
-          const seccionCalc = detectarSeccion(p);
-          return {
-            ...p,
-            // Aquí usamos la nueva función en lugar de crypto.randomUUID()
-            id: generarIdDeterministico(p), 
-            precio: limpiarPrecio(p.precio),
-            seccion: seccionCalc,
-            // Pre-calculamos texto de búsqueda para optimizar filtros
-            textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc}`)
-          };
+    const fetchProducts = async (): Promise<void> => {
+      try {
+        // Verificar conectividad antes de hacer la petición
+        if (typeof navigator !== 'undefined' && !navigator.onLine) {
+          throw new Error('Sin conexión a internet. Verifica tu conexión y recarga la página.');
+        }
+
+        const fuentes = [
+          { url: '/data.json', origen: 'Bajo pedido (Cuenca)' },
+          { url: '/data_guayaquil.json', origen: 'Guayaquil' }
+        ];
+
+        const fetchFuente = async (url: string) => {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+          const res = await fetch(url, {
+            signal: controller.signal,
+            headers: {
+              'Cache-Control': 'max-age=300',
+              'Accept': 'application/json'
+            }
+          });
+
+          clearTimeout(timeoutId);
+
+          if (!res.ok) {
+            if (res.status === 404) {
+              throw new Error(`Archivo de datos no encontrado (${url}). Contacta al soporte.`);
+            } else if (res.status >= 500) {
+              throw new Error('Error del servidor. Intenta nuevamente en unos minutos.');
+            } else {
+              throw new Error(`Error al cargar datos (${res.status})`);
+            }
+          }
+
+          return res.json();
+        };
+
+        const resultados = await Promise.all(
+          fuentes.map(async (fuente) => {
+            const data = await fetchFuente(fuente.url);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            let raw: any[] = [];
+
+            if (Array.isArray(data)) raw = data;
+            else if (Array.isArray(data.RAW_SCRAPED_DATA)) raw = data.RAW_SCRAPED_DATA;
+            else if (Array.isArray(data.products)) raw = data.products;
+
+            return { raw, origen: fuente.origen };
+          })
+        );
+
+        const mapaProductos = new Map<string, Producto>();
+
+        const agregarProducto = (producto: Producto) => {
+          const clave = (producto.codigo_referencia || producto.id || '').toUpperCase();
+          const existente = mapaProductos.get(clave);
+
+          if (existente) {
+            const origenes = Array.from(new Set([...(existente.origenes || []), ...(producto.origenes || [])]));
+
+            const imagenElegida = existente.imagen?.includes('sin_imagen') && producto.imagen
+              ? producto.imagen
+              : existente.imagen;
+
+            mapaProductos.set(clave, {
+              ...existente,
+              ...producto,
+              imagen: imagenElegida || producto.imagen,
+              origenes,
+              textoBusqueda: limpiarTexto(`${producto.nombre} ${producto.codigo_referencia || ''} ${producto.categoria || ''} ${producto.seccion || ''} ${origenes.join(' ')}`)
+            });
+          } else {
+            mapaProductos.set(clave, producto);
+          }
+        };
+
+        resultados.forEach(({ raw, origen }) => {
+          raw.forEach((p) => {
+            const seccionCalc = detectarSeccion(p);
+            const nombreImagenLocal = p.codigo_referencia
+              ? `/imagenes_repuestos/${p.codigo_referencia}_cut.webp`
+              : null;
+
+            const procesado: Producto = {
+              ...p,
+              id: generarIdDeterministico(p),
+              precio: limpiarPrecio(p.precio),
+              seccion: seccionCalc,
+              imagen: nombreImagenLocal || p.imagen,
+              origenes: [origen],
+              textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc} ${origen}`)
+            };
+
+            agregarProducto(procesado);
+          });
         });
+
+        const procesados = Array.from(mapaProductos.values());
+
+        if (procesados.length === 0) {
+          throw new Error('No se encontraron productos en la base de datos.');
+        }
 
         setProductos(procesados);
       } catch (err) {
         console.error("Error cargando productos:", err);
-        setError(err instanceof Error ? err.message : 'Error desconocido');
+        
+        // Implementar reintentos automáticos en caso de error de red
+        if (retryCount < MAX_RETRIES && err instanceof Error && 
+            (err.name === 'AbortError' || err.message.includes('Failed to fetch'))) {
+          retryCount++;
+          console.log(`Reintentando carga de productos (${retryCount}/${MAX_RETRIES})...`);
+          setTimeout(() => fetchProducts(), 2000 * retryCount); // Backoff exponencial
+          return;
+        }
+        
+        setError(err instanceof Error ? err.message : 'Error desconocido al cargar productos');
       } finally {
         setLoading(false);
       }

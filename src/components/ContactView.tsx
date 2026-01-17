@@ -1,8 +1,7 @@
 import { Phone, Users, Clock, MapPin } from 'lucide-react';
 import { APP_CONFIG } from '../config/constants';
 
-// NOTA IMPORTANTE: Usamos 'export const' para mantener la consistencia
-export const ContactView = () => (
+const ContactView = () => (
   <div className="min-h-screen bg-gray-50 pb-24 pt-8 px-4 font-sans">
     <div className="max-w-md mx-auto space-y-6">
       
@@ -68,3 +67,6 @@ export const ContactView = () => (
     </div>
   </div>
 );
+
+// IMPORTANTE: Usamos export default para que funcione correctamente con lazy() en App.tsx
+export default ContactView;

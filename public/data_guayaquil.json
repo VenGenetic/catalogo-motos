@@ -1,0 +1,751 @@
+{
+    "RAW_SCRAPED_DATA": [
+        {
+            "id": "CG150SP-005B",
+            "codigo_referencia": "CG150SP-005B",
+            "nombre": "GUARDAFANGO DEL. SPITFIRE 150 N-BLANCO",
+            "precio": 33.49,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-116A",
+            "codigo_referencia": "CGEA150-116A",
+            "nombre": "GUARDAFANGO DEL. EAGLE 150CC III/DK FALCON AZUL",
+            "precio": 27.6,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB180EVO2-008",
+            "codigo_referencia": "CB180EVO2-008",
+            "nombre": "GUARDAFANGO DEL. EVO 2 180CC/AXXO VIPER/RANGER 150BWSM/BULTACO STORM/Z1 SUPER 175/SUKIDA JOY 175CC",
+            "precio": 22.08,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250ART-018",
+            "codigo_referencia": "FE250ART-018",
+            "nombre": "VELOCIMETRO DIGITAL ARTIC 250",
+            "precio": 82.8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150CR-008",
+            "codigo_referencia": "CG150CR-008",
+            "nombre": "VELOCIMETRO CAFE RACER",
+            "precio": 64.4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-052",
+            "codigo_referencia": "CB250GP1-052",
+            "nombre": "FILTRO AIRE GP1 250 / TUNDRA VELOCE 250CC",
+            "precio": 6.44,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "VEL-7220",
+            "codigo_referencia": "VEL-7220",
+            "nombre": "VELOCIMETRO SUKIDA SKR200 /TUNDRA RAPTOR250 /DY250SCORPION /AXXO TRZ250",
+            "precio": 46.26,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150DELT-009N",
+            "codigo_referencia": "CG150DELT-009N",
+            "nombre": "GUARDAFANGO DEL. DELTA/SK STIFF/AXXO AX150/TUKO H1 150CC NEGRO",
+            "precio": 27.6,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-042B",
+            "codigo_referencia": "CB250GP1-042B",
+            "nombre": "GUARDAFANGO DEL. GP1 250/TUNDRA VELOCE 250CC BLANCO",
+            "precio": 33.12,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB150-027N",
+            "codigo_referencia": "CB150-027N",
+            "nombre": "GUARDAFANGO POST. MONTANA 150CC N-VERDE",
+            "precio": 33.12,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250TKN-053B",
+            "codigo_referencia": "CB250TKN-053B",
+            "nombre": "GUARDAFANGO SUPERIOR TEKKEN EVO 250 BLANCO",
+            "precio": 9.6,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-042G",
+            "codigo_referencia": "CB250GP1-042G",
+            "nombre": "GUARDAFANGO DEL. GP1 250/TUNDRA VELOCE 250CC GRIS",
+            "precio": 33.12,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200ADV-001",
+            "codigo_referencia": "CB200ADV-001",
+            "nombre": "VELOCIMETRO DIGITAL ADVE. 200",
+            "precio": 82.8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250-160N",
+            "codigo_referencia": "CB250-160N",
+            "nombre": "GUARDAFANGO DEL. SHARK II 200CC NEGRO 2019",
+            "precio": 33.12,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-006R",
+            "codigo_referencia": "TY300ADV-006R",
+            "nombre": "GUARDAFANGO DEL. ADVENTURE 300CC N-ROJO TY",
+            "precio": 40.48,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB150GHS1-065",
+            "codigo_referencia": "CB150GHS1-065",
+            "nombre": "GUARDAFANGO DEL. S1 150/180cc NEGRO",
+            "precio": 20.61,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150PTH-037R",
+            "codigo_referencia": "CG150PTH-037R",
+            "nombre": "GUARDAFANGO DEL. PANTHER/RANGER 150USM//IGM ECO150/TK H2EVO/AXXO RAPTOR 150/THUNDER RT 150CC ROJO",
+            "precio": 18.4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150PTH-037B",
+            "codigo_referencia": "CG150PTH-037B",
+            "nombre": "GUARDAFANGO DEL. PANTHER/RANGER 150USM//IGM ECO150/TK H2EVO/AXXO RAPTOR 150/THUNDER RT 150CC BLANCO",
+            "precio": 18.4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-031",
+            "codigo_referencia": "CB250GP1-031",
+            "nombre": "DIRECCIONALES (SET4) GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 30.34,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB180AGTY-026",
+            "codigo_referencia": "CB180AGTY-026",
+            "nombre": "VELOCIMETRO AGILITY",
+            "precio": 36.8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-029",
+            "codigo_referencia": "CB250GP1-029",
+            "nombre": "PORTA PLACAS GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 29.44,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-114N",
+            "codigo_referencia": "CB250SC-114N",
+            "nombre": "GUARDAFANGO POST. SCORPION 250 NEGRO 2023",
+            "precio": 22.08,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "VEL-1643",
+            "codigo_referencia": "VEL-1643",
+            "nombre": "VELOCIMETRO DAYTONA DY150 EAGLE 2CABLES",
+            "precio": 24.32,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-008",
+            "codigo_referencia": "CB250GP1-008",
+            "nombre": "BOYA GASOLINA GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 25.76,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250-161",
+            "codigo_referencia": "CB250-161",
+            "nombre": "GUARDAFANGO POST. SHARK II 200CC/250CC",
+            "precio": 12.8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200-065",
+            "codigo_referencia": "CB200-065",
+            "nombre": "GUARDAFANGO POST. SHARK III 21",
+            "precio": 12.8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150PTH-020",
+            "codigo_referencia": "CG150PTH-020",
+            "nombre": "VELOCIMETRO PANTHER/RANGER 150USM//IGM ECO150/TK H2EVO/AXXO RAPTOR 150/THUNDER RT 150CC",
+            "precio": 55.2,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-006",
+            "codigo_referencia": "CB250GP1-006",
+            "nombre": "KIT SWITCHTAPALLAVES GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 40.48,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "VEL-1671",
+            "codigo_referencia": "VEL-1671",
+            "nombre": "VELOCIMETRO DAYTONA DY150 INDY 1CABLE",
+            "precio": 32.0,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200FC-016",
+            "codigo_referencia": "CB200FC-016",
+            "nombre": "GUARDAFANGO DEL. FORCE 200/DK XTZ 250CC NEGRO",
+            "precio": 27.6,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150WRF-043",
+            "codigo_referencia": "CG150WRF-043",
+            "nombre": "VELOCIMETRO ( 2 SALIDA ) WORKFORCE-S 150CC",
+            "precio": 46.0,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB180EVO2-019",
+            "codigo_referencia": "CB180EVO2-019",
+            "nombre": "VELOCIMETRO EVO2 180",
+            "precio": 36.8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB180AGX-002",
+            "codigo_referencia": "CB180AGX-002",
+            "nombre": "GUARDAFANGO POST. INFERIOR AGILITY X 180CC",
+            "precio": 9.2,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-006V",
+            "codigo_referencia": "TY300ADV-006V",
+            "nombre": "GUARDAFANGO DEL. ADVENTURE 300CC N-VERDE TY",
+            "precio": 40.48,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-003",
+            "codigo_referencia": "CB250GP1-003",
+            "nombre": "KIT RUN Y LUCES GP1-R 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC/TUNDRA VELOCE 250CC",
+            "precio": 33.12,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250-160R",
+            "codigo_referencia": "CB250-160R",
+            "nombre": "GUARDAFANGO DEL. SHARK II 200CC ROJO 2019",
+            "precio": 33.12,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-103",
+            "codigo_referencia": "CGEA150-103",
+            "nombre": "VELOCIMETRO EAGLE 150CC III/DK FALCON",
+            "precio": 36.8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CGB200CRU-001",
+            "codigo_referencia": "CGB200CRU-001",
+            "nombre": "VELOCIMETRO ( 1 SALIDA ) CRUCERO 200 NORMAL",
+            "precio": 51.52,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV2-013B",
+            "codigo_referencia": "CG200WEV2-013B",
+            "nombre": "GUARDAFANGO DEL. WING EVO 2 N-BLANCO",
+            "precio": 27.6,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150SF2-010",
+            "codigo_referencia": "CG150SF2-010",
+            "nombre": "TIMON SPITFIRE 150CC 2025",
+            "precio": 28.34,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB300SCB-005",
+            "codigo_referencia": "CB300SCB-005",
+            "nombre": "VELOCIMETRO DIGITAL SCRAMBLER 300 CON BASE",
+            "precio": 64.4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-042R",
+            "codigo_referencia": "CB250GP1-042R",
+            "nombre": "GUARDAFANGO DEL. GP1 250/TUNDRA VELOCE 250CC ROJO",
+            "precio": 33.12,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-037",
+            "codigo_referencia": "CB250GP1-037",
+            "nombre": "PEDAL CAMBIOS GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 14.72,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-077",
+            "codigo_referencia": "CB300SW-077",
+            "nombre": "VELOCIMETRO DIGITAL SUPER WOLF 300",
+            "precio": 64.4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150WRF-013",
+            "codigo_referencia": "CG150WRF-013",
+            "nombre": "VELOCIMETRO (1 SALIDA) WORKFORCE/TH B52 150CC",
+            "precio": 51.52,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-002R",
+            "codigo_referencia": "CBB250XP-002R",
+            "nombre": "GUARDAFANGO DEL. XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC ROJO B/N",
+            "precio": 33.12,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-008",
+            "codigo_referencia": "FE250GP1R-008",
+            "nombre": "VELOCIMETRO DIGITAL GP1-R 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC 2023",
+            "precio": 58.88,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-021",
+            "codigo_referencia": "CB250GP1-021",
+            "nombre": "CAUCHO DESLIZ. CADENA GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 5.52,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-035",
+            "codigo_referencia": "CB250GP1-035",
+            "nombre": "TEMPLADOR CADENA GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 27.6,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250TKN-053R",
+            "codigo_referencia": "CB250TKN-053R",
+            "nombre": "GUARDAFANGO SUPERIOR TEKKEN EVO 250 ROJO",
+            "precio": 9.6,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-036",
+            "codigo_referencia": "CGEA150-036",
+            "nombre": "ARO DEL. ARMADO 1.40X19 4H EAGLE150CC I-II-III/DK FALCON NEGRO",
+            "precio": 92.0,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB150DYP-041N",
+            "codigo_referencia": "CB150DYP-041N",
+            "nombre": "PROTEC. CHASIS DEL. DYNAMIC PRO/SHM JEDI 150CC NEGRO",
+            "precio": 46.0,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150DELT-009R",
+            "codigo_referencia": "CG150DELT-009R",
+            "nombre": "GUARDAFANGO DEL. DELTA/SK STIFF/AXXO AX150/TUKO H1 150CC ROJO",
+            "precio": 27.6,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB150-027T",
+            "codigo_referencia": "CB150-027T",
+            "nombre": "GUARDAFANGO POST. MONTANA 150CC NNARANJA",
+            "precio": 33.12,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "VEL-1620",
+            "codigo_referencia": "VEL-1620",
+            "nombre": "VELOCIMETRO DAYTONA DY200WOLF BOST",
+            "precio": 46.07,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV-001",
+            "codigo_referencia": "CG200WEV-001",
+            "nombre": "VELOCIMETRO DIGITAL WING EVO",
+            "precio": 64.4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200SRK-017",
+            "codigo_referencia": "CB200SRK-017",
+            "nombre": "VELOCIMETRO SHARK II 200 FONDO AMARILLO",
+            "precio": 64.4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-013",
+            "codigo_referencia": "CB250CRF-013",
+            "nombre": "VELOCIMETRO DIGITAL CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "precio": 82.8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-065",
+            "codigo_referencia": "CB250GP1-065",
+            "nombre": "MANUBRIOS Y PESAS (I-D) GP1- 250/TUNDRA VELOCE 250CC",
+            "precio": 14.65,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB150-028T",
+            "codigo_referencia": "CB150-028T",
+            "nombre": "GUARDAFANGO DEL. MONTANA 150CC NARANJA",
+            "precio": 38.09,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150PTH-037N",
+            "codigo_referencia": "CG150PTH-037N",
+            "nombre": "GUARDAFANGO DEL. PANTHER NEGRO",
+            "precio": 18.4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-018",
+            "codigo_referencia": "CB250GP1-018",
+            "nombre": "ESPEJOS (I-D) GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 8.54,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-143",
+            "codigo_referencia": "CGEA150-143",
+            "nombre": "ARO POST. ARMADO DISCO EAGLE I-II-III/DK FALCON 150 NEGRO",
+            "precio": 110.4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250TKN-053N",
+            "codigo_referencia": "CB250TKN-053N",
+            "nombre": "GUARDAFANGO SUPERIOR TEKKEN EVO 250 NEGRO",
+            "precio": 9.6,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150SP-001",
+            "codigo_referencia": "CG150SP-001",
+            "nombre": "PORTA PLACAS SPITFIRE 150",
+            "precio": 28.7,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB180AGTY-001",
+            "codigo_referencia": "CB180AGTY-001",
+            "nombre": "GUARDAFANGO DEL. AGILITY 180CC 2019/20/21/2022",
+            "precio": 22.08,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250TKN-039",
+            "codigo_referencia": "CB250TKN-039",
+            "nombre": "VELOCIMETRO DIGITAL TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC",
+            "precio": 51.52,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-002",
+            "codigo_referencia": "CB250GP1-002",
+            "nombre": "MANIGUETA EMBRAGUE CON BASE GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 9.83,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB150GHS1-284",
+            "codigo_referencia": "CB150GHS1-284",
+            "nombre": "VELOCIMETRO DIGITAL S1 150/180",
+            "precio": 55.2,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-033",
+            "codigo_referencia": "FE250GP1R-033",
+            "nombre": "VELOCIMETRO DIGITAL GP1-R 250 2025 CUADRADO",
+            "precio": 82.8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-012",
+            "codigo_referencia": "TY300ADV-012",
+            "nombre": "VELOCIMETRO DIGITAL ADV. 300CC TY",
+            "precio": 110.4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-090",
+            "codigo_referencia": "CB250SCB-090",
+            "nombre": "VELOCIMETRO AXXO SCRAMBLER 250/FBK 250/AK47/SCRAMBLER 300CC",
+            "precio": 51.52,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150WRF-032G",
+            "codigo_referencia": "CG150WRF-032G",
+            "nombre": "GUARDAFANGO DEL. WORKFORCE GRIS",
+            "precio": 23.92,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "GUA-D1935-NE",
+            "codigo_referencia": "GUA-D1935-NE",
+            "nombre": "GUARDAFANGO DEL. DAYTONA DY250 TEKKEN  DE ARRIBA NEGRO",
+            "precio": 14.46,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "GUA-D1936-NE",
+            "codigo_referencia": "GUA-D1936-NE",
+            "nombre": "GUARDAFANGO DEL. DAYTONA DY250 TEKKEN DE ABAJO NEGRO",
+            "precio": 14.72,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-001N",
+            "codigo_referencia": "CB200WF-001N",
+            "nombre": "GUARDAFANGO DEL. WOLF/ADVENTURE 200/MAVERICK 250/RANGER CFZ 250/HONDA CB190 N-NARANJA",
+            "precio": 25.76,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-040",
+            "codigo_referencia": "CB250CRF-040",
+            "nombre": "GUARDAFANGO DEL. CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200 GRIS",
+            "precio": 27.6,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-008",
+            "codigo_referencia": "CB250SC-008",
+            "nombre": "VELOCIMETRO SCORPION 250CC",
+            "precio": 101.2,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150-212",
+            "codigo_referencia": "CG150-212",
+            "nombre": "VELOCIMETRO DELTA/IGM EC150/SK STIFF/AXXO AX150/TUKO H1 150CC",
+            "precio": 46.0,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-022BI",
+            "codigo_referencia": "FE250GP1R-022BI",
+            "nombre": "GUARDAFANGO DEL. GP1-R 250/SHM CHIEF II PRO/XPOWER FIBRA CARBONO B/I",
+            "precio": 36.8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250XP-013",
+            "codigo_referencia": "CB250XP-013",
+            "nombre": "VELOCIMETRO DIGITAL XPOWER/THD SRT1/PEGASSO DUKK 250CC/FACTORY FZ",
+            "precio": 64.4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150WING-022",
+            "codigo_referencia": "CG150WING-022",
+            "nombre": "VELOCIMETRO WING ANTIGUA",
+            "precio": 46.26,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "Total",
+            "codigo_referencia": "Total",
+            "nombre": "",
+            "precio": 3158.16,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        }
+    ]
+}
