@@ -27,13 +27,13 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
 
   return (
     <div
-      className={`relative overflow-hidden bg-white ${className || ''}`}
+      className={`relative overflow-hidden bg-white dark:bg-slate-800 ${className || ''}`}
       style={style}
       onClick={onClick}
     >
       {!isLoaded && !hasError && (
-        <div className="absolute inset-0 bg-gray-100 animate-pulse z-10 flex items-center justify-center">
-          <div className="w-8 h-8 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
+        <div className="absolute inset-0 bg-gray-100 dark:bg-slate-700 animate-pulse z-10 flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-gray-300 dark:border-slate-600 border-t-gray-600 dark:border-t-slate-400 rounded-full animate-spin"></div>
         </div>
       )}
 

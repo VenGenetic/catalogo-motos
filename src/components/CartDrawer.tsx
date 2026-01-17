@@ -115,45 +115,45 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
     <div className="fixed inset-0 z-[100] flex justify-end">
       {/* Overlay Oscuro */}
       <div 
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" 
+        className="absolute inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm transition-opacity" 
         onClick={closeCart}
       />
 
       {/* Panel Deslizante (Ancho completo en móvil) */}
-      <div className="relative w-full md:max-w-[480px] bg-white h-full shadow-2xl flex flex-col animate-slide-in-right">
+      <div className="relative w-full md:max-w-[480px] bg-white dark:bg-slate-900 h-full shadow-2xl flex flex-col animate-slide-in-right">
         
         {/* --- HEADER --- */}
-        <div className="px-5 py-4 border-b flex justify-between items-center bg-white z-10 sticky top-0">
+        <div className="px-5 py-4 border-b dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900 z-10 sticky top-0">
           <div>
-            <h2 className="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+            <h2 className="text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
               Tu Pedido
-              <span className="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded-full border border-slate-200">
+              <span className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">
                 {cart.length} items
               </span>
             </h2>
           </div>
           <button 
             onClick={closeCart}
-            className="p-2 -mr-2 text-gray-400 hover:text-slate-900 hover:bg-gray-100 rounded-full transition-all active:scale-90"
+            className="p-2 -mr-2 text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-all active:scale-90"
           >
             <X className="w-7 h-7"/>
           </button>
         </div>
 
         {/* --- CONTENIDO SCROLLABLE --- */}
-        <div className="flex-1 overflow-y-auto bg-gray-50/50">
+        <div className="flex-1 overflow-y-auto bg-gray-50/50 dark:bg-slate-950/50">
           {cart.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-[70%] text-gray-400 gap-6 p-8">
-              <div className="bg-white p-8 rounded-full shadow-sm border border-gray-100">
-                <MessageCircle className="w-16 h-16 text-gray-300" />
+              <div className="bg-white dark:bg-slate-800 p-8 rounded-full shadow-sm border border-gray-100 dark:border-slate-700">
+                <MessageCircle className="w-16 h-16 text-gray-300 dark:text-gray-600" />
               </div>
               <div className="text-center space-y-2">
-                <p className="font-bold text-lg text-slate-700">Tu carrito está vacío</p>
+                <p className="font-bold text-lg text-slate-700 dark:text-gray-300">Tu carrito está vacío</p>
                 <p className="text-sm">Agrega repuestos para armar tu pedido.</p>
               </div>
               <button 
                 onClick={closeCart} 
-                className="px-8 py-3 bg-slate-900 text-white font-bold rounded-xl shadow-lg shadow-slate-200 active:scale-95 transition-transform"
+                className="px-8 py-3 bg-slate-900 dark:bg-slate-800 text-white font-bold rounded-xl shadow-lg shadow-slate-200 dark:shadow-none active:scale-95 transition-transform"
               >
                 Volver al Catálogo
               </button>
@@ -166,17 +166,17 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
                 {cart.map(item => {
                   const subtotal = (Number(item.precio) || 0) * (item.cantidad || item.cant || 0);
                   return (
-                    <div key={item.id} className="flex gap-4 p-3 bg-white border border-gray-100 rounded-2xl shadow-sm">
+                    <div key={item.id} className="flex gap-4 p-3 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl shadow-sm">
                       {/* Imagen más grande */}
                       <LazyImage 
                         src={optimizarImg(item.imagen)} 
                         alt={item.nombre}
-                        className="w-20 h-20 rounded-xl bg-gray-50 shrink-0 object-cover border border-gray-100" 
+                        className="w-20 h-20 rounded-xl bg-gray-50 dark:bg-slate-700 shrink-0 object-cover border border-gray-100 dark:border-slate-600" 
                       />
                       
                       <div className="flex-1 flex flex-col justify-between">
                         <div className="flex justify-between items-start gap-2">
-                          <h4 className="text-sm font-bold text-slate-800 leading-snug line-clamp-2">
+                          <h4 className="text-sm font-bold text-slate-800 dark:text-gray-200 leading-snug line-clamp-2">
                             {item.nombre}
                           </h4>
                           <button 
@@ -188,24 +188,24 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
                         </div>
                         
                         <div className="flex items-end justify-between mt-2">
-                          <div className="font-extrabold text-slate-900">
+                          <div className="font-extrabold text-slate-900 dark:text-white">
                             ${subtotal.toFixed(2)}
                           </div>
 
                           {/* Controles de Cantidad (Touch Friendly) */}
-                          <div className="flex items-center gap-3 bg-gray-50 rounded-lg p-1 border border-gray-200">
+                          <div className="flex items-center gap-3 bg-gray-50 dark:bg-slate-900/50 rounded-lg p-1 border border-gray-200 dark:border-slate-700">
                             <button 
                               onClick={() => updateQuantity(item.id, -1)} 
-                              className="w-8 h-8 bg-white hover:bg-gray-100 rounded-md flex items-center justify-center shadow-sm border border-gray-200 text-slate-700 active:scale-90 transition-transform"
+                              className="w-8 h-8 bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-md flex items-center justify-center shadow-sm border border-gray-200 dark:border-slate-600 text-slate-700 dark:text-white active:scale-90 transition-transform"
                             >
                               <Minus size={16} strokeWidth={3}/>
                             </button>
-                            <span className="text-sm font-bold w-6 text-center text-slate-900">
+                            <span className="text-sm font-bold w-6 text-center text-slate-900 dark:text-white">
                               {item.cantidad || item.cant || 0}
                             </span>
                             <button 
                               onClick={() => updateQuantity(item.id, 1)} 
-                              className="w-8 h-8 bg-slate-900 text-white rounded-md flex items-center justify-center shadow-md active:scale-90 transition-transform"
+                              className="w-8 h-8 bg-slate-900 dark:bg-slate-700 hover:dark:bg-slate-600 text-white rounded-md flex items-center justify-center shadow-md active:scale-90 transition-transform"
                             >
                               <Plus size={16} strokeWidth={3}/>
                             </button>
@@ -218,8 +218,8 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
               </div>
 
               {/* FORMULARIO DE CLIENTE */}
-              <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm space-y-4">
-                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 mb-2">
+              <div className="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm space-y-4">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-2">
                   <User size={16} className="text-slate-400" /> 
                   Datos para la Nota (Opcional)
                 </h3>
@@ -230,7 +230,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
                   placeholder="Tu Nombre o Cliente" 
                   value={formData.nombre} 
                   onChange={handleInputChange} 
-                  className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-base focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none transition-all placeholder:text-gray-400" 
+                  className="w-full px-4 py-3.5 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-600 rounded-xl text-base focus:bg-white dark:focus:bg-slate-800 dark:text-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none transition-all placeholder:text-gray-400" 
                 />
                 
                 <div className="relative">
@@ -241,7 +241,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
                     placeholder="Ciudad / Dirección" 
                     value={formData.ciudad} 
                     onChange={handleInputChange} 
-                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-base focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none transition-all placeholder:text-gray-400" 
+                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-600 rounded-xl text-base focus:bg-white dark:focus:bg-slate-800 dark:text-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none transition-all placeholder:text-gray-400" 
                   />
                 </div>
 
@@ -250,7 +250,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
                     name="metodoPago" 
                     value={formData.metodoPago} 
                     onChange={handleInputChange} 
-                    className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-base focus:bg-white focus:border-red-500 outline-none appearance-none text-slate-700 font-medium"
+                    className="w-full px-4 py-3.5 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-600 rounded-xl text-base focus:bg-white dark:focus:bg-slate-800 dark:text-white focus:border-red-500 outline-none appearance-none text-slate-700 dark:text-white font-medium"
                   >
                     <option value="Transferencia Bancaria">Transferencia Bancaria</option>
                     <option value="Depósito">Depósito en Agente</option>
@@ -264,12 +264,12 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
         </div>
 
         {/* --- FOOTER FLOTANTE (STICKY) --- */}
-        <div className="p-4 border-t bg-white shadow-[0_-4px_30px_rgba(0,0,0,0.08)] z-20 pb-safe">
+        <div className="p-4 border-t dark:border-slate-800 bg-white dark:bg-slate-900 shadow-[0_-4px_30px_rgba(0,0,0,0.08)] z-20 pb-safe">
           <div className="flex justify-between items-end mb-4 px-1">
              <div className="space-y-0.5">
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total a Pagar</p>
+                <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Total a Pagar</p>
              </div>
-             <div className="text-3xl font-extrabold text-slate-900 tracking-tight">
+             <div className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                ${cartTotal.toFixed(2)}
              </div>
           </div>
@@ -280,8 +280,8 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
                disabled={cart.length === 0}
                className={`rounded-xl flex flex-col justify-center items-center border transition-all active:scale-95 ${
                  copied 
-                   ? 'bg-slate-800 text-white border-slate-800' 
-                   : 'bg-white text-slate-600 border-gray-200 hover:bg-gray-50'
+                   ? 'bg-slate-800 dark:bg-slate-700 text-white border-slate-800 dark:border-slate-700' 
+                   : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-gray-300 border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700'
                }`}
             >
                {copied ? <Check size={20} className="mb-0.5" /> : <FileText size={20} className="mb-0.5" />}
@@ -293,7 +293,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
               disabled={cart.length === 0}
               className={`rounded-xl flex items-center justify-center gap-2 font-bold text-lg shadow-lg shadow-green-500/20 transition-all active:scale-[0.98] ${
                 cart.length === 0 
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                  ? 'bg-gray-100 dark:bg-slate-800 text-gray-400 dark:text-gray-600 cursor-not-allowed' 
                   : 'bg-[#25D366] text-white hover:brightness-105'
               }`}
             >
@@ -312,22 +312,22 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
             onClick={() => setIsShippingModalOpen(false)}
           />
           
-          <div className="bg-white w-full max-w-sm rounded-[2rem] shadow-2xl p-6 relative z-10 animate-scale-up border border-gray-100">
+          <div className="bg-white dark:bg-slate-900 w-full max-w-sm rounded-[2rem] shadow-2xl p-6 relative z-10 animate-scale-up border border-gray-100 dark:border-slate-700">
             <button 
               onClick={() => setIsShippingModalOpen(false)}
-              className="absolute top-4 right-4 p-2 bg-gray-50 text-gray-400 rounded-full hover:bg-gray-100 hover:text-slate-900 transition-all"
+              className="absolute top-4 right-4 p-2 bg-gray-50 dark:bg-slate-800 text-gray-400 dark:text-gray-300 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all"
             >
               <X size={20} />
             </button>
             
             <div className="flex flex-col items-center mb-6">
-              <div className="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-3 shadow-sm">
+              <div className="w-14 h-14 bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mb-3 shadow-sm">
                 <Truck size={28} />
               </div>
-              <h3 className="text-xl font-extrabold text-slate-900 text-center">
+              <h3 className="text-xl font-extrabold text-slate-900 dark:text-white text-center">
                 Opciones de Envío
               </h3>
-              <p className="text-gray-500 text-center text-sm mt-1">
+              <p className="text-gray-500 dark:text-gray-400 text-center text-sm mt-1">
                 Personaliza tu proforma antes de copiar
               </p>
             </div>
@@ -338,17 +338,17 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
                 onClick={() => setHasShipping(!hasShipping)}
                 className={`flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all active:scale-[0.98] ${
                   hasShipping 
-                    ? 'border-blue-500 bg-blue-50/50' 
-                    : 'border-gray-100 bg-gray-50'
+                    ? 'border-blue-500 dark:border-blue-600 bg-blue-50/50 dark:bg-blue-900/30' 
+                    : 'border-gray-100 dark:border-slate-700 bg-gray-50 dark:bg-slate-800'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${
-                    hasShipping ? 'bg-blue-500 border-blue-500' : 'border-gray-300 bg-white'
+                    hasShipping ? 'bg-blue-500 border-blue-500' : 'border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700'
                   }`}>
                     {hasShipping && <Check size={12} className="text-white" strokeWidth={3} />}
                   </div>
-                  <span className={`font-bold ${hasShipping ? 'text-blue-700' : 'text-gray-600'}`}>
+                  <span className={`font-bold ${hasShipping ? 'text-blue-700 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'}`}>
                     ¿Incluir costo de envío?
                   </span>
                 </div>
@@ -365,7 +365,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
                     placeholder="0.00"
                     value={shippingCost}
                     onChange={(e) => setShippingCost(e.target.value)}
-                    className="w-full pl-8 pr-4 py-4 bg-white border-2 border-blue-100 rounded-xl text-xl font-bold text-slate-800 placeholder:text-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all"
+                    className="w-full pl-8 pr-4 py-4 bg-white dark:bg-slate-800 border-2 border-blue-100 dark:border-blue-900 rounded-xl text-xl font-bold text-slate-800 dark:text-white placeholder:text-gray-300 dark:placeholder:text-gray-600 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all"
                     autoFocus={hasShipping}
                   />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400 uppercase">USD</span>
@@ -375,7 +375,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
               {/* Botón de Acción Principal */}
               <button
                 onClick={handleConfirmCopy}
-                className="w-full py-4 bg-slate-900 text-white font-bold rounded-xl shadow-lg shadow-slate-200 active:scale-95 transition-all text-lg flex items-center justify-center gap-2 hover:bg-slate-800"
+                className="w-full py-4 bg-slate-900 dark:bg-slate-700 text-white font-bold rounded-xl shadow-lg shadow-slate-200 dark:shadow-none active:scale-95 transition-all text-lg flex items-center justify-center gap-2 hover:bg-slate-800 dark:hover:bg-slate-600"
               >
                 <FileText size={20} />
                 Copiar Proforma
