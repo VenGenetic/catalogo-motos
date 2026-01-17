@@ -120,7 +120,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
       />
 
       {/* Panel Deslizante (Ancho completo en móvil) */}
-      <div className="relative w-full md:max-w-[480px] bg-white dark:bg-slate-900 h-full shadow-2xl flex flex-col animate-slide-in-right">
+      <div className="relative w-full md:max-w-[480px] bg-white dark:bg-slate-900 h-[100dvh] shadow-2xl flex flex-col animate-slide-in-right">
         
         {/* --- HEADER --- */}
         <div className="px-5 py-4 border-b dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900 z-10 sticky top-0">
@@ -250,7 +250,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
                     name="metodoPago" 
                     value={formData.metodoPago} 
                     onChange={handleInputChange} 
-                    className="w-full px-4 py-3.5 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-600 rounded-xl text-base focus:bg-white dark:focus:bg-slate-800 dark:text-white focus:border-red-500 outline-none appearance-none text-slate-700 dark:text-white font-medium"
+                    className="w-full px-4 py-3.5 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-600 rounded-xl text-base focus:bg-white dark:focus:bg-slate-800 dark:text-white focus:border-red-500 outline-none appearance-none text-slate-700 dark:text-white font-medium pr-10"
                   >
                     <option value="Transferencia Bancaria">Transferencia Bancaria</option>
                     <option value="Depósito">Depósito en Agente</option>
@@ -264,7 +264,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
         </div>
 
         {/* --- FOOTER FLOTANTE (STICKY) --- */}
-        <div className="p-4 border-t dark:border-slate-800 bg-white dark:bg-slate-900 shadow-[0_-4px_30px_rgba(0,0,0,0.08)] z-20 pb-safe">
+        <div className="p-4 border-t dark:border-slate-800 bg-white dark:bg-slate-900 shadow-[0_-4px_30px_rgba(0,0,0,0.08)] z-20 pb-safe mt-auto">
           <div className="flex justify-between items-end mb-4 px-1">
              <div className="space-y-0.5">
                 <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Total a Pagar</p>

@@ -22,3 +22,13 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+/* UTILIDADES SAFE AREA (IPHONE) */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .pb-safe {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 1rem); /* +1rem para dar un poco de aire extra */
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+}
