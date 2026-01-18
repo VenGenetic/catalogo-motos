@@ -23,15 +23,15 @@ export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-12 md:pt-16 pb-8 md:pb-12 px-3 md:px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pt-12 md:pt-16 pb-8 md:pb-12 px-3 md:px-4">
       <div className="max-w-7xl mx-auto">
         
         {/* Encabezado - MÁS COMPACTO EN MÓVIL */}
         <div className="text-center mb-6 md:mb-10">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-900 mb-2 md:mb-3">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white mb-2 md:mb-3">
             ¿Qué necesitas hoy?
           </h1>
-          <p className="text-gray-500 mb-4 md:mb-8 text-sm md:text-lg px-2">
+          <p className="text-gray-500 dark:text-gray-400 mb-4 md:mb-8 text-sm md:text-lg px-2">
             Busca tu repuesto directo o selecciona tu moto
           </p>
           
@@ -42,26 +42,26 @@ export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
               <input
                 type="text"
                 placeholder="Busca un repuesto (ej. Bujía)..."
-                className="w-full pl-10 md:pl-12 pr-16 md:pr-20 py-3 md:py-4 rounded-lg md:rounded-xl border-2 border-slate-200 bg-slate-50 focus:bg-white focus:border-slate-800 focus:ring-4 focus:ring-slate-100 outline-none transition-all text-sm md:text-lg shadow-sm"
+                className="w-full pl-10 md:pl-12 pr-16 md:pr-20 py-3 md:py-4 rounded-lg md:rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:bg-white dark:focus:bg-slate-900 focus:border-slate-800 dark:focus:border-slate-500 focus:ring-4 focus:ring-slate-100 dark:focus:ring-slate-900 dark:text-white outline-none transition-all text-sm md:text-lg shadow-sm"
                 value={partSearch}
                 onChange={(e) => setPartSearch(e.target.value)}
                 onKeyDown={handleGlobalSearch}
                 autoFocus // Le damos foco automático a este input
               />
-              <Wrench className="absolute left-4 top-4.5 text-slate-400 w-6 h-6" />
+              <Wrench className="absolute left-4 top-4.5 text-slate-400 dark:text-slate-500 w-6 h-6" />
               <button 
                 onClick={() => partSearch.trim() && onSearchGlobal(partSearch)}
-                className="absolute right-2 top-2 bottom-2 bg-slate-900 text-white px-4 rounded-lg font-bold text-sm hover:bg-slate-800 transition-colors"
+                className="absolute right-2 top-2 bottom-2 bg-slate-900 dark:bg-red-600 text-white px-4 rounded-lg font-bold text-sm hover:bg-slate-800 dark:hover:bg-red-700 transition-colors"
               >
                 Buscar
               </button>
             </div>
 
             {/* DIVISOR */}
-            <div className="flex items-center justify-center gap-4 text-gray-300 font-bold text-sm">
-              <div className="h-px bg-gray-200 flex-1"></div>
+            <div className="flex items-center justify-center gap-4 text-gray-300 dark:text-gray-600 font-bold text-sm">
+              <div className="h-px bg-gray-200 dark:bg-slate-800 flex-1"></div>
               O ELIGE TU MOTO
-              <div className="h-px bg-gray-200 flex-1"></div>
+              <div className="h-px bg-gray-200 dark:bg-slate-800 flex-1"></div>
             </div>
 
             {/* 2. SEGUNDO: BUSCADOR DE MOTOS (Ahora abajo) */}
@@ -69,11 +69,11 @@ export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
               <input
                 type="text"
                 placeholder="Filtra por modelo (ej. Tekken)..."
-                className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-gray-200 focus:border-red-600 focus:ring-4 focus:ring-red-100 outline-none transition-all text-lg shadow-sm"
+                className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 dark:text-white focus:border-red-600 focus:ring-4 focus:ring-red-100 outline-none transition-all text-lg shadow-sm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <Search className="absolute left-4 top-4.5 text-gray-400 w-6 h-6" />
+              <Search className="absolute left-4 top-4.5 text-gray-400 dark:text-gray-500 w-6 h-6" />
             </div>
 
           </div>
@@ -89,9 +89,9 @@ export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
                   const primeraPalabra = modelo.split(' ')[0];
                   onSelectModel(primeraPalabra);
                 }}
-                className="group relative flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden text-left hover:-translate-y-1"
+                className="group relative flex flex-col bg-white dark:bg-slate-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-700 overflow-hidden text-left hover:-translate-y-1"
               >
-                <div className="w-full h-40 md:h-48 bg-gray-100 relative overflow-hidden flex items-center justify-center p-2">
+                <div className="w-full h-40 md:h-48 bg-gray-100 dark:bg-slate-700 relative overflow-hidden flex items-center justify-center p-2">
                   <img 
                     src={getMotoImage(modelo)} 
                     alt={modelo}
@@ -99,15 +99,15 @@ export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
                     className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
                     onError={(e) => {
                       (e.target as HTMLImageElement).style.display = 'none';
-                      (e.target as HTMLImageElement).parentElement!.classList.add('bg-slate-200');
+                      (e.target as HTMLImageElement).parentElement!.classList.add('bg-slate-200', 'dark:bg-slate-700');
                     }}
                   />
-                  <div className="absolute top-2 right-2 bg-black/5 text-black/40 text-[10px] px-2 py-1 rounded-full font-bold group-hover:bg-red-600 group-hover:text-white transition-colors">
+                  <div className="absolute top-2 right-2 bg-black/5 dark:bg-white/10 text-black/40 dark:text-white/60 text-[10px] px-2 py-1 rounded-full font-bold group-hover:bg-red-600 group-hover:text-white transition-colors">
                     VER
                   </div>
                 </div>
-                <div className="p-4 border-t border-gray-50">
-                  <h3 className="font-bold text-slate-800 text-sm md:text-base leading-tight group-hover:text-red-600 transition-colors">
+                <div className="p-4 border-t border-gray-50 dark:border-slate-700">
+                  <h3 className="font-bold text-slate-800 dark:text-gray-100 text-sm md:text-base leading-tight group-hover:text-red-600 transition-colors">
                     {modelo}
                   </h3>
                 </div>

@@ -15,10 +15,20 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #f8fafc; /* Slate 50 */
+  @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300;
   -webkit-tap-highlight-color: transparent; /* Quitar flash azul en tap */
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+/* UTILIDADES SAFE AREA (IPHONE) */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .pb-safe {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 1rem); /* +1rem para dar un poco de aire extra */
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
 }

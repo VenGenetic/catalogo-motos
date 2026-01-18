@@ -1,9 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, Heart } from 'lucide-react'; // <--- CORREGIDO: Se eliminó 'Menu'
+import { ShoppingBag, Heart, Sun, Moon } from 'lucide-react'; // <--- CORREGIDO: Se eliminó 'Menu'
 import { useCart } from '../context/CartContext';
+import { useTheme } from '../context/ThemeContext';
 
 export const Navbar = () => {
   const { cartCount, openCart } = useCart();
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
@@ -69,6 +71,19 @@ export const Navbar = () => {
                  Mis Favoritos
                </span>
             </Link>
+
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-1.5 md:p-2 text-gray-400 hover:text-yellow-400 transition-colors"
+              aria-label="Toggle Dark Mode"
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-4 h-4 md:w-5 md:h-5" />
+              ) : (
+                <Moon className="w-4 h-4 md:w-5 md:h-5" />
+              )}
+            </button>
 
             {/* Botón Carrito Mejorado */}
             <button 

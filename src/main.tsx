@@ -5,6 +5,7 @@ import { HelmetProvider } from 'react-helmet-async' // IMPORTANTE
 import './index.css'
 import App from './App.tsx'
 import { CartProvider } from './context/CartContext'
+import { ThemeProvider } from './context/ThemeContext'
 import { ScrollToTop } from './components/ScrollToTop'
 
 createRoot(document.getElementById('root')!).render(
@@ -12,9 +13,11 @@ createRoot(document.getElementById('root')!).render(
     <HelmetProvider>
       <BrowserRouter> 
         <ScrollToTop />
-        <CartProvider>
-          <App />
-        </CartProvider>
+        <ThemeProvider>
+          <CartProvider>
+            <App />
+          </CartProvider>
+        </ThemeProvider>
       </BrowserRouter>
     </HelmetProvider>
   </StrictMode>,

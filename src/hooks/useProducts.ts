@@ -33,16 +33,41 @@ export const useProducts = () => {
   useEffect(() => {
     let retryCount = 0;
     const MAX_RETRIES = 3;
+    const CACHE_KEY = 'cached_products_v1';
+    const CACHE_TIME_KEY = 'cached_products_time';
+    const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
+
+    // 1. CARGA INICIAL DESDE CACHÉ (Estrategia: Stale-While-Revalidate)
+    try {
+        const cachedData = localStorage.getItem(CACHE_KEY);
+        const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+        
+        if (cachedData && cachedTime) {
+            const age = Date.now() - parseInt(cachedTime);
+            if (age < CACHE_DURATION * 24) { // Usamos caché si tiene menos de 24 horas para mostrar ALGO
+                 setProductos(JSON.parse(cachedData));
+                 setLoading(false); // Mostramos inmediatamente
+            }
+        }
+    } catch (e) {
+        console.warn('Error leyendo caché local', e);
+    }
 
     const fetchProducts = async (): Promise<void> => {
       try {
         // Verificar conectividad antes de hacer la petición
         if (typeof navigator !== 'undefined' && !navigator.onLine) {
-          throw new Error('Sin conexión a internet. Verifica tu conexión y recarga la página.');
+            // Si no hay internet y ya cargamos caché, no tiramos error, solo avisamos
+            const hasCache = productos.length > 0;
+            if (hasCache) {
+                 console.log('Modo offline: Usando datos en caché');
+                 return;
+            }
+            throw new Error('Sin conexión a internet. Verifica tu conexión y recarga la página.');
         }
 
         const fuentes = [
-          { url: '/data.json', origen: 'Bajo pedido (Cuenca)' },
+          { url: '/data.json', origen: 'Cuenca (bajo pedido)' },
           { url: '/data_guayaquil.json', origen: 'Guayaquil' }
         ];
 
@@ -140,9 +165,24 @@ export const useProducts = () => {
         }
 
         setProductos(procesados);
+        
+        // GUARDAR EN CACHÉ PARA LA PRÓXIMA VEZ
+        try {
+            localStorage.setItem(CACHE_KEY, JSON.stringify(procesados));
+            localStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
+        } catch (e) {
+            console.warn('No se pudo guardar en caché (posiblemente cuota excedida)', e);
+        }
+
       } catch (err) {
         console.error("Error cargando productos:", err);
         
+        // Si ya tenemos productos (de caché), no mostramos error fatal, solo logueamos
+        if (productos.length > 0) { 
+             console.warn('Falló la actualización en segundo plano, manteniendo datos en caché.');
+             return; 
+        }
+
         // Implementar reintentos automáticos en caso de error de red
         if (retryCount < MAX_RETRIES && err instanceof Error && 
             (err.name === 'AbortError' || err.message.includes('Failed to fetch'))) {

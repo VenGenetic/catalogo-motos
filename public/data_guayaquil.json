@@ -737,15 +737,6 @@
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
-        },
-        {
-            "id": "Total",
-            "codigo_referencia": "Total",
-            "nombre": "",
-            "precio": 3158.16,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
         }
     ]
 }

@@ -8,7 +8,7 @@ export const limpiarTexto = (texto: string) => {
 export const optimizarImg = (url: string | null | undefined) => {
   // 1. BLINDAJE: Si no es string válida, devolvemos placeholder
   if (!url || typeof url !== 'string' || url.trim() === '' || url === 'No imagen') {
-    return 'https://via.placeholder.com/400x300.webp?text=Sin+Imagen';
+    return '/sin_imagen.webp';
   }
 
   // 2. NUEVO: Si es una ruta local (empieza con /), devolver tal cual
@@ -24,6 +24,6 @@ export const optimizarImg = (url: string | null | undefined) => {
   try {
     return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=500&q=80&output=webp`;
   } catch {
-    return 'https://via.placeholder.com/400x300.webp?text=Error+Img';
+    return '/sin_imagen.webp';
   }
 };
