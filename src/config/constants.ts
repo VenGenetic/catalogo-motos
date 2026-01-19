@@ -29,7 +29,7 @@ export const MODELOS = [
   "GP1 250 CC", "Xpower 250 CC", "GP1 R 250CC", "Feroce 250CC", "Super Wolf 300 CC",
   // Doble Propósito
   "Montana 150CC", "Shark 1 200 CC", "Shark 2 200 CC", "Shark 3 200CC", 
-  "Force DS 200CC", "Tekken EVO 250 CC", "Artic 250 CC", "Adventure 300 CC", 
+  "Force DS 200CC", "Tekken EVO 250 CC", "Arctic 250 CC", "Adventure 300 CC", 
   "Adventure 300R CC", "Everest Off Road 300 CC", "Everest Dual Sport 300 CC", 
   "Tekken Discovery 300 CC", "Xpedition 300 CC",
   // Enduro
