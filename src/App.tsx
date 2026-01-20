@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react';
-import { Routes, Route, useSearchParams, Link } from 'react-router-dom';
+import { Routes, Route, useSearchParams, Link, useLocation, useNavigate, matchPath } from 'react-router-dom';
 import { Heart, WifiOff } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import './App.css';
@@ -37,6 +37,8 @@ const PageLoader = () => (
 export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { productos, loading } = useProducts();
+  const location = useLocation();
+  const navigate = useNavigate();
   
   // Derivamos el producto seleccionado de la URL
   const prodId = searchParams.get('prod');
@@ -51,7 +53,30 @@ export default function App() {
   });
   
   const [busqueda, setBusqueda] = useState('');
-  const [filtroModelo, setFiltroModelo] = useState('');
+
+  // Lógica de URL para el modelo
+  const getModelFromUrl = useCallback((pathname: string) => {
+    const match = matchPath({ path: "/catalogo/:modelo", end: true }, pathname);
+    return match?.params?.modelo ? decodeURIComponent(match.params.modelo) : '';
+  }, []);
+
+  const [filtroModelo, setFiltroModelo] = useState(() => getModelFromUrl(location.pathname));
+
+  useEffect(() => {
+    // Solo sincronizamos si estamos en la sección de catálogo
+    if (location.pathname.startsWith('/catalogo')) {
+      const modelInUrl = getModelFromUrl(location.pathname);
+      if (modelInUrl !== filtroModelo) {
+        setFiltroModelo(modelInUrl);
+      }
+    }
+  }, [location.pathname, getModelFromUrl, filtroModelo]);
+
+  const handleSetFiltroModelo = useCallback((modelo: string) => {
+    if (modelo) navigate(`/catalogo/${encodeURIComponent(modelo)}`);
+    else navigate('/catalogo');
+  }, [navigate]);
+
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
   
   // CAMBIO CLAVE: Reducimos el tiempo de espera a 50ms para que se sienta INSTANTÁNEO
@@ -239,7 +264,24 @@ export default function App() {
                   isFav={(id) => favs.includes(id)} 
                   toggleFav={toggleFav}
                   filtroModelo={filtroModelo} 
-                  setFiltroModelo={setFiltroModelo}
+                  setFiltroModelo={handleSetFiltroModelo}
+                  busqueda={busqueda}
+                  setBusqueda={setBusqueda}
+                  filtroSeccion={filtroSeccion} 
+                  setFiltroSeccion={setFiltroSeccion}
+                  onProductClick={handleProductClick} 
+                />
+              </>
+            } />
+            <Route path="/catalogo/:modelo" element={
+              <>
+                <Helmet><title>{filtroModelo ? `Repuestos ${filtroModelo}` : 'Catálogo'} | LV PARTS</title></Helmet>
+                <CatalogView 
+                  productos={filteredProducts}
+                  isFav={(id) => favs.includes(id)} 
+                  toggleFav={toggleFav}
+                  filtroModelo={filtroModelo} 
+                  setFiltroModelo={handleSetFiltroModelo}
                   busqueda={busqueda}
                   setBusqueda={setBusqueda}
                   filtroSeccion={filtroSeccion} 
