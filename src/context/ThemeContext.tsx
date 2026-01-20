@@ -16,7 +16,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (savedTheme) {
       return savedTheme;
     }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    // Por defecto oscuro (usuario pidió esto explícitamente) o preferencia del sistema
+    // Si queremos forzar oscuro por defecto ignorando sistema cuando no hay config guardada:
+    return 'dark'; 
   });
 
   useEffect(() => {
