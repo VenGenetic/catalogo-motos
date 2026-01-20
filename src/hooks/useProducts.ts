@@ -37,16 +37,27 @@ export const useProducts = () => {
     const CACHE_TIME_KEY = 'cached_products_time';
     const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
 
-    // 1. CARGA INICIAL DESDE CACHÉ (Estrategia: Stale-While-Revalidate)
+    // 1. CARGA INICIAL DESDE CACHÉ (Estrategia: Cache-First con TTL corto, luego Stale-While-Revalidate)
+    let shouldUseCache = false;
     try {
         const cachedData = localStorage.getItem(CACHE_KEY);
         const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
         
         if (cachedData && cachedTime) {
             const age = Date.now() - parseInt(cachedTime);
-            if (age < CACHE_DURATION * 24) { // Usamos caché si tiene menos de 24 horas para mostrar ALGO
+            // Si el caché tiene menos de 15 minutos, lo consideramos FRESCO y no recargamos de red
+            const FRESH_CACHE_TIME = 1000 * 60 * 15; 
+            
+            if (age < FRESH_CACHE_TIME) {
                  setProductos(JSON.parse(cachedData));
-                 setLoading(false); // Mostramos inmediatamente
+                 setLoading(false);
+                 shouldUseCache = true;
+                 console.log('⚡ Usando caché fresco, omitiendo red');
+                 return; // <--- SALIR AQUÍ PARA EVITAR FETCH
+            } else if (age < CACHE_DURATION * 24) {
+                 // Si es viejo pero válido (menos de 24h), lo mostramos "mientras" actualizamos (Stale-While-Revalidate)
+                 setProductos(JSON.parse(cachedData));
+                 setLoading(false);
             }
         }
     } catch (e) {
@@ -54,6 +65,9 @@ export const useProducts = () => {
     }
 
     const fetchProducts = async (): Promise<void> => {
+      // Doble verificación por si acaso
+      if (shouldUseCache) return;
+
       try {
         // Verificar conectividad antes de hacer la petición
         if (typeof navigator !== 'undefined' && !navigator.onLine) {

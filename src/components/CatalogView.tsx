@@ -154,9 +154,9 @@ export const CatalogView = memo(({
           <>
             <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 md:gap-6 px-0 md:px-0">
               {visibles.map((product: Producto) => (
-                <div 
-                  key={product.id} 
-                  className="group bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-[0_4px_20px_rgb(0,0,0,0.08)] hover:border-red-100 dark:hover:border-slate-600 hover:-translate-y-0.5 active:scale-95"
+                <div
+                  key={product.id}
+                  className="group bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-[0_4px_20px_rgb(0,0,0,0.08)] hover:border-red-100 dark:hover:border-slate-600 hover:-translate-y-0.5 active:scale-95 [content-visibility:auto] [contain-intrinsic-size:300px]"
                   onClick={() => onProductClick(product)}
                 >
                   {/* Corazón pequeño (como pediste) */}
