@@ -739,10 +739,37 @@
             "stock": true
         },
         {
+            "id": "CGB200GTRRD-017",
+            "codigo_referencia": "CGB200GTRRD-017",
+            "nombre": "ARO DEL GTR ROADSTER",
+            "precio": 92.0,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150SF2-004R",
+            "codigo_referencia": "CG150SF2-004R",
+            "nombre": "ARO DEL MAGNESIO SPITFIRE 150 2025 ROJO",
+            "precio": 73.6,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
             "id": "VEL-6941",
             "codigo_referencia": "VEL-6941",
             "nombre": "VELOCIMETRO SHINERAY GP200 2021 /DAYTONA DY200 EVO II DIGITAL",
             "precio": 60.72,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-078",
+            "codigo_referencia": "CB250SC-078",
+            "nombre": "ARO DEL. ARMADO SCORPION 200/250CC B/N",
+            "precio": 82.8,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -757,10 +784,46 @@
             "stock": true
         },
         {
+            "id": "CB200FC-029",
+            "codigo_referencia": "CB200FC-029",
+            "nombre": "ARO DEL. ARMADO 1.85X19 4H FORCE 200/DK XTZ 250CC NEGRO",
+            "precio": 96.66,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-108",
+            "codigo_referencia": "CB250SC-108",
+            "nombre": "ARO DEL. ARMADO SCORPION 250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC B/I",
+            "precio": 82.8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
             "id": "CB150DYP-017",
             "codigo_referencia": "CB150DYP-017",
             "nombre": "VELOCIMETRO DYNAMIC PRO/SHM JEDI 150CC",
             "precio": 36.8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV-012",
+            "codigo_referencia": "CG200WEV-012",
+            "nombre": "ARO DEL. MAGNECIO 1.85X17 DISCO 4H WING EVO I-II/GTR/PREDATOR 200 NEGRO",
+            "precio": 101.2,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250ADV-052",
+            "codigo_referencia": "CB250ADV-052",
+            "nombre": "ARO DEL. ARMADO ADVENTURE R 250",
+            "precio": 22.08,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
