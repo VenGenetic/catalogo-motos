@@ -286,7 +286,27 @@ export default function App() {
               </>
             } />
             <Route path="/contacto" element={<><Helmet><title>Contacto | LV PARTS</title></Helmet><ContactView /></>} />
-            <Route path="*" element={<div className="p-20 text-center font-bold text-2xl">404 - No encontrado</div>} />
+            <Route path="*" element={
+              <div className="flex flex-col items-center justify-center min-h-[60vh] p-4 text-center">
+                <img 
+                  src="/Error_404.webp" 
+                  alt="Error 404 - Página no encontrada" 
+                  className="max-w-xs md:max-w-md w-full mb-6 object-contain"
+                />
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+                  ¡Ups! Página no encontrada
+                </h1>
+                <p className="text-gray-600 mb-6">
+                  Lo sentimos, la página que buscas no existe.
+                </p>
+                <Link 
+                  to="/" 
+                  className="bg-red-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-red-700 transition-colors shadow-md"
+                >
+                  Volver al Inicio
+                </Link>
+              </div>
+            } />
           </Routes>
         </Suspense>
       </main>
