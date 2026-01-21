@@ -9,7 +9,7 @@ export const BottomNav = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-gray-200 py-1.5 px-2 flex justify-around items-center z-40 pb-safe shadow-lg">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-100 dark:bg-slate-900 backdrop-blur-lg border-t border-gray-200 dark:border-slate-800 py-1.5 px-2 flex justify-around items-center z-40 pb-safe shadow-lg">
       <Link 
         to="/"
         className={`flex flex-col items-center gap-0.5 min-w-[55px] p-1.5 rounded-lg transition-all duration-200 ${
