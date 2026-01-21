@@ -721,6 +721,42 @@
             "stock": true
         },
         {
+            "id": "CB250GP1-022",
+            "codigo_referencia": "CB250GP1-022",
+            "nombre": "ARO POST. MAGNECIO 2.50X17 DISCO 4H GP1 250/TUNDRA VELOCE 250CC 2017/2018 NEGRO",
+            "precio": 114.08,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-054",
+            "codigo_referencia": "CB250GP1-054",
+            "nombre": "CAUCHO PORTA CATALINA GP1 250",
+            "precio": 6.44,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV2-050R",
+            "codigo_referencia": "CG200WEV2-050R",
+            "nombre": "ARO DEL. MAGNECIO 1.85X17 DISCO 4H WING EVO-2/SH GP200 2018 ROJO",
+            "precio": 101.2,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250TKN-051",
+            "codigo_referencia": "CB250TKN-051",
+            "nombre": "ARO POST. ARMADO TEKKEN/SCRAMBLER 250 NEGRO",
+            "precio": 101.2,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
             "id": "CB250SCB-002",
             "codigo_referencia": "CB250SCB-002",
             "nombre": "VELOCIMETRO DIGITAL SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC",
@@ -748,6 +784,24 @@
             "stock": true
         },
         {
+            "id": "FE250FRC-027G",
+            "codigo_referencia": "FE250FRC-027G",
+            "nombre": "ARO DEL. MAGNECIO 2.50X17 DISCO 5H FEROCE 250CC GRIS",
+            "precio": 101.2,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV-027NNM",
+            "codigo_referencia": "CG200WEV-027NNM",
+            "nombre": "PLACA LAT. POST. (I-D) WING EVO 200 2022 NEGRO",
+            "precio": 101.2,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
             "id": "CG150SF2-004R",
             "codigo_referencia": "CG150SF2-004R",
             "nombre": "ARO DEL MAGNESIO SPITFIRE 150 2025 ROJO",
@@ -766,10 +820,55 @@
             "stock": true
         },
         {
+            "id": "CB200WF-053V",
+            "codigo_referencia": "CB200WF-053V",
+            "nombre": "ARO DEL. MAGNECIO 2.50X17 DISCO 5H WOLF/ADV 200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 VERDE",
+            "precio": 101.2,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "MMX-312",
+            "codigo_referencia": "MMX-312",
+            "nombre": "KIT TRACCION TEKKEN/SCRAMBLER/AXXO SCRAMBLER 250CC 42D P13D 520H-116L DORADO",
+            "precio": 35.14,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
             "id": "CB250SC-078",
             "codigo_referencia": "CB250SC-078",
             "nombre": "ARO DEL. ARMADO SCORPION 200/250CC B/N",
             "precio": 82.8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-014",
+            "codigo_referencia": "CB200WF-014",
+            "nombre": "TANQUE GASOLINA WOLF/RANGER CFZ 250/HONDA CB190",
+            "precio": 104.14,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-021N",
+            "codigo_referencia": "CBB250XP-021N",
+            "nombre": "ARO POST. MAGNECIO 4.00X17 DISCO 5H XPOWER/GP1-R/CHIEF II/CHIEF II PRO/FK370/DRAKON F300/LA BESTIA 400/SHIFT 500 NEGRO",
+            "precio": 95.99,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "ARO-D1737-NE",
+            "codigo_referencia": "ARO-D1737-NE",
+            "nombre": "ARO DEL. WING EVO II 1.85 X 17 F/DISCO 4H NEGRO",
+            "precio": 66.61,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -784,10 +883,73 @@
             "stock": true
         },
         {
+            "id": "CG150-163B",
+            "codigo_referencia": "CG150-163B",
+            "nombre": "TANQUE GASOLINA DELTA/IGM EC150/SK STIFF/AXXO AX150/TUKO H1 150CC BLANCO",
+            "precio": 82.8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-053N",
+            "codigo_referencia": "CB200WF-053N",
+            "nombre": "ARO DEL. MAGNECIO 2.50X17 DISCO 5H WOLF/ADV 200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 NARANJA",
+            "precio": 101.2,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV2-050V",
+            "codigo_referencia": "CG200WEV2-050V",
+            "nombre": "ARO DEL. MAGNECIO 1.85X17 DISCO 4H WING EVO2/SH GP200 2018 VERDE",
+            "precio": 101.2,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250MVK-044B/CB250MVK-006B",
+            "codigo_referencia": "CB250MVK-044B/CB250MVK-006B",
+            "nombre": "PLACA TANQUE (I-D) MAVERICK 250 BLANCO",
+            "precio": 82.8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
             "id": "CB200FC-029",
             "codigo_referencia": "CB200FC-029",
             "nombre": "ARO DEL. ARMADO 1.85X19 4H FORCE 200/DK XTZ 250CC NEGRO",
             "precio": 96.66,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-031V",
+            "codigo_referencia": "FE250GP1R-031V",
+            "nombre": "ARO POST. MAGNECIO 4.00X17 DISCO GP1-R 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC VERDE",
+            "precio": 114.08,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV2-051R",
+            "codigo_referencia": "CG200WEV2-051R",
+            "nombre": "ARO POST. MAGNECIO 2.50X17 ZAPATA WING EVO2/AXO F51/SH GP200 2017-18-19 ROJO",
+            "precio": 110.4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB180AGTY-019",
+            "codigo_referencia": "CB180AGTY-019",
+            "nombre": "ARO DEL. MAGNECIO 3.00X14 DISCO 5H AGILITY 180CC NEGRO",
+            "precio": 92.0,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -802,10 +964,64 @@
             "stock": true
         },
         {
+            "id": "FE250FRC-030",
+            "codigo_referencia": "FE250FRC-030",
+            "nombre": "TANQUE GASOLINA FEROCE 250CC",
+            "precio": 110.4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-053R",
+            "codigo_referencia": "CB200WF-053R",
+            "nombre": "ARO DEL. MAGNECIO 2.50X17 DISCO 5H WOLF/ADV 200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 ROJO",
+            "precio": 101.2,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-064R",
+            "codigo_referencia": "CB250GP1-064R",
+            "nombre": "TANQUE GASOLINA GP1 250CC ROJO 2024/25 4V",
+            "precio": 110.4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-018A",
+            "codigo_referencia": "FE250GP1R-018A",
+            "nombre": "TANQUE GASOLINA GP1-R 250 AZUL",
+            "precio": 119.6,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-018",
+            "codigo_referencia": "CB200WF-018",
+            "nombre": "ESTRIBO DEL. CON BASE (I-D) WOLF/ADV 200/RANGER CFZ 250/HONDA CB190",
+            "precio": 58.88,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
             "id": "CB150DYP-017",
             "codigo_referencia": "CB150DYP-017",
             "nombre": "VELOCIMETRO DYNAMIC PRO/SHM JEDI 150CC",
             "precio": 36.8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB180S1ADV-040",
+            "codigo_referencia": "CB180S1ADV-040",
+            "nombre": "ARO POST. MAGNECIO S1 ADV180 RIN 12",
+            "precio": 98.11,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
