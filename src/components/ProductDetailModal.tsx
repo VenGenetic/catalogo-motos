@@ -107,8 +107,8 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               
               {/* COLUMNA 1: IMAGEN - Mayor en desktop para mejor visualización */}
               <div className="w-full md:w-7/12 lg:w-3/5 bg-gray-50 dark:bg-slate-800 relative border-b md:border-b-0 md:border-r border-gray-100 dark:border-slate-700 shrink-0">
-                 {/* Aspect Ratio 1024/535 */}
-                 <div className="w-full aspect-[1024/535] relative group bg-white dark:bg-slate-900">
+                 {/* Aspect Ratio 1024/535 en móvil, Full Height en Desktop */}
+                 <div className="w-full aspect-[1024/535] md:aspect-auto md:h-full relative group bg-white dark:bg-slate-900">
                    <ImageZoom 
                      src={optimizarImg(product.imagen)} 
                      alt={product.nombre}
