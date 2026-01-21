@@ -21,7 +21,7 @@ export const FeaturedCategories = () => {
   };
 
   return (
-    <div className="py-12 bg-white">
+    <div className="py-12 bg-[#f4f6f8]">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-2xl font-extrabold text-slate-900 mb-8 text-center">
           Busca por Categoría
