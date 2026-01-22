@@ -139,21 +139,9 @@ export const useProducts = () => {
               ? producto.imagen
               : existente.imagen;
 
-            // LÓGICA DE PRIORIDAD DE PRECIOS: Guayaquil manda siempre
-            let precioFinal = producto.precio;
-            const esGuayaquilNuevo = producto.origenes?.includes('Guayaquil');
-            const esGuayaquilExistente = existente.origenes?.includes('Guayaquil');
-
-            // Si ya teníamos un precio de Guayaquil (existente) y el que llega NO es de Guayaquil, 
-            // mantenemos el de Guayaquil. En caso contrario (si el nuevo es Guayaquil o ninguno lo es), actualizamos.
-            if (esGuayaquilExistente && !esGuayaquilNuevo) {
-                precioFinal = existente.precio;
-            }
-
             mapaProductos.set(clave, {
               ...existente,
               ...producto,
-              precio: precioFinal,
               imagen: imagenElegida || producto.imagen,
               origenes,
               textoBusqueda: limpiarTexto(`${producto.nombre} ${producto.codigo_referencia || ''} ${producto.categoria || ''} ${producto.seccion || ''} ${origenes.join(' ')}`)
