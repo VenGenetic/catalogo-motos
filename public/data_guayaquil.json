@@ -703,6 +703,15 @@
             "stock": true
         },
         {
+            "id": "CG200WEV027GNM",
+            "codigo_referencia": "CG200WEV027GNM",
+            "nombre": "PLACA LAT. POST. (I-D) WING EVO 200 GRIS 2022",
+            "precio": 108,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
             "id": "FE250FRC-027G",
             "codigo_referencia": "FE250FRC-027G",
             "nombre": "ARO DEL. MAGNECIO 2.50X17 DISCO 5H FEROCE 250CC GRIS",
@@ -752,6 +761,15 @@
             "codigo_referencia": "CB250TKN-039",
             "nombre": "VELOCIMETRO DIGITAL TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC",
             "precio": 55,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB180AGX-021",
+            "codigo_referencia": "CB180AGX-021",
+            "nombre": "TELESCOPICAS (I-D) AGILITY X 180CC",
+            "precio": 88,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -1000,15 +1018,6 @@
             "stock": true
         },
         {
-            "id": "CB250GP1-006",
-            "codigo_referencia": "CB250GP1-006",
-            "nombre": "KIT SWITCHTAPALLAVES GP1 250/TUNDRA VELOCE 250CC",
-            "precio": 44,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CB250GP1-003",
             "codigo_referencia": "CB250GP1-003",
             "nombre": "KIT RUN Y LUCES GP1-R 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC/TUNDRA VELOCE 250CC",
@@ -1094,15 +1103,6 @@
             "codigo_referencia": "CB250GP1-002",
             "nombre": "MANIGUETA EMBRAGUE CON BASE GP1 250/TUNDRA VELOCE 250CC",
             "precio": 11,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CG150PTH-037N",
-            "codigo_referencia": "CG150PTH-037N",
-            "nombre": "GUARDAFANGO DEL. PANTHER NEGRO",
-            "precio": 20,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
