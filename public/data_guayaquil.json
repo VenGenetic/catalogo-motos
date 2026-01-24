@@ -703,8 +703,8 @@
             "stock": true
         },
         {
-            "id": "CG200WEV027GNM",
-            "codigo_referencia": "CG200WEV027GNM",
+            "id": "CG200WEV-027GNM",
+            "codigo_referencia": "CG200WEV-027GNM",
             "nombre": "PLACA LAT. POST. (I-D) WING EVO 200 GRIS 2022",
             "precio": 108,
             "categoria": "General",
@@ -977,6 +977,15 @@
             "codigo_referencia": "CG200WEV-012",
             "nombre": "ARO DEL. MAGNECIO 1.85X17 DISCO 4H WING EVO I-II/GTR/PREDATOR 200 NEGRO",
             "precio": 108,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-008",
+            "codigo_referencia": "CB250SC-008",
+            "nombre": "VELOCIMETRO SCORPION 250CC",
+            "precio": 28,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
