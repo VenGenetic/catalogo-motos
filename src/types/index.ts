@@ -8,6 +8,7 @@ export interface Producto {
   categoria: string;
   imagen: string;
   stock: boolean;
+  cantidad_disponible?: number;
   origenes?: string[];
   seccion?: string;       // Nueva propiedad para el filtro
   textoBusqueda?: string; // Nueva propiedad para búsqueda optimizada
