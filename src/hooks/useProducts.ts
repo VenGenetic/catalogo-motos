@@ -172,6 +172,32 @@ export const useProducts = () => {
           });
         });
 
+        // Sincronización con API de Inventario (Pagina Vendedor)
+        try {
+          const apiRes = await fetch('http://localhost:3000/api/inventory');
+          if (apiRes.ok) {
+            const apiData = await apiRes.json();
+            if (Array.isArray(apiData)) {
+              console.log(`📦 Sincronizando ${apiData.length} productos desde API...`);
+              apiData.forEach((p: any) => {
+                const clave = (p.codigo_referencia || '').toUpperCase();
+                const existente = mapaProductos.get(clave);
+                
+                if (existente) {
+                  mapaProductos.set(clave, {
+                    ...existente,
+                    precio: typeof p.precio === 'number' ? p.precio : existente.precio,
+                    stock: typeof p.stock === 'boolean' ? p.stock : existente.stock,
+                    // Si el nombre en el CSV es mejor, se podría actualizar aqui
+                  });
+                }
+              });
+            }
+          }
+        } catch (apiErr) {
+          console.warn('⚠️ No se pudo conectar con el API de inventario (usando datos locales)', apiErr);
+        }
+
         const procesados = Array.from(mapaProductos.values());
 
         if (procesados.length === 0) {
