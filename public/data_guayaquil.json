@@ -484,7 +484,7 @@
             "precio": 28,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
-            "stock": true
+            "stock": true   
         },
         {
             "id": "CB200SRK-017",
