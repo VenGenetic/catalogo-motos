@@ -307,15 +307,6 @@
             "stock": true
         },
         {
-            "id": "FE250GP1R-033",
-            "codigo_referencia": "FE250GP1R-033",
-            "nombre": "VELOCIMETRO DIGITAL GP1-R 250 2025 CUADRADO",
-            "precio": 88,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CB250TKN-053N",
             "codigo_referencia": "CB250TKN-053N",
             "nombre": "GUARDAFANGO SUPERIOR TEKKEN EVO 250 NEGRO",
@@ -795,7 +786,7 @@
         {
             "id": "VEL-7220",
             "codigo_referencia": "VEL-7220",
-            "nombre": "VELOCIMETRO SUKIDA SKR200 /TUNDRA RAPTOR250 /DY250SCORPION /AXXO TRZ250",
+            "nombre": "VELOCIMETRO SUKIDA SKR200 /TUNDRA RAPTOR250 /DY250SCORPION /AXXO TRZ250(TRESSUN)",
             "precio": 22,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
@@ -959,15 +950,6 @@
             "codigo_referencia": "CB150DYP-041N",
             "nombre": "PROTEC. CHASIS DEL. DYNAMIC PRO/SHM JEDI 150CC NEGRO",
             "precio": 49,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CG200WEV-012",
-            "codigo_referencia": "CG200WEV-012",
-            "nombre": "ARO DEL. MAGNECIO 1.85X17 DISCO 4H WING EVO I-II/GTR/PREDATOR 200 NEGRO",
-            "precio": 108,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
