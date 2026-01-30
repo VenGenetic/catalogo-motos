@@ -490,7 +490,7 @@
             "id": "CG200WEV2-013B",
             "codigo_referencia": "CG200WEV2-013B",
             "nombre": "GUARDAFANGO DEL. WING EVO 2 N-BLANCO",
-            "precio": 25,
+            "precio": 28,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -590,15 +590,6 @@
             "codigo_referencia": "CGEA150-143",
             "nombre": "ARO POST. ARMADO DISCO EAGLE I-II-III/DK FALCON 150 NEGRO",
             "precio": 118,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CGB200CRU-001",
-            "codigo_referencia": "CGB200CRU-001",
-            "nombre": "VELOCIMETRO ( 1 SALIDA ) CRUCERO 200 NORMAL",
-            "precio": 55,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
