@@ -118,15 +118,6 @@
             "stock": true
         },
         {
-            "id": "CB250GP1-031",
-            "codigo_referencia": "CB250GP1-031",
-            "nombre": "DIRECCIONALES (SET4) GP1 250/TUNDRA VELOCE 250CC",
-            "precio": 33,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CG150WING-022",
             "codigo_referencia": "CG150WING-022",
             "nombre": "VELOCIMETRO WING ANTIGUA",
@@ -604,15 +595,6 @@
             "stock": true
         },
         {
-            "id": "CG150WRF-032G",
-            "codigo_referencia": "CG150WRF-032G",
-            "nombre": "GUARDAFANGO DEL. WORKFORCE GRIS",
-            "precio": 26,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CB180AGTY-001",
             "codigo_referencia": "CB180AGTY-001",
             "nombre": "GUARDAFANGO DEL. AGILITY 180CC 2019/20/21/2022",
@@ -824,15 +806,6 @@
             "codigo_referencia": "CB200WF-053V",
             "nombre": "ARO DEL. MAGNECIO 2.50X17 DISCO 5H WOLF/ADV 200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 VERDE",
             "precio": 108,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CB250GP1-029",
-            "codigo_referencia": "CB250GP1-029",
-            "nombre": "PORTA PLACAS GP1 250/TUNDRA VELOCE 250CC",
-            "precio": 32,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
