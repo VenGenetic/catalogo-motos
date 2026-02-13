@@ -1,2 +1,3 @@
-2026/01/24-06:39:56.092 98c Creating DB C:\Users\ferna\Documents\catalogo-motos-main\catalogo-motos\perfil_robot_v2\Default\Local Storage\leveldb since it was missing.
-2026/01/24-06:39:56.109 98c Reusing MANIFEST C:\Users\ferna\Documents\catalogo-motos-main\catalogo-motos\perfil_robot_v2\Default\Local Storage\leveldb/MANIFEST-000001
+2026/02/13-11:05:36.852 4248 Reusing MANIFEST C:\Users\ferna\Downloads\catalogo-motos-main-20260210T105342Z-1-001\catalogo-motos-main\catalogo-motos\perfil_robot_v2\Default\Local Storage\leveldb/MANIFEST-000001
+2026/02/13-11:05:36.859 4248 Recovering log #3
+2026/02/13-11:05:36.862 4248 Reusing old log C:\Users\ferna\Downloads\catalogo-motos-main-20260210T105342Z-1-001\catalogo-motos-main\catalogo-motos\perfil_robot_v2\Default\Local Storage\leveldb/000003.log 
