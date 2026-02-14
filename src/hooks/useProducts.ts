@@ -33,7 +33,7 @@ export const useProducts = () => {
   useEffect(() => {
     let retryCount = 0;
     const MAX_RETRIES = 3;
-    const CACHE_KEY = 'cached_products_v1';
+    const CACHE_KEY = 'cached_products_v2';
     const CACHE_TIME_KEY = 'cached_products_time';
     const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
 
