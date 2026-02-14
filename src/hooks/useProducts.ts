@@ -16,7 +16,7 @@ const limpiarPrecio = (valor: unknown): number => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const generarIdDeterministico = (p: any) => {
   if (p.id) return String(p.id);
-  
+
   const clave = `${p.codigo_referencia || ''}-${p.nombre}`;
   try {
     return btoa(clave).replace(/[^a-zA-Z0-9]/g, '').substring(0, 16);
@@ -33,35 +33,35 @@ export const useProducts = () => {
   useEffect(() => {
     let retryCount = 0;
     const MAX_RETRIES = 3;
-    const CACHE_KEY = 'cached_products_v2';
+    const CACHE_KEY = 'cached_products_v3';
     const CACHE_TIME_KEY = 'cached_products_time';
     const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
 
     // 1. CARGA INICIAL DESDE CACHÉ (Estrategia: Cache-First con TTL corto, luego Stale-While-Revalidate)
     let shouldUseCache = false;
     try {
-        const cachedData = localStorage.getItem(CACHE_KEY);
-        const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
-        
-        if (cachedData && cachedTime) {
-            const age = Date.now() - parseInt(cachedTime);
-            // Si el caché tiene menos de 15 minutos, lo consideramos FRESCO y no recargamos de red
-            const FRESH_CACHE_TIME = 1000 * 60 * 15; 
-            
-            if (age < FRESH_CACHE_TIME) {
-                 setProductos(JSON.parse(cachedData));
-                 setLoading(false);
-                 shouldUseCache = true;
-                 console.log('⚡ Usando caché fresco, omitiendo red');
-                 return; // <--- SALIR AQUÍ PARA EVITAR FETCH
-            } else if (age < CACHE_DURATION * 24) {
-                 // Si es viejo pero válido (menos de 24h), lo mostramos "mientras" actualizamos (Stale-While-Revalidate)
-                 setProductos(JSON.parse(cachedData));
-                 setLoading(false);
-            }
+      const cachedData = localStorage.getItem(CACHE_KEY);
+      const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+
+      if (cachedData && cachedTime) {
+        const age = Date.now() - parseInt(cachedTime);
+        // Si el caché tiene menos de 15 minutos, lo consideramos FRESCO y no recargamos de red
+        const FRESH_CACHE_TIME = 1000 * 60 * 15;
+
+        if (age < FRESH_CACHE_TIME) {
+          setProductos(JSON.parse(cachedData));
+          setLoading(false);
+          shouldUseCache = true;
+          console.log('⚡ Usando caché fresco, omitiendo red');
+          return; // <--- SALIR AQUÍ PARA EVITAR FETCH
+        } else if (age < CACHE_DURATION * 24) {
+          // Si es viejo pero válido (menos de 24h), lo mostramos "mientras" actualizamos (Stale-While-Revalidate)
+          setProductos(JSON.parse(cachedData));
+          setLoading(false);
         }
+      }
     } catch (e) {
-        console.warn('Error leyendo caché local', e);
+      console.warn('Error leyendo caché local', e);
     }
 
     const fetchProducts = async (): Promise<void> => {
@@ -71,18 +71,18 @@ export const useProducts = () => {
       try {
         // Verificar conectividad antes de hacer la petición
         if (typeof navigator !== 'undefined' && !navigator.onLine) {
-            // Si no hay internet y ya cargamos caché, no tiramos error, solo avisamos
-            const hasCache = productos.length > 0;
-            if (hasCache) {
-                 console.log('Modo offline: Usando datos en caché');
-                 return;
-            }
-            throw new Error('Sin conexión a internet. Verifica tu conexión y recarga la página.');
+          // Si no hay internet y ya cargamos caché, no tiramos error, solo avisamos
+          const hasCache = productos.length > 0;
+          if (hasCache) {
+            console.log('Modo offline: Usando datos en caché');
+            return;
+          }
+          throw new Error('Sin conexión a internet. Verifica tu conexión y recarga la página.');
         }
 
         const fuentes = [
-          { url: '/data.json', origen: 'Cuenca (bajo pedido)' },
-          { url: '/data_guayaquil.json', origen: 'Guayaquil' }
+          { url: '/data_guayaquil.json', origen: 'Guayaquil' },
+          { url: '/data.json', origen: 'Cuenca (bajo pedido)' }
         ];
 
         const fetchFuente = async (url: string) => {
@@ -182,7 +182,7 @@ export const useProducts = () => {
               apiData.forEach((p: any) => {
                 const clave = (p.codigo_referencia || '').toUpperCase();
                 const existente = mapaProductos.get(clave);
-                
+
                 if (existente) {
                   mapaProductos.set(clave, {
                     ...existente,
@@ -206,33 +206,33 @@ export const useProducts = () => {
         }
 
         setProductos(procesados);
-        
+
         // GUARDAR EN CACHÉ PARA LA PRÓXIMA VEZ
         try {
-            localStorage.setItem(CACHE_KEY, JSON.stringify(procesados));
-            localStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
+          localStorage.setItem(CACHE_KEY, JSON.stringify(procesados));
+          localStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
         } catch (e) {
-            console.warn('No se pudo guardar en caché (posiblemente cuota excedida)', e);
+          console.warn('No se pudo guardar en caché (posiblemente cuota excedida)', e);
         }
 
       } catch (err) {
         console.error("Error cargando productos:", err);
-        
+
         // Si ya tenemos productos (de caché), no mostramos error fatal, solo logueamos
-        if (productos.length > 0) { 
-             console.warn('Falló la actualización en segundo plano, manteniendo datos en caché.');
-             return; 
+        if (productos.length > 0) {
+          console.warn('Falló la actualización en segundo plano, manteniendo datos en caché.');
+          return;
         }
 
         // Implementar reintentos automáticos en caso de error de red
-        if (retryCount < MAX_RETRIES && err instanceof Error && 
-            (err.name === 'AbortError' || err.message.includes('Failed to fetch'))) {
+        if (retryCount < MAX_RETRIES && err instanceof Error &&
+          (err.name === 'AbortError' || err.message.includes('Failed to fetch'))) {
           retryCount++;
           console.log(`Reintentando carga de productos (${retryCount}/${MAX_RETRIES})...`);
           setTimeout(() => fetchProducts(), 2000 * retryCount); // Backoff exponencial
           return;
         }
-        
+
         setError(err instanceof Error ? err.message : 'Error desconocido al cargar productos');
       } finally {
         setLoading(false);
