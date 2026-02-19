@@ -14563,12 +14563,912 @@
             "stock": true
         },
         {
-            "id": "CG200WEV2-013B",
-            "codigo_referencia": "CG200WEV2-013B",
-            "nombre": "GUARDAFANGO DEL. WING EVO 2 N-BLANCO",
+            "id": "055900",
+            "codigo_referencia": "055900",
+            "nombre": "SENSOR CAMBIOS FE250 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5 250CC",
+            "precio": 23,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9565/image_512/%5B055900%5D%20SENSOR%20CAMBIOS%20FE250%204V%20TEKKEN%20EVO-GP1R-XPOWER-ARTIC-GP1-FEROCE-TUKO%20Z250-CR5%20TG-IGM%20VENTURE-DK%20NATIVA-CHIEF%202.5%20250CC?unique=54a697e",
+            "stock": true
+        },
+        {
+            "id": "112026-P14A-0000",
+            "codigo_referencia": "112026-P14A-0000",
+            "nombre": "SENSOR INDICADOR CAMBIOS XCAPE 650",
+            "precio": 58,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9482/image_512/%5B112026-P14A-0000%5D%20SENSOR%20INDICADOR%20CAMBIOS%20XCAPE%20650?unique=ac0a140",
+            "stock": true
+        },
+        {
+            "id": "142011-P14A-0000",
+            "codigo_referencia": "142011-P14A-0000",
+            "nombre": "TENSOR CADENILLA XCAPE 650",
+            "precio": 26,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9487/image_512/%5B142011-P14A-0000%5D%20TENSOR%20CADENILLA%20XCAPE%20650?unique=1181bfe",
+            "stock": true
+        },
+        {
+            "id": "161001-P14A-0000",
+            "codigo_referencia": "161001-P14A-0000",
+            "nombre": "TAPA CARTER XCAPE 650",
+            "precio": 110,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9485/image_512/%5B161001-P14A-0000%5D%20TAPA%20CARTER%20XCAPE%20650?unique=e53f4ef",
+            "stock": true
+        },
+        {
+            "id": "334200-P14A-0000",
+            "codigo_referencia": "334200-P14A-0000",
+            "nombre": "DIRECCIONALES (SET4) XCAPE 650",
+            "precio": 80,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9462/image_512/%5B334200-P14A-0000%5D%20DIRECCIONALES%20(SET4)%20XCAPE%20650?unique=c2a6b7a",
+            "stock": true
+        },
+        {
+            "id": "415000-P14A-0000",
+            "codigo_referencia": "415000-P14A-0000",
+            "nombre": "SENSOR PRESION DE AIRE XCAPE 650",
+            "precio": 72,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9483/image_512/%5B415000-P14A-0000%5D%20SENSOR%20PRESION%20DE%20AIRE%20XCAPE%20650?unique=8f431e8",
+            "stock": true
+        },
+        {
+            "id": "421100-P14A-0000",
+            "codigo_referencia": "421100-P14A-0000",
+            "nombre": "PEDAL FRENO COMP. XCAPE 650CC",
+            "precio": 115,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9471/image_512/%5B421100-P14A-0000%5D%20PEDAL%20FRENO%20COMP.%20XCAPE%20650CC?unique=4551a01",
+            "stock": true
+        },
+        {
+            "id": "530100-P14A-0000",
+            "codigo_referencia": "530100-P14A-0000",
+            "nombre": "PARABRISAS ARMADO CON BASES XCAPE 650",
+            "precio": 216,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9470/image_512/%5B530100-P14A-0000%5D%20PARABRISAS%20ARMADO%20CON%20BASES%20XCAPE%20650?unique=0c1b0f3",
+            "stock": true
+        },
+        {
+            "id": "531600-P14A-0100",
+            "codigo_referencia": "531600-P14A-0100",
+            "nombre": "PLACA TANQUE IZQ SET ROJO XCAPE 650",
+            "precio": 294,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9477/image_512/%5B531600-P14A-0100%5D%20PLACA%20TANQUE%20IZQ%20SET%20ROJO%20XCAPE%20650?unique=9d06ee4",
+            "stock": true
+        },
+        {
+            "id": "531600-P14A-0200",
+            "codigo_referencia": "531600-P14A-0200",
+            "nombre": "PLACA TANQUE IZQ SET PLOMO XCAPE 650",
+            "precio": 294,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9476/image_512/%5B531600-P14A-0200%5D%20PLACA%20TANQUE%20IZQ%20SET%20PLOMO%20XCAPE%20650?unique=9c10f98",
+            "stock": true
+        },
+        {
+            "id": "531600-P14A-0300",
+            "codigo_referencia": "531600-P14A-0300",
+            "nombre": "PLACA TANQUE IZQ SET BLANCO XCAPE 650",
+            "precio": 294,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9475/image_512/%5B531600-P14A-0300%5D%20PLACA%20TANQUE%20IZQ%20SET%20BLANCO%20XCAPE%20650?unique=8858910",
+            "stock": true
+        },
+        {
+            "id": "810000-P15A-0000",
+            "codigo_referencia": "810000-P15A-0000",
+            "nombre": "CRASHBAR SEIEMEZZO 650",
+            "precio": 306,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9459/image_512/%5B810000-P15A-0000%5D%20CRASHBAR%20SEIEMEZZO%20650?unique=2407df3",
+            "stock": true
+        },
+        {
+            "id": "832000-P15B-9901",
+            "codigo_referencia": "832000-P15B-9901",
+            "nombre": "CUBRE MANOS (I-D) SEIEMMEZZO 650",
+            "precio": 90,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9460/image_512/%5B832000-P15B-9901%5D%20CUBRE%20MANOS%20(I-D)%20SEIEMMEZZO%20650?unique=77dd568",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-037",
+            "codigo_referencia": "CB125BIT-037",
+            "nombre": "KIT EMPAQUES BIT 125CC",
+            "precio": 20,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9371/image_512/%5BCB125BIT-037%5D%20KIT%20EMPAQUES%20BIT%20125CC?unique=d863b66",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-038",
+            "codigo_referencia": "CB125BIT-038",
+            "nombre": "KIT FRENO DEL. ARMADO BIT 125CC",
+            "precio": 48,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9373/image_512/%5BCB125BIT-038%5D%20KIT%20FRENO%20DEL.%20ARMADO%20BIT%20125CC?unique=593c372",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-039",
+            "codigo_referencia": "CB125BIT-039",
+            "nombre": "KIT PISTAS DIRECCION BIT 125CC",
+            "precio": 14,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9374/image_512/%5BCB125BIT-039%5D%20KIT%20PISTAS%20DIRECCION%20BIT%20125CC?unique=e9b6f69",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-040",
+            "codigo_referencia": "CB125BIT-040",
+            "nombre": "KIT RUN Y LUCES BIT 125CC",
+            "precio": 30,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9376/image_512/%5BCB125BIT-040%5D%20KIT%20RUN%20Y%20LUCES%20BIT%20125CC?unique=cd18963",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-041",
+            "codigo_referencia": "CB125BIT-041",
+            "nombre": "KIT SWITCH,TAPA,LLAVES BIT 125CC",
+            "precio": 35,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9379/image_512/%5BCB125BIT-041%5D%20KIT%20SWITCH,TAPA,LLAVES%20BIT%20125CC?unique=88b9117",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-042",
+            "codigo_referencia": "CB125BIT-042",
+            "nombre": "MAGNETO BIT 125CC",
+            "precio": 21,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9380/image_512/%5BCB125BIT-042%5D%20MAGNETO%20BIT%20125CC?unique=7ede174",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-043",
+            "codigo_referencia": "CB125BIT-043",
+            "nombre": "MANIGUETA FRENO POST. BIT 125CC",
+            "precio": 10,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9381/image_512/%5BCB125BIT-043%5D%20MANIGUETA%20FRENO%20POST.%20BIT%20125CC?unique=32c644d",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-044",
+            "codigo_referencia": "CB125BIT-044",
+            "nombre": "MANUBRIOS (I-D) BIT 125CC",
+            "precio": 7,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9382/image_512/%5BCB125BIT-044%5D%20MANUBRIOS%20(I-D)%20BIT%20125CC?unique=193916b",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-045D",
+            "codigo_referencia": "CB125BIT-045D",
+            "nombre": "MASCARILLA COMP. BIT 125CC N-DORADO",
+            "precio": 68,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9383/image_512/%5BCB125BIT-045D%5D%20MASCARILLA%20COMP.%20BIT%20125CC%20N-DORADO?unique=924ec3a",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-045V",
+            "codigo_referencia": "CB125BIT-045V",
+            "nombre": "MASCARILLA COMP. BIT 125CC N-VERDE",
+            "precio": 68,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9384/image_512/%5BCB125BIT-045V%5D%20MASCARILLA%20COMP.%20BIT%20125CC%20N-VERDE?unique=4e8e45f",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-046",
+            "codigo_referencia": "CB125BIT-046",
+            "nombre": "MESA DIRECCION ARMADA BIT 125CC",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9388/image_512/%5BCB125BIT-046%5D%20MESA%20DIRECCION%20ARMADA%20BIT%20125CC?unique=19481ab",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-047",
+            "codigo_referencia": "CB125BIT-047",
+            "nombre": "MONOSHOCK BIT 125CC",
+            "precio": 58,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9390/image_512/%5BCB125BIT-047%5D%20MONOSHOCK%20BIT%20125CC?unique=575225e",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-048",
+            "codigo_referencia": "CB125BIT-048",
+            "nombre": "MOTOR ARRANQUE 9D BIT 125CC",
+            "precio": 35,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9391/image_512/%5BCB125BIT-048%5D%20MOTOR%20ARRANQUE%209D%20BIT%20125CC?unique=9d89851",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-050",
+            "codigo_referencia": "CB125BIT-050",
+            "nombre": "PATA APOYO CENTRAL BIT 125CC",
+            "precio": 15,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9394/image_512/%5BCB125BIT-050%5D%20PATA%20APOYO%20CENTRAL%20BIT%20125CC?unique=85aa977",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-051",
+            "codigo_referencia": "CB125BIT-051",
+            "nombre": "PATA APOYO LATERAL BIT 125CC",
+            "precio": 6,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9396/image_512/%5BCB125BIT-051%5D%20PATA%20APOYO%20LATERAL%20BIT%20125CC?unique=fb98fef",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-052",
+            "codigo_referencia": "CB125BIT-052",
+            "nombre": "PINON VELOCIMETRO DIGITAL BIT 125CC",
+            "precio": 16,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9398/image_512/%5BCB125BIT-052%5D%20PINON%20VELOCIMETRO%20DIGITAL%20BIT%20125CC?unique=aa2ba71",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-053D",
+            "codigo_referencia": "CB125BIT-053D",
+            "nombre": "PLACA LAT. POST. (I-D) BIT 125CC N-DORADO",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9401/image_512/%5BCB125BIT-053D%5D%20PLACA%20LAT.%20POST.%20(I-D)%20BIT%20125CC%20N-DORADO?unique=b6babf0",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-053V",
+            "codigo_referencia": "CB125BIT-053V",
+            "nombre": "PLACA LAT. POST. (I-D) BIT 125CC N-VERDE",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9402/image_512/%5BCB125BIT-053V%5D%20PLACA%20LAT.%20POST.%20(I-D)%20BIT%20125CC%20N-VERDE?unique=bb15363",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-054D",
+            "codigo_referencia": "CB125BIT-054D",
+            "nombre": "PLACA TANQUE (I-D) BIT 125CC N-DORADO",
+            "precio": 144,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9406/image_512/%5BCB125BIT-054D%5D%20PLACA%20TANQUE%20(I-D)%20BIT%20125CC%20N-DORADO?unique=8065456",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-054V",
+            "codigo_referencia": "CB125BIT-054V",
+            "nombre": "PLACA TANQUE (I-D) BIT 125CC N-VERDE",
+            "precio": 144,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9407/image_512/%5BCB125BIT-054V%5D%20PLACA%20TANQUE%20(I-D)%20BIT%20125CC%20N-VERDE?unique=bc5e858",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-055",
+            "codigo_referencia": "CB125BIT-055",
+            "nombre": "PORTA PLACAS BIT 125CC",
+            "precio": 29,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9408/image_512/%5BCB125BIT-055%5D%20PORTA%20PLACAS%20BIT%20125CC?unique=530533f",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-056",
+            "codigo_referencia": "CB125BIT-056",
+            "nombre": "PROTEC. ESCAPE BIT 125CC",
+            "precio": 12,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9412/image_512/%5BCB125BIT-056%5D%20PROTEC.%20ESCAPE%20BIT%20125CC?unique=6440650",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-057",
+            "codigo_referencia": "CB125BIT-057",
+            "nombre": "PROTEC. MOTOR CAMARA DE VENTILACION BIT 125CC",
+            "precio": 10,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9414/image_512/%5BCB125BIT-057%5D%20PROTEC.%20MOTOR%20CAMARA%20DE%20VENTILACION%20BIT%20125CC?unique=4859801",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-059",
+            "codigo_referencia": "CB125BIT-059",
+            "nombre": "RECTIFICADOR CORRIENTE 5 PIN BIT 125CC",
+            "precio": 13,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9416/image_512/%5BCB125BIT-059%5D%20RECTIFICADOR%20CORRIENTE%205%20PIN%20BIT%20125CC?unique=20d7666",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-060",
+            "codigo_referencia": "CB125BIT-060",
+            "nombre": "SENSOR PATA APOYO BIT 125CC",
+            "precio": 12,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9417/image_512/%5BCB125BIT-060%5D%20SENSOR%20PATA%20APOYO%20BIT%20125CC?unique=0ff951a",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-061",
+            "codigo_referencia": "CB125BIT-061",
+            "nombre": "STOP - LUZ PLACA BIT 125CC",
+            "precio": 24,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9419/image_512/%5BCB125BIT-061%5D%20STOP%20-%20LUZ%20PLACA%20BIT%20125CC?unique=9b7af92",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-062",
+            "codigo_referencia": "CB125BIT-062",
+            "nombre": "TANQUE GASOLINA BIT 125CC",
+            "precio": 40,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9421/image_512/%5BCB125BIT-062%5D%20TANQUE%20GASOLINA%20BIT%20125CC?unique=53b2c2e",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-064",
+            "codigo_referencia": "CB125BIT-064",
+            "nombre": "TAPA MOTOR IZQ. DAYTONA BIT 125CC",
+            "precio": 60,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9423/image_512/%5BCB125BIT-064%5D%20TAPA%20MOTOR%20IZQ.%20DAYTONA%20BIT%20125CC?unique=512f6b0",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-065",
+            "codigo_referencia": "CB125BIT-065",
+            "nombre": "TELESCOPICAS (I-D) BIT 125CC",
+            "precio": 144,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9424/image_512/%5BCB125BIT-065%5D%20TELESCOPICAS%20(I-D)%20BIT%20125CC?unique=4c734f6",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-067",
+            "codigo_referencia": "CB125BIT-067",
+            "nombre": "TIMON BIT 125",
+            "precio": 29,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9427/image_512/%5BCB125BIT-067%5D%20TIMON%20BIT%20125?unique=b5e1d2d",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-068",
+            "codigo_referencia": "CB125BIT-068",
+            "nombre": "VALVULAS (AD-ES) BIT 125CC",
+            "precio": 20,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9428/image_512/%5BCB125BIT-068%5D%20VALVULAS%20(AD-ES)%20BIT%20125CC?unique=51c3f9d",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-069",
+            "codigo_referencia": "CB125BIT-069",
+            "nombre": "VELOCIMETRO DIGITAL BIT 125CC",
+            "precio": 75,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9429/image_512/%5BCB125BIT-069%5D%20VELOCIMETRO%20DIGITAL%20BIT%20125CC?unique=6bdcc15",
+            "stock": true
+        },
+        {
+            "id": "CB125BIT-070",
+            "codigo_referencia": "CB125BIT-070",
+            "nombre": "VENTILADOR Y TAPA BIT 125CC",
+            "precio": 13,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9430/image_512/%5BCB125BIT-070%5D%20VENTILADOR%20Y%20TAPA%20BIT%20125CC?unique=e3fba48",
+            "stock": true
+        },
+        {
+            "id": "CB150DYP-046",
+            "codigo_referencia": "CB150DYP-046",
+            "nombre": "CABLE SEGURO ASIENTO DYNAMIC PRO/SHM JEDI 150CC",
+            "precio": 3,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9536/image_512/%5BCB150DYP-046%5D%20CABLE%20SEGURO%20ASIENTO%20DYNAMIC%20PRO-SHM%20JEDI%20150CC?unique=c072de1",
+            "stock": true
+        },
+        {
+            "id": "CB150DYP-047",
+            "codigo_referencia": "CB150DYP-047",
+            "nombre": "DISCO FRENO DEL. DYNAMIC PRO/SHM JEDI 150CC",
+            "precio": 12,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9540/image_512/%5BCB150DYP-047%5D%20DISCO%20FRENO%20DEL.%20DYNAMIC%20PRO-SHM%20JEDI%20150CC?unique=ed967cf",
+            "stock": true
+        },
+        {
+            "id": "CB150DYP-048",
+            "codigo_referencia": "CB150DYP-048",
+            "nombre": "LUZ PLACA DYNAMIC PRO/SHM JEDI 150CC",
+            "precio": 7,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9543/image_512/%5BCB150DYP-048%5D%20LUZ%20PLACA%20DYNAMIC%20PRO-SHM%20JEDI%20150CC?unique=3136181",
+            "stock": true
+        },
+        {
+            "id": "CB150DYP-049",
+            "codigo_referencia": "CB150DYP-049",
+            "nombre": "TAPA MOTOR IZQ. DAYTONA DYNAMIC PRO/SHM JEDI 150CC",
+            "precio": 56,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9545/image_512/%5BCB150DYP-049%5D%20TAPA%20MOTOR%20IZQ.%20DAYTONA%20DYNAMIC%20PRO-SHM%20JEDI%20150CC?unique=894f095",
+            "stock": true
+        },
+        {
+            "id": "CB150DYP-050",
+            "codigo_referencia": "CB150DYP-050",
+            "nombre": "CARTER IZQ. DYNAMIC PRO/SHM JEDI 150CC",
+            "precio": 74,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9538/image_512/%5BCB150DYP-050%5D%20CARTER%20IZQ.%20DYNAMIC%20PRO-SHM%20JEDI%20150CC?unique=42e4271",
+            "stock": true
+        },
+        {
+            "id": "CB150DYP-051",
+            "codigo_referencia": "CB150DYP-051",
+            "nombre": "CIGUENAL ARMADO DYNAMIC PRO/SHM JEDI 150CC",
+            "precio": 63,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9539/image_512/%5BCB150DYP-051%5D%20CIGUENAL%20ARMADO%20DYNAMIC%20PRO-SHM%20JEDI%20150CC?unique=287d154",
+            "stock": true
+        },
+        {
+            "id": "CB150DYP-052",
+            "codigo_referencia": "CB150DYP-052",
+            "nombre": "CAJA CAMBIOS ARMADA DYNAMIC PRO/SHM JEDI 150CC",
+            "precio": 43,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9537/image_512/%5BCB150DYP-052%5D%20CAJA%20CAMBIOS%20ARMADA%20DYNAMIC%20PRO-SHM%20JEDI%20150CC?unique=f53a8c4",
+            "stock": true
+        },
+        {
+            "id": "CB150DYP-054",
+            "codigo_referencia": "CB150DYP-054",
+            "nombre": "TAPA MOTOR IZQ. PEQ. DYNAMIC PRO/SHM JEDI 150CC",
+            "precio": 15,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9546/image_512/%5BCB150DYP-054%5D%20TAPA%20MOTOR%20IZQ.%20PEQ.%20DYNAMIC%20PRO-SHM%20JEDI%20150CC?unique=f1797ad",
+            "stock": true
+        },
+        {
+            "id": "CB150DYP-055",
+            "codigo_referencia": "CB150DYP-055",
+            "nombre": "EMBLEMA DAYTONA (I-D) DYNAMIC PRO 150CC",
+            "precio": 5,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9542/image_512/%5BCB150DYP-055%5D%20EMBLEMA%20DAYTONA%20(I-D)%20DYNAMIC%20PRO%20150CC?unique=fe371bc",
+            "stock": true
+        },
+        {
+            "id": "CB180ADVCR-019",
+            "codigo_referencia": "CB180ADVCR-019",
+            "nombre": "KIT FRENO DEL. ARMADO S1 ADV. CROSSOVER 180CC",
+            "precio": 43,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9372/image_512/%5BCB180ADVCR-019%5D%20KIT%20FRENO%20DEL.%20ARMADO%20S1%20ADV.%20CROSSOVER%20180CC?unique=2634dfd",
+            "stock": true
+        },
+        {
+            "id": "CB180ADVCR-023A",
+            "codigo_referencia": "CB180ADVCR-023A",
+            "nombre": "MASCARILLA COMP. S1 ADV. CROSSOVER 180CC AZUL",
+            "precio": 73,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9385/image_512/%5BCB180ADVCR-023A%5D%20MASCARILLA%20COMP.%20S1%20ADV.%20CROSSOVER%20180CC%20AZUL?unique=8d5e306",
+            "stock": true
+        },
+        {
+            "id": "CB180ADVCR-023C",
+            "codigo_referencia": "CB180ADVCR-023C",
+            "nombre": "MASCARILLA COMP. S1 ADV. CROSSOVER 180CC CAFE",
+            "precio": 73,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9386/image_512/%5BCB180ADVCR-023C%5D%20MASCARILLA%20COMP.%20S1%20ADV.%20CROSSOVER%20180CC%20CAFE?unique=8fd2ec5",
+            "stock": true
+        },
+        {
+            "id": "CB180ADVCR-023G",
+            "codigo_referencia": "CB180ADVCR-023G",
+            "nombre": "MASCARILLA COMP. S1 ADV. CROSSOVER 180CC GRIS",
+            "precio": 73,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9387/image_512/%5BCB180ADVCR-023G%5D%20MASCARILLA%20COMP.%20S1%20ADV.%20CROSSOVER%20180CC%20GRIS?unique=572ff37",
+            "stock": true
+        },
+        {
+            "id": "CB180ADVCR-024",
+            "codigo_referencia": "CB180ADVCR-024",
+            "nombre": "MESA DIRECCION ARMADA S1 ADV CROSSOVER 180CC",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9389/image_512/%5BCB180ADVCR-024%5D%20MESA%20DIRECCION%20ARMADA%20S1%20ADV%20CROSSOVER%20180CC?unique=7c14d31",
+            "stock": true
+        },
+        {
+            "id": "CB180ADVCR-027",
+            "codigo_referencia": "CB180ADVCR-027",
+            "nombre": "PESAS TIMON (I-D) S1 ADV. CROSSOVER 180CC",
+            "precio": 5,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9397/image_512/%5BCB180ADVCR-027%5D%20PESAS%20TIMON%20(I-D)%20S1%20ADV.%20CROSSOVER%20180CC?unique=f734ac6",
+            "stock": true
+        },
+        {
+            "id": "CB180ADVCR-028A",
+            "codigo_referencia": "CB180ADVCR-028A",
+            "nombre": "PLACA LAT. POST. (I-D) S1 ADV. CROSSOVER 180CC AZUL",
+            "precio": 58,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9403/image_512/%5BCB180ADVCR-028A%5D%20PLACA%20LAT.%20POST.%20(I-D)%20S1%20ADV.%20CROSSOVER%20180CC%20AZUL?unique=4bd4036",
+            "stock": true
+        },
+        {
+            "id": "CB180ADVCR-028C",
+            "codigo_referencia": "CB180ADVCR-028C",
+            "nombre": "PLACA LAT. POST. (I-D) S1 ADV. CROSSOVER 180CC CAFE",
+            "precio": 58,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9404/image_512/%5BCB180ADVCR-028C%5D%20PLACA%20LAT.%20POST.%20(I-D)%20S1%20ADV.%20CROSSOVER%20180CC%20CAFE?unique=3d699bb",
+            "stock": true
+        },
+        {
+            "id": "CB180ADVCR-028V",
+            "codigo_referencia": "CB180ADVCR-028V",
+            "nombre": "PLACA LAT. POST. (I-D) S1 ADV. CROSSOVER 180CC G-VERDE",
+            "precio": 58,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9405/image_512/%5BCB180ADVCR-028V%5D%20PLACA%20LAT.%20POST.%20(I-D)%20S1%20ADV.%20CROSSOVER%20180CC%20G-VERDE?unique=dc90f7f",
+            "stock": true
+        },
+        {
+            "id": "CB180ADVCR-029C",
+            "codigo_referencia": "CB180ADVCR-029C",
+            "nombre": "PLACA LAT. DEL. (I-D) S1 ADV. CROSSOVER 180CC CAFE",
+            "precio": 39,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9399/image_512/%5BCB180ADVCR-029C%5D%20PLACA%20LAT.%20DEL.%20(I-D)%20S1%20ADV.%20CROSSOVER%20180CC%20CAFE?unique=a6e59f5",
+            "stock": true
+        },
+        {
+            "id": "CB180ADVCR-029V",
+            "codigo_referencia": "CB180ADVCR-029V",
+            "nombre": "PLACA LAT. DEL. (I-D) S1 ADV. CROSSOVER 180CC G-VERDE",
+            "precio": 39,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9400/image_512/%5BCB180ADVCR-029V%5D%20PLACA%20LAT.%20DEL.%20(I-D)%20S1%20ADV.%20CROSSOVER%20180CC%20G-VERDE?unique=a8e9bde",
+            "stock": true
+        },
+        {
+            "id": "CB180ADVCR-030",
+            "codigo_referencia": "CB180ADVCR-030",
+            "nombre": "PORTA PLACAS S1 ADV. CROSSOVER 180CC",
             "precio": 33,
             "categoria": "General",
-            "imagen": "sin_imagen.jpg",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9409/image_512/%5BCB180ADVCR-030%5D%20PORTA%20PLACAS%20S1%20ADV.%20CROSSOVER%20180CC?unique=40fcdf7",
+            "stock": true
+        },
+        {
+            "id": "CB180ADVCR-031",
+            "codigo_referencia": "CB180ADVCR-031",
+            "nombre": "PROTEC CHASIS INFERIOR S1 ADV CROSSOVER 180CC",
+            "precio": 35,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9410/image_512/%5BCB180ADVCR-031%5D%20PROTEC%20CHASIS%20INFERIOR%20%20S1%20ADV%20CROSSOVER%20180CC?unique=735ba59",
+            "stock": true
+        },
+        {
+            "id": "CB180ADVCR-032",
+            "codigo_referencia": "CB180ADVCR-032",
+            "nombre": "PROTEC. CHASIS SWITCH S1 ADV. CROSSOVER 180CC",
+            "precio": 39,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9411/image_512/%5BCB180ADVCR-032%5D%20PROTEC.%20CHASIS%20SWITCH%20S1%20ADV.%20CROSSOVER%20180CC?unique=a0fb9c3",
+            "stock": true
+        },
+        {
+            "id": "CB180ADVCR-035",
+            "codigo_referencia": "CB180ADVCR-035",
+            "nombre": "STOP - LUZ PLACA CROSSOVER 180CC",
+            "precio": 35,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9420/image_512/%5BCB180ADVCR-035%5D%20STOP%20-%20LUZ%20PLACA%20CROSSOVER%20180CC?unique=48cdb17",
+            "stock": true
+        },
+        {
+            "id": "CB180ADVCR-036",
+            "codigo_referencia": "CB180ADVCR-036",
+            "nombre": "TELESCOPICAS (I-D) S1 ADV CROSSOVER 180CC",
+            "precio": 100,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9425/image_512/%5BCB180ADVCR-036%5D%20TELESCOPICAS%20(I-D)%20S1%20ADV%20CROSSOVER%20180CC?unique=4009d47",
+            "stock": true
+        },
+        {
+            "id": "CB180S1ADV-045",
+            "codigo_referencia": "CB180S1ADV-045",
+            "nombre": "RODAMIENTO 6300 (SET2) ARO DEL POST EJE10MM S1 ADV/DYNAMIC PRO",
+            "precio": 3,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9502/image_512/%5BCB180S1ADV-045%5D%20RODAMIENTO%206300%20(SET2)%20ARO%20DEL%20POST%20EJE10MM%20S1%20ADV-DYNAMIC%20PRO?unique=93feebb",
+            "stock": true
+        },
+        {
+            "id": "CB200HTR-079",
+            "codigo_referencia": "CB200HTR-079",
+            "nombre": "KIT FRENO DEL. ARMADO HUNTER 200CC",
+            "precio": 46,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9562/image_512/%5BCB200HTR-079%5D%20KIT%20FRENO%20DEL.%20ARMADO%20HUNTER%20200CC?unique=99cc68a",
+            "stock": true
+        },
+        {
+            "id": "CB200HTR-080",
+            "codigo_referencia": "CB200HTR-080",
+            "nombre": "MANZANA ARO POST. SET2 HUNTER 200CC 2025",
+            "precio": 13,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9564/image_512/%5BCB200HTR-080%5D%20MANZANA%20ARO%20POST.%20SET2%20HUNTER%20200CC%202025?unique=33bd2e1",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-123",
+            "codigo_referencia": "CB200WF-123",
+            "nombre": "EMPAQUE CAUCHO CABEZOTE WOLF/PREDATOR/AXXO ASFALT-F51 200CC",
+            "precio": 6,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9530/image_512/%5BCB200WF-123%5D%20EMPAQUE%20CAUCHO%20CABEZOTE%20WOLF-PREDATOR-AXXO%20ASFALT-F51%20200CC?unique=265388e",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-037",
+            "codigo_referencia": "CB250GP1-037",
+            "nombre": "PEDAL CAMBIOS GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 16,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5700/image_512/%5BCB250GP1-037%5D%20PEDAL%20CAMBIOS%20GP1%20250-TUNDRA%20VELOCE%20250CC?unique=d99f461",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-064N",
+            "codigo_referencia": "CB250GP1-064N",
+            "nombre": "TANQUE GASOLINA GP1 250CC NEGRO 2024/25 4V",
+            "precio": 115,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9583/image_512/%5BCB250GP1-064N%5D%20TANQUE%20GASOLINA%20GP1%20250CC%20NEGRO%202024-25%204V?unique=982edd2",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-065",
+            "codigo_referencia": "CB250GP1-065",
+            "nombre": "MANUBRIOS Y PESAS (I-D) GP1- 250/TUNDRA VELOCE 250CC",
+            "precio": 16,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9532/image_512/%5BCB250GP1-065%5D%20MANUBRIOS%20Y%20PESAS%20(I-D)%20GP1-%20250-TUNDRA%20VELOCE%20250CC?unique=3b2405b",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-066",
+            "codigo_referencia": "CB250GP1-066",
+            "nombre": "PESAS TIMON (I-D) GP-1 250/TUNDRA VELOCE 250CC",
+            "precio": 8,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9533/image_512/%5BCB250GP1-066%5D%20PESAS%20TIMON%20(I-D)%20GP-1%20250-TUNDRA%20VELOCE%20250CC?unique=228f1f1",
+            "stock": true
+        },
+        {
+            "id": "CB250SCSENG-005",
+            "codigo_referencia": "CB250SCSENG-005",
+            "nombre": "CAJA CAMBIOS ARMADA LEM152MM/LEP176MM SCORPION 250CC SENGO",
+            "precio": 31,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9529/image_512/%5BCB250SCSENG-005%5D%20CAJA%20CAMBIOS%20ARMADA%20LEM152MM-LEP176MM%20SCORPION%20250CC%20SENGO?unique=4515dda",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-002BI",
+            "codigo_referencia": "CBB250XP-002BI",
+            "nombre": "GUARDAFANGO DEL. XPOWER 250 BLANCO BARRAS INVERTIDAS",
+            "precio": 39,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9551/image_512/%5BCBB250XP-002BI%5D%20GUARDAFANGO%20DEL.%20XPOWER%20250%20BLANCO%20BARRAS%20INVERTIDAS?unique=e991569",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-002RBI",
+            "codigo_referencia": "CBB250XP-002RBI",
+            "nombre": "GUARDAFANGO DEL. XPOWER 250 ROJO BARRAS INVERTIDAS",
+            "precio": 39,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9553/image_512/%5BCBB250XP-002RBI%5D%20GUARDAFANGO%20DEL.%20XPOWER%20250%20ROJO%20BARRAS%20INVERTIDAS?unique=06e0d97",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-017BI",
+            "codigo_referencia": "CBB250XP-017BI",
+            "nombre": "MESA DIRECCION ARMADA XPOWER 250 BARRAS INVERTIDAS",
+            "precio": 106,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9557/image_512/%5BCBB250XP-017BI%5D%20MESA%20DIRECCION%20ARMADA%20XPOWER%20250%20BARRAS%20INVERTIDAS?unique=7129a07",
+            "stock": true
+        },
+        {
+            "id": "CG150DELT-001A",
+            "codigo_referencia": "CG150DELT-001A",
+            "nombre": "PLACA LATERAL (I-D) DELTA 150CC AZUL",
+            "precio": 13,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9534/image_512/%5BCG150DELT-001A%5D%20PLACA%20LATERAL%20(I-D)%20DELTA%20150CC%20AZUL%20?unique=a0cab05",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV2-050R",
+            "codigo_referencia": "CG200WEV2-050R",
+            "nombre": "ARO DEL. MAGNECIO 1.85X17 DISCO 4H WING EVO-2/SH GP200 2018 ROJO",
+            "precio": 106,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9528/image_512/%5BCG200WEV2-050R%5D%20ARO%20DEL.%20MAGNECIO%201.85X17%20DISCO%204H%20WING%20EVO-2-SH%20GP200%202018%20ROJO?unique=12e4a32",
+            "stock": true
+        },
+        {
+            "id": "FE250-033",
+            "codigo_referencia": "FE250-033",
+            "nombre": "BOBINA BUJIA FE250",
+            "precio": 11,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9548/image_512/%5BFE250-033%5D%20BOBINA%20BUJIA%20FE250?unique=205e2f5",
+            "stock": true
+        },
+        {
+            "id": "FE250-035",
+            "codigo_referencia": "FE250-035",
+            "nombre": "RODAMIENTO ARO DELANTERO 6302 RSC3 SET2 XPOWER/GP1R/CHIEF II/CHIEF II PRO 250CC",
+            "precio": 4,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9559/image_512/%5BFE250-035%5D%20RODAMIENTO%20ARO%20DELANTERO%206302%20RSC3%20SET2%20XPOWER-GP1R-CHIEF%20II-CHIEF%20II%20PRO%20250CC?unique=64357e2",
+            "stock": true
+        },
+        {
+            "id": "FE250-036",
+            "codigo_referencia": "FE250-036",
+            "nombre": "RODAMIENTO ARO POSTERIOR 6303 RSC3 SET2 RODAMIENTO ARO DELANTERO 6203 RSC3 SET2 XPOWER/GP1R/CHIEF II/CHIEF II PRO 250CC",
+            "precio": 4,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9560/image_512/%5BFE250-036%5D%20RODAMIENTO%20ARO%20POSTERIOR%206303%20RSC3%20SET2%20RODAMIENTO%20ARO%20DELANTERO%206203%20RSC3%20SET2%20XPOWER-GP1R-CHIEF%20II-CHIEF%20II%20PRO%20250CC?unique=a178a1d",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-022BI",
+            "codigo_referencia": "FE250GP1R-022BI",
+            "nombre": "GUARDAFANGO DEL. GP1-R 250/SHM CHIEF II PRO/XPOWER FIBRA CARBONO B/I",
+            "precio": 39,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9550/image_512/%5BFE250GP1R-022BI%5D%20GUARDAFANGO%20DEL.%20GP1-R%20250-SHM%20CHIEF%20II%20PRO-XPOWER%20FIBRA%20CARBONO%20B-I?unique=1369680",
+            "stock": true
+        },
+        {
+            "id": "ICH3110L",
+            "codigo_referencia": "ICH3110L",
+            "nombre": "CASCO ICH3110 TALLA L",
+            "precio": 54,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9442/image_512/%5BICH3110L%5D%20CASCO%20ICH3110%20TALLA%20L?unique=0d69544",
+            "stock": true
+        },
+        {
+            "id": "ICH3110XL",
+            "codigo_referencia": "ICH3110XL",
+            "nombre": "CASCO ICH3110 DV ABATIBLE NEGRO TALLA XL",
+            "precio": 54,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9441/image_512/%5BICH3110XL%5D%20CASCO%20ICH3110%20DV%20ABATIBLE%20NEGRO%20TALLA%20XL?unique=1c931ae",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-013",
+            "codigo_referencia": "TY300ADV-013",
+            "nombre": "MONOSHOCK 330MM ADV 300/ADV 200 ROJO",
+            "precio": 77,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9431/image_512/%5BTY300ADV-013%5D%20MONOSHOCK%20330MM%20ADV%20300-ADV%20200%20ROJO?unique=63daa15",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-014",
+            "codigo_referencia": "TY300ADV-014",
+            "nombre": "TELESCOPICAS (I-D) ADVENTURE 300",
+            "precio": 288,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9432/image_512/%5BTY300ADV-014%5D%20TELESCOPICAS%20(I-D)%20ADVENTURE%20300?unique=486b73b",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-018",
+            "codigo_referencia": "TY300ADV-018",
+            "nombre": "CUBRE CADENA ADVENTURE 300 TY",
+            "precio": 17,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9491/image_512/%5BTY300ADV-018%5D%20CUBRE%20CADENA%20ADVENTURE%20300%20TY?unique=5139cc5",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-020",
+            "codigo_referencia": "TY300ADV-020",
+            "nombre": "PROTEC. MOTOR ADVENTURE 300 TY",
+            "precio": 29,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9501/image_512/%5BTY300ADV-020%5D%20PROTEC.%20MOTOR%20ADVENTURE%20300%20TY?unique=baaaa74",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-021",
+            "codigo_referencia": "TY300ADV-021",
+            "nombre": "ESCAPE COMP. ADVENTURE 300 TY",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9492/image_512/%5BTY300ADV-021%5D%20ESCAPE%20COMP.%20ADVENTURE%20300%20TY?unique=7cda890",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-022",
+            "codigo_referencia": "TY300ADV-022",
+            "nombre": "MESA DIRECCION ARMADA ADVENTURE 300 TY",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9497/image_512/%5BTY300ADV-022%5D%20MESA%20DIRECCION%20ARMADA%20ADVENTURE%20300%20TY?unique=b3facf4",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-023",
+            "codigo_referencia": "TY300ADV-023",
+            "nombre": "OSCILANTE ADVENTURE 300 TY",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9498/image_512/%5BTY300ADV-023%5D%20OSCILANTE%20ADVENTURE%20300%20TY?unique=343bdb6",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-024",
+            "codigo_referencia": "TY300ADV-024",
+            "nombre": "ASIENTO ADVENTURE 300 TY",
+            "precio": 43,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9489/image_512/%5BTY300ADV-024%5D%20ASIENTO%20ADVENTURE%20300%20TY?unique=3c9f5db",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-025",
+            "codigo_referencia": "TY300ADV-025",
+            "nombre": "BOYA GASOLINA ADVENTURE 300 TY",
+            "precio": 10,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9490/image_512/%5BTY300ADV-025%5D%20BOYA%20GASOLINA%20ADVENTURE%20300%20TY?unique=1bbd345",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-026",
+            "codigo_referencia": "TY300ADV-026",
+            "nombre": "PLACA LAT. POST. (I-D) ADV. 300CC G-VERDE TY",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9544/image_512/%5BTY300ADV-026%5D%20PLACA%20LAT.%20POST.%20(I-D)%20ADV.%20300CC%20G-VERDE%20TY?unique=de180b9",
             "stock": true
         }
     ]
