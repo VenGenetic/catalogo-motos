@@ -1,3 +1,284 @@
 {
-    "RAW_SCRAPED_DATA": []
+    "RAW_SCRAPED_DATA": [
+        {
+            "id": "CB250-315",
+            "codigo_referencia": "CB250-315",
+            "nombre": "ARBOL LEVAS TEKKEN/SCR/ADV/GP1/CRF",
+            "marca": "",
+            "precio": 29,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200FC-029",
+            "codigo_referencia": "CB200FC-029",
+            "nombre": "ARO DEL ARMADO 185X19 4H FORCE 200/DK XTZ 250CC NEGRO",
+            "marca": "",
+            "precio": 100,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250ADV-052",
+            "codigo_referencia": "CB250ADV-052",
+            "nombre": "ARO DEL ARMADO 185X21 6H ADV-R 250 NEGRO",
+            "marca": "",
+            "precio": 114,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-108",
+            "codigo_referencia": "CB250SC-108",
+            "nombre": "ARO DEL ARMADO SCORPION 250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC B/I",
+            "marca": "",
+            "precio": 86,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-053N",
+            "codigo_referencia": "CB200WF-053N",
+            "nombre": "ARO DEL MAGNECIO 250X17 DISCO 5H WOLF/ADV 200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 NARANJA",
+            "marca": "",
+            "precio": 105,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-053R",
+            "codigo_referencia": "CB200WF-053R",
+            "nombre": "ARO DEL MAGNECIO 250X17 DISCO 5H WOLF/ADV 200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 ROJO",
+            "marca": "",
+            "precio": 105,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-053V",
+            "codigo_referencia": "CB200WF-053V",
+            "nombre": "ARO DEL MAGNECIO 250X17 DISCO 5H WOLF/ADV 200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 VERDE",
+            "marca": "",
+            "precio": 105,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB180AGTY-019",
+            "codigo_referencia": "CB180AGTY-019",
+            "nombre": "ARO DEL MAGNECIO 300X14 DISCO 5H AGILITY 180CC NEGRO",
+            "marca": "",
+            "precio": 95,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB180S1ADV-039",
+            "codigo_referencia": "CB180S1ADV-039",
+            "nombre": "ARO DEL MAGNECIO S1 ADV180",
+            "marca": "",
+            "precio": 89,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150SF2-004R",
+            "codigo_referencia": "CG150SF2-004R",
+            "nombre": "ARO DEL MAGNESIO SPITFIRE 150 2025 ROJO",
+            "marca": "",
+            "precio": 76,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CGB200GTRRD-017",
+            "codigo_referencia": "CGB200GTRRD-017",
+            "nombre": "ARO DEL. ARMADO GTR ROADSTER NEGRO",
+            "marca": "",
+            "precio": 95,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV2-050R",
+            "codigo_referencia": "CG200WEV2-050R",
+            "nombre": "ARO DEL. MAGNECIO 1.85X17 DISCO 4H WING EVO-2/SH GP200 2018 ROJO",
+            "marca": "",
+            "precio": 105,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV2-050V",
+            "codigo_referencia": "CG200WEV2-050V",
+            "nombre": "ARO DEL. MAGNECIO 1.85X17 DISCO 4H WING EVO-2/SH GP200 2018 VERDE",
+            "marca": "",
+            "precio": 105,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250FRC-027G",
+            "codigo_referencia": "FE250FRC-027G",
+            "nombre": "ARO DEL. MAGNECIO 2.50X17 DISCO 5H FEROCE 250CC GRIS",
+            "marca": "",
+            "precio": 105,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "ARO-D1737-NE",
+            "codigo_referencia": "ARO-D1737-NE",
+            "nombre": "ARO DEL. WING EVO II 1.85 X 17 F7DISCO 4H NEGRO",
+            "marca": "",
+            "precio": 69,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "ARO-D6424",
+            "codigo_referencia": "ARO-D6424",
+            "nombre": "ARO DEL. MAGNECIO WOLF ROJO",
+            "marca": "",
+            "precio": 71,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-022",
+            "codigo_referencia": "CB250GP1-022",
+            "nombre": "ARO POST MAGNECIO 250X17 DISCO 4H GP1 250/TUNDRA VELOCE 250CC 2017/2018 NEGRO",
+            "marca": "",
+            "precio": 118,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-022NM",
+            "codigo_referencia": "CB250GP1-022NM",
+            "nombre": "ARO POST MAGNECIO 400x17 5H GP1 250CC 2023/24/2025 NEGRO",
+            "marca": "",
+            "precio": 124,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV2-051R",
+            "codigo_referencia": "CG200WEV2-051R",
+            "nombre": "ARO POST. MAGNECIO 2.50X17 ZAPATA WING EVO2/AXO F51/SH GP200 2017-18-19 ROJO",
+            "marca": "",
+            "precio": 114,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-021",
+            "codigo_referencia": "CBB250XP-021",
+            "nombre": "ARO POST. MAGNECIO 4.00X17 DISCO 5H XPOWER/GP1-R/CHIEF II/CHIEF II PRO/FK370/DRAKON F300/LA BESTIA 400/SHIFT 500 NEGRO",
+            "marca": "",
+            "precio": 118,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-031V",
+            "codigo_referencia": "FE250GP1R-031V",
+            "nombre": "ARO POST. MAGNECIO 4.00X17 DISCO GP1-R 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC VERDE",
+            "marca": "",
+            "precio": 118,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-008",
+            "codigo_referencia": "CB250GP1-008",
+            "nombre": "BOYA GASOLINA GP1 250/TUNDRA VELOCE 250CC",
+            "marca": "",
+            "precio": 27,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-021",
+            "codigo_referencia": "CB250GP1-021",
+            "nombre": "CAUCHO DESLIZ CADENA GP1 250/TUNDRA VELOCE 250CC",
+            "marca": "",
+            "precio": 6,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-054",
+            "codigo_referencia": "CB250GP1-054",
+            "nombre": "CAUCHO PORTA CATALINA GP1 250",
+            "marca": "",
+            "precio": 7,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-018",
+            "codigo_referencia": "CB200WF-018",
+            "nombre": "ESTRIBO DEL CON BASE (I-D) WOLF/ADV 200/RANGER CFZ 250/HONDA CB190",
+            "marca": "",
+            "precio": 61,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-052",
+            "codigo_referencia": "CB250GP1-052",
+            "nombre": "FILTRO AIRE GP1 250/TUNDRA VELOCE 250CC",
+            "marca": "",
+            "precio": 7,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-006R",
+            "codigo_referencia": "TY300ADV-006R",
+            "nombre": "GUARDAFANGO DEL ADVENTURE 300CC N-ROJO TY",
+            "marca": "",
+            "precio": 42,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-040",
+            "codigo_referencia": "CB250CRF-040",
+            "nombre": "GUARDAFANGO DEL CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200 GRIS",
+            "marca": "",
+            "precio": 31,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        }
+    ]
 }
