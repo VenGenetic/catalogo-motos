@@ -721,15 +721,6 @@
             "stock": true
         },
         {
-            "id": "CB250GP1-005",
-            "codigo_referencia": "CB250GP1-005",
-            "nombre": "TIMON GP1 250/TUNDRA VELOCE 250CC",
-            "precio": 35,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5658/image_512/%5BCB250GP1-005%5D%20TIMON%20GP1%20250-TUNDRA%20VELOCE%20250CC?unique=6db7776",
-            "stock": true
-        },
-        {
             "id": "CB250GP1-003",
             "codigo_referencia": "CB250GP1-003",
             "nombre": "KIT RUN Y LUCES GP1 250/TUNDRA VELOCE 250CC",
@@ -15235,15 +15226,6 @@
             "precio": 6,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9530/image_512/%5BCB200WF-123%5D%20EMPAQUE%20CAUCHO%20CABEZOTE%20WOLF-PREDATOR-AXXO%20ASFALT-F51%20200CC?unique=265388e",
-            "stock": true
-        },
-        {
-            "id": "CB250GP1-037",
-            "codigo_referencia": "CB250GP1-037",
-            "nombre": "PEDAL CAMBIOS GP1 250/TUNDRA VELOCE 250CC",
-            "precio": 16,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5700/image_512/%5BCB250GP1-037%5D%20PEDAL%20CAMBIOS%20GP1%20250-TUNDRA%20VELOCE%20250CC?unique=d99f461",
             "stock": true
         },
         {
