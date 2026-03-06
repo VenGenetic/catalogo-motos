@@ -471,16 +471,6 @@
             "stock": true
         },
         {
-            "id": "CB250-315",
-            "codigo_referencia": "CB250-315",
-            "nombre": "ARBOL LEVAS TEKKEN/SCR/ADV/GP1/CRF",
-            "marca": "DAYTONA",
-            "precio": 28.4625,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "FE250FRC-027G",
             "codigo_referencia": "FE250FRC-027G",
             "nombre": "ARO DEL. MAGNECIO 2.50X17 DISCO 5H FEROCE 250CC GRIS",
