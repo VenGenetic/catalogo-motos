@@ -879,6 +879,15 @@
             "categoria": "ORIGINAL",
             "imagen": "sin_imagen.jpg",
             "stock": true
+        },
+        {
+            "id": "CB250GP1-029",
+            "codigo_referencia": "CB250GP1-029",
+            "nombre": "PORTA PLACAS GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 31,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5692/image_512/%5BCB250GP1-029%5D%20PORTA%20PLACAS%20GP1%20250-TUNDRA%20VELOCE%20250CC?unique=5d8d407",
+            "stock": true
         }
     ]
 }
