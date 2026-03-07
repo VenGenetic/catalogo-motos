@@ -521,16 +521,6 @@
             "stock": true
         },
         {
-            "id": "CB250TKN-007",
-            "codigo_referencia": "CB250TKN-007",
-            "nombre": "TELESCOPICAS (I-D) TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC B/I",
-            "marca": "DAYTONA",
-            "precio": 285,
-            "categoria": "ORIGINAL",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CG200WEV2-024",
             "codigo_referencia": "CG200WEV2-024",
             "nombre": "TELESCOPICAS (I-D) WING EVO 2 2018/32mm",
@@ -866,16 +856,6 @@
             "nombre": "JUEGO DE TELESCOPICAS TRZ",
             "marca": "DAYTONA",
             "precio": 247,
-            "categoria": "ORIGINAL",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "TKK-188",
-            "codigo_referencia": "TKK-188",
-            "nombre": "RADIADOR ACEITE CON MANGUERAS TEKKEN 4V",
-            "marca": "DAYTONA",
-            "precio": 60,
             "categoria": "ORIGINAL",
             "imagen": "sin_imagen.jpg",
             "stock": true
