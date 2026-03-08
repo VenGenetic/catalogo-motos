@@ -888,6 +888,69 @@
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5692/image_512/%5BCB250GP1-029%5D%20PORTA%20PLACAS%20GP1%20250-TUNDRA%20VELOCE%20250CC?unique=5d8d407",
             "stock": true
+        },
+        {
+            "id": "FE250-010",
+            "codigo_referencia": "FE250-010",
+            "nombre": "SENSOR CAMBIOS FE250 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5 250CC",
+            "precio": 16,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7690/image_512/%5BFE250-010%5D%20SENSOR%20CAMBIOS%20FE250%204V%20TEKKEN%20EVO-GP1R-XPOWER-ARTIC-GP1-FEROCE-TUKO%20Z250-CR5%20TG-IGM%20VENTURE-DK%20NATIVA-CHIEF%202.5%20250CC?unique=b3d7b2b",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-018",
+            "codigo_referencia": "CB250GP1-018",
+            "nombre": "ESPEJOS (I-D) GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 9,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5676/image_512/%5BCB250GP1-018%5D%20ESPEJOS%20(I-D)%20GP1%20250-TUNDRA%20VELOCE%20250CC?unique=afae421",
+            "stock": true
+        },
+        {
+            "id": "FE250-010",
+            "codigo_referencia": "FE250-010",
+            "nombre": "SENSOR CAMBIOS FE250 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5 250CC",
+            "precio": 16,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7690/image_512/%5BFE250-010%5D%20SENSOR%20CAMBIOS%20FE250%204V%20TEKKEN%20EVO-GP1R-XPOWER-ARTIC-GP1-FEROCE-TUKO%20Z250-CR5%20TG-IGM%20VENTURE-DK%20NATIVA-CHIEF%202.5%20250CC?unique=b3d7b2b",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-034",
+            "codigo_referencia": "CB250GP1-034",
+            "nombre": "STOP GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 35,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5697/image_512/%5BCB250GP1-034%5D%20STOP%20GP1%20250-TUNDRA%20VELOCE%20250CC?unique=bf0ca66",
+            "stock": true
+        },
+        {
+            "id": "CB200FC-002",
+            "codigo_referencia": "CB200FC-002",
+            "nombre": "KIT SWITCH LLAVES FORCE 200/DK XTZ 250CC",
+            "precio": 37,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5697/image_512/%5BCB250GP1-034%5D%20STOP%20GP1%20250-TUNDRA%20VELOCE%20250CC?unique=bf0ca66",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-010",
+            "codigo_referencia": "CB200WF-010",
+            "nombre": "KIT SWITCH LLAVES WOLF/ADV200/RANGER CFZ 250/HONDA CB190",
+            "precio": 37,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5697/image_512/%5BCB250GP1-034%5D%20STOP%20GP1%20250-TUNDRA%20VELOCE%20250CC?unique=bf0ca66",
+            "stock": true
+        },
+        {
+            "id": "CB250MVK-037",
+            "codigo_referencia": "CB250MVK-037",
+            "nombre": "ESTRIBO DEL CON BASE (I-D) WOLF 250CC/MAVERICK",
+            "precio": 90,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5697/image_512/%5BCB250GP1-034%5D%20STOP%20GP1%20250-TUNDRA%20VELOCE%20250CC?unique=bf0ca66",
+            "stock": true
         }
     ]
 }
