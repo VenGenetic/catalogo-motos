@@ -951,6 +951,33 @@
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5697/image_512/%5BCB250GP1-034%5D%20STOP%20GP1%20250-TUNDRA%20VELOCE%20250CC?unique=bf0ca66",
             "stock": true
+        },
+        {
+            "id": "CB125BIT-037",
+            "codigo_referencia": "CB125BIT-037",
+            "nombre": "KIT EMPAQUES BIT 125CC",
+            "precio": 20,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9371/image_512/%5BCB125BIT-037%5D%20KIT%20EMPAQUES%20BIT%20125CC?unique=d863b66",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-014",
+            "codigo_referencia": "CB200WF-014",
+            "nombre": "TANQUE GASOLINA WOLF/RANGER CFZ 250/HONDA CB190",
+            "precio": 100,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9371/image_512/%5BCB125BIT-037%5D%20KIT%20EMPAQUES%20BIT%20125CC?unique=d863b66",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-081N",
+            "codigo_referencia": "CB250SCB-081N",
+            "nombre": "TANQUE GASOLINA SCRAMBLER REVOLUTION 250CC NEGRO",
+            "precio": 130,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9371/image_512/%5BCB125BIT-037%5D%20KIT%20EMPAQUES%20BIT%20125CC?unique=d863b66",
+            "stock": true
         }
     ]
 }
