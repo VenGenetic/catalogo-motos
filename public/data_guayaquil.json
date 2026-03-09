@@ -978,6 +978,15 @@
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9371/image_512/%5BCB125BIT-037%5D%20KIT%20EMPAQUES%20BIT%20125CC?unique=d863b66",
             "stock": true
+        },
+        {
+            "id": "TKK-189",
+            "codigo_referencia": "TKK-189",
+            "nombre": "CUPULA TEKKEN",
+            "precio": 20,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9371/image_512/%5BCB125BIT-037%5D%20KIT%20EMPAQUES%20BIT%20125CC?unique=d863b66",
+            "stock": true
         }
     ]
 }
