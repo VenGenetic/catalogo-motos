@@ -996,6 +996,15 @@
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9371/image_512/%5BCB125BIT-037%5D%20KIT%20EMPAQUES%20BIT%20125CC?unique=d863b66",
             "stock": true
+        },
+        {
+            "id": "CB200PDT-010",
+            "codigo_referencia": "CB200PDT-010",
+            "nombre": "ESPEJOS (I-D) PREDATOR 200",
+            "precio": 15,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9371/image_512/%5BCB200PDT-010%5D%20ARO%20DEL%20ARMADO%20TEKKEN/SCRAMBLER/REV%20NEGRO?unique=d863b66",
+            "stock": true
         }
     ]
 }
