@@ -85,9 +85,18 @@
             "codigo_referencia": "FE250GP1R-021D",
             "nombre": "ARO DEL. MAGNECIO GP1-R/XPOWER/CHIEF II/CHIEF II PRO/FK370/DRAKON F300/LA BESTIA 400/SHIFT 500 DORADO",
             "marca": "DAYTONA",
-            "precio": 105,
+            "precio": 106,
             "categoria": "ORIGINAL",
             "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-021V",
+            "codigo_referencia": "FE250GP1R-021V",
+            "nombre": "ARO DEL. MAGNECIO GP1-R/XPOWER/CHIEF II/CHIEF II PRO/FK370/DRAKON F300/LA BESTIA 400/SHIFT 500 VERDE",
+            "precio": 106,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7794/image_512/%5BFE250GP1R-021V%5D%20ARO%20DEL.%20MAGNECIO%20GP1-R-XPOWER-CHIEF%20II-CHIEF%20II%20PRO-FK370-DRAKON%20F300-LA%20BESTIA%20400-SHIFT%20500%20VERDE?unique=469483f",
             "stock": true
         },
         {
@@ -1004,6 +1013,24 @@
             "precio": 15,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9371/image_512/%5BCB200PDT-010%5D%20ARO%20DEL%20ARMADO%20TEKKEN/SCRAMBLER/REV%20NEGRO?unique=d863b66",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-007",
+            "codigo_referencia": "TY300ADV-007",
+            "nombre": "KIT SWITCH,TAPA,LLAVES ADVENTURE 300CC TY",
+            "precio": 35,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/8339/image_512/%5BTY300ADV-007%5D%20KIT%20SWITCH,TAPA,LLAVES%20ADVENTURE%20300CC%20TY?unique=539c882",
+            "stock": true
+        },
+        {
+            "id": "CG200WEVO-045",
+            "codigo_referencia": "CG200WEVO-045",
+            "nombre": "CILINDRO Y PISTON WING EVO I/II 200 PIN 13",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7274/image_512/%5BCG200WEVO-045%5D%20CILINDRO%20Y%20PISTON%20WING%20EVO%20I-II%20200%20PIN%2013?unique=eda2930",
             "stock": true
         }
     ]
