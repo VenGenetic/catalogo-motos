@@ -100,6 +100,15 @@
             "stock": true
         },
         {
+            "id": "CB250CRF-052",
+            "codigo_referencia": "CB250CRF-052",
+            "nombre": "DIRECCIONALES (SET4) CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "precio": 29,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/8980/image_512/%5BCB250CRF-052%5D%20DIRECCIONALES%20(SET4)%20CROSSFIRE-XTREEM-THUNDER%20F16-DK%20HORNET-IGM%20WIND250-Z1%20V8200?unique=2f49929",
+            "stock": true
+        },
+        {
             "id": "CB180EVO2-008",
             "codigo_referencia": "CB180EVO2-008",
             "nombre": "GUARDAFANGO DEL EVO 2 180CC/AXXO VIPER/RANGER 150BWSM/BULTACO STORM/Z1 SUPER 175/SUKIDA JOY 175CC",
