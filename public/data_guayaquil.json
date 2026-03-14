@@ -719,6 +719,15 @@
             "stock": true
         },
         {
+            "id": "CB250CRF-036",
+            "codigo_referencia": "CB250CRF-036",
+            "nombre": "ASIENTO SET2 CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "precio": 58,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5637/image_512/%5BCB250CRF-036%5D%20ASIENTO%20SET2%20CROSSFIRE-XTREEM-THUNDER%20F16-DK%20HORNET-IGM%20WIND250-Z1%20V8200?unique=53b2db5",
+            "stock": true
+        },
+        {
             "id": "CB300SW-077",
             "codigo_referencia": "CB300SW-077",
             "nombre": "VELOCIMETRO DIGITAL SUPER WOLF 300",
