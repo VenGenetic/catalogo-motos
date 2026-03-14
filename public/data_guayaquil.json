@@ -728,6 +728,24 @@
             "stock": true
         },
         {
+            "id": "CB200WF-002",
+            "codigo_referencia": "CB200WF-002",
+            "nombre": "VELOCIMETRO DIGITAL WOLF/RANGER CFZ 250/HONDA CB190",
+            "precio": 68,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5094/image_512/%5BCB200WF-002%5D%20VELOCIMETRO%20DIGITAL%20WOLF-RANGER%20CFZ%20250-HONDA%20CB190?unique=ef7d175",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-035",
+            "codigo_referencia": "FE250GP1R-035",
+            "nombre": "TIMON SET2 GP1-R 250/CHIEF II PRO B/I 2025",
+            "precio": 80,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5094/image_512/%5BCB200WF-002%5D%20VELOCIMETRO%20DIGITAL%20WOLF-RANGER%20CFZ%20250-HONDA%20CB190?unique=ef7d175",
+            "stock": true
+        },
+        {
             "id": "CB300SW-077",
             "codigo_referencia": "CB300SW-077",
             "nombre": "VELOCIMETRO DIGITAL SUPER WOLF 300",

@@ -7861,7 +7861,7 @@
             "id": "CG150WRF-007",
             "codigo_referencia": "CG150WRF-007",
             "nombre": "CABLE VELOCIMETRO WORKFORCE/TH-B52 150CC",
-            "precio": 3,
+            "precio": 5,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6858/image_512/%5BCG150WRF-007%5D%20CABLE%20VELOCIMETRO%20WORKFORCE-TH-B52%20150CC?unique=22786b1",
             "stock": true
@@ -7870,7 +7870,7 @@
             "id": "CG150WRF-006",
             "codigo_referencia": "CG150WRF-006",
             "nombre": "CABLE ACELERADOR WORKFORCE/TH-B52 150CC",
-            "precio": 3,
+            "precio": 5,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6857/image_512/%5BCG150WRF-006%5D%20CABLE%20ACELERADOR%20WORKFORCE-TH-B52%20150CC?unique=f5e0e5b",
             "stock": true
@@ -7879,7 +7879,7 @@
             "id": "CG150WRF-005",
             "codigo_referencia": "CG150WRF-005",
             "nombre": "CABLE EMBRAGUE WORKFORCE/TH-B52 150CC",
-            "precio": 3,
+            "precio": 5,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6856/image_512/%5BCG150WRF-005%5D%20CABLE%20EMBRAGUE%20WORKFORCE-TH-B52%20150CC?unique=4d97a0f",
             "stock": true
@@ -12163,7 +12163,7 @@
             "id": "CB200FC-050",
             "codigo_referencia": "CB200FC-050",
             "nombre": "CABLE EMBRAGUE FORCE 200/DK XTZ250/GY200/CG200 UNIVERSAL",
-            "precio": 3,
+            "precio": 5,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/8965/image_512/%5BCB200FC-050%5D%20CABLE%20EMBRAGUE%20FORCE%20200-DK%20XTZ250-GY200-CG200%20UNIVERSAL?unique=055aa2a",
             "stock": true
@@ -12676,7 +12676,7 @@
             "id": "FE250FRC-013",
             "codigo_referencia": "FE250FRC-013",
             "nombre": "CABLE ACELEARDOR FEROCE 250CC",
-            "precio": 3,
+            "precio": 5,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9075/image_512/%5BFE250FRC-013%5D%20CABLE%20ACELEARDOR%20FEROCE%20250CC?unique=cfb0fb3",
             "stock": true
@@ -12685,7 +12685,7 @@
             "id": "FE250FRC-014",
             "codigo_referencia": "FE250FRC-014",
             "nombre": "CABLE EMBRAGUE FEROCE 250CC",
-            "precio": 3,
+            "precio": 5,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9076/image_512/%5BFE250FRC-014%5D%20CABLE%20EMBRAGUE%20FEROCE%20250CC?unique=15efeb6",
             "stock": true
@@ -13450,7 +13450,7 @@
             "id": "PR300XPD-009",
             "codigo_referencia": "PR300XPD-009",
             "nombre": "CABLE ACELERADOR XPEDITION/TK SIKR 300",
-            "precio": 3,
+            "precio": 5,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9211/image_512/%5BPR300XPD-009%5D%20CABLE%20ACELERADOR%20XPEDITION-TK%20SIKR%20300?unique=3a0846f",
             "stock": true
@@ -13459,7 +13459,7 @@
             "id": "CB200EGZ-021",
             "codigo_referencia": "CB200EGZ-021",
             "nombre": "CABLE EMBRAGUE EAGLE Z 200",
-            "precio": 3,
+            "precio": 5,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9212/image_512/%5BCB200EGZ-021%5D%20CABLE%20EMBRAGUE%20EAGLE%20Z%20200?unique=3bb1e0c",
             "stock": true
@@ -13468,7 +13468,7 @@
             "id": "PR300XPD-010",
             "codigo_referencia": "PR300XPD-010",
             "nombre": "CABLE EMBRAGUE XPEDITION/TK SIKR 300",
-            "precio": 4,
+            "precio": 5,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9213/image_512/%5BPR300XPD-010%5D%20CABLE%20EMBRAGUE%20XPEDITION-TK%20SIKR%20300?unique=51becfd",
             "stock": true
