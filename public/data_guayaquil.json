@@ -1068,6 +1068,99 @@
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7274/image_512/%5BCG200WEVO-045%5D%20CILINDRO%20Y%20PISTON%20WING%20EVO%20I-II%20200%20PIN%2013?unique=eda2930",
             "stock": true
+        },
+        {
+            "id": "CB180AGTY-043",
+            "codigo_referencia": "CB180AGTY-043",
+            "nombre": "ASIENTO AGILITY",
+            "precio": 58,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/4653/image_512/%5BCB180AGTY-043%5D%20ASIENTO%20AGILITY?unique=0fa7775",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV-039",
+            "codigo_referencia": "CG200WEV-039",
+            "nombre": "ASIENTO WING EVO 200/Z1 PHANTOM/AXXO R51 200CC",
+            "precio": 43,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7141/image_512/%5BCG200WEV-039%5D%20ASIENTO%20WING%20EVO%20200-Z1%20PHANTOM-AXXO%20R51%20200CC?unique=38be6b6",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-036",
+            "codigo_referencia": "CB250CRF-036",
+            "nombre": "ASIENTO SET2 CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "precio": 58,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5637/image_512/%5BCB250CRF-036%5D%20ASIENTO%20SET2%20CROSSFIRE-XTREEM-THUNDER%20F16-DK%20HORNET-IGM%20WIND250-Z1%20V8200?unique=53b2db5",
+            "stock": true
+        },
+        {
+            "id": "CGB250SPF-039",
+            "codigo_referencia": "CGB250SPF-039",
+            "nombre": "ASIENTO SPITFIRE 250",
+            "precio": 58,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7484/image_512/%5BCGB250SPF-039%5D%20ASIENTO%20SPITFIRE%20250?unique=d66cd14",
+            "stock": true
+        },
+        {
+            "id": "CB150GHS1-044",
+            "codigo_referencia": "CB150GHS1-044",
+            "nombre": "ASIENTO GH/S1 150CC",
+            "precio": 58,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/4478/image_512/%5BCB150GHS1-044%5D%20ASIENTO%20GH-S1%20150CC?unique=c5f3128",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-068",
+            "codigo_referencia": "CB250SCB-068",
+            "nombre": "ASIENTO SCRAMBLER REVOLUTION 250CC/300CC",
+            "precio": 63,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-032",
+            "codigo_referencia": "CB250SC-032",
+            "nombre": "ASIENTO SCORPION/MOTORNTANA",
+            "precio": 54,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB180S1ADV-022",
+            "codigo_referencia": "CB180S1ADV-022",
+            "nombre": "ASIENTO S1 ADV180",
+            "precio": 65,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150CR-010",
+            "codigo_referencia": "CG150CR-010",
+            "nombre": "ASIENTO CAFE RACER",
+            "precio": 67,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250TRZ-010",
+            "codigo_referencia": "CB250TRZ-010",
+            "nombre": "ASIENTO AXXO TRZ 250",
+            "precio": 40,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-015",
+            "codigo_referencia": "CB200WF-015",
+            "nombre": "ASIENTO WOLF/RANGER CFZ 250/HONDA CB190",
+            "precio": 61,
+            "categoria": "General",
+            "stock": true
         }
     ]
 }
