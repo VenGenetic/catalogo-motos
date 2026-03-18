@@ -429,16 +429,6 @@
             "stock": true
         },
         {
-            "id": "CBB250XP-005R",
-            "codigo_referencia": "CBB250XP-005R",
-            "nombre": "TANQUE GASOLINA XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC ROJO",
-            "marca": "DAYTONA",
-            "precio": 114,
-            "categoria": "ORIGINAL",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CG150-086",
             "codigo_referencia": "CG150-086",
             "nombre": "TELESCOPICAS (I-D) CRUCERO",
@@ -965,7 +955,7 @@
             "id": "CB250GP1-034",
             "codigo_referencia": "CB250GP1-034",
             "nombre": "STOP GP1 250/TUNDRA VELOCE 250CC",
-            "precio": 35,
+            "precio": 40,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5697/image_512/%5BCB250GP1-034%5D%20STOP%20GP1%20250-TUNDRA%20VELOCE%20250CC?unique=bf0ca66",
             "stock": true
@@ -1442,6 +1432,404 @@
             "precio": 87,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/8408/image_512/%5BTY300-001%5D%20TAPA%20MOTOR%20DER.%20ADV.%20300-CHIEF%203.0-TK%20CR300-RACER%20300-RANGER%20DR300CC%20TY?unique=c7c43eb",
+            "stock": true
+        },
+        {
+            "id": "TY300-001",
+            "codigo_referencia": "TY300-001",
+            "nombre": "TAPA MOTOR DER. ADV. 300/CHIEF 3.0/TK CR300/RACER 300/RANGER DR300CC TY",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/8408/image_512/%5BTY300-001%5D%20TAPA%20MOTOR%20DER.%20ADV.%20300-CHIEF%203.0-TK%20CR300-RACER%20300-RANGER%20DR300CC%20TY?unique=c7c43eb",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-007",
+            "codigo_referencia": "CB300SW-007",
+            "nombre": "KIT SWITCHTAPALLAVES SUPER WOLF 300CC",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250ART-023",
+            "codigo_referencia": "FE250ART-023",
+            "nombre": "KIT SWITCH TAPALLAVES ARTIC 250CC",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250ADV-003",
+            "codigo_referencia": "CB250ADV-003",
+            "nombre": "KIT SWITCH LLAVES ADVENTURE-R 250/300CC",
+            "precio": 42,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250TKN-040",
+            "codigo_referencia": "CB250TKN-040",
+            "nombre": "KIT SWITCH LLAVES TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-070",
+            "codigo_referencia": "CB300SW-070",
+            "nombre": "TAPA MOTOR DER. SCB/ADV-R/SUPER WOLF 300CC",
+            "precio": 76,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGB200CRU-016",
+            "codigo_referencia": "CGB200CRU-016",
+            "nombre": "TAPA MOTOR DER. CRUCERO 200 GRIS SL",
+            "precio": 44,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-133.",
+            "codigo_referencia": "CGEA150-133.",
+            "nombre": "TAPA MOTOR DER. EAGLE 150 II. ANTIGUA",
+            "precio": 40,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250-007",
+            "codigo_referencia": "FE250-007",
+            "nombre": "TAPA MOTOR DER FE250 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5 250CC",
+            "precio": 50,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGB250SPF-057",
+            "codigo_referencia": "CGB250SPF-057",
+            "nombre": "TAPA MOTOR DER. SPITFIRE 250",
+            "precio": 62,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGB250SPF-058",
+            "codigo_referencia": "CGB250SPF-058",
+            "nombre": "TAPA MOTOR IZQ. SPITFIRE 250",
+            "precio": 48,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGB250SPF-058",
+            "codigo_referencia": "CGB250SPF-058",
+            "nombre": "TAPA MOTOR IZQ. SPITFIRE 250",
+            "precio": 48,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGB200CRU-003",
+            "codigo_referencia": "CGB200CRU-003",
+            "nombre": "TAPA MOTOR IZQ. Y PINON CRUCER0 200 GRIS",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGB170-005",
+            "codigo_referencia": "CGB170-005",
+            "nombre": "TAPA MOTOR IZQ. Y PINON CAFE RACER 170",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250-006",
+            "codigo_referencia": "FE250-006",
+            "nombre": "TAPA MOTOR IZQ. Y PINON FE250 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5 250CC ",
+            "precio": 42,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB150-020",
+            "codigo_referencia": "CB150-020",
+            "nombre": "TAPA MOTOR IZQ MONTANA 150/SHARK/RX/BULL/SCORPION GRIS",
+            "precio": 52,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200ADV-054",
+            "codigo_referencia": "CB200ADV-054",
+            "nombre": "TAPA MOTOR IZQ. ADVE. 200 ",
+            "precio": 44,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "TY300-021",
+            "codigo_referencia": "TY300-021",
+            "nombre": "CILINDRO Y PISTON 72MM/PIN15 ADV 300/CHIEF 30/TK CR300/RACER 300/RANGER DR300CC TY",
+            "precio": 143,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGB250SPF-064",
+            "codigo_referencia": "CGB250SPF-064",
+            "nombre": "CILINDRO Y PISTON 250CC 66.5MM/PIN16 SPITFIRE 250",
+            "precio": 76,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV-052K",
+            "codigo_referencia": "CG200WEV-052K",
+            "nombre": "CILINDRO Y PISTON CRUCERO 200/WING EVO I/II/SL-KM PIN 15 NEGRO",
+            "precio": 86,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "MMX-042",
+            "codigo_referencia": "MMX-042",
+            "nombre": "BOMBA ACEITE 37T LONCIN RE250//TEKKEN/SCRAMBLER/GP1/CROSSFIRE/ADV250",
+            "precio": 6,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250-028",
+            "codigo_referencia": "FE250-028",
+            "nombre": "BOMBA ACEITE 27T FE250 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5 250CC",
+            "precio": 35,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7708/image_512/%5BFE250-028%5D%20BOMBA%20ACEITE%2027T%20FE250%204V%20TEKKEN%20EVO-GP1R-XPOWER-ARTIC-GP1-FEROCE-TUKO%20Z250-CR5%20TG-IGM%20VENTURE-DK%20NATIVA-CHIEF%202.5%20250CC?unique=507489a",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-058",
+            "codigo_referencia": "CB200WF-058",
+            "nombre": "BOMBA ACEITE 39T WOLF/WING EVO P15/GN STARK/XY150/AXXO ASFALT/AXXO F51 2017 200cc",
+            "precio": 11,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG200WEVO-049",
+            "codigo_referencia": "CG200WEVO-049",
+            "nombre": "BOMBA ACEITE 39T WING EVO P13/SH GP200CC",
+            "precio": 11,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "TY300-020",
+            "codigo_referencia": "TY300-020",
+            "nombre": "BOMBA ACEITE ADV 300/CHIEF 30/TK CR300/RACER 300/RANGER DR300CC TY",
+            "precio": 23,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB150GHS1-003",
+            "codigo_referencia": "CB150GHS1-003",
+            "nombre": "BOMBA ACEITE GH/S1 150/180/DYNAMIC PRO/SHM JEDI 150CC/HUNTER 200CC",
+            "precio": 12,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/4448/image_512/%5BCB150GHS1-003%5D%20BOMBA%20ACEITE%20GH-S1%20150-180-DYNAMIC%20PRO-SHM%20JEDI%20150CC-HUNTER%20200CC?unique=cf04943",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-050",
+            "codigo_referencia": "CBB250XP-050",
+            "nombre": "GUIA CADENILLA (1-2) XPOWER/CHIEF II 250CC ( 2V ) 2019-20-2022",
+            "precio": 8,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB180-003",
+            "codigo_referencia": "CB180-003",
+            "nombre": "GUIA CADENILLA (1-2) CB180 GY6 S1ADV/AGILITY/EVO2/S1ADV CROSSOVER/AGILITY X 180CC",
+            "precio": 10,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "TY300-011",
+            "codigo_referencia": "TY300-011",
+            "nombre": "GUIA CADENILLA (1-2) ADV 300/CHIEF 30/TK CR300/RACER 300/RANGER DR300CC TY",
+            "precio": 15,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-049",
+            "codigo_referencia": "CB300SW-049",
+            "nombre": "GUIA CADENILLA (1-2) SUPER WOLF 300/ADV-300R/SCRAMBLER 300",
+            "precio": 9,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250-009",
+            "codigo_referencia": "FE250-009",
+            "nombre": "GUIA CADENILLA (1-2) FE250 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5 250CC",
+            "precio": 23,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "TEN-C8942",
+            "codigo_referencia": "TEN-C8942",
+            "nombre": "TENSOR CADENILLA WY125 /200 /BROSS200 /SKR200 /250",
+            "precio": 3,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-011",
+            "codigo_referencia": "CB300SW-011",
+            "nombre": "PEDAL FRENO SUPER WOLF 300",
+            "precio": 23,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150SPE-007.",
+            "codigo_referencia": "CG150SPE-007.",
+            "nombre": "PEDAL FRENO SPEED.",
+            "precio": 10,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6813/image_512/%5BCG150SPE-007.%5D%20PEDAL%20FRENO%20SPEED.?unique=7d09848",
+            "stock": true
+        },
+        {
+            "id": "CB200ADV-068",
+            "codigo_referencia": "CB200ADV-068",
+            "nombre": "PEDAL FRENO ADVENTURE 200",
+            "precio": 23,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV-030",
+            "codigo_referencia": "CG200WEV-030",
+            "nombre": "PEDAL FRENO WING EVO 200/Z1 PHANTON/AXXO R51/IGM WIND 200CC",
+            "precio": 16,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7132/image_512/%5BCG200WEV-030%5D%20PEDAL%20FRENO%20WING%20EVO%20200-Z1%20PHANTON-AXXO%20R51-IGM%20WIND%20200CC?unique=ec90f25",
+            "stock": true
+        },
+        {
+            "id": "CB200FC-036",
+            "codigo_referencia": "CB200FC-036",
+            "nombre": "PEDAL FRENO FORCE 200/DK XTZ 250CC",
+            "precio": 15,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "PED-F6644",
+            "codigo_referencia": "PED-F6644",
+            "nombre": "PEDAL FRENO SHINERAY GP200 CROMADO BOST",
+            "precio": 8,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-077",
+            "codigo_referencia": "CBB250XP-077",
+            "nombre": "PEDAL FRENO XPOWER 250",
+            "precio": 10,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-011",
+            "codigo_referencia": "CB250SCB-011",
+            "nombre": "PEDAL FRENO SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC",
+            "precio": 10,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250-253",
+            "codigo_referencia": "CB250-253",
+            "nombre": "PEDAL FRENO TEKKEN",
+            "precio": 6,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-041",
+            "codigo_referencia": "CGEA150-041",
+            "nombre": "MONOSHOCK 280MM (TIPO U) EAGLE 150CC I-II-III/MOTORNTANA150/DK FALCON NEGRO",
+            "precio": 67,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-040",
+            "codigo_referencia": "CB250SCB-040",
+            "nombre": "MONOSHOCK SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC",
+            "precio": 80,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-002",
+            "codigo_referencia": "CB250CRF-002",
+            "nombre": "MONOSHOCK 260MM CROSSFIRE/XTREEM/TH F16/DK HORNET/IGM WIND250/Z1 V8200 ROJO",
+            "precio": 86,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250TKN-008",
+            "codigo_referencia": "CB250TKN-008",
+            "nombre": "MONOSHOCK 390MM (TIPO U) TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC NEGRO",
+            "precio": 86,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG200SRK-012",
+            "codigo_referencia": "CG200SRK-012",
+            "nombre": "MONOSHOCK 310MM SHARK I-II-III 250CC/200/BROSS/GY200 NEGRO",
+            "precio": 67,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-026",
+            "codigo_referencia": "CBB250XP-026",
+            "nombre": "MONOSHOCK 310MM (TIPO U) XPOWER /GP1-R/CHIEF II 250/FK300/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC NEGRO",
+            "precio": 73,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250ADV-035",
+            "codigo_referencia": "CB250ADV-035",
+            "nombre": "MONOSHOCK ADVENTURE-R 250/300CC",
+            "precio": 104,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG200SPE-074",
+            "codigo_referencia": "CG200SPE-074",
+            "nombre": "MONOSHOCK 320MM SPEED 200/BROSS/GY200 NEGRO",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7011/image_512/%5BCG200SPE-074%5D%20MONOSHOCK%20320MM%20SPEED%20200-BROSS-GY200%20NEGRO?unique=e829a3a",
             "stock": true
         }
     ]

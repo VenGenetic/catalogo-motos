@@ -499,7 +499,7 @@
             "id": "CB250GP1-034",
             "codigo_referencia": "CB250GP1-034",
             "nombre": "STOP GP1 250/TUNDRA VELOCE 250CC",
-            "precio": 35,
+            "precio": 40,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5697/image_512/%5BCB250GP1-034%5D%20STOP%20GP1%20250-TUNDRA%20VELOCE%20250CC?unique=bf0ca66",
             "stock": true
@@ -8962,24 +8962,6 @@
             "precio": 16,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6226/image_512/%5BCBB250XP-007%5D%20ESPEJOS%20(I-D)%20XPOWER-THD%20SR71-PEGASSO%20DUKK%20250CC-FACTORY%20FZ%20300CC?unique=98a564b",
-            "stock": true
-        },
-        {
-            "id": "CBB250XP-005B",
-            "codigo_referencia": "CBB250XP-005B",
-            "nombre": "TANQUE GASOLINA XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC BLANCO",
-            "precio": 115,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6223/image_512/%5BCBB250XP-005B%5D%20TANQUE%20GASOLINA%20XPOWER-THD%20SR71-PEGASSO%20DUKK%20250CC-FACTORY%20FZ%20300CC%20BLANCO?unique=c620aec",
-            "stock": true
-        },
-        {
-            "id": "CBB250XP-005",
-            "codigo_referencia": "CBB250XP-005",
-            "nombre": "TANQUE GASOLINA XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC NEGRO",
-            "precio": 115,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6222/image_512/%5BCBB250XP-005%5D%20TANQUE%20GASOLINA%20XPOWER-THD%20SR71-PEGASSO%20DUKK%20250CC-FACTORY%20FZ%20300CC%20NEGRO?unique=b72ee04",
             "stock": true
         },
         {
