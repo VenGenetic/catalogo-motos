@@ -1125,7 +1125,7 @@
         {
             "id": "CB250SC-032",
             "codigo_referencia": "CB250SC-032",
-            "nombre": "ASIENTO SCORPION/MOTORNTANA",
+            "nombre": "ASIENTO SCORPION/MONTANA",
             "precio": 54,
             "categoria": "General",
             "stock": true
@@ -1160,6 +1160,288 @@
             "nombre": "ASIENTO WOLF/RANGER CFZ 250/HONDA CB190",
             "precio": 61,
             "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-006",
+            "codigo_referencia": "CB200WF-006",
+            "nombre": "KIT RUN Y LUCES WOLF/ADV200/RANGER CFZ 250/HONDA CB190",
+            "precio": 23,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5098/image_512/%5BCB200WF-006%5D%20KIT%20RUN%20Y%20LUCES%20WOLF-ADV200-RANGER%20CFZ%20250-HONDA%20CB190?unique=b8aba38",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-032",
+            "codigo_referencia": "CGEA150-032",
+            "nombre": "KIT RUN Y LUCES EAGLE 150CC I-II-III/DK FALCON",
+            "precio": 16,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7559/image_512/%5BCGEA150-032%5D%20KIT%20RUN%20Y%20LUCES%20EAGLE%20150CC%20I-II-III-DK%20FALCON?unique=5c7eb63",
+            "stock": true
+        },
+        {
+            "id": "CG150DELT-031",
+            "codigo_referencia": "CG150DELT-031",
+            "nombre": "KIT RUN Y LUCES DELTA 150",
+            "precio": 21,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6699/image_512/%5BCG150DELT-031%5D%20KIT%20RUN%20Y%20LUCES%20DELTA%20150?unique=ff73390",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-028",
+            "codigo_referencia": "CBB250XP-028",
+            "nombre": "KIT RUN Y LUCES XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
+            "precio": 23,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6247/image_512/%5BCBB250XP-028%5D%20KIT%20RUN%20Y%20LUCES%20XPOWER-THD%20SR71-PEGASSO%20DUKK%20250CC-FACTORY%20FZ%20300CC?unique=ac0b6a3",
+            "stock": true
+        },
+        {
+            "id": "CG150PTH-009",
+            "codigo_referencia": "CG150PTH-009",
+            "nombre": "KIT RUN Y LUCES PANTHER/RANGER 150USM//IGM ECO150/TK H2EVO/AXXO RAPTOR 150/THUNDER RT 150CC",
+            "precio": 20,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6759/image_512/%5BCG150PTH-009%5D%20KIT%20RUN%20Y%20LUCES%20PANTHER-RANGER%20150USM--IGM%20ECO150-TK%20H2EVO-AXXO%20RAPTOR%20150-THUNDER%20RT%20150CC?unique=b7e417d",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-014",
+            "codigo_referencia": "CB300SW-014",
+            "nombre": "KIT RUN Y LUCES SUPER WOLF 300",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-001",
+            "codigo_referencia": "CB250GP1-001",
+            "nombre": "INSTALACION ELECTRICA GP1250/TUNDRA VELOCE 250CC",
+            "precio": 43,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5654/image_512/%5BCB250GP1-001%5D%20INSTALACION%20ELECTRICA%20GP1250-TUNDRA%20VELOCE%20250CC?unique=eeaf7e1",
+            "stock": true
+        },
+        {
+            "id": "MMX-041",
+            "codigo_referencia": "MMX-041",
+            "nombre": "INSTALACION ELECTRICA GN 125 UNIVERSAL/CRUCERO 150/200",
+            "precio": 20,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7837/image_512/%5BMMX-041%5D%20INSTALACION%20ELECTRICA%20GN%20125%20UNIVERSAL-CRUCERO%20150-200?unique=40cf015",
+            "stock": true
+        },
+        {
+            "id": "CB200ADV-020",
+            "codigo_referencia": "CB200ADV-020",
+            "nombre": "INSTALACION ELECTRICA ADVENTURE 200",
+            "precio": 39,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/4911/image_512/%5BCB200ADV-020%5D%20INSTALACION%20ELECTRICA%20ADVENTURE%20200?unique=a8cb3ca",
+            "stock": true
+        },
+        {
+            "id": "CB250WF-007",
+            "codigo_referencia": "CB250WF-007",
+            "nombre": "INSTALACION ELECTRICA WOLF 250",
+            "precio": 42,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV-038",
+            "codigo_referencia": "CG200WEV-038",
+            "nombre": "INSTALACION ELECTRICA WING EVO 200",
+            "precio": 39,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-014",
+            "codigo_referencia": "CB250CRF-014",
+            "nombre": "INSTALACION ELECTRICA CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "precio": 40,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150SPF-027",
+            "codigo_referencia": "CG150SPF-027",
+            "nombre": "INST. ELECTRICA SPITFIRE 150",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-022",
+            "codigo_referencia": "TY300ADV-022",
+            "nombre": "MESA DIRECCION ARMADA ADVENTURE 300 TY",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9497/image_512/%5BTY300ADV-022%5D%20MESA%20DIRECCION%20ARMADA%20ADVENTURE%20300%20TY?unique=b3facf4",
+            "stock": true
+        },
+        {
+            "id": "FE250ART-046",
+            "codigo_referencia": "FE250ART-046",
+            "nombre": "MESA DIRECCION ARMADA ARTIC 250 B/I",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9002/image_512/%5BFE250ART-046%5D%20MESA%20DIRECCION%20ARMADA%20ARTIC%20250%20B-I?unique=9df0f85",
+            "stock": true
+        },
+        {
+            "id": "CG150IND-011",
+            "codigo_referencia": "CG150IND-011",
+            "nombre": "MESA DIRECCION ARMADA DELTA/PANTHER/INDY 150",
+            "precio": 35,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6727/image_512/%5BCG150IND-011%5D%20MESA%20DIRECCION%20ARMADA%20DELTA-PANTHER-INDY%20150?unique=031bdd4",
+            "stock": true
+        },
+        {
+            "id": "CB200FC-026",
+            "codigo_referencia": "CB200FC-026",
+            "nombre": "MESA DIRECCION ARMADA FORCE 200/DK XTZ 250CC",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5001/image_512/%5BCB200FC-026%5D%20MESA%20DIRECCION%20ARMADA%20FORCE%20200-DK%20XTZ%20250CC?unique=47e9a13",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-038",
+            "codigo_referencia": "CB200WF-038",
+            "nombre": "MESA DIRECCION ARMADA WOLF200/RANGER CFZ 250/HONDA CB190 B/I",
+            "precio": 77,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5127/image_512/%5BCB200WF-038%5D%20MESA%20DIRECCION%20ARMADA%20WOLF200-RANGER%20CFZ%20250-HONDA%20CB190%20B-I?unique=ad089c7",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV2-052",
+            "codigo_referencia": "CG200WEV2-052",
+            "nombre": "MESA DIRECCION ARMADA WING EVO 2 2018 32MM",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7263/image_512/%5BCG200WEV2-052%5D%20MESA%20DIRECCION%20ARMADA%20WING%20EVO%202%202018%2032MM?unique=0ee95ce",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-059",
+            "codigo_referencia": "CB300SW-059",
+            "nombre": "MESA DIRECCION ARMADA SUPER WOLF 300 B/I",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7263/image_512/%5BCG200WEV2-052%5D%20MESA%20DIRECCION%20ARMADA%20WING%20EVO%202%202018%2032MM?unique=0ee95ce",
+            "stock": true
+        },
+        {
+            "id": "FE250ART-023",
+            "codigo_referencia": "FE250ART-023",
+            "nombre": "KIT SWITCH,TAPA,LLAVES ARTIC 250CC",
+            "precio": 35,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7738/image_512/%5BFE250ART-023%5D%20KIT%20SWITCH,TAPA,LLAVES%20ARTIC%20250CC?unique=4583405",
+            "stock": true
+        },
+        {
+            "id": "CG150-058.",
+            "codigo_referencia": "CG150-058.",
+            "nombre": "KIT SWITCH,TAPA,LLAVES WING 150CC N/M.",
+            "precio": 25,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6342/image_512/%5BCG150-058.%5D%20KIT%20SWITCH,TAPA,LLAVES%20WING%20150CC%20N-M.?unique=2e4eb28",
+            "stock": true
+        },
+        {
+            "id": "CG150LP-014.",
+            "codigo_referencia": "CG150LP-014.",
+            "nombre": "KIT SWITCH LLAVES LEOPARD 150CC.",
+            "precio": 23,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-006",
+            "codigo_referencia": "CB250GP1-006",
+            "nombre": "KIT SWITCH,TAPA,LLAVES GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 43,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5659/image_512/%5BCB250GP1-006%5D%20KIT%20SWITCH,TAPA,LLAVES%20GP1%20250-TUNDRA%20VELOCE%20250CC?unique=b507eb7",
+            "stock": true
+        },
+        {
+            "id": "FE250FRC-001",
+            "codigo_referencia": "FE250FRC-001",
+            "nombre": "KIT SWITCH,TAPA,LLAVES FEROCE 250CC",
+            "precio": 44,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9093/image_512/%5BFE250FRC-001%5D%20KIT%20SWITCH,TAPA,LLAVES%20FEROCE%20250CC?unique=a633ff6",
+            "stock": true
+        },
+        {
+            "id": "CG150-012",
+            "codigo_referencia": "CG150-012",
+            "nombre": "CILINDRO Y PISTON 149CC 62.5MM/PIN15 CG 150 UNIVERSAL NEGRO EAGLE",
+            "precio": 68,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6312/image_512/%5BCG150-012%5D%20CILINDRO%20Y%20PISTON%20149CC%2062.5MM-PIN15%20CG%20150%20UNIVERSAL%20NEGRO%20EAGLE?unique=ed3ea64",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-087",
+            "codigo_referencia": "CB200WF-087",
+            "nombre": "CILINDRO Y PISTON 61MM/PIN13 WOLF/AXXO ASFALT/AXXO F51 200cc",
+            "precio": 68,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5179/image_512/%5BCB200WF-087%5D%20CILINDRO%20Y%20PISTON%2061MM-PIN13%20WOLF-AXXO%20ASFALT-AXXO%20F51%20200cc?unique=0997aeb",
+            "stock": true
+        },
+        {
+            "id": "CG150-012",
+            "codigo_referencia": "CG150-012",
+            "nombre": "CILINDRO Y PISTON 149CC 62.5MM/PIN15 CG 150 UNIVERSAL NEGRO EAGLE",
+            "precio": 68,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6312/image_512/%5BCG150-012%5D%20CILINDRO%20Y%20PISTON%20149CC%2062.5MM-PIN15%20CG%20150%20UNIVERSAL%20NEGRO%20EAGLE?unique=ed3ea64",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-089",
+            "codigo_referencia": "CB200WF-089",
+            "nombre": "TAPA MOTOR DER. WOLF/AXXO ASFALT/AXXO F51 200cc",
+            "precio": 39,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5181/image_512/%5BCB200WF-089%5D%20TAPA%20MOTOR%20DER.%20WOLF-AXXO%20ASFALT-AXXO%20F51%20200cc?unique=5dbeac3",
+            "stock": true
+        },
+        {
+            "id": "CB200ADV-054",
+            "codigo_referencia": "CB200ADV-054",
+            "nombre": "TAPA MOTOR IZQ. ADVE. 200",
+            "precio": 45,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/4945/image_512/%5BCB200ADV-054%5D%20TAPA%20MOTOR%20IZQ.%20ADVE.%20200?unique=e8ed0fe",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-055",
+            "codigo_referencia": "CBB250XP-055",
+            "nombre": "TAPA MOTOR DER. XPOWER/CHIEF II 250CC ( 2V ) 2019-20-2022",
+            "precio": 50,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6275/image_512/%5BCBB250XP-055%5D%20TAPA%20MOTOR%20DER.%20XPOWER-CHIEF%20II%20250CC%20(%202V%20)%202019-20-2022?unique=5050334",
+            "stock": true
+        },
+        {
+            "id": "TY300-001",
+            "codigo_referencia": "TY300-001",
+            "nombre": "TAPA MOTOR DER. ADV. 300/CHIEF 3.0/TK CR300/RACER 300/RANGER DR300CC TY",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/8408/image_512/%5BTY300-001%5D%20TAPA%20MOTOR%20DER.%20ADV.%20300-CHIEF%203.0-TK%20CR300-RACER%20300-RANGER%20DR300CC%20TY?unique=c7c43eb",
             "stock": true
         }
     ]
