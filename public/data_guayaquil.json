@@ -1105,10 +1105,10 @@
             "stock": true
         },
         {
-            "id": "CB250SCB-068",
-            "codigo_referencia": "CB250SCB-068",
-            "nombre": "ASIENTO SCRAMBLER REVOLUTION 250CC/300CC",
-            "precio": 63,
+            "id": "CB250SCB-019N",
+            "codigo_referencia": "CB250SCB-019N",
+            "nombre": "ASIENTO SCRAMBLER CLASICA/AXXO SCRAMBLER NEGRO",
+            "precio": 67,
             "categoria": "General",
             "stock": true
         },
@@ -1830,6 +1830,55 @@
             "precio": 87,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7011/image_512/%5BCG200SPE-074%5D%20MONOSHOCK%20320MM%20SPEED%20200-BROSS-GY200%20NEGRO?unique=e829a3a",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-009",
+            "codigo_referencia": "CB250CRF-009",
+            "nombre": "PINON VELOCIMETRO DIGITAL EJE 15MM/3PIN CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "precio": 15,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200FC-006",
+            "codigo_referencia": "CB200FC-006",
+            "nombre": "PINON VELOCIMETRO DIGITAL EJE 12MM/3PIN FORCE 200/DK XTZ 250CC",
+            "precio": 13,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250TKN-047",
+            "codigo_referencia": "CB250TKN-047",
+            "nombre": "PINON VELOCIMETRO DIGITAL EJE 12MM/3PIN TEKKEN EVO/ARTIC/AXXO TRACKER/DK NATIVA 250CC",
+            "precio": 16,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-013",
+            "codigo_referencia": "CB300SW-013",
+            "nombre": "PINON VELOCIMETRO DIGITAL EJE 15MM/3PIN SUPER WOLF 300",
+            "precio": 19,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-040",
+            "codigo_referencia": "CB200WF-040",
+            "nombre": "PINON VELOCIMETRO DIGITAL EJE 15MM/3PIN WOLF/ADV200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 /ADV300",
+            "precio": 14,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5129/image_512/%5BCB200WF-040%5D%20PINON%20VELOCIMETRO%20DIGITAL%20EJE%2015MM-3PIN%20WOLF-ADV200-MAVERICK-WOLF250-RANGER%20CFZ%20250-HONDA%20CB190%20-ADV300?unique=9cbc9d7",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-005",
+            "codigo_referencia": "CB250SCB-005",
+            "nombre": "PINON VELOCIMETRO DIGITAL EJE 12MM/3PIN SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC ",
+            "precio": 20,
+            "categoria": "General",
             "stock": true
         }
     ]
