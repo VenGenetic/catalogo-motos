@@ -1837,6 +1837,10 @@
             "codigo_referencia": "CB250CRF-009",
             "nombre": "PINON VELOCIMETRO DIGITAL EJE 15MM/3PIN CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
             "precio": 15,
+            "id": "CB250CRF-008",
+            "codigo_referencia": "CB250CRF-008",
+            "nombre": "MESA DIRECCION ARMADA CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200 B/I",
+            "precio": 86,
             "categoria": "General",
             "stock": true
         },
@@ -1845,6 +1849,37 @@
             "codigo_referencia": "CB200FC-006",
             "nombre": "PINON VELOCIMETRO DIGITAL EJE 12MM/3PIN FORCE 200/DK XTZ 250CC",
             "precio": 13,
+            "id": "CB200FC-026",
+            "codigo_referencia": "CB200FC-026",
+            "nombre": "MESA DIRECCION ARMADA FORCE 200/DK XTZ 250CC",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5001/image_512/%5BCB200FC-026%5D%20MESA%20DIRECCION%20ARMADA%20FORCE%20200-DK%20XTZ%20250CC?unique=47e9a13",
+            "stock": true
+        },
+        {
+            "id": "TY300-001",
+            "codigo_referencia": "TY300-001",
+            "nombre": "TAPA MOTOR DER. ADV. 300/CHIEF 3.0/TK CR300/RACER 300/RANGER DR300CC TY",
+            "precio": 87,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/8408/image_512/%5BTY300-001%5D%20TAPA%20MOTOR%20DER.%20ADV.%20300-CHIEF%203.0-TK%20CR300-RACER%20300-RANGER%20DR300CC%20TY?unique=c7c43eb",
+            "stock": true
+        },
+        {
+            "id": "CG150IND-005",
+            "codigo_referencia": "CG150IND-005",
+            "nombre": "PEDAL FRENO DELTA/PANTHER/INDY 150",
+            "precio": 7,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6726/image_512/%5BCG150IND-005%5D%20PEDAL%20FRENO%20DELTA-PANTHER-INDY%20150?unique=34fa3bd",
+            "stock": true
+        },
+        {
+            "id": "CG150PTH-019",
+            "codigo_referencia": "CG150PTH-019",
+            "nombre": "AMORTIGUADOR (I-D) 330MM DOBLE SIMBRA NEGRO PANTHER/DELTA 150/RANGER 150USM//IGM ECO150/TK H2EVO/AXXO RAPTOR 150/THUNDER RT 150CC",
+            "precio": 76,
             "categoria": "General",
             "stock": true
         },
@@ -1857,9 +1892,28 @@
             "stock": true
         },
         {
+            "id": "CG150-389",
+            "codigo_referencia": "CG150-389",
+            "nombre": "AMORTIGUADOR (I-D) 310MM N-CROMADO CRUCERO150/200/GN125 UNIVERSAL",
+            "precio": 29,
+            "categoria": "General",
+            "stock": true
+        },
+        {
             "id": "CB300SW-013",
             "codigo_referencia": "CB300SW-013",
             "nombre": "PINON VELOCIMETRO DIGITAL EJE 15MM/3PIN SUPER WOLF 300",
+            "id": "MC2056",
+            "codigo_referencia": "MC2056",
+            "nombre": "CAUCHO DESLIZADOR CADENA WOLF MOXAL",
+            "precio": 8,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-075",
+            "codigo_referencia": "CB200WF-075",
+            "nombre": "GUIA CADENILLA (1-2) WOLF/AXXO ASFALT/AXXO F51 200cc",
             "precio": 19,
             "categoria": "General",
             "stock": true
@@ -1878,6 +1932,442 @@
             "codigo_referencia": "CB250SCB-005",
             "nombre": "PINON VELOCIMETRO DIGITAL EJE 12MM/3PIN SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC ",
             "precio": 20,
+            "id": "RKCILMM-003",
+            "codigo_referencia": "RKCILMM-003",
+            "nombre": "CILINDRO Y PISTON CB250 69MM PIN 17 NEGRO",
+            "precio": 69,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-087",
+            "codigo_referencia": "CB200WF-087",
+            "nombre": "CILINDRO Y PISTON 61MM/PIN13 WOLF/AXXO ASFALT/AXXO F51 200cc",
+            "precio": 67,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250-015G",
+            "codigo_referencia": "CB250-015G",
+            "nombre": "CILINDRO Y PISTON RX-SHARKSCO CB250CC GRIS",
+            "precio": 92,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150CRU-002",
+            "codigo_referencia": "CG150CRU-002",
+            "nombre": "CILINDRO Y PISTON CG150 PIN14",
+            "precio": 60,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV-052K",
+            "codigo_referencia": "CG200WEV-052K",
+            "nombre": "CILINDRO Y PISTON CRUCERO 200/WING EVO I/II/SL-KM PIN 15 NEGRO",
+            "precio": 86,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150-003",
+            "codigo_referencia": "CG150-003",
+            "nombre": "BOMBA ACEITE Y CAMPANA CG150CC 39 DIENTES",
+            "precio": 12,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-092",
+            "codigo_referencia": "CGEA150-092",
+            "nombre": "MESA DIRECCION ARMADA EAGLE 150CC I-II-III/DK FALCON",
+            "precio": 67,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV-065K",
+            "codigo_referencia": "CG200WEV-065K",
+            "nombre": "TAPA MOTOR IZQ. WING EVO I/II/CRU200 PIN15 KM",
+            "precio": 38,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB180-012",
+            "codigo_referencia": "CB180-012",
+            "nombre": "BALANCIN SET2 CB180 GY6 S1ADV/AGILITY/EVO2/S1ADV CROSSOVER/AGILITY X 180CC",
+            "precio": 7,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-028",
+            "codigo_referencia": "CB250SCB-028",
+            "nombre": "BALANCIN SET2 TEKKEN/SCB/ADV/GP1/CRF/LONCIN RE 250CC",
+            "precio": 11,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "TY300-032",
+            "codigo_referencia": "TY300-032",
+            "nombre": "BALANCIN ARMADOS SET2 ADV 300/CHIEF 30/TK CR300/RACER 300/RANGER DR300CC TY",
+            "precio": 67,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-060",
+            "codigo_referencia": "CB200WF-060",
+            "nombre": "BALANCIN SET2 WOLF/AXXO ASFALT/AXXO F51 200cc",
+            "precio": 15,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150DELT-007",
+            "codigo_referencia": "CG150DELT-007",
+            "nombre": "ESPEJOS (I-D) DELTA 150",
+            "precio": 7,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB150GHS1-060",
+            "codigo_referencia": "CB150GHS1-060",
+            "nombre": "ESPEJOS (I-D) S1 150/180",
+            "precio": 17,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-007",
+            "codigo_referencia": "CBB250XP-007",
+            "nombre": "ESPEJOS (I-D) XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
+            "precio": 16,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150-115",
+            "codigo_referencia": "CG150-115",
+            "nombre": "ESPEJOS (I-D) CRUCERO 150/200",
+            "precio": 5,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250FRC-012",
+            "codigo_referencia": "FE250FRC-012",
+            "nombre": "ESPEJO (I-D) FEROCE 250CC",
+            "precio": 23,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150CR-020",
+            "codigo_referencia": "CG150CR-020",
+            "nombre": "ESPEJOS (I-D) CAFE RACER 150/170/SCRAMBLER 250/300CC UNIVERSAL DE TIMON",
+            "precio": 25,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-018",
+            "codigo_referencia": "CB250GP1-018",
+            "nombre": "ESPEJOS (I-D) GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 9,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-007",
+            "codigo_referencia": "FE250GP1R-007",
+            "nombre": "ESPEJOS (I-D) GP1-R 250/FACTORY F370/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO/THUNDER F22 250CC",
+            "precio": 19,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV2-013B",
+            "codigo_referencia": "CG200WEV2-013B",
+            "nombre": "GUARDAFANGO DEL. WING EVO 2 N-BLANCO",
+            "precio": 29,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-042G",
+            "codigo_referencia": "CB250GP1-042G",
+            "nombre": "GUARDAFANGO DEL GP1 250/TUNDRA VELOCE 250CC GRIS",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-042B",
+            "codigo_referencia": "CB250GP1-042B",
+            "nombre": "GUARDAFANGO DEL GP1 250/TUNDRA VELOCE 250CC BLANCO",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-042R",
+            "codigo_referencia": "CB250GP1-042R",
+            "nombre": "GUARDAFANGO DEL GP1 250/TUNDRA VELOCE 250CC ROJO",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-006R",
+            "codigo_referencia": "TY300ADV-006R",
+            "nombre": "GUARDAFANGO DEL ADVENTURE 300CC N-ROJO TY",
+            "precio": 42,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-006V",
+            "codigo_referencia": "TY300ADV-006V",
+            "nombre": "GUARDAFANGO DEL ADVENTURE 300CC N-VERDE TY",
+            "precio": 42,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "PR300EVT-045V",
+            "codigo_referencia": "PR300EVT-045V",
+            "nombre": "GUARDAFANGO DEL. EVEREST DUAL SPORT 300CC N-VERDE",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150PTH-037R",
+            "codigo_referencia": "CG150PTH-037R",
+            "nombre": "GUARDAFANGO DEL. PANTHER/RANGER 150USM/... ROJO",
+            "precio": 19,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150PTH-037B",
+            "codigo_referencia": "CG150PTH-037B",
+            "nombre": "GUARDAFANGO DEL. PANTHER/RANGER 150USM/... BLANCO",
+            "precio": 19,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150DELT-009R",
+            "codigo_referencia": "CG150DELT-009R",
+            "nombre": "GUARDAFANGO DEL. DELTA/SK STIFF/... ROJO",
+            "precio": 29,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150DELT-009N",
+            "codigo_referencia": "CG150DELT-009N",
+            "nombre": "GUARDAFANGO DEL. DELTA/SK STIFF/... NEGRO",
+            "precio": 29,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150SP-005V",
+            "codigo_referencia": "CG150SP-005V",
+            "nombre": "GUARDAFANGO DEL. SPITFIRE 150 N-VERDE",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200FC-016",
+            "codigo_referencia": "CB200FC-016",
+            "nombre": "GUARDAFANGO DEL FORCE 200/DK XT250CC NEGRO",
+            "precio": 29,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "04B03012-00",
+            "codigo_referencia": "04B03012-00",
+            "nombre": "GUARDAFANGO DELANTERO SUPERIOR TRACKER 250",
+            "precio": 10,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB150GHS1-065",
+            "codigo_referencia": "CB150GHS1-065",
+            "nombre": "GUARDAFANGO DEL S1 150/180CC NEGRO",
+            "precio": 22,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB150-028T",
+            "codigo_referencia": "CB150-028T",
+            "nombre": "GUARDAFANGO DEL MONTANA 150CC NARANJA",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB150-027N",
+            "codigo_referencia": "CB150-027N",
+            "nombre": "GUARDAFANGO POST MONTANA 150CC N-VERDE",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB150-027R",
+            "codigo_referencia": "CB150-027R",
+            "nombre": "GUARDAFANGO POST MONTANA 150CC N-ROJO",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV-006V",
+            "codigo_referencia": "CG200WEV-006V",
+            "nombre": "GUARDAFANGO DEL. WING EVO 200 VERDE",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV-006R",
+            "codigo_referencia": "CG200WEV-006R",
+            "nombre": "GUARDAFANGO DEL. WING EVO 200 ROJO",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-112R",
+            "codigo_referencia": "CB250SC-112R",
+            "nombre": "GUARDAFANGO DEL SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC ROJO 2023/24/2025",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-114N",
+            "codigo_referencia": "CB250SC-114N",
+            "nombre": "GUARDAFANGO POST SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC NEGRO 2023/24/2025",
+            "precio": 23,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGB200SR3-025B",
+            "codigo_referencia": "CGB200SR3-025B",
+            "nombre": "GUARDAFANGO DEL. SHARK 3 2022 BLANCO",
+            "precio": 27,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200SRK-019R",
+            "codigo_referencia": "CB200SRK-019R",
+            "nombre": "GUARDAFANGO POST SHARK II/DK200B/SHM ARMI150/AXXO TR1 ROJO",
+            "precio": 23,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250-160R",
+            "codigo_referencia": "CB250-160R",
+            "nombre": "GUARDAFANGO DEL SHARK II 200CC ROJO 2019",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250TKN-034",
+            "codigo_referencia": "CB250TKN-034",
+            "nombre": "GUARDAFANGO DEL. INFERIOR TEKKEN EVO 250",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250-282",
+            "codigo_referencia": "CB250-282",
+            "nombre": "GUARDAFANGO DEL. INFERIOR TEKKEN ANTIGUA",
+            "precio": 29,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-040",
+            "codigo_referencia": "CB250CRF-040",
+            "nombre": "GUARDAFANGO DEL CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200 GRIS",
+            "precio": 31,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-002",
+            "codigo_referencia": "CBB250XP-002",
+            "nombre": "GUARDAFANGO DEL. XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC BLANCO B/N",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250FRC-041D",
+            "codigo_referencia": "FE250FRC-041D",
+            "nombre": "GUARDAFANGO DEL. FEROCE 250CC N-DORADO",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250FRC-041R",
+            "codigo_referencia": "FE250FRC-041R",
+            "nombre": "GUARDAFANGO DEL. FEROCE 250CC N-ROJO",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-001N",
+            "codigo_referencia": "CB200WF-001N",
+            "nombre": "GUARDAFANGO DEL. WOLF/ADVENTURE 200/MAVERICK 250/RANGER CFZ 250/HONDA CB190 N-NARANJA",
+            "precio": 27,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150SP-005B",
+            "codigo_referencia": "CG150SP-005B",
+            "nombre": "GUARDAFANGO DEL. SPITFIRE 150 N-BLANCO",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150SP-005R",
+            "codigo_referencia": "CG150SP-005R",
+            "nombre": "GUARDAFANGO DEL. SPITFIRE 150 N-ROJO",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB180S1ADV-013",
+            "codigo_referencia": "CB180S1ADV-013",
+            "nombre": "GUARDAFANGO DEL. S1-ADV-180cc",
+            "precio": 28,
             "categoria": "General",
             "stock": true
         }
