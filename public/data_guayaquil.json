@@ -389,16 +389,6 @@
             "stock": true
         },
         {
-            "id": "FE250GP1R-018A",
-            "codigo_referencia": "FE250GP1R-018A",
-            "nombre": "TANQUE GASOLINA GP1-R 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC AZUL",
-            "marca": "DAYTONA",
-            "precio": 124,
-            "categoria": "ORIGINAL",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CB200PDT-023A",
             "codigo_referencia": "CB200PDT-023A",
             "nombre": "TANQUE GASOLINA PREDATOR 200 AZUL",
