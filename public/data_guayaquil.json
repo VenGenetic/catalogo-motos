@@ -2993,6 +2993,230 @@
             "precio": 29,
             "categoria": "General",
             "stock": true
+        },
+        {
+            "id": "CB250GP1-025",
+            "codigo_referencia": "CB250GP1-025",
+            "nombre": "MONOSHOCK 320MM GP1 250/TUNDRA VELOCE 250CC ROJO",
+            "precio": 86.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250TKN-021",
+            "codigo_referencia": "CB250TKN-021",
+            "nombre": "ESTRIBO POST CON BASE (I-D) TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC",
+            "precio": 19.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV-024",
+            "codigo_referencia": "CG200WEV-024",
+            "nombre": "KIT FRENO DEL. ARMADO WING EVO 200",
+            "precio": 57.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV2-044",
+            "codigo_referencia": "CG200WEV2-044",
+            "nombre": "KIT FRENO DEL. WING EVO 2",
+            "precio": 54.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB180AGTY-024",
+            "codigo_referencia": "CB180AGTY-024",
+            "nombre": "KIT FRENO DEL ARMADO AGILITY 180CC",
+            "precio": 38.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250ART-033",
+            "codigo_referencia": "FE250ART-033",
+            "nombre": "KIT FRENO DEL. ARMADO ARTIC 250CC B/N",
+            "precio": 54.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250ART-051",
+            "codigo_referencia": "FE250ART-051",
+            "nombre": "KIT FRENO DEL. ARMADO ARTIC/TEKKEN EVO/SCRAMBLER 250CC B/I",
+            "precio": 54.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-042",
+            "codigo_referencia": "CB200WF-042",
+            "nombre": "KIT FRENO DEL ARMADO WOLF/ADVENTURE 200/MAVERICK 250/RANGER CFZ 250/HONDA CB190",
+            "precio": 54.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250-257",
+            "codigo_referencia": "CB250-257",
+            "nombre": "KIT FRENO POST. TEKKEN/SCB 250CC",
+            "precio": 76.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150-199",
+            "codigo_referencia": "CG150-199",
+            "nombre": "KIT FRENO DEL. ARMADO DELTA/PANTHER/AXXO RAPTOR/DK TIGER 150CC",
+            "precio": 48.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150PTH-014",
+            "codigo_referencia": "CG150PTH-014",
+            "nombre": "KIT FRENO DEL. ARMADO PANTHER/RANGER 150USM//IGM ECO150/TK H2EVO/AXXO RAPTOR 150/THUNDER RT 150CC",
+            "precio": 43.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-079",
+            "codigo_referencia": "CB300SW-079",
+            "nombre": "KIT FRENO DEL. ARMADO SUPER WOLF 300",
+            "precio": 57.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-052",
+            "codigo_referencia": "CB300SW-052",
+            "nombre": "KIT FRENO POST ARMADO SUPER WOLF 300",
+            "precio": 95.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-045",
+            "codigo_referencia": "CB250CRF-045",
+            "nombre": "KIT FRENO POST ARMADO CON BASE CROSSFIRE/AXXO XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200 2024",
+            "precio": 50.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-006",
+            "codigo_referencia": "CB250CRF-006",
+            "nombre": "KIT FRENO DEL ARMADO CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "precio": 67.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB180EVO2-023",
+            "codigo_referencia": "CB180EVO2-023",
+            "nombre": "KIT FRENO DEL ARMADO EVO 2 180CC/RANGER 150BWSM/BULTACO STORM/Z1 SUPER 175/SUKIDA JOY 175CC",
+            "precio": 38.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250ADV-022",
+            "codigo_referencia": "CB250ADV-022",
+            "nombre": "KIT FRENO POST ARMADO ADVENTURE-R 250/300CC",
+            "precio": 65.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-106",
+            "codigo_referencia": "CB250SC-106",
+            "nombre": "KIT FRENO DEL ARMADO SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC B/I",
+            "precio": 54.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV2-024",
+            "codigo_referencia": "CG200WEV2-024",
+            "nombre": "TELESCOPICAS (I-D) WING EVO 2 2018/32mm",
+            "precio": 114.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150SPF-010",
+            "codigo_referencia": "CG150SPF-010",
+            "nombre": "TELESCOPICAS (I-D) SPITFIRE 150",
+            "precio": 124.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-099",
+            "codigo_referencia": "CB250SC-099",
+            "nombre": "TELESCOPICAS (I-D) SCORPION 250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC B/I",
+            "precio": 285.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGB200GTR-047",
+            "codigo_referencia": "CGB200GTR-047",
+            "nombre": "TELESCOPICAS (I-D) GTR 200/GTR ROADSTER B/I/WING EVO 2 2024",
+            "precio": 276.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-036",
+            "codigo_referencia": "CB200WF-036",
+            "nombre": "TELESCOPICAS (I-D) WOLF200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 B/I NEGRO",
+            "precio": 228.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-032",
+            "codigo_referencia": "FE250GP1R-032",
+            "nombre": "TELESCOPICAS (I-D) GP1-R/CHIEF II PRO 250CC B/I NEGRO",
+            "precio": 285.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-020",
+            "codigo_referencia": "CB300SW-020",
+            "nombre": "TELESCOPICAS (I-D) SUPER WOLF 300 B/I",
+            "precio": 285.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-045",
+            "codigo_referencia": "CGEA150-045",
+            "nombre": "TELESCOPICAS (I-D) EAGLE 150CC I-II-III-V/DK FALCON",
+            "precio": 143.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150IND-002",
+            "codigo_referencia": "CG150IND-002",
+            "nombre": "TELESCOPICAS (I-D) DELTA/PANTHER/WORKFORCE 150 NEGRO",
+            "precio": 86.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-115",
+            "codigo_referencia": "CB250SC-115",
+            "nombre": "TELESCOPICAS (I-D) SCORPION/BULL/SHARK II PLOMO B/N",
+            "precio": 181.00,
+            "categoria": "General",
+            "stock": true
         }
     ]
 }
