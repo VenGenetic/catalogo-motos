@@ -3217,6 +3217,22 @@
             "precio": 181.00,
             "categoria": "General",
             "stock": true
+        },
+        {
+            "id": "CB250SC-116B",
+            "codigo_referencia": "CB250SC-116B",
+            "nombre": "FARO Y MASCARILLA SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC B-NEGRO 2023/24/2025",
+            "precio": 57.00,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-116A",
+            "codigo_referencia": "CB250SC-116A",
+            "nombre": "FARO Y MASCARILLA SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC B-ROJO 2023/24/2025",
+            "precio": 57.00,
+            "categoria": "General",
+            "stock": true
         }
     ]
 }
