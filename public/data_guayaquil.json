@@ -2188,6 +2188,22 @@
             "stock": true
         },
         {
+            "id": "FE250GP1R-010D",
+            "codigo_referencia": "FE250GP1R-010D",
+            "nombre": "PLACA TANQUE (I-D) GP1-R 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC G-VERDE",
+            "precio": 170,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-010V",
+            "codigo_referencia": "FE250GP1R-010V",
+            "nombre": "PLACA TANQUE (I-D) GP1-R 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC G-DORADO",
+            "precio": 170,
+            "categoria": "General",
+            "stock": true
+        },
+        {
             "id": "CB200FC-016",
             "codigo_referencia": "CB200FC-016",
             "nombre": "GUARDAFANGO DEL FORCE 200/DK XT250CC NEGRO",
