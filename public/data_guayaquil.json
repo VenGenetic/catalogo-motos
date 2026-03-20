@@ -1837,6 +1837,10 @@
             "codigo_referencia": "CB250CRF-009",
             "nombre": "PINON VELOCIMETRO DIGITAL EJE 15MM/3PIN CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
             "precio": 15,
+            "categoria": "General",
+            "stock": true
+        },
+        {
             "id": "CB250CRF-008",
             "codigo_referencia": "CB250CRF-008",
             "nombre": "MESA DIRECCION ARMADA CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200 B/I",
@@ -1849,6 +1853,10 @@
             "codigo_referencia": "CB200FC-006",
             "nombre": "PINON VELOCIMETRO DIGITAL EJE 12MM/3PIN FORCE 200/DK XTZ 250CC",
             "precio": 13,
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5001/image_512/%5BCB200FC-026%5D%20MESA%20DIRECCION%20ARMADA%20FORCE%20200-DK%20XTZ%20250CC?unique=47e9a13",
+            "stock": true
+        },
+        {
             "id": "CB200FC-026",
             "codigo_referencia": "CB200FC-026",
             "nombre": "MESA DIRECCION ARMADA FORCE 200/DK XTZ 250CC",
@@ -1904,6 +1912,10 @@
             "codigo_referencia": "CB300SW-013",
             "nombre": "PINON VELOCIMETRO DIGITAL EJE 15MM/3PIN SUPER WOLF 300",
             "id": "MC2056",
+            "categoria": "General",
+            "stock": true
+        },
+        {
             "codigo_referencia": "MC2056",
             "nombre": "CAUCHO DESLIZADOR CADENA WOLF MOXAL",
             "precio": 8,
@@ -1932,6 +1944,10 @@
             "codigo_referencia": "CB250SCB-005",
             "nombre": "PINON VELOCIMETRO DIGITAL EJE 12MM/3PIN SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC ",
             "precio": 20,
+            "categoria": "General",
+            "stock": true
+        },
+        {
             "id": "RKCILMM-003",
             "codigo_referencia": "RKCILMM-003",
             "nombre": "CILINDRO Y PISTON CB250 69MM PIN 17 NEGRO",
