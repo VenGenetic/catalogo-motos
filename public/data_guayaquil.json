@@ -1901,11 +1901,12 @@
             "id": "CB300SW-013",
             "codigo_referencia": "CB300SW-013",
             "nombre": "PINON VELOCIMETRO DIGITAL EJE 15MM/3PIN SUPER WOLF 300",
-            "id": "MC2056",
+            "precio": 19,
             "categoria": "General",
             "stock": true
         },
         {
+            "id": "MC2056",
             "codigo_referencia": "MC2056",
             "nombre": "CAUCHO DESLIZADOR CADENA WOLF MOXAL",
             "precio": 8,
@@ -2390,6 +2391,302 @@
             "codigo_referencia": "CB180S1ADV-013",
             "nombre": "GUARDAFANGO DEL. S1-ADV-180cc",
             "precio": 28,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-014",
+            "codigo_referencia": "CB250GP1-014",
+            "nombre": "MANIGUETA FRENO GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 5,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-102",
+            "codigo_referencia": "CB200WF-102",
+            "nombre": "MANIGUETA EMBRAGUE CON BASE WOLF/ADV200/RANGER CFZ 250/HONDA CB190/GY200/CG200 UNIVERSAL",
+            "precio": 8,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-002",
+            "codigo_referencia": "CB250GP1-002",
+            "nombre": "MANIGUETA EMBRAGUE CON BASE GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 11,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150-217",
+            "codigo_referencia": "CG150-217",
+            "nombre": "MANIGUETA FRENO DEL. DELTA 150.",
+            "precio": 5,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150SPF-026",
+            "codigo_referencia": "CG150SPF-026",
+            "nombre": "MANIGUETA FRENO DEL. SPITFIRE - UNIVERSAL",
+            "precio": 4,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-010A",
+            "codigo_referencia": "FE250GP1R-010A",
+            "nombre": "PLACA TANQUE (I-D) GP1-R 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC AZUL",
+            "precio": 171,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250FRC-030",
+            "codigo_referencia": "FE250FRC-030",
+            "nombre": "TANQUE GASOLINA FEROCE 250CC",
+            "precio": 114,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-118",
+            "codigo_referencia": "CB200WF-118",
+            "nombre": "COMPLEMENTOS PLACA TANQUE WOLF/RANGER CFZ 250/HONDA CB190",
+            "precio": 57,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150-163B",
+            "codigo_referencia": "CG150-163B",
+            "nombre": "TANQUE GASOLINA DELTA/IGM EC150/SK STIFF/AXXO AX150/TUKO H1 150CC BLANCO",
+            "precio": 86,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150-163N",
+            "codigo_referencia": "CG150-163N",
+            "nombre": "TANQUE GASOLINA DELTA/IGM EC150/SK STIFF/AXXO AX150/TUKO H1 150CC NEGRO",
+            "precio": 86,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-003N",
+            "codigo_referencia": "CB250SCB-003N",
+            "nombre": "TANQUE GASOLINA SCRAMBLER CLASICA/AXXO SCRAMBLER 250CC NEGRO",
+            "precio": 95,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-081V",
+            "codigo_referencia": "CB250SCB-081V",
+            "nombre": "TANQUE GASOLINA SCRAMBLER REVOLUTION 250CC VERDE",
+            "precio": 95,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-003P",
+            "codigo_referencia": "CB250SCB-003P",
+            "nombre": "TANQUE GASOLINA SCRAMBLER CLASICA/AXXO SCRAMBLER 250CC PLOMO",
+            "precio": 95,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150WRF-136B",
+            "codigo_referencia": "CG150WRF-136B",
+            "nombre": "TANQUE GASOLINA WORKFORCE/TH-B52 150CC BLANCO",
+            "precio": 67,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200PDT-023A",
+            "codigo_referencia": "CB200PDT-023A",
+            "nombre": "TANQUE GASOLINA PREDATOR 200 AZUL",
+            "precio": 114,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV2-019R",
+            "codigo_referencia": "CG200WEV2-019R",
+            "nombre": "ARO POST. MAGNECIO 2.50X17 DISCO 4H WING EVO I-II/GTR/PREDATOR 200 ROJO",
+            "precio": 114,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150SF2-004R",
+            "codigo_referencia": "CG150SF2-004R",
+            "nombre": "ARO DEL MAGNESIO SPITFIRE 150 2025 ROJO",
+            "precio": 76,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "ARO-D1725-NE",
+            "codigo_referencia": "ARO-D1725-NE",
+            "nombre": "ARO TEJIDO METAL DEL. 2.50 X 17 DY250TEKKEN /SCRAMBLER /TRACKER250 F/DISCO 6H. N",
+            "precio": 84,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150SPF-019",
+            "codigo_referencia": "CG150SPF-019",
+            "nombre": "ARO DEL. MAGNECIO 1.60X18 DISCO 4H SPITFIRE 150CC NEGRO",
+            "precio": 73,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250FRC-027G",
+            "codigo_referencia": "FE250FRC-027G",
+            "nombre": "ARO DEL. MAGNECIO 2.50X17 DISCO 5H FEROCE 250CC GRIS",
+            "precio": 105,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-053N",
+            "codigo_referencia": "CB200WF-053N",
+            "nombre": "ARO DEL MAGNECIO 250X17 DISCO 5H WOLF/ADV 200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 NARANJA",
+            "precio": 105,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-053R",
+            "codigo_referencia": "CB200WF-053R",
+            "nombre": "ARO DEL MAGNECIO 250X17 DISCO 5H WOLF/ADV 200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 ROJO",
+            "precio": 105,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-053V",
+            "codigo_referencia": "CB200WF-053V",
+            "nombre": "ARO DEL MAGNECIO 250X17 DISCO 5H WOLF/ADV 200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 VERDE",
+            "precio": 105,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150DELT-010",
+            "codigo_referencia": "CG150DELT-010",
+            "nombre": "ARO DEL. MAGNECIO 1.40X18 DISCO 5H DELTA150/WY125/FX200 NEGRO",
+            "precio": 86,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB180AGTY-019",
+            "codigo_referencia": "CB180AGTY-019",
+            "nombre": "ARO DEL MAGNECIO 300X14 DISCO 5H AGILITY 180CC NEGRO",
+            "precio": 95,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-021D",
+            "codigo_referencia": "FE250GP1R-021D",
+            "nombre": "ARO DEL. MAGNECIO GP1-R/XPOWER/CHIEF II/CHIEF II PRO/FK370/DRAKON F300/LA BESTIA 400/SHIFT 500 DORADO",
+            "precio": 105,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250-036",
+            "codigo_referencia": "FE250-036",
+            "nombre": "RODAMIENTO ARO POSTERIOR 6303 RSC3 SET2 RODAMIENTO ARO DELANTERO 6203 RSC3 SET2 XPOWER/GP1R/CHIEF II/CHIEF II PRO 250CC",
+            "precio": 5,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200FC-030",
+            "codigo_referencia": "CB200FC-030",
+            "nombre": "ARO POST ARMADO 215X17 ZAPATA FORCE 200/DK XTZ 250CC NEGRO",
+            "precio": 114,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150CR-007",
+            "codigo_referencia": "CG150CR-007",
+            "nombre": "ARO DEL. ARMADO 1.85X17 4H CAFE RACER/GTR ROADSTER NEGRO",
+            "precio": 81,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "ARO-D1725-NE",
+            "codigo_referencia": "ARO-D1725-NE",
+            "nombre": "ARO TEJIDO METAL DEL. 2.50 X 17 DY250TEKKEN /SCRAMBLER /TRACKER250 F/DISCO 6H. N",
+            "precio": 86,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-078",
+            "codigo_referencia": "CB250SC-078",
+            "nombre": "ARO DEL ARMADO SCORPION 200/250CC B/N",
+            "precio": 86,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200ADV-065",
+            "codigo_referencia": "CB200ADV-065",
+            "nombre": "ARO DEL MAGNECIO 250X17 DISCO 5H ADV 200 NEGRO",
+            "precio": 105,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-053R",
+            "codigo_referencia": "CB200WF-053R",
+            "nombre": "ARO DEL MAGNECIO 250X17 DISCO 5H WOLF/ADV 200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 ROJO",
+            "precio": 105,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-041",
+            "codigo_referencia": "CB200WF-041",
+            "nombre": "TIMON WOLF200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190",
+            "precio": 38,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250ART-051",
+            "codigo_referencia": "FE250ART-051",
+            "nombre": "KIT FRENO DEL. ARMADO ARTIC/TEKKEN EVO/SCRAMBLER 250CC B/I",
+            "precio": 54,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-077",
+            "codigo_referencia": "CB250SCB-077",
+            "nombre": "KIT FRENO DEL. ARMADO SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC/300CC",
+            "precio": 57,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-100",
+            "codigo_referencia": "CGEA150-100",
+            "nombre": "KIT FRENO POST. ARMADO EAGLE III/DK FALCON 150CC",
+            "precio": 57,
             "categoria": "General",
             "stock": true
         }
