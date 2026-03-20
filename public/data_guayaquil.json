@@ -2262,7 +2262,7 @@
             "id": "CG200WEV-006V",
             "codigo_referencia": "CG200WEV-006V",
             "nombre": "GUARDAFANGO DEL. WING EVO 200 VERDE",
-            "precio": 35,
+            "precio": 29,
             "categoria": "General",
             "stock": true
         },
@@ -2270,7 +2270,7 @@
             "id": "CG200WEV-006R",
             "codigo_referencia": "CG200WEV-006R",
             "nombre": "GUARDAFANGO DEL. WING EVO 200 ROJO",
-            "precio": 35,
+            "precio": 29,
             "categoria": "General",
             "stock": true
         },
@@ -2687,6 +2687,310 @@
             "codigo_referencia": "CGEA150-100",
             "nombre": "KIT FRENO POST. ARMADO EAGLE III/DK FALCON 150CC",
             "precio": 57,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "EST-D1622",
+            "codigo_referencia": "EST-D1622",
+            "nombre": "ESTRIBO DELANTERO DAYTONA DY200WOLF /RANGER CFZ250 SOLO BOST",
+            "precio": 10,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "EST-D4022-PL",
+            "codigo_referencia": "EST-D4022-PL",
+            "nombre": "ESTRIBO DELANTERO IGM WIND200 SOLO PLOMO /TUKO CR5 EVO BOST",
+            "precio": 8,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "EST-D570",
+            "codigo_referencia": "EST-D570",
+            "nombre": "ESTRIBO DELANTERO BAJAJ PULSAR200NS SOLO",
+            "precio": 9,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "EST-D6632",
+            "codigo_referencia": "EST-D6632",
+            "nombre": "ESTRIBO DELANTERO SHINERAY GP200 SOLO BOST",
+            "precio": 7,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "EST-P6634",
+            "codigo_referencia": "EST-P6634",
+            "nombre": "ESTRIBO POSTERIOR SHINERAY GP200 SOLO /TUNDRA VENOM 200GT BOST",
+            "precio": 8,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250-003",
+            "codigo_referencia": "FE250-003",
+            "nombre": "CILINDRO Y PISTON 250CC 70MM/PIN17 FE250 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5 250CC",
+            "precio": 105,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-040",
+            "codigo_referencia": "CB200WF-040",
+            "nombre": "PINON VELOCIMETRO DIGITAL EJE 15MM/3PIN WOLF/ADV200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 /ADV300",
+            "precio": 14,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-002",
+            "codigo_referencia": "CB200WF-002",
+            "nombre": "VELOCIMETRO DIGITAL WOLF/RANGER CFZ 250/HONDA CB190",
+            "precio": 65,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-101",
+            "codigo_referencia": "CB200WF-101",
+            "nombre": "CATALINA Y PINON 428/45T/4H WOLF/ADV 200/MAVERICK/WOLF/RANGER CFZ 250/HONDA CB190",
+            "precio": 16,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-087",
+            "codigo_referencia": "CB200WF-087",
+            "nombre": "CILINDRO Y PISTON 61MM/PIN13 WOLF/AXXO ASFALT/AXXO F51 200cc",
+            "precio": 67,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250FRC-036",
+            "codigo_referencia": "FE250FRC-036",
+            "nombre": "VELOCIMETRO DIGITAL FEROCE 250CC",
+            "precio": 105,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250TKN-038",
+            "codigo_referencia": "CB250TKN-038",
+            "nombre": "MANIGUETA EMBRAGUE CON BASE TEKKEN/FORCE/SHARK/SCORPION UNIVERSAL",
+            "precio": 5,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-010",
+            "codigo_referencia": "CB200WF-010",
+            "nombre": "KIT SWITCH LLAVES WOLF/ADV200/RANGER CFZ 250/HONDA CB190",
+            "precio": 32,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-077",
+            "codigo_referencia": "CB300SW-077",
+            "nombre": "VELOCIMETRO DIGITAL SUPER WOLF 300",
+            "precio": 105,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-012",
+            "codigo_referencia": "TY300ADV-012",
+            "nombre": "VELOCIMETRO DIGITAL ADV 300CC TY",
+            "precio": 114,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250-276",
+            "codigo_referencia": "CB250-276",
+            "nombre": "VELOCIMETRO DIGITAL TEKKEN",
+            "precio": 67,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-033",
+            "codigo_referencia": "FE250GP1R-033",
+            "nombre": "VELOCIMETRO DIGITAL GP1-R 250 2025 CUADRADO",
+            "precio": 86,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-013",
+            "codigo_referencia": "CBB250XP-013",
+            "nombre": "VELOCIMETRO DIGITAL XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
+            "precio": 76,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-031",
+            "codigo_referencia": "CB250GP1-031",
+            "nombre": "DIRECCIONALES (SET4) GP1 250/TUNDRA VELOCE 250CC",
+            "precio": 32,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-043",
+            "codigo_referencia": "CBB250XP-043",
+            "nombre": "BOYA GASOLINA XPOWER/GP1R/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
+            "precio": 9,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-010",
+            "codigo_referencia": "CB250CRF-010",
+            "nombre": "BOYA GASOLINA CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "precio": 5,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-060",
+            "codigo_referencia": "CB250SCB-060",
+            "nombre": "RECTIFICADOR CORRIENTE 6 CABLE SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC/300CC",
+            "precio": 14,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200-041",
+            "codigo_referencia": "CB200-041",
+            "nombre": "FARO SHARK III N/M",
+            "precio": 23,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-101",
+            "codigo_referencia": "CGEA150-101",
+            "nombre": "FARO EAGLE 150CC III/DK FALCON",
+            "precio": 29,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB150DYP-006",
+            "codigo_referencia": "CB150DYP-006",
+            "nombre": "FARO DYNAMIC PRO/SHM JEDI 150CC",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "MAS-1935-NA",
+            "codigo_referencia": "MAS-1935-NA",
+            "nombre": "MASCARILLA CON FARO DAYTONA DY250 TEKKEN /AXXO TRACKER250 NARANJA",
+            "precio": 32,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150-050",
+            "codigo_referencia": "CG150-050",
+            "nombre": "FARO CRUCERO 150/200 CROMADO",
+            "precio": 19,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200FC-008",
+            "codigo_referencia": "CB200FC-008",
+            "nombre": "FARO FORCE 200/DK XTZ 250CC",
+            "precio": 31,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB180S1ADV-010",
+            "codigo_referencia": "CB180S1ADV-010",
+            "nombre": "FARO S1 ADV180",
+            "precio": 81,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-093",
+            "codigo_referencia": "CB250SC-093",
+            "nombre": "FARO SCORPION 250CC",
+            "precio": 16,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250ART-009",
+            "codigo_referencia": "FE250ART-009",
+            "nombre": "FARO LED ARTIC 250",
+            "precio": 95,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGB200GTR-003",
+            "codigo_referencia": "CGB200GTR-003",
+            "nombre": "FARO LED GTR 200",
+            "precio": 73,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200SRK-018N",
+            "codigo_referencia": "CB200SRK-018N",
+            "nombre": "FARO Y MASCARILLA SHARK II 200/DK200B/SHM ARMI150/AXXO TR1 NEGRO 2024/2025",
+            "precio": 48,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-055G",
+            "codigo_referencia": "CB250GP1-055G",
+            "nombre": "FARO Y MASCARILLA GP1 250/TUNDRA VELOCE 250CC GRIS",
+            "precio": 85,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-005N",
+            "codigo_referencia": "CB300SW-005N",
+            "nombre": "FARO Y MASCARILLA SUPER WOLF 300 N-VERDE",
+            "precio": 124,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250-196",
+            "codigo_referencia": "CB250-196",
+            "nombre": "MASCARILLA FARO RX 250.",
+            "precio": 16,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-001SMN",
+            "codigo_referencia": "CBB250XP-001SMN",
+            "nombre": "MASCARILLA COMP. XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC N-VERDE",
+            "precio": 67,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-090T",
+            "codigo_referencia": "CB200WF-090T",
+            "nombre": "MASCARILLA COMP. WOLF 200CC NARANJA",
+            "precio": 29,
             "categoria": "General",
             "stock": true
         }
