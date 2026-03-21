@@ -2395,14 +2395,6 @@
             "stock": true
         },
         {
-            "id": "CB250GP1-014",
-            "codigo_referencia": "CB250GP1-014",
-            "nombre": "MANIGUETA FRENO GP1 250/TUNDRA VELOCE 250CC",
-            "precio": 5,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "CB200WF-102",
             "codigo_referencia": "CB200WF-102",
             "nombre": "MANIGUETA EMBRAGUE CON BASE WOLF/ADV200/RANGER CFZ 250/HONDA CB190/GY200/CG200 UNIVERSAL",
@@ -2531,10 +2523,10 @@
             "stock": true
         },
         {
-            "id": "ARO-D1725-NE",
-            "codigo_referencia": "ARO-D1725-NE",
-            "nombre": "ARO TEJIDO METAL DEL. 2.50 X 17 DY250TEKKEN /SCRAMBLER /TRACKER250 F/DISCO 6H. N",
-            "precio": 84,
+            "id": "CB250TKN-050",
+            "codigo_referencia": "CB250TKN-050",
+            "nombre": "ARO DEL ARMADO TEKKEN/TRACKER/SCRAMBLER/AXXO SCRAM 250/SHARK SUV NEGRO",
+            "precio": 86,
             "categoria": "General",
             "stock": true
         },
