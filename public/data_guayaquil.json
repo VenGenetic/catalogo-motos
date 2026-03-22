@@ -942,15 +942,6 @@
             "stock": true
         },
         {
-            "id": "CB250GP1-034",
-            "codigo_referencia": "CB250GP1-034",
-            "nombre": "STOP GP1 250/TUNDRA VELOCE 250CC",
-            "precio": 40,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5697/image_512/%5BCB250GP1-034%5D%20STOP%20GP1%20250-TUNDRA%20VELOCE%20250CC?unique=bf0ca66",
-            "stock": true
-        },
-        {
             "id": "CB200FC-002",
             "codigo_referencia": "CB200FC-002",
             "nombre": "KIT SWITCH LLAVES FORCE 200/DK XTZ 250CC",
@@ -2976,14 +2967,6 @@
             "codigo_referencia": "CBB250XP-001SMN",
             "nombre": "MASCARILLA COMP. XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC N-VERDE",
             "precio": 67,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB200WF-090T",
-            "codigo_referencia": "CB200WF-090T",
-            "nombre": "MASCARILLA COMP. WOLF 200CC NARANJA",
-            "precio": 29,
             "categoria": "General",
             "stock": true
         },
