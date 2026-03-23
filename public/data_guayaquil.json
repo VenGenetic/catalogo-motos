@@ -1475,7 +1475,7 @@
         {
             "id": "CGEA150-133.",
             "codigo_referencia": "CGEA150-133.",
-            "nombre": "TAPA MOTOR DER. EAGLE 150 II. ANTIGUA",
+            "nombre": "TAPA MOTOR DER. EAGLE III.",
             "precio": 40,
             "categoria": "General",
             "stock": true
@@ -1830,19 +1830,19 @@
             "stock": true
         },
         {
-            "id": "CB200FC-006",
-            "codigo_referencia": "CB200FC-006",
-            "nombre": "PINON VELOCIMETRO DIGITAL EJE 12MM/3PIN FORCE 200/DK XTZ 250CC",
-            "precio": 13,
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5001/image_512/%5BCB200FC-026%5D%20MESA%20DIRECCION%20ARMADA%20FORCE%20200-DK%20XTZ%20250CC?unique=47e9a13",
-            "stock": true
-        },
-        {
             "id": "CB200FC-026",
             "codigo_referencia": "CB200FC-026",
             "nombre": "MESA DIRECCION ARMADA FORCE 200/DK XTZ 250CC",
             "precio": 87,
             "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5001/image_512/%5BCB200FC-026%5D%20MESA%20DIRECCION%20ARMADA%20FORCE%20200-DK%20XTZ%20250CC?unique=47e9a13",
+            "stock": true
+        },
+        {
+            "id": "CB200FC-006",
+            "codigo_referencia": "CB200FC-006",
+            "nombre": "PINON VELOCIMETRO DIGITAL EJE 12MM/3PIN FORCE 200/DK XTZ 250CC",
+            "precio": 13,
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5001/image_512/%5BCB200FC-026%5D%20MESA%20DIRECCION%20ARMADA%20FORCE%20200-DK%20XTZ%20250CC?unique=47e9a13",
             "stock": true
         },
