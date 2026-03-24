@@ -2974,7 +2974,7 @@
             "id": "CB250GP1-025",
             "codigo_referencia": "CB250GP1-025",
             "nombre": "MONOSHOCK 320MM GP1 250/TUNDRA VELOCE 250CC ROJO",
-            "precio": 86.00,
+            "precio": 86,
             "categoria": "General",
             "stock": true
         },
@@ -2982,7 +2982,7 @@
             "id": "CB250TKN-021",
             "codigo_referencia": "CB250TKN-021",
             "nombre": "ESTRIBO POST CON BASE (I-D) TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC",
-            "precio": 19.00,
+            "precio": 19,
             "categoria": "General",
             "stock": true
         },
@@ -2990,7 +2990,7 @@
             "id": "CG200WEV-024",
             "codigo_referencia": "CG200WEV-024",
             "nombre": "KIT FRENO DEL. ARMADO WING EVO 200",
-            "precio": 57.00,
+            "precio": 57,
             "categoria": "General",
             "stock": true
         },
@@ -2998,7 +2998,7 @@
             "id": "CG200WEV2-044",
             "codigo_referencia": "CG200WEV2-044",
             "nombre": "KIT FRENO DEL. WING EVO 2",
-            "precio": 54.00,
+            "precio": 54,
             "categoria": "General",
             "stock": true
         },
@@ -3006,7 +3006,7 @@
             "id": "CB180AGTY-024",
             "codigo_referencia": "CB180AGTY-024",
             "nombre": "KIT FRENO DEL ARMADO AGILITY 180CC",
-            "precio": 38.00,
+            "precio": 38,
             "categoria": "General",
             "stock": true
         },
@@ -3014,7 +3014,7 @@
             "id": "FE250ART-033",
             "codigo_referencia": "FE250ART-033",
             "nombre": "KIT FRENO DEL. ARMADO ARTIC 250CC B/N",
-            "precio": 54.00,
+            "precio": 54,
             "categoria": "General",
             "stock": true
         },
@@ -3022,7 +3022,7 @@
             "id": "FE250ART-051",
             "codigo_referencia": "FE250ART-051",
             "nombre": "KIT FRENO DEL. ARMADO ARTIC/TEKKEN EVO/SCRAMBLER 250CC B/I",
-            "precio": 54.00,
+            "precio": 54,
             "categoria": "General",
             "stock": true
         },
@@ -3030,7 +3030,7 @@
             "id": "CB200WF-042",
             "codigo_referencia": "CB200WF-042",
             "nombre": "KIT FRENO DEL ARMADO WOLF/ADVENTURE 200/MAVERICK 250/RANGER CFZ 250/HONDA CB190",
-            "precio": 54.00,
+            "precio": 54,
             "categoria": "General",
             "stock": true
         },
@@ -3038,7 +3038,7 @@
             "id": "CB250-257",
             "codigo_referencia": "CB250-257",
             "nombre": "KIT FRENO POST. TEKKEN/SCB 250CC",
-            "precio": 76.00,
+            "precio": 76,
             "categoria": "General",
             "stock": true
         },
@@ -3046,7 +3046,7 @@
             "id": "CG150-199",
             "codigo_referencia": "CG150-199",
             "nombre": "KIT FRENO DEL. ARMADO DELTA/PANTHER/AXXO RAPTOR/DK TIGER 150CC",
-            "precio": 48.00,
+            "precio": 48,
             "categoria": "General",
             "stock": true
         },
@@ -3054,7 +3054,7 @@
             "id": "CG150PTH-014",
             "codigo_referencia": "CG150PTH-014",
             "nombre": "KIT FRENO DEL. ARMADO PANTHER/RANGER 150USM//IGM ECO150/TK H2EVO/AXXO RAPTOR 150/THUNDER RT 150CC",
-            "precio": 43.00,
+            "precio": 43,
             "categoria": "General",
             "stock": true
         },
@@ -3062,7 +3062,7 @@
             "id": "CB300SW-079",
             "codigo_referencia": "CB300SW-079",
             "nombre": "KIT FRENO DEL. ARMADO SUPER WOLF 300",
-            "precio": 57.00,
+            "precio": 57,
             "categoria": "General",
             "stock": true
         },
@@ -3070,7 +3070,7 @@
             "id": "CB300SW-052",
             "codigo_referencia": "CB300SW-052",
             "nombre": "KIT FRENO POST ARMADO SUPER WOLF 300",
-            "precio": 95.00,
+            "precio": 95,
             "categoria": "General",
             "stock": true
         },
@@ -3078,7 +3078,7 @@
             "id": "CB250CRF-045",
             "codigo_referencia": "CB250CRF-045",
             "nombre": "KIT FRENO POST ARMADO CON BASE CROSSFIRE/AXXO XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200 2024",
-            "precio": 50.00,
+            "precio": 50,
             "categoria": "General",
             "stock": true
         },
@@ -3086,7 +3086,7 @@
             "id": "CB250CRF-006",
             "codigo_referencia": "CB250CRF-006",
             "nombre": "KIT FRENO DEL ARMADO CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
-            "precio": 67.00,
+            "precio": 67,
             "categoria": "General",
             "stock": true
         },
@@ -3094,7 +3094,7 @@
             "id": "CB180EVO2-023",
             "codigo_referencia": "CB180EVO2-023",
             "nombre": "KIT FRENO DEL ARMADO EVO 2 180CC/RANGER 150BWSM/BULTACO STORM/Z1 SUPER 175/SUKIDA JOY 175CC",
-            "precio": 38.00,
+            "precio": 38,
             "categoria": "General",
             "stock": true
         },
@@ -3102,7 +3102,7 @@
             "id": "CB250ADV-022",
             "codigo_referencia": "CB250ADV-022",
             "nombre": "KIT FRENO POST ARMADO ADVENTURE-R 250/300CC",
-            "precio": 65.00,
+            "precio": 65,
             "categoria": "General",
             "stock": true
         },
@@ -3110,7 +3110,7 @@
             "id": "CB250SC-106",
             "codigo_referencia": "CB250SC-106",
             "nombre": "KIT FRENO DEL ARMADO SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC B/I",
-            "precio": 54.00,
+            "precio": 54,
             "categoria": "General",
             "stock": true
         },
@@ -3118,7 +3118,7 @@
             "id": "CG200WEV2-024",
             "codigo_referencia": "CG200WEV2-024",
             "nombre": "TELESCOPICAS (I-D) WING EVO 2 2018/32mm",
-            "precio": 114.00,
+            "precio": 114,
             "categoria": "General",
             "stock": true
         },
@@ -3126,7 +3126,7 @@
             "id": "CG150SPF-010",
             "codigo_referencia": "CG150SPF-010",
             "nombre": "TELESCOPICAS (I-D) SPITFIRE 150",
-            "precio": 124.00,
+            "precio": 124,
             "categoria": "General",
             "stock": true
         },
@@ -3134,7 +3134,7 @@
             "id": "CB250SC-099",
             "codigo_referencia": "CB250SC-099",
             "nombre": "TELESCOPICAS (I-D) SCORPION 250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC B/I",
-            "precio": 285.00,
+            "precio": 285,
             "categoria": "General",
             "stock": true
         },
@@ -3142,7 +3142,7 @@
             "id": "CGB200GTR-047",
             "codigo_referencia": "CGB200GTR-047",
             "nombre": "TELESCOPICAS (I-D) GTR 200/GTR ROADSTER B/I/WING EVO 2 2024",
-            "precio": 276.00,
+            "precio": 276,
             "categoria": "General",
             "stock": true
         },
@@ -3150,7 +3150,7 @@
             "id": "CB200WF-036",
             "codigo_referencia": "CB200WF-036",
             "nombre": "TELESCOPICAS (I-D) WOLF200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 B/I NEGRO",
-            "precio": 228.00,
+            "precio": 228,
             "categoria": "General",
             "stock": true
         },
@@ -3158,7 +3158,7 @@
             "id": "FE250GP1R-032",
             "codigo_referencia": "FE250GP1R-032",
             "nombre": "TELESCOPICAS (I-D) GP1-R/CHIEF II PRO 250CC B/I NEGRO",
-            "precio": 285.00,
+            "precio": 285,
             "categoria": "General",
             "stock": true
         },
@@ -3166,7 +3166,7 @@
             "id": "CB300SW-020",
             "codigo_referencia": "CB300SW-020",
             "nombre": "TELESCOPICAS (I-D) SUPER WOLF 300 B/I",
-            "precio": 285.00,
+            "precio": 285,
             "categoria": "General",
             "stock": true
         },
@@ -3174,7 +3174,7 @@
             "id": "CGEA150-045",
             "codigo_referencia": "CGEA150-045",
             "nombre": "TELESCOPICAS (I-D) EAGLE 150CC I-II-III-V/DK FALCON",
-            "precio": 143.00,
+            "precio": 143,
             "categoria": "General",
             "stock": true
         },
@@ -3182,7 +3182,7 @@
             "id": "CG150IND-002",
             "codigo_referencia": "CG150IND-002",
             "nombre": "TELESCOPICAS (I-D) DELTA/PANTHER/WORKFORCE 150 NEGRO",
-            "precio": 86.00,
+            "precio": 86,
             "categoria": "General",
             "stock": true
         },
@@ -3190,15 +3190,7 @@
             "id": "CB250SC-115",
             "codigo_referencia": "CB250SC-115",
             "nombre": "TELESCOPICAS (I-D) SCORPION/BULL/SHARK II PLOMO B/N",
-            "precio": 181.00,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB250SC-116B",
-            "codigo_referencia": "CB250SC-116B",
-            "nombre": "FARO Y MASCARILLA SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC B-NEGRO 2023/24/2025",
-            "precio": 57.00,
+            "precio": 181,
             "categoria": "General",
             "stock": true
         },
@@ -3206,7 +3198,223 @@
             "id": "CB250SC-116A",
             "codigo_referencia": "CB250SC-116A",
             "nombre": "FARO Y MASCARILLA SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC B-ROJO 2023/24/2025",
-            "precio": 57.00,
+            "precio": 57,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250TKN-055",
+            "codigo_referencia": "CB250TKN-055",
+            "nombre": "ESPEJOS (I-D) TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC",
+            "precio": 19,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-148A",
+            "codigo_referencia": "CGEA150-148A",
+            "nombre": "PLACA TANQUE (I-D) EAGLE III 18-19-20-21/DK FALCON 150cc AZUL SET4",
+            "precio": 48,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-148N",
+            "codigo_referencia": "CGEA150-148N",
+            "nombre": "PLACA TANQUE (I-D) EAGLE III 18-19-20-21/DK FALCON150cc NEGRO SET4",
+            "precio": 48,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-148R",
+            "codigo_referencia": "CGEA150-148R",
+            "nombre": "PLACA TANQUE (I-D) EAGLE III 18-19-20-21/DK FALCON150cc ROJO SET4",
+            "precio": 48,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-066B",
+            "codigo_referencia": "CB250SC-066B",
+            "nombre": "PLACA TANQUE (I-D) SCORPION 250 BLANCO",
+            "precio": 48,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-066R",
+            "codigo_referencia": "CB250SC-066R",
+            "nombre": "PLACA TANQUE (I-D) SCORPION 250 ROJO",
+            "precio": 48,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250-165R",
+            "codigo_referencia": "CB250-165R",
+            "nombre": "PLACA TANQUE (I-D) SHARK II 19-22 ROJO",
+            "precio": 23,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-068R",
+            "codigo_referencia": "CB250GP1-068R",
+            "nombre": "PLACA TANQUE SUP (I-D) GP1 250/TUNDRA VELOCE 250CC G-ROJO",
+            "precio": 42,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-068G",
+            "codigo_referencia": "CB250GP1-068G",
+            "nombre": "PLACA TANQUE SUP (I-D) GP1 250/TUNDRA VELOCE 250CC G-VERDE",
+            "precio": 42,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150SP-004B",
+            "codigo_referencia": "CG150SP-004B",
+            "nombre": "PLACA TANQUE (I-D) SPITFIRE 150 BLANCO",
+            "precio": 40,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150SP-004R",
+            "codigo_referencia": "CG150SP-004R",
+            "nombre": "PLACA TANQUE (I-D) SPITFIRE 150 ROJO",
+            "precio": 40,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGB250SPF-016V",
+            "codigo_referencia": "CGB250SPF-016V",
+            "nombre": "PLACA TANQUE (I-D) SPITFIRE 250 N-VERDE",
+            "precio": 67,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGB250SPF-016R",
+            "codigo_referencia": "CGB250SPF-016R",
+            "nombre": "PLACA TANQUE (I-D) SPITFIRE 250 N-ROJO",
+            "precio": 67,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150PTH-045B",
+            "codigo_referencia": "CG150PTH-045B",
+            "nombre": "PLACA TANQUE (I-D) PANTHER/RANGER 150USM//IGM ECO150/TK H2EVO/AXXO RAPTOR 150/THUNDER RT 150CC BLANCO",
+            "precio": 73,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150PTH-045N",
+            "codigo_referencia": "CG150PTH-045N",
+            "nombre": "PLACA TANQUE (I-D) PANTHER/RANGER 150USM//IGM ECO150/TK H2EVO/AXXO RAPTOR 150/THUNDER RT 150CC NEGRO",
+            "precio": 73,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150PTH-045R",
+            "codigo_referencia": "CG150PTH-045R",
+            "nombre": "PLACA TANQUE (I-D) PANTHER/RANGER 150USM//IGM ECO150/TK H2EVO/AXXO RAPTOR 150/THUNDER RT 150CC ROJO",
+            "precio": 73,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-111R",
+            "codigo_referencia": "CB250SC-111R",
+            "nombre": "PLACA LAT POST (I-D) SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC ROJO 2023/24/2025",
+            "precio": 48,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200SRK-022N",
+            "codigo_referencia": "CB200SRK-022N",
+            "nombre": "PLACA LAT POST (I-D) SHARK II 200 2023 N-VERDE",
+            "precio": 61,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150WRF-062",
+            "codigo_referencia": "CG150WRF-062",
+            "nombre": "PLACA LATERAL (I-D) WORKFORCE/TH-B52 150CC G-DORADO",
+            "precio": 25,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150DELT-001B",
+            "codigo_referencia": "CG150DELT-001B",
+            "nombre": "PLACA LATERAL (I-D) DELTA/SK STIFF/AXXO AX150/TUKO H1 150CC BLANCO",
+            "precio": 23,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-009R",
+            "codigo_referencia": "TY300ADV-009R",
+            "nombre": "PLACA LAT POST (I-D) ADV 300CC G-ROJO TY",
+            "precio": 85,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "TY300ADV-026",
+            "codigo_referencia": "TY300ADV-026",
+            "nombre": "PLACA LAT POST (I-D) ADV 300CC G-VERDE TY",
+            "precio": 85,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGB250SPF-017",
+            "codigo_referencia": "CGB250SPF-017",
+            "nombre": "PLACA LAT. POST. (I-D) SPITFIRE 250 N-ROJO",
+            "precio": 69,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGB250SPF-048",
+            "codigo_referencia": "CGB250SPF-048",
+            "nombre": "PLACA LAT. POST. (I-D) SPITFIRE 250 N-VERDE",
+            "precio": 69,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "FE250ART-006NR",
+            "codigo_referencia": "FE250ART-006NR",
+            "nombre": "PLACA LAT. POST. ARTIC 250 N-VERDE",
+            "precio": 57,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-043B",
+            "codigo_referencia": "CB250GP1-043B",
+            "nombre": "PLACA LAT POST (I-D) GP1 250/TUNDRA VELOCE 250CC BLANCO",
+            "precio": 86,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-043R",
+            "codigo_referencia": "CB250GP1-043R",
+            "nombre": "PLACA LAT POST (I-D) GP1 250/TUNDRA VELOCE 250CC ROJO",
+            "precio": 86,
             "categoria": "General",
             "stock": true
         }
