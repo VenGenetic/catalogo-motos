@@ -3417,6 +3417,86 @@
             "precio": 86,
             "categoria": "General",
             "stock": true
+        },
+        {
+            "id": "CGB200GTR-008R",
+            "codigo_referencia": "CGB200GTR-008R",
+            "nombre": "PLACA TANQUE (I-D) GTR 200 N-ROJO",
+            "precio": 95,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-003V",
+            "codigo_referencia": "CBB250XP-003V",
+            "nombre": "PLACA TANQUE (I-D) XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC N-VERDE",
+            "precio": 114,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "POR-P29-AZ",
+            "codigo_referencia": "POR-P29-AZ",
+            "nombre": "PORTA PLACA UNIVERSAL ALUM. CON LUCES AZUL",
+            "precio": 18,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "POR-P29-RO",
+            "codigo_referencia": "POR-P29-RO",
+            "nombre": "PORTA PLACA UNIVERSAL ALUM. CON LUCES ROJO",
+            "precio": 18,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150DELT-033",
+            "codigo_referencia": "CG150DELT-033",
+            "nombre": "PORTA PLACAS DELTA/PANTHER",
+            "precio": 12,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150SP-001",
+            "codigo_referencia": "CG150SP-001",
+            "nombre": "PORTA PLACAS SPITFIRE 150",
+            "precio": 30,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-108",
+            "codigo_referencia": "CGEA150-108",
+            "nombre": "PORTA PLACAS EAGLE 150CC III/DK FALCON",
+            "precio": 18,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-047",
+            "codigo_referencia": "CB200WF-047",
+            "nombre": "PORTA PLACAS WOLF/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190",
+            "precio": 29,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250-283",
+            "codigo_referencia": "CB250-283",
+            "nombre": "PORTA PLACAS TEKKEN",
+            "precio": 29,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-100",
+            "codigo_referencia": "CB250SC-100",
+            "nombre": "PORTA PLACAS SCORPION",
+            "precio": 29,
+            "categoria": "General",
+            "stock": true
         }
     ]
 }
