@@ -3497,6 +3497,14 @@
             "precio": 29,
             "categoria": "General",
             "stock": true
+        },
+        {
+            "id": "CB180S1ADV-024",
+            "codigo_referencia": "CB180S1ADV-024",
+            "nombre": "SENSOR VELOCIMETRO S1ADV180",
+            "precio": 22,
+            "categoria": "General",
+            "stock": true
         }
     ]
 }
