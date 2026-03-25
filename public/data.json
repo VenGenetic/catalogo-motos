@@ -1729,15 +1729,6 @@
             "stock": true
         },
         {
-            "id": "CB200HTR-027",
-            "codigo_referencia": "CB200HTR-027",
-            "nombre": "BRAZOS DE SUSPENSION (SET4) HUNTER 200/ATV 150/200CC",
-            "precio": 82,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5053/image_512/%5BCB200HTR-027%5D%20BRAZOS%20DE%20SUSPENSION%20(SET4)%20HUNTER%20200-ATV%20150-200CC?unique=ea10bcc",
-            "stock": true
-        },
-        {
             "id": "CB200HTR-024",
             "codigo_referencia": "CB200HTR-024",
             "nombre": "BANDA TRANSMISION BANDO 743X20X30 HUNTER 200/ATV 150/200CC/DYNAMIC PRO/SHM JEDI 150CC",
@@ -1906,15 +1897,6 @@
             "precio": 35,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5000/image_512/%5BCB200FC-025%5D%20ESTRIBO%20DEL.%20CON%20BASE%20(I-D)%20FORCE%20200-DK%20XTZ%20250CC?unique=32a4a51",
-            "stock": true
-        },
-        {
-            "id": "CB200FC-017",
-            "codigo_referencia": "CB200FC-017",
-            "nombre": "PLACA LAT. (I-D) FORCE 200/DK XTZ 250CC",
-            "precio": 46,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/4993/image_512/%5BCB200FC-017%5D%20PLACA%20LAT.%20(I-D)%20FORCE%20200-DK%20XTZ%20250CC?unique=391def6",
             "stock": true
         },
         {
