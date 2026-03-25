@@ -3700,15 +3700,6 @@
             "stock": true
         },
         {
-            "id": "CB150EIV-042",
-            "codigo_referencia": "CB150EIV-042",
-            "nombre": "AMORTIGUADOR POST. 330.5MM N-CROMADO EIVISSA /BONEVILLE/MILANO 150CC",
-            "precio": 35,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/4405/image_512/%5BCB150EIV-042%5D%20AMORTIGUADOR%20POST.%20330.5MM%20N-CROMADO%20EIVISSA%20-BONEVILLE-MILANO%20150CC?unique=fe3b6d5",
-            "stock": true
-        },
-        {
             "id": "CB150EIV-041",
             "codigo_referencia": "CB150EIV-041",
             "nombre": "PROTEC. ESCAPE EIVISSA 150CC",
@@ -6226,15 +6217,6 @@
             "precio": 29,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7737/image_512/%5BFE250ART-022%5D%20INSTALACION%20ELECTRICA%20ARTIC%20250CC?unique=683d4b6",
-            "stock": true
-        },
-        {
-            "id": "FE250ART-021",
-            "codigo_referencia": "FE250ART-021",
-            "nombre": "BOYA GASOLINA ARTIC 250",
-            "precio": 6,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7736/image_512/%5BFE250ART-021%5D%20BOYA%20GASOLINA%20ARTIC%20250?unique=8a044c1",
             "stock": true
         },
         {
@@ -12988,15 +12970,6 @@
             "stock": true
         },
         {
-            "id": "FE250FRC-004",
-            "codigo_referencia": "FE250FRC-004",
-            "nombre": "PORTA PLACAS FEROCE 250CC",
-            "precio": 39,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9115/image_512/%5BFE250FRC-004%5D%20PORTA%20PLACAS%20FEROCE%20250CC?unique=b4506f0",
-            "stock": true
-        },
-        {
             "id": "FE250FRC-031",
             "codigo_referencia": "FE250FRC-031",
             "nombre": "PROTEC. MOTOR TIBURON FEROCE 250CC",
@@ -13210,15 +13183,6 @@
             "precio": 35,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9179/image_512/%5BCG150SF2-015%5D%20KIT%20RUN%20Y%20LUCES%20SPITFIRE%20150%202025?unique=0d90be5",
-            "stock": true
-        },
-        {
-            "id": "CG150SF2-012",
-            "codigo_referencia": "CG150SF2-012",
-            "nombre": "KIT SWITCH,TAPA,LLAVES SPITFIRE 150CC 2025",
-            "precio": 43,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9180/image_512/%5BCG150SF2-012%5D%20KIT%20SWITCH,TAPA,LLAVES%20SPITFIRE%20150CC%202025?unique=214ef84",
             "stock": true
         },
         {
