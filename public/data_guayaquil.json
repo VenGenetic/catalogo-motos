@@ -2458,14 +2458,6 @@
             "stock": true
         },
         {
-            "id": "CB250SCB-003N",
-            "codigo_referencia": "CB250SCB-003N",
-            "nombre": "TANQUE GASOLINA SCRAMBLER CLASICA/AXXO SCRAMBLER 250CC NEGRO",
-            "precio": 95,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "CB250SCB-081V",
             "codigo_referencia": "CB250SCB-081V",
             "nombre": "TANQUE GASOLINA SCRAMBLER REVOLUTION 250CC VERDE",
@@ -3831,6 +3823,22 @@
             "codigo_referencia": "CB250SCB-089",
             "nombre": "PROTEC ESCAPE FIBRA CARBONO SCRAMBLER CLASICA/REVOLUTION 250CC/300CC",
             "precio": 10,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150WRF-013",
+            "codigo_referencia": "CG150WRF-013",
+            "nombre": "VELOCIMETRO (1 SALIDA) WORKFORCE/TH B52 150CC",
+            "precio": 54,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150WRF-043",
+            "codigo_referencia": "CG150WRF-043",
+            "nombre": "VELOCIMETRO ( 2 SALIDA ) WORKFORCE-S 150CC",
+            "precio": 48,
             "categoria": "General",
             "stock": true
         }
