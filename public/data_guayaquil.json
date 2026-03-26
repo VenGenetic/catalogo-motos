@@ -3841,6 +3841,134 @@
             "precio": 48,
             "categoria": "General",
             "stock": true
+        },
+        {
+            "id": "CB18051ADV-008",
+            "codigo_referencia": "CB18051ADV-008",
+            "nombre": "CUBRE MANOS CON BASE (I-D) S1 ADVENTURE",
+            "precio": 25,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB18051ADV-031",
+            "codigo_referencia": "CB18051ADV-031",
+            "nombre": "FILTRO AIRE S1 ADVENTURE 180CC",
+            "precio": 12,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-031",
+            "codigo_referencia": "CBB250XP-031",
+            "nombre": "FLASH 3PIN CON CABLE XPOWER/GP1R",
+            "precio": 4,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB18051ADV-004",
+            "codigo_referencia": "CB18051ADV-004",
+            "nombre": "KIT PISTAS DIRECCION S1 ADVENTURE",
+            "precio": 15,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB18051ADV-018",
+            "codigo_referencia": "CB18051ADV-018",
+            "nombre": "KIT SWITCH LLAVES S1 ADVENTURE",
+            "precio": 42,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB150GH51-029",
+            "codigo_referencia": "CB150GH51-029",
+            "nombre": "KIT RUN Y LUCES S1 150CC/S1 ADV",
+            "precio": 20,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB150GH51-239",
+            "codigo_referencia": "CB150GH51-239",
+            "nombre": "BOBINA CORONILLA 11M/2H S1 180",
+            "precio": 23,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB18051ADV-027",
+            "codigo_referencia": "CB18051ADV-027",
+            "nombre": "MESA DIRECCION ARMADA S1 ADVENTURE",
+            "precio": 80,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB18051ADV-062",
+            "codigo_referencia": "CB18051ADV-062",
+            "nombre": "RECTIFICADOR CORRIENTE 5 PIN S1 ADV",
+            "precio": 10,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB18051ADV-033",
+            "codigo_referencia": "CB18051ADV-033",
+            "nombre": "EJE DEL S1 ADVENTURE 180CC",
+            "precio": 6,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB18051ADV-007",
+            "codigo_referencia": "CB18051ADV-007",
+            "nombre": "TELESCOPICAS (I-D) S1 ADVENTURE",
+            "precio": 86,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB18051ADV-051",
+            "codigo_referencia": "CB18051ADV-051",
+            "nombre": "INSTALACION ELECTRICA S1 ADV 2026",
+            "precio": 48,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB18051ADV-052",
+            "codigo_referencia": "CB18051ADV-052",
+            "nombre": "MANUBRIOS Y PESAS (I-D) S1 ADV",
+            "precio": 12,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB18051ADV-026",
+            "codigo_referencia": "CB18051ADV-026",
+            "nombre": "TIMON S1 ADVENTURE 180CC NEGRO",
+            "precio": 15,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB18051ADV-065",
+            "codigo_referencia": "CB18051ADV-065",
+            "nombre": "DISCO FRENO POST 3H S1 ADV 2026",
+            "precio": 16,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB18051ADV-011",
+            "codigo_referencia": "CB18051ADV-011",
+            "nombre": "DISCO FRENO DEL S1 ADVENTURE",
+            "precio": 19,
+            "categoria": "General",
+            "stock": true
         }
     ]
 }
