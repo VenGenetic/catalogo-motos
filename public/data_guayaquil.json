@@ -3553,6 +3553,286 @@
             "precio": 92,
             "categoria": "General",
             "stock": true
+        },
+        {
+            "id": "CB250ADV-018",
+            "codigo_referencia": "CB250ADV-018",
+            "nombre": "DISCO FRENO POST 3H ADVENTURE-R 250/300CC",
+            "precio": 33,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-022",
+            "codigo_referencia": "CBB250XP-022",
+            "nombre": "DISCO FRENO POST. XPOWER/GP1-R/CHIEF II/THD SR7/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
+            "precio": 16,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-047",
+            "codigo_referencia": "CB250CRF-047",
+            "nombre": "DISCO FRENO POST CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "precio": 29,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-136",
+            "codigo_referencia": "CGEA150-136",
+            "nombre": "DISCO FRENO POST. EAGLE 150CC III/DK FALCON",
+            "precio": 15,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-012",
+            "codigo_referencia": "CB250GP1-012",
+            "nombre": "DISCO FRENO POST GP1/TEKKEN/SCRAMBLER250/WING EVO 200",
+            "precio": 14,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250-267",
+            "codigo_referencia": "CB250-267",
+            "nombre": "DISCO FRENO POST TEKKEN",
+            "precio": 31,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-030",
+            "codigo_referencia": "CB200WF-030",
+            "nombre": "DISCO FRENO POST WOLF 200/SPITFIRE/WOLF 250/RANGER CFZ 250/HONDA CB190",
+            "precio": 19,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250ADV-017",
+            "codigo_referencia": "CB250ADV-017",
+            "nombre": "DISCO FRENO DEL ADVE-R 250",
+            "precio": 25,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-033",
+            "codigo_referencia": "CB200WF-033",
+            "nombre": "DISCO FRENO DEL WOLF/ADVENTURE 200/MAVERICK 250/FEROCE/RANGER CFZ 250/HONDA CB190",
+            "precio": 23,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-039",
+            "codigo_referencia": "CB300SW-039",
+            "nombre": "DISCO FRENO DEL SUPER WOLF 300",
+            "precio": 38,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "RME-024",
+            "codigo_referencia": "RME-024",
+            "nombre": "DISCO FRENO DEL DYNAMIC/AGILITY/SILENCE MAX",
+            "precio": 14,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGEA150-127",
+            "codigo_referencia": "CGEA150-127",
+            "nombre": "DISCO FRENO DEL EAGLE 150CC I-II-III/MONTANA150/DK FALCON",
+            "precio": 15,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150SPF-025",
+            "codigo_referencia": "CG150SPF-025",
+            "nombre": "DISCO FRENO DEL SPITFIRE 150",
+            "precio": 19,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-09JRXN",
+            "codigo_referencia": "CB200WF-09JRXN",
+            "nombre": "PLACA TANQUE (I-D) WOLF 200CC ROJO",
+            "precio": 117,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-011",
+            "codigo_referencia": "CB250GP1-011",
+            "nombre": "DISCO FRENO DEL GP-1 250",
+            "precio": 16,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-011",
+            "codigo_referencia": "CB250CRF-011",
+            "nombre": "DISCO FRENO DEL CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "precio": 35,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-023",
+            "codigo_referencia": "CBB250XP-023",
+            "nombre": "DISCO FRENO DEL XPOWER/GP1-R/CHIEFF II PRO B/I",
+            "precio": 21,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB150GHS1-034",
+            "codigo_referencia": "CB150GHS1-034",
+            "nombre": "DISCO FRENO DEL GH/S1 150CC",
+            "precio": 18,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CGB250SPF-041",
+            "codigo_referencia": "CGB250SPF-041",
+            "nombre": "DISCO FRENO DEL SPITFIRE 250 B/N",
+            "precio": 19,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-036",
+            "codigo_referencia": "CBB250XP-036",
+            "nombre": "ESTRIBO DEL CON BASE (I-D) XPOWER/GP1-R 250/FK370/FK 400/F 370/CHEF II/CHIEF II PRO/THD SR7/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
+            "precio": 86,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-022",
+            "codigo_referencia": "CB250CRF-022",
+            "nombre": "ESTRIBO DEL CON BASE (I-D) CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "precio": 86,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-046",
+            "codigo_referencia": "CB300SW-046",
+            "nombre": "ESTRIBO DEL CON BASE (I-D) SUPER WOLF 300",
+            "precio": 86,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250TKN-021",
+            "codigo_referencia": "CB250TKN-021",
+            "nombre": "ESTRIBO POST CON BASE (I-D) TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC",
+            "precio": 19,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-009",
+            "codigo_referencia": "CBB250XP-009",
+            "nombre": "ESTRIBO POST CON BASE (I-D) XPOWER/GP1-R/THD SR7/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
+            "precio": 48,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-061NM",
+            "codigo_referencia": "CB250GP1-061NM",
+            "nombre": "CATALINA 428/53T/6H GP-1 2023/25",
+            "precio": 23,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-059",
+            "codigo_referencia": "CB250CRF-059",
+            "nombre": "CATALINA 42D Y CADENA 520-NG CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "precio": 38,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-024",
+            "codigo_referencia": "CBB250XP-024",
+            "nombre": "CATALINA XPOWER 250",
+            "precio": 14,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250ADV-036",
+            "codigo_referencia": "CB250ADV-036",
+            "nombre": "CATALINA 428H/50T ADVENTURE-R 250/300CC",
+            "precio": 36,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "MC6891",
+            "codigo_referencia": "MC6891",
+            "nombre": "CAUCHO CATALINA GN125 ANTIVIBRANTE MOXAL",
+            "precio": 3,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CAT-1932",
+            "codigo_referencia": "CAT-1932",
+            "nombre": "CATALINA DAYTONA DY250 TEKKEN 520H 42T 4H CONCAVO ESPECIAL",
+            "precio": 11,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-050",
+            "codigo_referencia": "CB250GP1-050",
+            "nombre": "CATALINA 428H/50T/4H GP-1 250 2018",
+            "precio": 13,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG200SPE-068",
+            "codigo_referencia": "CG200SPE-068",
+            "nombre": "CATALINA 428/42T/4H SPEED 200",
+            "precio": 10,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150WRF-049",
+            "codigo_referencia": "CG150WRF-049",
+            "nombre": "CATALINA 428/38T/4H CONCAVA CROCODIL DELTA/PANTHER/WORKFORCE S",
+            "precio": 7,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CG150WRF-016",
+            "codigo_referencia": "CG150WRF-016",
+            "nombre": "CATALINA 428/38T/4H COCODRIL WORKFORCE/TH-B52/150CC",
+            "precio": 10,
+            "categoria": "General",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-089",
+            "codigo_referencia": "CB250SCB-089",
+            "nombre": "PROTEC ESCAPE FIBRA CARBONO SCRAMBLER CLASICA/REVOLUTION 250CC/300CC",
+            "precio": 10,
+            "categoria": "General",
+            "stock": true
         }
     ]
 }
