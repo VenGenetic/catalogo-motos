@@ -2402,17 +2402,9 @@
             "stock": true
         },
         {
-            "id": "CG150-217",
-            "codigo_referencia": "CG150-217",
-            "nombre": "MANIGUETA FRENO DEL. DELTA 150.",
-            "precio": 5,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "CG150SPF-026",
             "codigo_referencia": "CG150SPF-026",
-            "nombre": "MANIGUETA FRENO DEL. SPITFIRE - UNIVERSAL",
+            "nombre": "MANIGUETA FRENO DEL. SPITFIRE - UNIVER SAL",
             "precio": 4,
             "categoria": "General",
             "stock": true
@@ -3047,14 +3039,6 @@
             "codigo_referencia": "CB250SC-116A",
             "nombre": "FARO Y MASCARILLA SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC B-ROJO 2023/24/2025",
             "precio": 57,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB250TKN-055",
-            "codigo_referencia": "CB250TKN-055",
-            "nombre": "ESPEJOS (I-D) TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC",
-            "precio": 19,
             "categoria": "General",
             "stock": true
         },

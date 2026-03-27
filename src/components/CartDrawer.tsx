@@ -120,12 +120,12 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
       />
 
       {/* Panel Deslizante (Ancho completo en móvil) */}
-      <div className="relative w-full md:max-w-[480px] bg-white dark:bg-slate-900 h-[100dvh] shadow-2xl flex flex-col animate-slide-in-right">
+      <div className="relative w-full md:max-w-[480px] bg-white dark:bg-[#1a202c] h-[100dvh] shadow-2xl flex flex-col animate-slide-in-right">
         
         {/* --- HEADER --- */}
-        <div className="px-5 py-4 border-b dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900 z-10 sticky top-0">
+        <div className="px-5 py-4 border-b dark:border-gray-700 flex justify-between items-center bg-white dark:bg-[#1a202c] z-10 sticky top-0">
           <div>
-            <h2 className="text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+            <h2 className="text-xl font-extrabold text-gray-900 dark:text-white flex items-center gap-2">
               Tu Pedido
               <span className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">
                 {cart.length} items
@@ -264,7 +264,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
         </div>
 
         {/* --- FOOTER FLOTANTE (STICKY) --- */}
-        <div className="p-4 border-t dark:border-slate-800 bg-white dark:bg-slate-900 shadow-[0_-4px_30px_rgba(0,0,0,0.08)] z-20 pb-safe mt-auto">
+        <div className="p-4 border-t dark:border-gray-700 bg-white dark:bg-[#1a202c] shadow-[0_-4px_30px_rgba(0,0,0,0.08)] z-20 pb-safe mt-auto">
           <div className="flex justify-between items-end mb-4 px-1">
              <div className="space-y-0.5">
                 <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Total a Pagar</p>

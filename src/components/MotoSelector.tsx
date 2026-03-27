@@ -23,12 +23,12 @@ export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pt-12 md:pt-16 pb-8 md:pb-12 px-3 md:px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pt-8 md:pt-12 pb-8 md:pb-12 px-3 md:px-4">
       <div className="max-w-7xl mx-auto">
         
         {/* Encabezado - MÁS COMPACTO EN MÓVIL */}
         <div className="text-center mb-6 md:mb-10">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white mb-2 md:mb-3">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-3">
             ¿Qué necesitas hoy?
           </h1>
           <p className="text-gray-500 dark:text-gray-400 mb-4 md:mb-8 text-sm md:text-lg px-2">
@@ -42,7 +42,7 @@ export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
               <input
                 type="text"
                 placeholder="Busca un repuesto (ej. Bujía)..."
-                className="w-full pl-10 md:pl-12 pr-16 md:pr-20 py-3 md:py-4 rounded-lg md:rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:bg-white dark:focus:bg-slate-900 focus:border-slate-800 dark:focus:border-slate-500 focus:ring-4 focus:ring-slate-100 dark:focus:ring-slate-900 dark:text-white outline-none transition-all text-sm md:text-lg shadow-sm"
+                className="w-full pl-10 md:pl-12 pr-16 md:pr-20 py-3 md:py-4 rounded-lg md:rounded-xl border-2 border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:bg-white dark:focus:bg-slate-900 focus:border-red-500 dark:focus:border-red-500 focus:ring-4 focus:ring-red-100 dark:focus:ring-slate-900 dark:text-white outline-none transition-all text-sm md:text-lg shadow-sm"
                 value={partSearch}
                 onChange={(e) => setPartSearch(e.target.value)}
                 onKeyDown={handleGlobalSearch}
@@ -51,7 +51,7 @@ export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
               <Wrench className="absolute left-4 top-4.5 text-slate-400 dark:text-slate-500 w-6 h-6" />
               <button 
                 onClick={() => partSearch.trim() && onSearchGlobal(partSearch)}
-                className="absolute right-2 top-2 bottom-2 bg-slate-900 dark:bg-red-600 text-white px-4 rounded-lg font-bold text-sm hover:bg-slate-800 dark:hover:bg-red-700 transition-colors"
+                className="absolute right-2 top-2 bottom-2 bg-red-700 hover:bg-red-800 text-white px-4 md:px-6 rounded-lg font-semibold text-sm transition-colors"
               >
                 Buscar
               </button>
@@ -69,7 +69,7 @@ export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
               <input
                 type="text"
                 placeholder="Filtra por modelo (ej. Tekken)..."
-                className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 dark:text-white focus:border-red-600 focus:ring-4 focus:ring-red-100 outline-none transition-all text-lg shadow-sm"
+                className="w-full pl-12 pr-4 py-3 md:py-4 rounded-lg md:rounded-xl border-2 border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 dark:text-white focus:border-red-500 focus:ring-4 focus:ring-red-100 outline-none transition-all text-sm md:text-lg shadow-sm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -89,7 +89,7 @@ export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
                   const primeraPalabra = modelo.split(' ')[0];
                   onSelectModel(primeraPalabra);
                 }}
-                className="group relative flex flex-col bg-white dark:bg-slate-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-700 overflow-hidden text-left hover:-translate-y-1"
+                className="group relative flex flex-col bg-white dark:bg-slate-800 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-700 overflow-hidden text-left hover:-translate-y-1.5"
               >
                 <div className="w-full h-40 md:h-48 bg-gray-100 dark:bg-slate-700 relative overflow-hidden flex items-center justify-center p-2">
                   <img 
@@ -106,7 +106,7 @@ export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
                     VER
                   </div>
                 </div>
-                <div className="p-4 border-t border-gray-50 dark:border-slate-700">
+                <div className="p-4 border-t border-gray-100 dark:border-slate-700">
                   <h3 className="font-bold text-slate-800 dark:text-gray-100 text-sm md:text-base leading-tight group-hover:text-red-600 transition-colors">
                     {modelo}
                   </h3>

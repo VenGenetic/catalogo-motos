@@ -13,7 +13,7 @@ export const HeroSection = () => {
   };
 
   return (
-    <div className="relative bg-slate-900 overflow-hidden font-sans min-h-[600px] flex items-center">
+    <div className="relative bg-[#1a202c] overflow-hidden font-sans min-h-[600px] flex items-center">
       {/* Fondo con Overlay (sin cambios) */}
       <div className="absolute inset-0 z-0">
         <img 
@@ -21,7 +21,7 @@ export const HeroSection = () => {
           alt="Repuestos Daytona" 
           className="w-full h-full object-cover object-center opacity-40 md:opacity-50 scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-slate-900/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0d1117] via-[#1a202c]/90 to-[#1a202c]/30"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 py-16">
@@ -68,7 +68,7 @@ export const HeroSection = () => {
           {/* Insignias de Confianza (sin cambios) */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-white/10 animate-fade-in-up delay-500">
               <div className="flex items-center gap-3 group">
-                  <div className="bg-slate-800 p-2 rounded-lg text-red-500 group-hover:text-white group-hover:bg-red-600 transition-colors">
+                  <div className="bg-[#2d3748] p-2 rounded-lg text-red-500 group-hover:text-white group-hover:bg-red-600 transition-colors">
                       <ShieldCheck size={24} />
                   </div>
                   <div>
@@ -78,7 +78,7 @@ export const HeroSection = () => {
               </div>
               
               <div className="flex items-center gap-3 group">
-                   <div className="bg-slate-800 p-2 rounded-lg text-red-500 group-hover:text-white group-hover:bg-red-600 transition-colors">
+                   <div className="bg-[#2d3748] p-2 rounded-lg text-red-500 group-hover:text-white group-hover:bg-red-600 transition-colors">
                       <Truck size={24} />
                   </div>
                   <div>
@@ -88,7 +88,7 @@ export const HeroSection = () => {
               </div>
               
                <div className="flex items-center gap-3 group">
-                   <div className="bg-slate-800 p-2 rounded-lg text-red-500 group-hover:text-white group-hover:bg-red-600 transition-colors">
+                   <div className="bg-[#2d3748] p-2 rounded-lg text-red-500 group-hover:text-white group-hover:bg-red-600 transition-colors">
                       <Users size={24} />
                   </div>
                   <div>

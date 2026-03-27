@@ -2,7 +2,7 @@ import { ShieldCheck, Truck, CreditCard, Facebook, Instagram } from 'lucide-reac
 
 export const Footer = () => {
   return (
-    <footer className="bg-slate-900 text-gray-400 py-12 pb-32 md:pb-12 border-t border-slate-800 font-sans">
+    <footer className="bg-[#1a202c] text-gray-400 py-12 pb-32 md:pb-12 border-t border-[#2d3748] font-sans">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-sm">
         
         {/* Columna 1: Marca y Promesa */}

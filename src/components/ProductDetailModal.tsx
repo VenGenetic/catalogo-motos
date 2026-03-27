@@ -88,7 +88,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
           transition={{ type: "spring", duration: 0.4 }}
           // CLAVE MÓVIL: w-full h-full (ocupa toda la pantalla)
           // CLAVE DESKTOP: Ancho máximo más generoso para mostrar bien la imagen 1024x535
-          className="relative w-full h-full md:h-auto md:max-h-[95vh] md:max-w-6xl lg:max-w-7xl bg-white dark:bg-slate-900 md:rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+          className="relative w-full h-full md:h-auto md:max-h-[95vh] md:max-w-6xl lg:max-w-7xl bg-white dark:bg-[#1a202c] md:rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           onClick={(e) => e.stopPropagation()} 
         >
             
@@ -140,7 +140,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                         </span>
                       )}
                     </div>
-                    <h2 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white leading-snug">
+                    <h2 className="text-xl md:text-2xl font-black text-gray-900 dark:text-white leading-snug">
                       {product.nombre}
                     </h2>
                   </div>
@@ -148,7 +148,7 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
                   <div className="bg-gray-50 dark:bg-slate-800 p-4 rounded-xl border border-gray-100 dark:border-slate-700 flex items-center justify-between">
                     <div>
                        <span className="text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase block">Precio</span>
-                       <span className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                       <span className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">
                          ${Number(product.precio).toFixed(2)}
                        </span>
                     </div>

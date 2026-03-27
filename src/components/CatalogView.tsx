@@ -85,11 +85,11 @@ export const CatalogView = memo(({
 
   // 2. MODO CATÁLOGO
   return (
-    <div ref={containerRef} className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-32 pt-2 md:pt-4 px-2 md:px-8 font-sans scroll-mt-20">
+    <div ref={containerRef} className="min-h-screen bg-gray-50 dark:bg-slate-950 pb-32 pt-2 md:pt-4 px-2 md:px-8 font-sans scroll-mt-20">
       <div className="max-w-7xl mx-auto">
         
         {/* BARRA SUPERIOR */}
-        <div className="sticky top-[64px] z-30 bg-slate-50/95 dark:bg-slate-900/95 backdrop-blur-md pb-2 pt-2 px-1 md:px-0 transition-all border-b border-gray-100/50 dark:border-slate-800/50 md:border-none">
+        <div className="sticky top-[64px] z-30 bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur-md pb-2 pt-2 px-1 md:px-0 transition-all border-b border-gray-100/50 dark:border-slate-800/50 md:border-none">
           <div className="flex gap-2 mb-3 items-center">
             <button 
               onClick={handleCambiarMoto}
@@ -136,9 +136,9 @@ export const CatalogView = memo(({
                 <button
                   key={category}
                   onClick={() => setFiltroSeccion(category)}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-300 border ${
+                  className={`px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap transition-all duration-300 border ${
                     filtroSeccion === category 
-                      ? 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 border-slate-900 dark:border-slate-100 shadow-md shadow-slate-200 dark:shadow-none' 
+                      ? 'bg-gray-900 dark:bg-slate-100 text-white dark:text-slate-900 border-gray-900 dark:border-slate-100 shadow-md' 
                       : 'bg-white dark:bg-slate-800 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95'
                   }`}
                 >
@@ -152,11 +152,11 @@ export const CatalogView = memo(({
         {/* LISTADO DE PRODUCTOS */}
         {visibles.length > 0 ? (
           <>
-            <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 md:gap-6 px-0 md:px-0">
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 md:gap-6 px-0 md:px-0">
               {visibles.map((product: Producto) => (
                 <div
                   key={product.id}
-                  className="group bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-[0_4px_20px_rgb(0,0,0,0.08)] hover:border-red-100 dark:hover:border-slate-600 hover:-translate-y-0.5 active:scale-95 [content-visibility:auto] [contain-intrinsic-size:300px]"
+                  className="group bg-white dark:bg-slate-800 rounded-2xl shadow-md border border-gray-100 dark:border-slate-700 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-xl hover:border-gray-200 dark:hover:border-slate-600 hover:-translate-y-1 active:scale-[0.98] [content-visibility:auto] [contain-intrinsic-size:300px]"
                   onClick={() => onProductClick(product)}
                 >
                   {/* Corazón pequeño (como pediste) */}
@@ -171,11 +171,11 @@ export const CatalogView = memo(({
                     <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} strokeWidth={2.5} />
                   </button>
 
-                  <div className="relative h-28 md:h-40 bg-white dark:bg-slate-800 overflow-hidden p-1">
+                  <div className="relative h-28 md:h-40 bg-white dark:bg-slate-800 overflow-hidden p-2 rounded-t-xl">
                     <LazyImage 
                       src={optimizarImg(product.imagen)} 
                       alt={product.nombre}
-                      className="w-full h-full rounded-md transition-transform duration-500 group-hover:scale-105" 
+                      className="w-full h-full rounded-xl transition-transform duration-500 group-hover:scale-105" 
                       cropBottom={false}
                     />
                     
@@ -186,7 +186,7 @@ export const CatalogView = memo(({
                     )}
                   </div>
 
-                  <div className="p-3 md:p-4 flex flex-col flex-grow relative z-10 bg-white dark:bg-slate-800 border-t border-gray-50 dark:border-slate-700">
+                  <div className="p-3 md:p-4 flex flex-col flex-grow relative z-10 bg-white dark:bg-slate-800">
                     <div className="mb-1">
                         <span className="inline-block px-1.5 py-0.5 rounded-md bg-gray-50 dark:bg-slate-700 text-gray-400 dark:text-gray-300 text-[9px] font-bold uppercase tracking-wide border border-gray-100 dark:border-slate-600">
                         {product.seccion}
@@ -211,12 +211,12 @@ export const CatalogView = memo(({
                     ) : null}
                     
                     {/* Título: Muestra TODO el texto (sin truncate) */}
-                    <h3 className="text-xs md:text-sm font-bold text-slate-800 dark:text-gray-100 mb-2 leading-snug group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                    <h3 className="text-xs md:text-sm font-bold text-gray-900 dark:text-gray-100 mb-3 leading-snug group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
                       <HighlightedText text={product.nombre} highlight={busqueda} />
                     </h3>
                     
                     <div className="mt-auto flex items-center justify-between">
-                       <span className="text-sm md:text-lg font-extrabold text-slate-900 dark:text-white">
+                       <span className="text-sm md:text-lg font-extrabold text-gray-900 dark:text-white">
                          ${Number(product.precio).toFixed(2)}
                        </span>
                        

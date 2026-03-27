@@ -221,7 +221,7 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-white">
+      <div className="flex h-screen w-full items-center justify-center bg-gray-50">
         <div className="flex flex-col items-center gap-6">
           <div className="relative">
             <div className="animate-spin rounded-full h-16 w-16 border-4 border-red-200 border-t-red-600"></div>
@@ -237,7 +237,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white font-sans text-slate-800 flex flex-col">
+    <div className="min-h-screen bg-gray-50 font-sans text-gray-800 flex flex-col">
       {!isOnline && (
         <div className="md:hidden bg-red-600 text-white text-center py-2 px-4 flex items-center justify-center gap-2 text-sm font-medium">
           <WifiOff size={16} />

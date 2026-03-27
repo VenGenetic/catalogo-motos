@@ -48,8 +48,7 @@
       (function() {
         try {
           var savedTheme = localStorage.getItem('theme');
-          // Predeterminado oscuro si no hay nada guardado o si está explícitamente en 'dark'
-          if (savedTheme === 'dark' || !savedTheme) {
+          if (savedTheme === 'dark') {
             document.documentElement.classList.add('dark');
           } else {
             document.documentElement.classList.remove('dark');
