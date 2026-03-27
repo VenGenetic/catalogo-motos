@@ -3945,14 +3945,6 @@
             "precio": 16,
             "categoria": "General",
             "stock": true
-        },
-        {
-            "id": "CB18051ADV-011",
-            "codigo_referencia": "CB18051ADV-011",
-            "nombre": "DISCO FRENO DEL S1 ADVENTURE",
-            "precio": 19,
-            "categoria": "General",
-            "stock": true
         }
     ]
 }
