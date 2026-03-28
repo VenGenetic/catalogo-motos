@@ -3523,6 +3523,14 @@
             "precio": 19,
             "categoria": "General",
             "stock": true
+        },
+        {
+            "id": "FE250GP1R-001A",
+            "codigo_referencia": "FE250GP1R-001A",
+            "nombre": "PLACA LAT. POST. (I-D) GP1-R 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC AZUL",
+            "precio": 86,
+            "categoria": "General",
+            "stock": true
         }
     ]
 }
