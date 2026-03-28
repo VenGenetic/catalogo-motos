@@ -3540,6 +3540,15 @@
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7206/image_512/%5BCG200WEV2-014B%5D%20PLACA%20LAT.%20POST.%20(I-D)%20WING%20EVO2%202018-19-20-21-2022-SHM%20GP200-Z1%20AK200-AXXO%20F51-RANGER%20VENOOM%20F51-TUNDRA%20VENOM-PEGASSO%20VENTO-MT1%20FX%20200CC%20N-BLANCO?unique=7e45ac7",
             "stock": true
+        },
+        {
+            "id": "CG200WEV-027GNM",
+            "codigo_referencia": "CG200WEV-027GNM",
+            "nombre": "PLACA LAT. POST. (I-D) WING EVO 200/Z1 PHANTON/AXXO R51/IGM WIND 200CC GRIS 22",
+            "precio": 106,
+            "categoria": "General",
+            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7127/image_512/%5BCG200WEV-027GNM%5D%20PLACA%20LAT.%20POST.%20(I-D)%20WING%20EVO%20200-Z1%20PHANTON-AXXO%20R51-IGM%20WIND%20200CC%20GRIS%2022?unique=20a0e97",
+            "stock": true
         }
     ]
 }
