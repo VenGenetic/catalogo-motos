@@ -933,15 +933,6 @@
             "stock": true
         },
         {
-            "id": "FE250-010",
-            "codigo_referencia": "FE250-010",
-            "nombre": "SENSOR CAMBIOS FE250 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5 250CC",
-            "precio": 16,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7690/image_512/%5BFE250-010%5D%20SENSOR%20CAMBIOS%20FE250%204V%20TEKKEN%20EVO-GP1R-XPOWER-ARTIC-GP1-FEROCE-TUKO%20Z250-CR5%20TG-IGM%20VENTURE-DK%20NATIVA-CHIEF%202.5%20250CC?unique=b3d7b2b",
-            "stock": true
-        },
-        {
             "id": "CB200FC-002",
             "codigo_referencia": "CB200FC-002",
             "nombre": "KIT SWITCH LLAVES FORCE 200/DK XTZ 250CC",
@@ -1056,15 +1047,6 @@
             "precio": 43,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7141/image_512/%5BCG200WEV-039%5D%20ASIENTO%20WING%20EVO%20200-Z1%20PHANTOM-AXXO%20R51%20200CC?unique=38be6b6",
-            "stock": true
-        },
-        {
-            "id": "CB250CRF-036",
-            "codigo_referencia": "CB250CRF-036",
-            "nombre": "ASIENTO SET2 CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
-            "precio": 58,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5637/image_512/%5BCB250CRF-036%5D%20ASIENTO%20SET2%20CROSSFIRE-XTREEM-THUNDER%20F16-DK%20HORNET-IGM%20WIND250-Z1%20V8200?unique=53b2db5",
             "stock": true
         },
         {
@@ -1371,15 +1353,6 @@
             "stock": true
         },
         {
-            "id": "CG150-012",
-            "codigo_referencia": "CG150-012",
-            "nombre": "CILINDRO Y PISTON 149CC 62.5MM/PIN15 CG 150 UNIVERSAL NEGRO EAGLE",
-            "precio": 68,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/6312/image_512/%5BCG150-012%5D%20CILINDRO%20Y%20PISTON%20149CC%2062.5MM-PIN15%20CG%20150%20UNIVERSAL%20NEGRO%20EAGLE?unique=ed3ea64",
-            "stock": true
-        },
-        {
             "id": "CB200WF-089",
             "codigo_referencia": "CB200WF-089",
             "nombre": "TAPA MOTOR DER. WOLF/AXXO ASFALT/AXXO F51 200cc",
@@ -1416,26 +1389,9 @@
             "stock": true
         },
         {
-            "id": "TY300-001",
-            "codigo_referencia": "TY300-001",
-            "nombre": "TAPA MOTOR DER. ADV. 300/CHIEF 3.0/TK CR300/RACER 300/RANGER DR300CC TY",
-            "precio": 87,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/8408/image_512/%5BTY300-001%5D%20TAPA%20MOTOR%20DER.%20ADV.%20300-CHIEF%203.0-TK%20CR300-RACER%20300-RANGER%20DR300CC%20TY?unique=c7c43eb",
-            "stock": true
-        },
-        {
             "id": "CB300SW-007",
             "codigo_referencia": "CB300SW-007",
             "nombre": "KIT SWITCHTAPALLAVES SUPER WOLF 300CC",
-            "precio": 35,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "FE250ART-023",
-            "codigo_referencia": "FE250ART-023",
-            "nombre": "KIT SWITCH TAPALLAVES ARTIC 250CC",
             "precio": 35,
             "categoria": "General",
             "stock": true
@@ -1505,14 +1461,6 @@
             "stock": true
         },
         {
-            "id": "CGB250SPF-058",
-            "codigo_referencia": "CGB250SPF-058",
-            "nombre": "TAPA MOTOR IZQ. SPITFIRE 250",
-            "precio": 48,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "CGB200CRU-003",
             "codigo_referencia": "CGB200CRU-003",
             "nombre": "TAPA MOTOR IZQ. Y PINON CRUCER0 200 GRIS",
@@ -1541,14 +1489,6 @@
             "codigo_referencia": "CB150-020",
             "nombre": "TAPA MOTOR IZQ MONTANA 150/SHARK/RX/BULL/SCORPION GRIS",
             "precio": 52,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB200ADV-054",
-            "codigo_referencia": "CB200ADV-054",
-            "nombre": "TAPA MOTOR IZQ. ADVE. 200 ",
-            "precio": 44,
             "categoria": "General",
             "stock": true
         },
@@ -1830,29 +1770,11 @@
             "stock": true
         },
         {
-            "id": "CB200FC-026",
-            "codigo_referencia": "CB200FC-026",
-            "nombre": "MESA DIRECCION ARMADA FORCE 200/DK XTZ 250CC",
-            "precio": 87,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5001/image_512/%5BCB200FC-026%5D%20MESA%20DIRECCION%20ARMADA%20FORCE%20200-DK%20XTZ%20250CC?unique=47e9a13",
-            "stock": true
-        },
-        {
             "id": "CB200FC-006",
             "codigo_referencia": "CB200FC-006",
             "nombre": "PINON VELOCIMETRO DIGITAL EJE 12MM/3PIN FORCE 200/DK XTZ 250CC",
             "precio": 13,
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5001/image_512/%5BCB200FC-026%5D%20MESA%20DIRECCION%20ARMADA%20FORCE%20200-DK%20XTZ%20250CC?unique=47e9a13",
-            "stock": true
-        },
-        {
-            "id": "TY300-001",
-            "codigo_referencia": "TY300-001",
-            "nombre": "TAPA MOTOR DER. ADV. 300/CHIEF 3.0/TK CR300/RACER 300/RANGER DR300CC TY",
-            "precio": 87,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/8408/image_512/%5BTY300-001%5D%20TAPA%20MOTOR%20DER.%20ADV.%20300-CHIEF%203.0-TK%20CR300-RACER%20300-RANGER%20DR300CC%20TY?unique=c7c43eb",
             "stock": true
         },
         {
@@ -1938,14 +1860,6 @@
             "stock": true
         },
         {
-            "id": "CB200WF-087",
-            "codigo_referencia": "CB200WF-087",
-            "nombre": "CILINDRO Y PISTON 61MM/PIN13 WOLF/AXXO ASFALT/AXXO F51 200cc",
-            "precio": 67,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "CB250-015G",
             "codigo_referencia": "CB250-015G",
             "nombre": "CILINDRO Y PISTON RX-SHARKSCO CB250CC GRIS",
@@ -1958,14 +1872,6 @@
             "codigo_referencia": "CG150CRU-002",
             "nombre": "CILINDRO Y PISTON CG150 PIN14",
             "precio": 60,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CG200WEV-052K",
-            "codigo_referencia": "CG200WEV-052K",
-            "nombre": "CILINDRO Y PISTON CRUCERO 200/WING EVO I/II/SL-KM PIN 15 NEGRO",
-            "precio": 86,
             "categoria": "General",
             "stock": true
         },
@@ -2074,58 +1980,10 @@
             "stock": true
         },
         {
-            "id": "CB250GP1-018",
-            "codigo_referencia": "CB250GP1-018",
-            "nombre": "ESPEJOS (I-D) GP1 250/TUNDRA VELOCE 250CC",
-            "precio": 9,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "FE250GP1R-007",
             "codigo_referencia": "FE250GP1R-007",
             "nombre": "ESPEJOS (I-D) GP1-R 250/FACTORY F370/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO/THUNDER F22 250CC",
             "precio": 19,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CG200WEV2-013B",
-            "codigo_referencia": "CG200WEV2-013B",
-            "nombre": "GUARDAFANGO DEL. WING EVO 2 N-BLANCO",
-            "precio": 29,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB250GP1-042G",
-            "codigo_referencia": "CB250GP1-042G",
-            "nombre": "GUARDAFANGO DEL GP1 250/TUNDRA VELOCE 250CC GRIS",
-            "precio": 35,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB250GP1-042B",
-            "codigo_referencia": "CB250GP1-042B",
-            "nombre": "GUARDAFANGO DEL GP1 250/TUNDRA VELOCE 250CC BLANCO",
-            "precio": 35,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB250GP1-042R",
-            "codigo_referencia": "CB250GP1-042R",
-            "nombre": "GUARDAFANGO DEL GP1 250/TUNDRA VELOCE 250CC ROJO",
-            "precio": 35,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "TY300ADV-006R",
-            "codigo_referencia": "TY300ADV-006R",
-            "nombre": "GUARDAFANGO DEL ADVENTURE 300CC N-ROJO TY",
-            "precio": 42,
             "categoria": "General",
             "stock": true
         },
@@ -2142,38 +2000,6 @@
             "codigo_referencia": "PR300EVT-045V",
             "nombre": "GUARDAFANGO DEL. EVEREST DUAL SPORT 300CC N-VERDE",
             "precio": 35,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CG150PTH-037R",
-            "codigo_referencia": "CG150PTH-037R",
-            "nombre": "GUARDAFANGO DEL. PANTHER/RANGER 150USM/... ROJO",
-            "precio": 19,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CG150PTH-037B",
-            "codigo_referencia": "CG150PTH-037B",
-            "nombre": "GUARDAFANGO DEL. PANTHER/RANGER 150USM/... BLANCO",
-            "precio": 19,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CG150DELT-009R",
-            "codigo_referencia": "CG150DELT-009R",
-            "nombre": "GUARDAFANGO DEL. DELTA/SK STIFF/... ROJO",
-            "precio": 29,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CG150DELT-009N",
-            "codigo_referencia": "CG150DELT-009N",
-            "nombre": "GUARDAFANGO DEL. DELTA/SK STIFF/... NEGRO",
-            "precio": 29,
             "categoria": "General",
             "stock": true
         },
@@ -2202,14 +2028,6 @@
             "stock": true
         },
         {
-            "id": "CB200FC-016",
-            "codigo_referencia": "CB200FC-016",
-            "nombre": "GUARDAFANGO DEL FORCE 200/DK XT250CC NEGRO",
-            "precio": 29,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "04B03012-00",
             "codigo_referencia": "04B03012-00",
             "nombre": "GUARDAFANGO DELANTERO SUPERIOR TRACKER 250",
@@ -2222,22 +2040,6 @@
             "codigo_referencia": "CB150GHS1-065",
             "nombre": "GUARDAFANGO DEL S1 150/180CC NEGRO",
             "precio": 22,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB150-028T",
-            "codigo_referencia": "CB150-028T",
-            "nombre": "GUARDAFANGO DEL MONTANA 150CC NARANJA",
-            "precio": 35,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB150-027N",
-            "codigo_referencia": "CB150-027N",
-            "nombre": "GUARDAFANGO POST MONTANA 150CC N-VERDE",
-            "precio": 35,
             "categoria": "General",
             "stock": true
         },
@@ -2298,14 +2100,6 @@
             "stock": true
         },
         {
-            "id": "CB250-160R",
-            "codigo_referencia": "CB250-160R",
-            "nombre": "GUARDAFANGO DEL SHARK II 200CC ROJO 2019",
-            "precio": 35,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "CB250TKN-034",
             "codigo_referencia": "CB250TKN-034",
             "nombre": "GUARDAFANGO DEL. INFERIOR TEKKEN EVO 250",
@@ -2318,14 +2112,6 @@
             "codigo_referencia": "CB250-282",
             "nombre": "GUARDAFANGO DEL. INFERIOR TEKKEN ANTIGUA",
             "precio": 29,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB250CRF-040",
-            "codigo_referencia": "CB250CRF-040",
-            "nombre": "GUARDAFANGO DEL CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200 GRIS",
-            "precio": 31,
             "categoria": "General",
             "stock": true
         },
@@ -2350,14 +2136,6 @@
             "codigo_referencia": "FE250FRC-041R",
             "nombre": "GUARDAFANGO DEL. FEROCE 250CC N-ROJO",
             "precio": 35,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB200WF-001N",
-            "codigo_referencia": "CB200WF-001N",
-            "nombre": "GUARDAFANGO DEL. WOLF/ADVENTURE 200/MAVERICK 250/RANGER CFZ 250/HONDA CB190 N-NARANJA",
-            "precio": 27,
             "categoria": "General",
             "stock": true
         },
@@ -2394,14 +2172,6 @@
             "stock": true
         },
         {
-            "id": "CB250GP1-002",
-            "codigo_referencia": "CB250GP1-002",
-            "nombre": "MANIGUETA EMBRAGUE CON BASE GP1 250/TUNDRA VELOCE 250CC",
-            "precio": 11,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "CG150SPF-026",
             "codigo_referencia": "CG150SPF-026",
             "nombre": "MANIGUETA FRENO DEL. SPITFIRE - UNIVER SAL",
@@ -2414,14 +2184,6 @@
             "codigo_referencia": "FE250GP1R-010A",
             "nombre": "PLACA TANQUE (I-D) GP1-R 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC AZUL",
             "precio": 171,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "FE250FRC-030",
-            "codigo_referencia": "FE250FRC-030",
-            "nombre": "TANQUE GASOLINA FEROCE 250CC",
-            "precio": 114,
             "categoria": "General",
             "stock": true
         },
@@ -2450,34 +2212,10 @@
             "stock": true
         },
         {
-            "id": "CB250SCB-081V",
-            "codigo_referencia": "CB250SCB-081V",
-            "nombre": "TANQUE GASOLINA SCRAMBLER REVOLUTION 250CC VERDE",
-            "precio": 95,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "CB250SCB-003P",
             "codigo_referencia": "CB250SCB-003P",
             "nombre": "TANQUE GASOLINA SCRAMBLER CLASICA/AXXO SCRAMBLER 250CC PLOMO",
             "precio": 95,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CG150WRF-136B",
-            "codigo_referencia": "CG150WRF-136B",
-            "nombre": "TANQUE GASOLINA WORKFORCE/TH-B52 150CC BLANCO",
-            "precio": 67,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB200PDT-023A",
-            "codigo_referencia": "CB200PDT-023A",
-            "nombre": "TANQUE GASOLINA PREDATOR 200 AZUL",
-            "precio": 114,
             "categoria": "General",
             "stock": true
         },
@@ -2562,34 +2300,10 @@
             "stock": true
         },
         {
-            "id": "CB200WF-040",
-            "codigo_referencia": "CB200WF-040",
-            "nombre": "PINON VELOCIMETRO DIGITAL EJE 15MM/3PIN WOLF/ADV200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 /ADV300",
-            "precio": 14,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB200WF-002",
-            "codigo_referencia": "CB200WF-002",
-            "nombre": "VELOCIMETRO DIGITAL WOLF/RANGER CFZ 250/HONDA CB190",
-            "precio": 65,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "CB200WF-101",
             "codigo_referencia": "CB200WF-101",
             "nombre": "CATALINA Y PINON 428/45T/4H WOLF/ADV 200/MAVERICK/WOLF/RANGER CFZ 250/HONDA CB190",
             "precio": 16,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB200WF-087",
-            "codigo_referencia": "CB200WF-087",
-            "nombre": "CILINDRO Y PISTON 61MM/PIN13 WOLF/AXXO ASFALT/AXXO F51 200cc",
-            "precio": 67,
             "categoria": "General",
             "stock": true
         },
@@ -2610,30 +2324,6 @@
             "stock": true
         },
         {
-            "id": "CB200WF-010",
-            "codigo_referencia": "CB200WF-010",
-            "nombre": "KIT SWITCH LLAVES WOLF/ADV200/RANGER CFZ 250/HONDA CB190",
-            "precio": 32,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB300SW-077",
-            "codigo_referencia": "CB300SW-077",
-            "nombre": "VELOCIMETRO DIGITAL SUPER WOLF 300",
-            "precio": 105,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "TY300ADV-012",
-            "codigo_referencia": "TY300ADV-012",
-            "nombre": "VELOCIMETRO DIGITAL ADV 300CC TY",
-            "precio": 114,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "CB250-276",
             "codigo_referencia": "CB250-276",
             "nombre": "VELOCIMETRO DIGITAL TEKKEN",
@@ -2646,14 +2336,6 @@
             "codigo_referencia": "FE250GP1R-033",
             "nombre": "VELOCIMETRO DIGITAL GP1-R 250 2025 CUADRADO",
             "precio": 86,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CBB250XP-013",
-            "codigo_referencia": "CBB250XP-013",
-            "nombre": "VELOCIMETRO DIGITAL XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
-            "precio": 76,
             "categoria": "General",
             "stock": true
         },
@@ -2859,14 +2541,6 @@
             "stock": true
         },
         {
-            "id": "FE250ART-051",
-            "codigo_referencia": "FE250ART-051",
-            "nombre": "KIT FRENO DEL. ARMADO ARTIC/TEKKEN EVO/SCRAMBLER 250CC B/I",
-            "precio": 54,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "CB200WF-042",
             "codigo_referencia": "CB200WF-042",
             "nombre": "KIT FRENO DEL ARMADO WOLF/ADVENTURE 200/MAVERICK 250/RANGER CFZ 250/HONDA CB190",
@@ -2955,14 +2629,6 @@
             "stock": true
         },
         {
-            "id": "CG200WEV2-024",
-            "codigo_referencia": "CG200WEV2-024",
-            "nombre": "TELESCOPICAS (I-D) WING EVO 2 2018/32mm",
-            "precio": 114,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "CG150SPF-010",
             "codigo_referencia": "CG150SPF-010",
             "nombre": "TELESCOPICAS (I-D) SPITFIRE 150",
@@ -2979,14 +2645,6 @@
             "stock": true
         },
         {
-            "id": "CGB200GTR-047",
-            "codigo_referencia": "CGB200GTR-047",
-            "nombre": "TELESCOPICAS (I-D) GTR 200/GTR ROADSTER B/I/WING EVO 2 2024",
-            "precio": 276,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "CB200WF-036",
             "codigo_referencia": "CB200WF-036",
             "nombre": "TELESCOPICAS (I-D) WOLF200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190 B/I NEGRO",
@@ -2995,42 +2653,10 @@
             "stock": true
         },
         {
-            "id": "FE250GP1R-032",
-            "codigo_referencia": "FE250GP1R-032",
-            "nombre": "TELESCOPICAS (I-D) GP1-R/CHIEF II PRO 250CC B/I NEGRO",
-            "precio": 285,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB300SW-020",
-            "codigo_referencia": "CB300SW-020",
-            "nombre": "TELESCOPICAS (I-D) SUPER WOLF 300 B/I",
-            "precio": 285,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CGEA150-045",
-            "codigo_referencia": "CGEA150-045",
-            "nombre": "TELESCOPICAS (I-D) EAGLE 150CC I-II-III-V/DK FALCON",
-            "precio": 143,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "CG150IND-002",
             "codigo_referencia": "CG150IND-002",
             "nombre": "TELESCOPICAS (I-D) DELTA/PANTHER/WORKFORCE 150 NEGRO",
             "precio": 86,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB250SC-115",
-            "codigo_referencia": "CB250SC-115",
-            "nombre": "TELESCOPICAS (I-D) SCORPION/BULL/SHARK II PLOMO B/N",
-            "precio": 181,
             "categoria": "General",
             "stock": true
         },
@@ -3087,22 +2713,6 @@
             "codigo_referencia": "CB250-165R",
             "nombre": "PLACA TANQUE (I-D) SHARK II 19-22 ROJO",
             "precio": 23,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB250GP1-068R",
-            "codigo_referencia": "CB250GP1-068R",
-            "nombre": "PLACA TANQUE SUP (I-D) GP1 250/TUNDRA VELOCE 250CC G-ROJO",
-            "precio": 42,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB250GP1-068G",
-            "codigo_referencia": "CB250GP1-068G",
-            "nombre": "PLACA TANQUE SUP (I-D) GP1 250/TUNDRA VELOCE 250CC G-VERDE",
-            "precio": 42,
             "categoria": "General",
             "stock": true
         },
@@ -3347,22 +2957,6 @@
             "stock": true
         },
         {
-            "id": "FE250GP1R-021D",
-            "codigo_referencia": "FE250GP1R-021D",
-            "nombre": "ARO DEL. MAGNECIO GP1-R/XPOWER/CHIEF II/CHIEF II PRO/FK370/DRAKON F300/LA BESTIA 400/SHIFT 500 DORADO",
-            "precio": 105,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "FE250GP1R-021V",
-            "codigo_referencia": "FE250GP1R-021V",
-            "nombre": "ARO DEL. MAGNECIO GP1-R/XPOWER/CHIEF II/CHIEF II PRO/FK370/DRAKON F300/LA BESTIA 400/SHIFT 500 VERDE",
-            "precio": 105,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "CB250GP1-010NM",
             "codigo_referencia": "CB250GP1-010NM",
             "nombre": "ARO DEL MAGNECIO 250X17 DISCO 5H GP1 250 2023/24/2025 NEGRO",
@@ -3494,14 +3088,6 @@
             "id": "CB250SC-078",
             "codigo_referencia": "CB250SC-078",
             "nombre": "ARO DEL ARMADO SCORPION 200/250CC B/N",
-            "precio": 86,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CB250SCB-076",
-            "codigo_referencia": "CB250SCB-076",
-            "nombre": "ARO DEL ARMADO TEKKEN/SCRAMBLER/REV NEGRO",
             "precio": 86,
             "categoria": "General",
             "stock": true
@@ -3707,14 +3293,6 @@
             "stock": true
         },
         {
-            "id": "CB250TKN-021",
-            "codigo_referencia": "CB250TKN-021",
-            "nombre": "ESTRIBO POST CON BASE (I-D) TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC",
-            "precio": 19,
-            "categoria": "General",
-            "stock": true
-        },
-        {
             "id": "CBB250XP-009",
             "codigo_referencia": "CBB250XP-009",
             "nombre": "ESTRIBO POST CON BASE (I-D) XPOWER/GP1-R/THD SR7/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
@@ -3815,14 +3393,6 @@
             "codigo_referencia": "CG150WRF-013",
             "nombre": "VELOCIMETRO (1 SALIDA) WORKFORCE/TH B52 150CC",
             "precio": 54,
-            "categoria": "General",
-            "stock": true
-        },
-        {
-            "id": "CG150WRF-043",
-            "codigo_referencia": "CG150WRF-043",
-            "nombre": "VELOCIMETRO ( 2 SALIDA ) WORKFORCE-S 150CC",
-            "precio": 48,
             "categoria": "General",
             "stock": true
         },

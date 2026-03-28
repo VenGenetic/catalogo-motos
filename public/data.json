@@ -433,15 +433,6 @@
             "stock": true
         },
         {
-            "id": "CB250GP1-044B",
-            "codigo_referencia": "CB250GP1-044B",
-            "nombre": "PLACA TANQUE (I-D) GP1/THUNDER VELOCE 250 BLANCO",
-            "precio": 87,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5717/image_512/%5BCB250GP1-044B%5D%20PLACA%20TANQUE%20(I-D)%20GP1-THUNDER%20VELOCE%20250%20BLANCO?unique=c9b003f",
-            "stock": true
-        },
-        {
             "id": "CB250GP1-043R",
             "codigo_referencia": "CB250GP1-043R",
             "nombre": "PLACA LAT. POST. (I-D) GP1 250/TUNDRA VELOCE 250CC ROJO",
@@ -9718,15 +9709,6 @@
             "precio": 29,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/8386/image_512/%5BCB200PDT-021%5D%20PORTA%20PLACAS%20PREDATOR%20200?unique=9b246b6",
-            "stock": true
-        },
-        {
-            "id": "CB200PDT-020A",
-            "codigo_referencia": "CB200PDT-020A",
-            "nombre": "PLACA TANQUE (I-D) PREDATOR 200 AZUL",
-            "precio": 96,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/8381/image_512/%5BCB200PDT-020A%5D%20PLACA%20TANQUE%20(I-D)%20PREDATOR%20200%20AZUL?unique=6fda556",
             "stock": true
         },
         {
