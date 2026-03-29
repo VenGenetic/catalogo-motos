@@ -469,15 +469,6 @@
             "stock": true
         },
         {
-            "id": "CB250GP1-035",
-            "codigo_referencia": "CB250GP1-035",
-            "nombre": "TEMPLADOR CADENA GP1 250/TUNDRA VELOCE 250CC",
-            "precio": 29,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/5698/image_512/%5BCB250GP1-035%5D%20TEMPLADOR%20CADENA%20GP1%20250-TUNDRA%20VELOCE%20250CC?unique=2a50e63",
-            "stock": true
-        },
-        {
             "id": "CB250GP1-034",
             "codigo_referencia": "CB250GP1-034",
             "nombre": "STOP GP1 250/TUNDRA VELOCE 250CC",
@@ -7129,15 +7120,6 @@
             "stock": true
         },
         {
-            "id": "CG200WEV-027GNM",
-            "codigo_referencia": "CG200WEV-027GNM",
-            "nombre": "PLACA LAT. POST. (I-D) WING EVO 200/Z1 PHANTON/AXXO R51/IGM WIND 200CC GRIS 22",
-            "precio": 106,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/7127/image_512/%5BCG200WEV-027GNM%5D%20PLACA%20LAT.%20POST.%20(I-D)%20WING%20EVO%20200-Z1%20PHANTON-AXXO%20R51-IGM%20WIND%20200CC%20GRIS%2022?unique=20a0e97",
-            "stock": true
-        },
-        {
             "id": "CG200WEV-026",
             "codigo_referencia": "CG200WEV-026",
             "nombre": "DIRECCIONALES (SET4) WING 200/ZERO",
@@ -9796,7 +9778,7 @@
             "id": "MMX-312",
             "codigo_referencia": "MMX-312",
             "nombre": "KIT TRACCION TEKKEN/SCRAMBLER/AXXO SCRAMBLER 250CC 42D P13D 520H-116L DORADO",
-            "precio": 35,
+            "precio": 38,
             "categoria": "General",
             "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/8346/image_512/%5BMMX-312%5D%20KIT%20TRACCION%20TEKKEN-SCRAMBLER-AXXO%20SCRAMBLER%20250CC%2042D%20P13D%20520H-116L%20DORADO?unique=04e2948",
             "stock": true
