@@ -12268,24 +12268,6 @@
             "stock": true
         },
         {
-            "id": "CB300SCB-008G",
-            "codigo_referencia": "CB300SCB-008G",
-            "nombre": "PLACA LAT. POST. (I-D) SCRAMBLER 300 MAX GRIS",
-            "precio": 68,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9009/image_512/%5BCB300SCB-008G%5D%20PLACA%20LAT.%20POST.%20(I-D)%20SCRAMBLER%20300%20MAX%20GRIS?unique=257e3b7",
-            "stock": true
-        },
-        {
-            "id": "CB250SCB-069V",
-            "codigo_referencia": "CB250SCB-069V",
-            "nombre": "PLACA LAT. POST. (I-D) SCRAMBLER REVOLUTION 250CC VERDE",
-            "precio": 58,
-            "categoria": "General",
-            "imagen": "https://clientes.todomoto.com.ec/web/image/product.template/9010/image_512/%5BCB250SCB-069V%5D%20PLACA%20LAT.%20POST.%20(I-D)%20SCRAMBLER%20REVOLUTION%20250CC%20VERDE?unique=f497159",
-            "stock": true
-        },
-        {
             "id": "CB150-030T",
             "codigo_referencia": "CB150-030T",
             "nombre": "PLACA TANQUE (I-D) MONTANA 150CC N-NARANJA",
