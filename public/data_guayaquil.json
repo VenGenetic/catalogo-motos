@@ -1071,6 +1071,26 @@
             "stock": true
         },
         {
+            "id": "JG4VTEK-C418",
+            "codigo_referencia": "JG4VTEK-C418",
+            "nombre": "Juegos de valvulas",
+            "marca": "DAYTONA",
+            "precio": 41,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG200WEV2-026",
+            "codigo_referencia": "CG200WEV2-026",
+            "nombre": "faros y mascarilla win evo 2026",
+            "marca": "DAYTONA",
+            "precio": 161,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
             "id": "CB200WF-006",
             "codigo_referencia": "CB200WF-006",
             "nombre": "KIT RUN Y LUCES WOLF/ADV200/RANGER CFZ 250/HONDA CB190",
@@ -1711,6 +1731,36 @@
             "stock": true
         },
         {
+            "id": "CB250CRF-002",
+            "codigo_referencia": "CB250CRF-002",
+            "nombre": "MONOSHOCK 260MM CROSSFIRE/XTREEM/TH F16/DK HORNET/IGM WIND250/Z1 V8200 ROJO",
+            "marca": "DAYTONA",
+            "precio": 86,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-022N",
+            "codigo_referencia": "CB300SW-022N",
+            "nombre": "GUARDAFANGO DEL SUPER WOLF 300 NEGRO",
+            "marca": "DAYTONA",
+            "precio": 0,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150SPF-023",
+            "codigo_referencia": "CG150SPF-023",
+            "nombre": "MANIGUETA EMBRAGUE CON BASE UNIVERSAL SPITFIRE/DELTA/PANTHER/WORKFORCE/SKR/THOR/GP200/XY250GY6/EVEREST 250CC/WIN EVO II/EVEREST 300CC",
+            "marca": "DAYTONA",
+            "precio": 8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
             "id": "CB300SW-014",
             "codigo_referencia": "CB300SW-014",
             "nombre": "KIT RUN Y LUCES SUPER WOLF 300",
@@ -2331,11 +2381,11 @@
             "stock": true
         },
         {
-            "id": "FE250GP1R-007",
-            "codigo_referencia": "FE250GP1R-007",
-            "nombre": "ESPEJOS (I-D) GP1-R 250/FACTORY F370/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO/THUNDER F22 250CC",
+            "id": "CB150-028T",
+            "codigo_referencia": "CB150-028T",
+            "nombre": "GUARDAFANGO DEL MONTANA 150CC NARANJA",
             "marca": "DAYTONA",
-            "precio": 19,
+            "precio": 35,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -2386,16 +2436,6 @@
             "nombre": "GUARDAFANGO DEL S1 150/180CC NEGRO",
             "marca": "DAYTONA",
             "precio": 22,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CB150-028T",
-            "codigo_referencia": "CB150-028T",
-            "nombre": "GUARDAFANGO DEL MONTANA 150CC NARANJA",
-            "marca": "DAYTONA",
-            "precio": 35,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -2536,6 +2576,16 @@
             "nombre": "TELESCOPICAS (I-D) EAGLE 150CC I-II-III-V/DK FALCON",
             "marca": "DAYTONA",
             "precio": 143,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-007",
+            "codigo_referencia": "FE250GP1R-007",
+            "nombre": "ESPEJOS (I-D) GP1-R 250/FACTORY F370/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO/THUNDER F22 250CC",
+            "marca": "DAYTONA",
+            "precio": 19,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
