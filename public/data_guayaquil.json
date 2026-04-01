@@ -2581,16 +2581,6 @@
             "stock": true
         },
         {
-            "id": "FE250GP1R-007",
-            "codigo_referencia": "FE250GP1R-007",
-            "nombre": "ESPEJOS (I-D) GP1-R 250/FACTORY F370/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO/THUNDER F22 250CC",
-            "marca": "DAYTONA",
-            "precio": 19,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CB250CRF-040",
             "codigo_referencia": "CB250CRF-040",
             "nombre": "GUARDAFANGO DEL CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200 GRIS",
