@@ -351,16 +351,6 @@
             "stock": true
         },
         {
-            "id": "CGB200SR3-025B",
-            "codigo_referencia": "CGB200SR3-025B",
-            "nombre": "GUARDAFANGO DEL. SHARK 3 2022 BLANCO",
-            "marca": "DAYTONA",
-            "precio": 27,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CB180S1ADV-013",
             "codigo_referencia": "CB180S1ADV-013",
             "nombre": "GUARDAFANGO DEL. S1-ADV-180cc",
@@ -406,16 +396,6 @@
             "nombre": "PLACA TANQUE (I-D) SHARK II 19-22 ROJO",
             "marca": "DAYTONA",
             "precio": 23,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CB250GP1-068G",
-            "codigo_referencia": "CB250GP1-068G",
-            "nombre": "PLACA TANQUE SUP (I-D) GP1 250/TUNDRA VELOCE 250CC G-VERDE",
-            "marca": "DAYTONA",
-            "precio": 42,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -821,16 +801,6 @@
             "stock": true
         },
         {
-            "id": "CG150SF2-011",
-            "codigo_referencia": "CG150SF2-011",
-            "nombre": "FARO LED SPITFIRE 150CC 2025",
-            "marca": "DAYTONA",
-            "precio": 76,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CB250TKN-042",
             "codigo_referencia": "CB250TKN-042",
             "nombre": "FARO Y MASCARILLA TEKKEN EVO/AXXO TRACKER 250cc",
@@ -1131,16 +1101,6 @@
             "stock": true
         },
         {
-            "id": "CB300SW-039",
-            "codigo_referencia": "CB300SW-039",
-            "nombre": "DISCO FRENO DEL SUPER WOLF 300",
-            "marca": "DAYTONA",
-            "precio": 38,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CB250GP1-061NM",
             "codigo_referencia": "CB250GP1-061NM",
             "nombre": "CATALINA 428/53T/6H GP-1 2023/25",
@@ -1156,16 +1116,6 @@
             "nombre": "CATALINA 428/38T/4H CONCAVA CROCODIL DELTA/PANTHER/WORKFORCE S",
             "marca": "DAYTONA",
             "precio": 7,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CBB250XP-031",
-            "codigo_referencia": "CBB250XP-031",
-            "nombre": "FLASH 3PIN CON CABLE XPOWER/GP1R",
-            "marca": "DAYTONA",
-            "precio": 4,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -1576,16 +1526,6 @@
             "nombre": "BOYA GASOLINA XPOWER/GP1R/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
             "marca": "DAYTONA",
             "precio": 13,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CB300SW-005N",
-            "codigo_referencia": "CB300SW-005N",
-            "nombre": "FARO Y MASCARILLA SUPER WOLF 300 N-VERDE",
-            "marca": "DAYTONA",
-            "precio": 124,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -2186,16 +2126,6 @@
             "nombre": "KIT SWITCH LLAVES ADVENTURE-R 250/300CC",
             "marca": "DAYTONA",
             "precio": 42,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CB300SW-007",
-            "codigo_referencia": "CB300SW-007",
-            "nombre": "KIT SWITCHTAPALLAVES SUPER WOLF 300CC",
-            "marca": "DAYTONA",
-            "precio": 35,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -2891,16 +2821,6 @@
             "stock": true
         },
         {
-            "id": "CB200FC-008",
-            "codigo_referencia": "CB200FC-008",
-            "nombre": "FARO FORCE 200/DK XTZ 250CC",
-            "marca": "DAYTONA",
-            "precio": 31,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CB250TKN-021",
             "codigo_referencia": "CB250TKN-021",
             "nombre": "ESTRIBO POST CON BASE (I-D) TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC",
@@ -2936,16 +2856,6 @@
             "nombre": "PORTA PLACAS SPITFIRE 150",
             "marca": "DAYTONA",
             "precio": 30,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CB250SC-100",
-            "codigo_referencia": "CB250SC-100",
-            "nombre": "PORTA PLACAS SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC",
-            "marca": "DAYTONA",
-            "precio": 29,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -3446,16 +3356,6 @@
             "nombre": "DIRECCIONALES (SET4) GP1 250/TUNDRA VELOCE 250CC",
             "marca": "DAYTONA",
             "precio": 32,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CB250-196",
-            "codigo_referencia": "CB250-196",
-            "nombre": "MASCARILLA FARO RX 250.",
-            "marca": "DAYTONA",
-            "precio": 16,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
