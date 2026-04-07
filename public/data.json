@@ -5151,16 +5151,6 @@
             "stock": true
         },
         {
-            "id": "CB250GP1-068R",
-            "codigo_referencia": "CB250GP1-068R",
-            "nombre": "PLACA TANQUE SUP (I-D) GP1 250/TUNDRA VELOCE 250CC G-ROJO",
-            "marca": "DAYTONA",
-            "precio": 42,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CB250GP1-068V",
             "codigo_referencia": "CB250GP1-068V",
             "nombre": "PLACA TANQUE SUP (I-D) GP1 250/TUNDRA VELOCE 250CC VERDE",
