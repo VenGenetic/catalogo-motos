@@ -3801,16 +3801,6 @@
             "stock": true
         },
         {
-            "id": "CG150-115",
-            "codigo_referencia": "CG150-115",
-            "nombre": "ESPEJOS (I-D) CRUCERO 150/200",
-            "marca": "DAYTONA",
-            "precio": 5,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CB150-027R",
             "codigo_referencia": "CB150-027R",
             "nombre": "GUARDAFANGO POST MONTANA 150CC N-ROJO",
