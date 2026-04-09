@@ -78,7 +78,7 @@ def main():
             # Verificar el nombre tal cual viene en la data
             local_path = IMAGES_DIR / image_val
             # Y también verificar el patrón {cod}_cut.webp (estándar de la app)
-            pattern_path = IMAGES_DIR / f"{code}_cut.webp"
+            pattern_path = IMAGES_DIR / f"{code}.webp"
             
             if not local_path.exists() and not pattern_path.exists():
                 has_photo = False

@@ -48,7 +48,7 @@ function checkImages() {
   const existing = [];
 
   for (const [code, name] of codeToName.entries()) {
-    const filename = `${code}_cut.webp`;
+    const filename = `${code}.webp`;
     const fullPath = path.join(IMAGES_DIR, filename);
     
     if (!fs.existsSync(fullPath)) {

@@ -33,7 +33,7 @@ export const useProducts = () => {
   useEffect(() => {
     let retryCount = 0;
     const MAX_RETRIES = 3;
-    const CACHE_KEY = 'cached_products_v3';
+    const CACHE_KEY = 'cached_products_v4';
     const CACHE_TIME_KEY = 'cached_products_time';
     const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
 
@@ -155,7 +155,7 @@ export const useProducts = () => {
           raw.forEach((p) => {
             const seccionCalc = detectarSeccion(p);
             const nombreImagenLocal = p.codigo_referencia
-              ? `/imagenes_repuestos/${p.codigo_referencia}_cut.webp`
+              ? `/imagenes_repuestos/${p.codigo_referencia}.webp`
               : null;
 
             const procesado: Producto = {
