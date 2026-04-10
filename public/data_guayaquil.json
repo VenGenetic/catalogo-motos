@@ -461,16 +461,6 @@
             "stock": true
         },
         {
-            "id": "CG200WEV2-024",
-            "codigo_referencia": "CG200WEV2-024",
-            "nombre": "TELESCOPICAS (I-D) WING EVO 2 2018/32mm",
-            "marca": "DAYTONA",
-            "precio": 114,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CB250SC-099",
             "codigo_referencia": "CB250SC-099",
             "nombre": "TELESCOPICAS (I-D) SCORPION 250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC B/I",
@@ -761,16 +751,6 @@
             "stock": true
         },
         {
-            "id": "CGB250SPF-021",
-            "codigo_referencia": "CGB250SPF-021",
-            "nombre": "BASE PORTA PLACAS SPITFIRE 250",
-            "marca": "DAYTONA",
-            "precio": 20,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CBB250XP-010",
             "codigo_referencia": "CBB250XP-010",
             "nombre": "PORTA PLACAS XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
@@ -793,9 +773,9 @@
         {
             "id": "CG200WEV2-026",
             "codigo_referencia": "CG200WEV2-026",
-            "nombre": "faros y mascarilla win evo 2026",
+            "nombre": "FARO Y MASCARILLA WING EVO 2025/2026",
             "marca": "DAYTONA",
-            "precio": 161,
+            "precio": 160,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -1061,16 +1041,6 @@
             "stock": true
         },
         {
-            "id": "CB300SW-012",
-            "codigo_referencia": "CB300SW-012",
-            "nombre": "FARO LED SUPER WOLF 300",
-            "marca": "DAYTONA",
-            "precio": 86,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CB200SRK-018N",
             "codigo_referencia": "CB200SRK-018N",
             "nombre": "FARO Y MASCARILLA SHARK II 200/DK200B/SHM ARMI150/AXXO TR1 NEGRO 2024/2025",
@@ -1181,6 +1151,16 @@
             "stock": true
         },
         {
+            "id": "CB250CRF-038",
+            "codigo_referencia": "CB250CRF-038",
+            "nombre": "PROTEC ESCAPE CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "marca": "DAYTONA",
+            "precio": 12,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
             "id": "CB250-267",
             "codigo_referencia": "CB250-267",
             "nombre": "DISCO FRENO POST TEKKEN",
@@ -1191,21 +1171,11 @@
             "stock": true
         },
         {
-            "id": "CB18051ADV-004",
-            "codigo_referencia": "CB18051ADV-004",
-            "nombre": "KIT PISTAS DIRECCION S1 ADVENTURE",
+            "id": "CB300SW-012",
+            "codigo_referencia": "CB300SW-012",
+            "nombre": "FARO LED SUPER WOLF 300",
             "marca": "DAYTONA",
-            "precio": 15,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CBB250XP-009",
-            "codigo_referencia": "CBB250XP-009",
-            "nombre": "ESTRIBO POST CON BASE (I-D) XPOWER/GP1-R/THD SR7/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
-            "marca": "DAYTONA",
-            "precio": 48,
+            "precio": 86,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -1251,11 +1221,11 @@
             "stock": true
         },
         {
-            "id": "CB250CRF-038",
-            "codigo_referencia": "CB250CRF-038",
-            "nombre": "PROTEC ESCAPE CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "id": "CG200WEV2-024",
+            "codigo_referencia": "CG200WEV2-024",
+            "nombre": "TELESCOPICAS (I-D) WING EVO 2 2018/32mm",
             "marca": "DAYTONA",
-            "precio": 12,
+            "precio": 114,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -1306,6 +1276,26 @@
             "nombre": "ESTRIBOS ARMADOS CON BASE (I-D) GP1 250/TUNDRA VELOCE 250CC",
             "marca": "DAYTONA",
             "precio": 124,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-009",
+            "codigo_referencia": "CBB250XP-009",
+            "nombre": "ESTRIBO POST. CON BASE (I-D) XPOWER/GP1-R/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
+            "marca": "DAYTONA",
+            "precio": 64,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB18051ADV-004",
+            "codigo_referencia": "CB18051ADV-004",
+            "nombre": "KIT PISTAS DIRECCION S1 ADVENTURE",
+            "marca": "DAYTONA",
+            "precio": 15,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -1821,6 +1811,16 @@
             "stock": true
         },
         {
+            "id": "CB250CRF-027",
+            "codigo_referencia": "CB250CRF-027",
+            "nombre": "PORTA PLACAS CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "marca": "DAYTONA",
+            "precio": 67,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
             "id": "INS2407-ELEC1",
             "codigo_referencia": "INS2407-ELEC1",
             "nombre": "INSTALACION ELECTRICA SPITFIRE 150",
@@ -2151,16 +2151,6 @@
             "stock": true
         },
         {
-            "id": "CB200SRK-022N ",
-            "codigo_referencia": "CB200SRK-022N ",
-            "nombre": "PLACA LAT. POST. (I-D) SHARK II 200 2023 N-VERDE ",
-            "marca": "DAYTONA",
-            "precio": 61,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CG150DELT-001B",
             "codigo_referencia": "CG150DELT-001B",
             "nombre": "PLACA LATERAL (I-D) DELTA/SK STIFF/AXXO AX150/TUKO H1 150CC BLANCO",
@@ -2296,16 +2286,6 @@
             "nombre": "ESCAPE COMP. XPOWER/ GP1R/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
             "marca": "DAYTONA",
             "precio": 95,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "TKK-188",
-            "codigo_referencia": "TKK-188",
-            "nombre": "RADIADOR ACEITE CON MANGUERAS TEKKEN 4V",
-            "marca": "DAYTONA",
-            "precio": 60,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -2561,6 +2541,16 @@
             "stock": true
         },
         {
+            "id": "TKK-188",
+            "codigo_referencia": "TKK-188",
+            "nombre": "RADIADOR ACEITE CON MANGUERAS TEKKEN 4V",
+            "marca": "DAYTONA",
+            "precio": 60,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
             "id": "CG200WEV2-002",
             "codigo_referencia": "CG200WEV2-002",
             "nombre": "MONOSHOCK 250MM (TIPO U) WING EVO 2/AXXO F51 200CC ROJO",
@@ -2726,6 +2716,16 @@
             "nombre": "CAJA CAMBIOS ARMADA LEM1543MM LEP1887MM CONTRAPESA CB200 WOLF/AXXO ASFALT/AXXO F51 200cc",
             "marca": "DAYTONA",
             "precio": 54,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200SRK-022N",
+            "codigo_referencia": "CB200SRK-022N",
+            "nombre": "PLACA LAT POST (I-D) SHARK II 200 2023 N-VERDE",
+            "marca": "DAYTONA",
+            "precio": 61,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -3041,16 +3041,6 @@
             "stock": true
         },
         {
-            "id": "CB300SW-077",
-            "codigo_referencia": "CB300SW-077",
-            "nombre": "VELOCIMETRO DIGITAL SUPER WOLF 300",
-            "marca": "DAYTONA",
-            "precio": 105,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CB250-276",
             "codigo_referencia": "CB250-276",
             "nombre": "VELOCIMETRO DIGITAL TEKKEN",
@@ -3156,16 +3146,6 @@
             "nombre": "GUIA CADENILLA (1-2) ADV 300/CHIEF 30/TK CR300/RACER 300/RANGER DR300CC TY",
             "marca": "DAYTONA",
             "precio": 15,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CB250TKN-008",
-            "codigo_referencia": "CB250TKN-008",
-            "nombre": "MONOSHOCK 390MM (TIPO U) TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC NEGRO",
-            "marca": "DAYTONA",
-            "precio": 86,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -3506,6 +3486,26 @@
             "nombre": "MANIGUETA EMBRAGUE CON BASE WOLF/ADV200/RANGER CFZ 250/HONDA CB190/GY200/CG200 UNIVERSAL",
             "marca": "DAYTONA",
             "precio": 8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250TKN-008",
+            "codigo_referencia": "CB250TKN-008",
+            "nombre": "MONOSHOCK 390MM (TIPO U) TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC NEGRO",
+            "marca": "DAYTONA",
+            "precio": 86,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250TKN-007",
+            "codigo_referencia": "CB250TKN-007",
+            "nombre": "TELESCOPICAS (I-D) TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC B/I",
+            "marca": "DAYTONA",
+            "precio": 285,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -4711,16 +4711,6 @@
             "stock": true
         },
         {
-            "id": "CB250SCB-033",
-            "codigo_referencia": "CB250SCB-033",
-            "nombre": "PEDAL CAMBIOS SCRAMBLER CLASICA/REV./AXXO SCRAMBLER",
-            "marca": "DAYTONA",
-            "precio": 24,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CGB250SPF-043",
             "codigo_referencia": "CGB250SPF-043",
             "nombre": "PEDAL CAMBIOS SPITFIRE 250",
@@ -4777,6 +4767,216 @@
             "marca": "DAYTONA",
             "precio": 12,
             "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-026",
+            "codigo_referencia": "CB250GP1-026",
+            "nombre": "PINON VELOCIMETRO DIGITAL EJE 12MM/3PIN GP1 250/TUNDRA VELOCE 250CC 2017/2018",
+            "marca": "DAYTONA",
+            "precio": 11,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-026NM",
+            "codigo_referencia": "CB250GP1-026NM",
+            "nombre": "PINON VELOCIMETRO GP1 250CC 2023/24/2025",
+            "marca": "DAYTONA",
+            "precio": 16,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-033",
+            "codigo_referencia": "CB250SCB-033",
+            "nombre": "PEDAL CAMBIOS SCRAMBLER CLASICA/REV./AXXO SCRAMBLER",
+            "marca": "DAYTONA",
+            "precio": 24,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-029",
+            "codigo_referencia": "CB200WF-029",
+            "nombre": "PATA APOYO WOLF/RANGER CFZ 250/HONDA CB190",
+            "marca": "DAYTONA",
+            "precio": 9,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-028",
+            "codigo_referencia": "CB250CRF-028",
+            "nombre": "TANQUE GASOLINA CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "marca": "DAYTONA",
+            "precio": 86,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-054",
+            "codigo_referencia": "CB250SCB-054",
+            "nombre": "CUBRE CADENA ALUMINIO SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC/300CC",
+            "marca": "DAYTONA",
+            "precio": 29,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-071",
+            "codigo_referencia": "CB250SCB-071",
+            "nombre": "PORTA PLACAS SCRAMBLER REVOLUTION 250CC/300CC",
+            "marca": "DAYTONA",
+            "precio": 29,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-041G",
+            "codigo_referencia": "CB250GP1-041G",
+            "nombre": "TANQUE GASOLINA GP1 250/TUNDRA VELOCE 250CC GRIS",
+            "marca": "DAYTONA",
+            "precio": 114,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-006",
+            "codigo_referencia": "CB300SW-006",
+            "nombre": "ASIENTO SET2 SUPER WOLF 300",
+            "marca": "DAYTONA",
+            "precio": 54,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-021",
+            "codigo_referencia": "CB250CRF-021",
+            "nombre": "TEMPLADOR CADENA CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "marca": "DAYTONA",
+            "precio": 9,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB150-057.",
+            "codigo_referencia": "CB150-057.",
+            "nombre": "STOP Y LUZ PLACA MONTANA 150CC.",
+            "marca": "DAYTONA",
+            "precio": 29,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-115T",
+            "codigo_referencia": "CB200WF-115T",
+            "nombre": "PLACA LAT POST (I-D) WOLF/RANGER CFZ 250/HONDA CB190 NARANJA",
+            "marca": "DAYTONA",
+            "precio": 76,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CGB200GTRRD-005",
+            "codigo_referencia": "CGB200GTRRD-005",
+            "nombre": "PLACA LAT. POST. (I-D) GTR ROADSTER",
+            "marca": "DAYTONA",
+            "precio": 86,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-001A ",
+            "codigo_referencia": "FE250GP1R-001A ",
+            "nombre": "PLACA LAT. POST. (I-D) GP1-R 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC AZUL ",
+            "marca": "DAYTONA",
+            "precio": 86,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250CRF-032",
+            "codigo_referencia": "CB250CRF-032",
+            "nombre": "MASCARILLA COMP CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
+            "marca": "DAYTONA",
+            "precio": 35,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CBB250XP-073",
+            "codigo_referencia": "CBB250XP-073",
+            "nombre": "FILTRO AIRE CON BASE XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC ",
+            "marca": "DAYTONA",
+            "precio": 8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB150GHS1-030",
+            "codigo_referencia": "CB150GHS1-030",
+            "nombre": "KIT SWITCH LLAVES GH/S1 150CC",
+            "marca": "DAYTONA",
+            "precio": 35,
+            "categoria": "GENERAL",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG200SPE-026 ",
+            "codigo_referencia": "CG200SPE-026 ",
+            "nombre": "KIT SWITCH LLAVES SPEED 200cc ",
+            "marca": "DAYTONA",
+            "precio": 35,
+            "categoria": "GENERAL",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150CRU-002 ",
+            "codigo_referencia": "CG150CRU-002 ",
+            "nombre": "CILINDRO Y PISTON CG150 PIN 14 ",
+            "marca": "DAYTONA",
+            "precio": 60,
+            "categoria": "GENERAL",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150-451",
+            "codigo_referencia": "CG150-451",
+            "nombre": "CILINDRO Y PISTON CG150 UNIVERSAL PIN 13",
+            "marca": "DAYTONA",
+            "precio": 67,
+            "categoria": "GENERAL",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200FC-018",
+            "codigo_referencia": "CB200FC-018",
+            "nombre": "GUARDAFANGO POST FORCE 200/DK XTZ 250CC",
+            "marca": "DAYTONA",
+            "precio": 12,
+            "categoria": "GENERAL",
             "imagen": "sin_imagen.jpg",
             "stock": true
         }
