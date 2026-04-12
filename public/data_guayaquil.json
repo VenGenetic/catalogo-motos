@@ -371,26 +371,6 @@
             "stock": true
         },
         {
-            "id": "CGB250SPF-048",
-            "codigo_referencia": "CGB250SPF-048",
-            "nombre": "PLACA LAT. POST. (I-D) SPITFIRE 250 N-VERDE",
-            "marca": "DAYTONA",
-            "precio": 69,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CGB250SPF-017",
-            "codigo_referencia": "CGB250SPF-017",
-            "nombre": "PLACA LAT. POST. (I-D) SPITFIRE 250 N-ROJO",
-            "marca": "DAYTONA",
-            "precio": 69,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "POR-P29-RO",
             "codigo_referencia": "POR-P29-RO",
             "nombre": "PORTA PLACA UNIVERSAL ALUM. CON LUCES ROJO",
@@ -2101,16 +2081,6 @@
             "stock": true
         },
         {
-            "id": "CB200FC-013",
-            "codigo_referencia": "CB200FC-013",
-            "nombre": "MASCARILLA COMP FORCE N/M",
-            "marca": "DAYTONA",
-            "precio": 38,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CB250CRF-002",
             "codigo_referencia": "CB250CRF-002",
             "nombre": "MONOSHOCK 260MM CROSSFIRE/XTREEM/TH F16/DK HORNET/IGM WIND250/Z1 V8200 ROJO",
@@ -2996,16 +2966,6 @@
             "nombre": "MESA DIRECCION ARMADA WING EVO 2 2018 32MM",
             "marca": "DAYTONA",
             "precio": 87,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CB250-276",
-            "codigo_referencia": "CB250-276",
-            "nombre": "VELOCIMETRO DIGITAL TEKKEN",
-            "marca": "DAYTONA",
-            "precio": 67,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
