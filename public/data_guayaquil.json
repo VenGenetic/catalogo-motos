@@ -661,16 +661,6 @@
             "stock": true
         },
         {
-            "id": "MMX-041",
-            "codigo_referencia": "MMX-041",
-            "nombre": "INSTALACION ELECTRICA GN 125 UNIVERSAL/CRUCERO 150/200",
-            "marca": "DAYTONA",
-            "precio": 20,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "SWI-E1722",
             "codigo_referencia": "SWI-E1722",
             "nombre": "SWITCH ENCENDIDO DAYTONA DY250 TEKKEN 4CABLES BOST",
@@ -826,16 +816,6 @@
             "nombre": "RECTIFICADOR CORRIENTE 6 CABLE SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC/300CC",
             "marca": "DAYTONA",
             "precio": 14,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CB250-335",
-            "codigo_referencia": "CB250-335",
-            "nombre": "TIMON TEKKEN 250",
-            "marca": "DAYTONA",
-            "precio": 35,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -1071,16 +1051,6 @@
             "stock": true
         },
         {
-            "id": "CB250SC-112R",
-            "codigo_referencia": "CB250SC-112R",
-            "nombre": "GUARDAFANGO DEL SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC ROJO 2023/24/2025",
-            "marca": "DAYTONA",
-            "precio": 35,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CGEA150-108",
             "codigo_referencia": "CGEA150-108",
             "nombre": "PORTA PLACAS EAGLE 150CC III/DK FALCON",
@@ -1146,16 +1116,6 @@
             "nombre": "KIT SWITCH LLAVES FORCE 200/DK XTZ 250CC",
             "marca": "DAYTONA",
             "precio": 37,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CB18051ADV-031",
-            "codigo_referencia": "CB18051ADV-031",
-            "nombre": "FILTRO AIRE S1 ADVENTURE 180CC",
-            "marca": "DAYTONA",
-            "precio": 12,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -1526,16 +1486,6 @@
             "nombre": "PLACA TANQUE (I-D) SPITFIRE 150 ROJO",
             "marca": "DAYTONA",
             "precio": 40,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CGB250SPF-016V",
-            "codigo_referencia": "CGB250SPF-016V",
-            "nombre": "PLACA TANQUE (I-D) SPITFIRE 250 N-VERDE",
-            "marca": "DAYTONA",
-            "precio": 67,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -1956,46 +1906,6 @@
             "nombre": "CATALINA 428/38T/4H COCODRIL WORKFORCE/TH-B52/150CC",
             "marca": "DAYTONA",
             "precio": 10,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CG150PTH-005",
-            "codigo_referencia": "CG150PTH-005",
-            "nombre": "TIMON PANTHER/RANGER 150USM//IGM ECO150/TK H2EVO/AXXO RAPTOR 150/THUNDER RT 150CC NEGRO",
-            "marca": "DAYTONA",
-            "precio": 11,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CGB200GTR-046 ",
-            "codigo_referencia": "CGB200GTR-046 ",
-            "nombre": "TIMON GTR 200/WING EVO 2 2024 ",
-            "marca": "DAYTONA",
-            "precio": 29,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CB180AGX-014",
-            "codigo_referencia": "CB180AGX-014",
-            "nombre": "TIMON AGILITY X 180CC",
-            "marca": "DAYTONA",
-            "precio": 23,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CGB250SPF-028",
-            "codigo_referencia": "CGB250SPF-028",
-            "nombre": "TIMON SPITFIRE 250",
-            "marca": "DAYTONA",
-            "precio": 23,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -3141,16 +3051,6 @@
             "stock": true
         },
         {
-            "id": "CGB250SPF-016R",
-            "codigo_referencia": "CGB250SPF-016R",
-            "nombre": "PLACA TANQUE (I-D) SPITFIRE 250 N-ROJO",
-            "marca": "DAYTONA",
-            "precio": 67,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CG150PTH-045R",
             "codigo_referencia": "CG150PTH-045R",
             "nombre": "PLACA TANQUE (I-D) PANTHER/RANGER 150USM//IGM ECO150/TK H2EVO/AXXO RAPTOR 150/THUNDER RT 150CC ROJO",
@@ -3231,16 +3131,6 @@
             "stock": true
         },
         {
-            "id": "CB250SCB-040",
-            "codigo_referencia": "CB250SCB-040",
-            "nombre": "MONOSHOCK SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC",
-            "marca": "DAYTONA",
-            "precio": 80,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "EST-D1622",
             "codigo_referencia": "EST-D1622",
             "nombre": "ESTRIBO DELANTERO DAYTONA DY200WOLF /RANGER CFZ250 SOLO BOST",
@@ -3256,16 +3146,6 @@
             "nombre": "ESPEJOS (I-D) GP1-R 250/FACTORY F370/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO/THUNDER F22 250CC",
             "marca": "DAYTONA",
             "precio": 19,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CB200WF-001N",
-            "codigo_referencia": "CB200WF-001N",
-            "nombre": "GUARDAFANGO DEL WOLF/ADVENTURE 200/MAVERICK 250/RANGER CFZ 250/HONDA CB190 N-NARANJA",
-            "marca": "DAYTONA",
-            "precio": 27,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -3406,6 +3286,16 @@
             "nombre": "KIT SWITCH,TAPA,LLAVES GP1 250/TUNDRA VELOCE 250CC",
             "marca": "DAYTONA",
             "precio": 43,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-001N",
+            "codigo_referencia": "CB200WF-001N",
+            "nombre": "GUARDAFANGO DEL WOLF/ADVENTURE 200/MAVERICK 250/RANGER CFZ 250/HONDA CB190 N-NARANJA",
+            "marca": "DAYTONA",
+            "precio": 27,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -4161,21 +4051,21 @@
             "stock": true
         },
         {
-            "id": "CB300SW-059",
-            "codigo_referencia": "CB300SW-059",
-            "nombre": "MESA DIRECCION ARMADA SUPER WOLF 300 B/I",
-            "marca": "DAYTONA",
-            "precio": 87,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CBB250XP-024",
             "codigo_referencia": "CBB250XP-024",
             "nombre": "CATALINA XPOWER 250",
             "marca": "DAYTONA",
             "precio": 19,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB300SW-059",
+            "codigo_referencia": "CB300SW-059",
+            "nombre": "MESA DIRECCION ARMADA SUPER WOLF 300 B/I",
+            "marca": "DAYTONA",
+            "precio": 87,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -4266,6 +4156,16 @@
             "nombre": "PLACA TANQUE (I-D) PANTHER/RANGER 150USM//IGM ECO150/TK H2EVO/AXXO RAPTOR 150/THUNDER RT 150CC NEGRO",
             "marca": "DAYTONA",
             "precio": 73,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-010A",
+            "codigo_referencia": "FE250GP1R-010A",
+            "nombre": "PLACA TANQUE (I-D) GP1-R 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC AZUL",
+            "marca": "DAYTONA",
+            "precio": 171,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -4506,16 +4406,6 @@
             "nombre": "MANIGUETA EMBRAGUE CON BASE GP1 250/TUNDRA VELOCE 250CC",
             "marca": "DAYTONA",
             "precio": 11,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CB200WF-095",
-            "codigo_referencia": "CB200WF-095",
-            "nombre": "PEDAL CAMBIOS WOLF/ADV200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190",
-            "marca": "DAYTONA",
-            "precio": 16,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -4786,16 +4676,6 @@
             "nombre": "CUBRE MANO TEKKEN",
             "marca": "DAYTONA",
             "precio": 29,
-            "categoria": "GENERAL",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "MSH003-FRC2",
-            "codigo_referencia": "MSH003-FRC2",
-            "nombre": "MONOSHOCK FORCE 200",
-            "marca": "DAYTONA",
-            "precio": 72,
             "categoria": "GENERAL",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -5176,6 +5056,96 @@
             "nombre": "VALVULA (AD315mm-ES27mm) PICO CORTO RE-250 TEKKEN/SCRAMBLER/ADV250/CROSSFIRE",
             "marca": "DAYTONA",
             "precio": 12,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250FRC-030",
+            "codigo_referencia": "FE250FRC-030",
+            "nombre": "TANQUE GASOLINA FEROCE 250CC",
+            "marca": "DAYTONA",
+            "precio": 114,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200PDT-023A",
+            "codigo_referencia": "CB200PDT-023A",
+            "nombre": "TANQUE GASOLINA PREDATOR 200 AZUL",
+            "marca": "DAYTONA",
+            "precio": 114,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-003P",
+            "codigo_referencia": "CB250SCB-003P",
+            "nombre": "TANQUE GASOLINA SCRAMBLER CLASICA/AXXO SCRAMBLER 250CC PLOMO",
+            "marca": "DAYTONA",
+            "precio": 95,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250SCB-081V",
+            "codigo_referencia": "CB250SCB-081V",
+            "nombre": "TANQUE GASOLINA SCRAMBLER REVOLUTION 250CC VERDE",
+            "marca": "DAYTONA",
+            "precio": 95,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150WRF-136B",
+            "codigo_referencia": "CG150WRF-136B",
+            "nombre": "TANQUE GASOLINA WORKFORCE/TH-B52 150CC BLANCO",
+            "marca": "DAYTONA",
+            "precio": 67,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CG150-163N",
+            "codigo_referencia": "CG150-163N",
+            "nombre": "TANQUE GASOLINA DELTA/IGM EC150/SK STIFF/AXXO AX150/TUKO H1 150CC NEGRO",
+            "marca": "DAYTONA",
+            "precio": 86,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250SC-068",
+            "codigo_referencia": "CB250SC-068",
+            "nombre": "TANQUE GASOLINA SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC",
+            "marca": "DAYTONA",
+            "precio": 80,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-095",
+            "codigo_referencia": "CB200WF-095",
+            "nombre": "PEDAL CAMBIOS WOLF/ADV200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190",
+            "marca": "DAYTONA",
+            "precio": 16,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CAT-1625",
+            "codigo_referencia": "CAT-1625",
+            "nombre": "CATALINA DAYTONA DY200 WOLF /HONDA CB190R /RANGER CFZ250 428H 45T BOST",
+            "marca": "BOST",
+            "precio": 8,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
