@@ -79,8 +79,8 @@ export default function App() {
 
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
   
-  // CAMBIO CLAVE: Reducimos el tiempo de espera a 50ms para que se sienta INSTANTÁNEO
-  const busquedaDebounced = useDebounce(busqueda, 50);
+  // CAMBIO CLAVE: Aumentamos el tiempo a 250ms para no saturar el hilo principal filtrando más de 4000 items repetidas veces mientras se tipea
+  const busquedaDebounced = useDebounce(busqueda, 250);
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -356,6 +356,7 @@ export default function App() {
       <ProductDetailModal 
         product={selectedProduct} 
         allProducts={productos}         
+        currentList={location.pathname === '/favoritos' ? productosFavoritos : filteredProducts}
         onClose={handleCloseModal} 
         onSelectRelated={handleProductClick}
       />

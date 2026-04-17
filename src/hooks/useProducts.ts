@@ -25,43 +25,55 @@ const generarIdDeterministico = (p: any) => {
   }
 };
 
+const CACHE_KEY = 'cached_products_v4';
+const CACHE_TIME_KEY = 'cached_products_time';
+const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
+const FRESH_CACHE_TIME = 1000 * 60 * 15; // 15 minutos
+
 export const useProducts = () => {
-  const [productos, setProductos] = useState<Producto[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [productos, setProductos] = useState<Producto[]>(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const cachedData = localStorage.getItem(CACHE_KEY);
+        const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+        if (cachedData && cachedTime) {
+          const age = Date.now() - parseInt(cachedTime);
+          // Si es válido (menos de 24h), lo inicializamos directamente sin flash de carga
+          if (age < CACHE_DURATION * 24) {
+             return JSON.parse(cachedData);
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('Error leyendo caché inicial', e);
+    }
+    return [];
+  });
+  
+  // Si ya tenemos productos del caché síncrono, loading empieza en false.
+  const [loading, setLoading] = useState(() => productos.length === 0);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let retryCount = 0;
     const MAX_RETRIES = 3;
-    const CACHE_KEY = 'cached_products_v4';
-    const CACHE_TIME_KEY = 'cached_products_time';
-    const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
 
     // 1. CARGA INICIAL DESDE CACHÉ (Estrategia: Cache-First con TTL corto, luego Stale-While-Revalidate)
     let shouldUseCache = false;
     try {
-      const cachedData = localStorage.getItem(CACHE_KEY);
-      const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
-
-      if (cachedData && cachedTime) {
-        const age = Date.now() - parseInt(cachedTime);
-        // Si el caché tiene menos de 15 minutos, lo consideramos FRESCO y no recargamos de red
-        const FRESH_CACHE_TIME = 1000 * 60 * 15;
-
-        if (age < FRESH_CACHE_TIME) {
-          setProductos(JSON.parse(cachedData));
-          setLoading(false);
-          shouldUseCache = true;
-          console.log('⚡ Usando caché fresco, omitiendo red');
-          return; // <--- SALIR AQUÍ PARA EVITAR FETCH
-        } else if (age < CACHE_DURATION * 24) {
-          // Si es viejo pero válido (menos de 24h), lo mostramos "mientras" actualizamos (Stale-While-Revalidate)
-          setProductos(JSON.parse(cachedData));
-          setLoading(false);
+      if (productos.length > 0) {
+        const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+        if (cachedTime) {
+          const age = Date.now() - parseInt(cachedTime);
+          if (age < FRESH_CACHE_TIME) {
+            shouldUseCache = true;
+            console.log('⚡ Usando caché fresco, omitiendo red');
+            return; // <--- SALIR AQUÍ PARA EVITAR FETCH
+          }
         }
       }
     } catch (e) {
-      console.warn('Error leyendo caché local', e);
+      console.warn('Error validando edad de caché', e);
     }
 
     const fetchProducts = async (): Promise<void> => {

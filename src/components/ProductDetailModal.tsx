@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from 'react';
-import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { Producto } from '../types';
@@ -12,19 +12,65 @@ import { LazyImage } from './LazyImage';
 interface Props {
   product: Producto | null;
   allProducts: Producto[];
+  currentList?: Producto[];
   onClose: () => void;
   onSelectRelated: (p: Producto) => void;
 }
 
-export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRelated }: Props) => {
+export const ProductDetailModal = ({ product, allProducts, currentList, onClose, onSelectRelated }: Props) => {
   const { addToCart } = useCart();
   
-  // Cerrar con ESC
+  // Navegación (Siguiente / Anterior)
+  const currentIndex = currentList?.findIndex(p => p.id === product?.id) ?? -1;
+  const hasPrev = currentIndex > 0;
+  const hasNext = Boolean(currentList && currentIndex >= 0 && currentIndex < currentList.length - 1);
+
+  const navigateTo = (direction: 1 | -1) => {
+    if (!currentList) return;
+    const nextIdx = currentIndex + direction;
+    if (nextIdx >= 0 && nextIdx < currentList.length) {
+      onSelectRelated(currentList[nextIdx]);
+    }
+  };
+
+  // Teclado (ESC y Flechas)
   useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [onClose]);
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowLeft' && hasPrev) navigateTo(-1);
+      if (e.key === 'ArrowRight' && hasNext) navigateTo(1);
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [onClose, hasPrev, hasNext, currentIndex]);
+
+  // Touch para móvil (Swipe)
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    if (e.targetTouches.length === 1) {
+      setTouchEnd(null);
+      setTouchStart(e.targetTouches[0].clientX);
+    }
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (e.targetTouches.length === 1) {
+      setTouchEnd(e.targetTouches[0].clientX);
+    }
+  };
+
+  const onTouchEndHandler = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    if (isLeftSwipe && hasNext) navigateTo(1);
+    if (isRightSwipe && hasPrev) navigateTo(-1);
+  };
 
   // Bloquear scroll del body
   useEffect(() => {
@@ -90,6 +136,9 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
           // CLAVE DESKTOP: Ancho máximo más generoso para mostrar bien la imagen 1024x535
           className="relative w-full h-full md:h-auto md:max-h-[95vh] md:max-w-6xl lg:max-w-7xl bg-white dark:bg-[#1a202c] md:rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           onClick={(e) => e.stopPropagation()} 
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEndHandler}
         >
             
             {/* Botón Cerrar: Ajustado para respetar el Notch/Safe Region en móviles */}
@@ -107,6 +156,25 @@ export const ProductDetailModal = ({ product, allProducts, onClose, onSelectRela
               
               {/* COLUMNA 1: IMAGEN - Mayor en desktop para mejor visualización */}
               <div className="w-full md:w-7/12 lg:w-3/5 bg-gray-50 dark:bg-slate-800 relative border-b md:border-b-0 md:border-r border-gray-100 dark:border-slate-700 shrink-0">
+                 
+                 {/* Controles de Navegación Desktop */}
+                 {hasPrev && (
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); navigateTo(-1); }}
+                      className="hidden md:flex absolute top-1/2 left-3 -translate-y-1/2 z-20 w-11 h-11 bg-white/70 hover:bg-white backdrop-blur-sm rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.1)] items-center justify-center text-slate-800 transition-all hover:scale-110 active:scale-95"
+                    >
+                       <ChevronLeft size={28} strokeWidth={2.5} />
+                    </button>
+                 )}
+                 {hasNext && (
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); navigateTo(1); }}
+                      className="hidden md:flex absolute top-1/2 right-3 -translate-y-1/2 z-20 w-11 h-11 bg-white/70 hover:bg-white backdrop-blur-sm rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.1)] items-center justify-center text-slate-800 transition-all hover:scale-110 active:scale-95"
+                    >
+                       <ChevronRight size={28} strokeWidth={2.5} />
+                    </button>
+                 )}
+
                  {/* Aspect Ratio 1024/535 en móvil, Full Height en Desktop */}
                  <div className="w-full aspect-[1024/535] md:aspect-auto md:h-full relative group bg-white dark:bg-slate-900">
                    <ImageZoom 
