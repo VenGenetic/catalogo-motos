@@ -9,6 +9,12 @@ interface ImageZoomProps {
 
 export const ImageZoom = ({ src, alt, className }: ImageZoomProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
+  // Reiniciar estado de error si la imagen origen cambia (ej. al deslizar productos)
+  useEffect(() => {
+    setHasError(false);
+  }, [src]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -48,11 +54,12 @@ export const ImageZoom = ({ src, alt, className }: ImageZoomProps) => {
         onClick={openModal}
       >
         <img
-          src={src}
-          alt={alt}
+          src={hasError ? '/sin_imagen.webp' : src}
+          alt={hasError ? 'Sin imagen' : alt}
           className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
           draggable={false}
+          onError={() => setHasError(true)}
         />
 
         {/* Overlay con icono de zoom */}
@@ -80,11 +87,12 @@ export const ImageZoom = ({ src, alt, className }: ImageZoomProps) => {
           {/* Imagen en pantalla completa - Optimizada para el aspecto ratio 1024x535 */}
           <div className="w-full h-full max-w-6xl max-h-[95vh] p-2 md:p-4 flex items-center justify-center">
             <img
-              src={src}
-              alt={alt}
+              src={hasError ? '/sin_imagen.webp' : src}
+              alt={hasError ? 'Sin imagen' : alt}
               className="w-full h-full object-contain animate-fade-in"
               onClick={(e) => e.stopPropagation()}
               draggable={false}
+              onError={() => setHasError(true)}
             />
           </div>
 
