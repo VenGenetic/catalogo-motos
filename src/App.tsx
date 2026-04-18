@@ -1,5 +1,4 @@
 import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react';
-import Fuse from 'fuse.js';
 import { Routes, Route, useSearchParams, Link, useLocation, useNavigate, matchPath } from 'react-router-dom';
 import { Heart, WifiOff } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
@@ -142,101 +141,112 @@ export default function App() {
     return Array.from(expandidos);
   }, []);
 
+  // Función Custom ultra rápida de Fuzzy Matching para tolerar "dedos gordos" (1 error tipográfico)
+  const isFuzzyMatch = useCallback((text: string, term: string): boolean => {
+    if (text.includes(term)) return true;
+    if (term.length <= 3) return false; 
+    const words = text.split(/[\s-]+/);
+    for (const w of words) {
+      if (Math.abs(w.length - term.length) <= 1) {
+        let mismatches = 0;
+        let i = 0, j = 0;
+        while (i < term.length && j < w.length) {
+          if (term[i] !== w[j]) {
+             mismatches++;
+             if (mismatches > 1) break; 
+             if (term[i+1] === w[j]) i++;
+             else if (term[i] === w[j+1]) j++;
+             else { i++; j++; }
+          } else {
+             i++; j++;
+          }
+        }
+        if (mismatches <= 1) return true;
+      }
+    }
+    return false;
+  }, []);
+
   const filteredProducts = useMemo(() => {
     if (!busquedaDebounced && filtroSeccion === 'Todos' && !filtroModelo) return productos;
 
-    // 1. Filtrado Duro (Sección y Modelo no negocian, deben ser exactos)
-    let prefiltrados = productos;
-    if (filtroSeccion !== 'Todos' || filtroModelo) {
-      prefiltrados = productos.filter((p) => {
+    const calcularRelevancia = (producto: Producto, terminos: string[]): number => {
+      const textoBusqueda = (producto.textoBusqueda || '').toLowerCase();
+      const nombre = producto.nombre.toLowerCase();
+      const codigo = producto.codigo_referencia?.toLowerCase() || '';
+      const categoria = (producto.categoria || '').toLowerCase();
+      let puntuacion = 0;
+
+      const terminosExpandidos = expandirTerminos(terminos);
+
+      if (busquedaDebounced.includes('"')) {
+        const match = busquedaDebounced.match(/"([^"]+)"/);
+        if (match && codigo.includes(match[1].toLowerCase())) {
+          return 1000;
+        }
+      }
+      
+      let terminosEncontrados = 0;
+
+      for (const termino of [...terminos, ...terminosExpandidos]) {
+        const terminoLower = termino.toLowerCase();
+        let encontro = false;
+
+        if (codigo.includes(terminoLower)) { puntuacion += 100; encontro = true; }
+        else if (isFuzzyMatch(codigo, terminoLower)) { puntuacion += 80; encontro = true; }
+        
+        if (nombre.startsWith(terminoLower)) { puntuacion += 50; encontro = true; }
+        else if (nombre.includes(terminoLower)) { puntuacion += 30; encontro = true; }
+        else if (isFuzzyMatch(nombre, terminoLower)) { puntuacion += 20; encontro = true; }
+
+        if (categoria.includes(terminoLower)) { puntuacion += 15; encontro = true; }
+
+        if (textoBusqueda.includes(terminoLower)) { puntuacion += 5; encontro = true; }
+
+        if (encontro) terminosEncontrados++;
+      }
+
+      // Requisito dinámico: Si el usuario busca 2 palabras, idealmente las 2 (o sus sinónimos) deben existir.
+      // Castigamos brutalmente los productos que no tienen todas las palabras clave originales.
+      if (terminosEncontrados < terminos.length) {
+         puntuacion = puntuacion / 4; 
+      }
+
+      if (producto.stock === false) {
+        puntuacion *= 0.5;
+      }
+
+      return puntuacion;
+    };
+
+    const terminos = busquedaDebounced ? limpiarTexto(busquedaDebounced).split(' ').filter(t => t.length > 0) : [];
+
+    const productosConPuntuacion = productos
+      .filter((p) => {
         if (!p.precio) return false;
         if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
         if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
-        return true;
-      });
-    }
 
-    if (!busquedaDebounced) return prefiltrados;
-
-    const busquedaLimpia = limpiarTexto(busquedaDebounced).trim();
-    if (!busquedaLimpia) return prefiltrados;
-
-    // 2. Extraer caso de búsqueda estricta ("codigo")
-    let isExactMatch = false;
-    let textoCortado = busquedaLimpia;
-    if (busquedaDebounced.includes('"')) {
-      const match = busquedaDebounced.match(/"([^"]+)"/);
-      if (match) {
-        isExactMatch = true;
-        textoCortado = match[1].toLowerCase();
-      }
-    }
-
-    if (isExactMatch) {
-       return prefiltrados.filter(p => 
-         p.codigo_referencia?.toLowerCase().includes(textoCortado) || p.nombre.toLowerCase().includes(textoCortado)
-       );
-    }
-
-    // 3. Configuración del Núcleo Fuse.js (Fuzzy Matcher)
-    const fuseConfig = {
-      keys: [
-        { name: 'codigo_referencia', weight: 0.5 }, // 50% impacto
-        { name: 'nombre', weight: 0.3 },            // 30% impacto
-        { name: 'textoBusqueda', weight: 0.1 },     // 10% impacto
-        { name: 'categoria', weight: 0.1 }          // 10% impacto
-      ],
-      threshold: 0.35, // Tolerancia a typos (0.35 = 35% de error en letras permitido)
-      ignoreLocation: true,
-      includeScore: true,  
-    };
-
-    const fuse = new Fuse(prefiltrados, fuseConfig);
-
-    // Búsqueda base
-    let resultados = fuse.search(busquedaLimpia);
-
-    // Integrar el motor de sinónimos (Si "busquedaLimpia" contenía una palabra clave)
-    const terminosOriginales = busquedaLimpia.split(' ');
-    const terminosExpandidos = expandirTerminos(terminosOriginales);
-    const nuevosTerminos = terminosExpandidos.filter(t => !terminosOriginales.includes(t));
-
-    // Si encontramos "Sinónimos" (ej. puso neumático y el sinónimo es llanta), 
-    // buscamos individualmente ese sinónimo y lo adjuntamos a los resultados
-    const mIds = new Set(resultados.map(r => r.item.id));
-    
-    if (nuevosTerminos.length > 0) {
-      if (nuevosTerminos.length < 5) { // Precaución de optimización
-        for (const nt of nuevosTerminos) {
-          const resAdicionales = fuse.search(nt);
-          for (const res of resAdicionales) {
-            if (!mIds.has(res.item.id)) {
-              // Castigamos levemente el score porque es una coincidencia indirecta (menor score es mejor en Fuse, 0 = perfecto)
-              if (res.score !== undefined) {
-                 res.score = res.score + 0.15; 
-              }
-              resultados.push(res);
-              mIds.add(res.item.id);
-            }
-          }
+        if (terminos.length > 0) {
+          const puntuacion = calcularRelevancia(p, terminos);
+          return puntuacion > 2; // Filtro mínimo
         }
-      }
-    }
 
-    // Ordenar y castigar stock false (en Fuse menor score es MEJOR)
-    resultados.sort((a, b) => {
-       const scoreA = a.score || 0;
-       const scoreB = b.score || 0;
-       
-       // Penalización si no hay stock (+0.5 al score)
-       const finalA = a.item.stock ? scoreA : scoreA + 0.5;
-       const finalB = b.item.stock ? scoreB : scoreB + 0.5;
+        return true;
+      })
+      .map((p) => ({
+        ...p,
+        relevancia: terminos.length > 0 ? calcularRelevancia(p, terminos) : 0
+      }))
+      .sort((a, b) => {
+        if (terminos.length > 0) {
+          return b.relevancia - a.relevancia;
+        }
+        return 0;
+      });
 
-       return finalA - finalB;
-    });
-
-    return resultados.map(r => r.item);
-  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo, expandirTerminos]);
+    return productosConPuntuacion;
+  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo, expandirTerminos, isFuzzyMatch]);
 
   const handleProductClick = useCallback((p: Producto) => {
     setSearchParams((prev: URLSearchParams) => { prev.set('prod', p.id); return prev; });
