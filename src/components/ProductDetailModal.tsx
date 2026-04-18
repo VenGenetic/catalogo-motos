@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info, ChevronLeft, ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { Producto } from '../types';
 import { useCart } from '../context/CartContext';
@@ -44,33 +44,37 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
     return () => window.removeEventListener('keydown', handleKey);
   }, [onClose, hasPrev, hasNext, currentIndex]);
 
-  // Touch para móvil (Swipe)
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  
-  const minSwipeDistance = 50;
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    if (e.targetTouches.length === 1) {
-      setTouchEnd(null);
-      setTouchStart(e.targetTouches[0].clientX);
+  const handleDragEnd = (_: any, info: PanInfo) => {
+    const swipeThreshold = 50;
+    if (info.offset.x > swipeThreshold && hasPrev) {
+      navigateTo(-1);
+      setShowSwipeHint(false); // Ocultar el texto si ya entendió
+    } else if (info.offset.x < -swipeThreshold && hasNext) {
+      navigateTo(1);
+      setShowSwipeHint(false);
     }
   };
 
-  const onTouchMove = (e: React.TouchEvent) => {
-    if (e.targetTouches.length === 1) {
-      setTouchEnd(e.targetTouches[0].clientX);
+  // Precarga Predictiva (Evita pantalla blanca al deslizar rápido)
+  useEffect(() => {
+    if (!currentList) return;
+    
+    if (hasNext) {
+       const nextImg = new Image();
+       nextImg.src = optimizarImg(currentList[currentIndex + 1].imagen);
     }
-  };
+    if (hasPrev) {
+       const prevImg = new Image();
+       prevImg.src = optimizarImg(currentList[currentIndex - 1].imagen);
+    }
+  }, [currentIndex, currentList, hasNext, hasPrev]);
 
-  const onTouchEndHandler = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
-    if (isLeftSwipe && hasNext) navigateTo(1);
-    if (isRightSwipe && hasPrev) navigateTo(-1);
-  };
+  // Indicador de "Onboarding" táctil
+  const [showSwipeHint, setShowSwipeHint] = useState(true);
+  useEffect(() => {
+    const t = setTimeout(() => setShowSwipeHint(false), 3500);
+    return () => clearTimeout(t);
+  }, [product?.id]); // Restart hint if they change products, but honestly best only once. Let's keep it simple.
 
   // Bloquear scroll del body
   useEffect(() => {
@@ -136,10 +140,27 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
           // CLAVE DESKTOP: Ancho máximo más generoso para mostrar bien la imagen 1024x535
           className="relative w-full h-full md:h-auto md:max-h-[95vh] md:max-w-6xl lg:max-w-7xl bg-white dark:bg-[#1a202c] md:rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           onClick={(e) => e.stopPropagation()} 
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEndHandler}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.4}
+          onDragEnd={handleDragEnd}
         >
+            
+            {/* Visual Hint / Onboarding Móvil */}
+            <AnimatePresence>
+              {showSwipeHint && (hasNext || hasPrev) && (
+                <motion.div 
+                   initial={{ opacity: 0, y: 10, scale: 0.9 }} 
+                   animate={{ opacity: 1, y: 0, scale: 1 }} 
+                   exit={{ opacity: 0, scale: 0.8 }} 
+                   className="md:hidden absolute top-[40%] left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-md text-white text-xs px-5 py-2.5 rounded-full font-bold tracking-wide pointer-events-none z-[110] flex items-center gap-2 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+                 >
+                   {hasPrev && <ChevronLeft size={16} strokeWidth={3} className="opacity-80" />}
+                   Desliza para explorar
+                   {hasNext && <ChevronRight size={16} strokeWidth={3} className="opacity-80" />}
+                </motion.div>
+              )}
+            </AnimatePresence>
             
             {/* Botón Cerrar: Ajustado para respetar el Notch/Safe Region en móviles */}
             <div className="absolute top-0 right-0 p-3 z-30 pt-[calc(0.75rem+env(safe-area-inset-top))]">

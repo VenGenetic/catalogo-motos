@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react';
+import Fuse from 'fuse.js';
 import { Routes, Route, useSearchParams, Link, useLocation, useNavigate, matchPath } from 'react-router-dom';
 import { Heart, WifiOff } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
@@ -144,71 +145,97 @@ export default function App() {
   const filteredProducts = useMemo(() => {
     if (!busquedaDebounced && filtroSeccion === 'Todos' && !filtroModelo) return productos;
 
-    const calcularRelevancia = (producto: Producto, terminos: string[]): number => {
-      if (!producto.textoBusqueda) return 0;
-
-      const textoBusqueda = producto.textoBusqueda.toLowerCase();
-      const nombre = producto.nombre.toLowerCase();
-      const codigo = producto.codigo_referencia?.toLowerCase() || '';
-      let puntuacion = 0;
-
-      const terminosExpandidos = expandirTerminos(terminos);
-
-      if (busquedaDebounced.includes('"')) {
-        const match = busquedaDebounced.match(/"([^"]+)"/);
-        if (match && codigo.includes(match[1].toLowerCase())) {
-          return 1000;
-        }
-      }
-
-      for (const termino of [...terminos, ...terminosExpandidos]) {
-        const terminoLower = termino.toLowerCase();
-
-        if (codigo.includes(terminoLower)) puntuacion += 50;
-        if (nombre.startsWith(terminoLower)) puntuacion += 30;
-        if (nombre.includes(terminoLower)) puntuacion += 20;
-        if (textoBusqueda.includes(terminoLower)) puntuacion += 10;
-
-        const posicion = textoBusqueda.indexOf(terminoLower);
-        if (posicion >= 0) {
-          puntuacion += Math.max(0, 10 - Math.floor(posicion / 10));
-        }
-      }
-
-      if (producto.stock === false) {
-        puntuacion *= 0.7;
-      }
-
-      return puntuacion;
-    };
-
-    const terminos = busquedaDebounced ? limpiarTexto(busquedaDebounced).split(' ').filter(t => t.length > 0) : [];
-
-    const productosConPuntuacion = productos
-      .filter((p) => {
+    // 1. Filtrado Duro (Sección y Modelo no negocian, deben ser exactos)
+    let prefiltrados = productos;
+    if (filtroSeccion !== 'Todos' || filtroModelo) {
+      prefiltrados = productos.filter((p) => {
         if (!p.precio) return false;
         if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
         if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
-
-        if (terminos.length > 0) {
-          const puntuacion = calcularRelevancia(p, terminos);
-          return puntuacion > 3;
-        }
-
         return true;
-      })
-      .map((p) => ({
-        ...p,
-        relevancia: terminos.length > 0 ? calcularRelevancia(p, terminos) : 0
-      }))
-      .sort((a, b) => {
-        if (terminos.length > 0) {
-          return b.relevancia - a.relevancia;
-        }
-        return 0;
       });
+    }
 
-    return productosConPuntuacion;
+    if (!busquedaDebounced) return prefiltrados;
+
+    const busquedaLimpia = limpiarTexto(busquedaDebounced).trim();
+    if (!busquedaLimpia) return prefiltrados;
+
+    // 2. Extraer caso de búsqueda estricta ("codigo")
+    let isExactMatch = false;
+    let textoCortado = busquedaLimpia;
+    if (busquedaDebounced.includes('"')) {
+      const match = busquedaDebounced.match(/"([^"]+)"/);
+      if (match) {
+        isExactMatch = true;
+        textoCortado = match[1].toLowerCase();
+      }
+    }
+
+    if (isExactMatch) {
+       return prefiltrados.filter(p => 
+         p.codigo_referencia?.toLowerCase().includes(textoCortado) || p.nombre.toLowerCase().includes(textoCortado)
+       );
+    }
+
+    // 3. Configuración del Núcleo Fuse.js (Fuzzy Matcher)
+    const fuseConfig = {
+      keys: [
+        { name: 'codigo_referencia', weight: 0.5 }, // 50% impacto
+        { name: 'nombre', weight: 0.3 },            // 30% impacto
+        { name: 'textoBusqueda', weight: 0.1 },     // 10% impacto
+        { name: 'categoria', weight: 0.1 }          // 10% impacto
+      ],
+      threshold: 0.35, // Tolerancia a typos (0.35 = 35% de error en letras permitido)
+      ignoreLocation: true,
+      includeScore: true,  
+    };
+
+    const fuse = new Fuse(prefiltrados, fuseConfig);
+
+    // Búsqueda base
+    let resultados = fuse.search(busquedaLimpia);
+
+    // Integrar el motor de sinónimos (Si "busquedaLimpia" contenía una palabra clave)
+    const terminosOriginales = busquedaLimpia.split(' ');
+    const terminosExpandidos = expandirTerminos(terminosOriginales);
+    const nuevosTerminos = terminosExpandidos.filter(t => !terminosOriginales.includes(t));
+
+    // Si encontramos "Sinónimos" (ej. puso neumático y el sinónimo es llanta), 
+    // buscamos individualmente ese sinónimo y lo adjuntamos a los resultados
+    const mIds = new Set(resultados.map(r => r.item.id));
+    
+    if (nuevosTerminos.length > 0) {
+      if (nuevosTerminos.length < 5) { // Precaución de optimización
+        for (const nt of nuevosTerminos) {
+          const resAdicionales = fuse.search(nt);
+          for (const res of resAdicionales) {
+            if (!mIds.has(res.item.id)) {
+              // Castigamos levemente el score porque es una coincidencia indirecta (menor score es mejor en Fuse, 0 = perfecto)
+              if (res.score !== undefined) {
+                 res.score = res.score + 0.15; 
+              }
+              resultados.push(res);
+              mIds.add(res.item.id);
+            }
+          }
+        }
+      }
+    }
+
+    // Ordenar y castigar stock false (en Fuse menor score es MEJOR)
+    resultados.sort((a, b) => {
+       const scoreA = a.score || 0;
+       const scoreB = b.score || 0;
+       
+       // Penalización si no hay stock (+0.5 al score)
+       const finalA = a.item.stock ? scoreA : scoreA + 0.5;
+       const finalB = b.item.stock ? scoreB : scoreB + 0.5;
+
+       return finalA - finalB;
+    });
+
+    return resultados.map(r => r.item);
   }, [productos, busquedaDebounced, filtroSeccion, filtroModelo, expandirTerminos]);
 
   const handleProductClick = useCallback((p: Producto) => {
