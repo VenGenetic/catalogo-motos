@@ -121,10 +121,11 @@ export default function App() {
       'escape': ['escape', 'silenciador', 'tubo', 'caño'],
       'motor': ['motor', 'cilindro', 'cilindros', 'piston', 'pistones'],
       'clutch': ['clutch', 'embrague', 'clutches'],
-      'velocimetro': ['velocímetro', 'velocimetros', 'instrumentos', 'panel'],
+      'velocimetro': ['velocímetro', 'velocimetros', 'instrumentos', 'panel', 'tablero', 'tacometro', 'tacómetro'],
       'carburador': ['carburador', 'carburadores', 'inyección', 'inyector'],
       'arranque': ['arranque', 'starter', 'partida'],
-      'electrico': ['eléctrico', 'eléctrica', 'eléctricos', 'eléctricas', 'electricidad']
+      'electrico': ['eléctrico', 'eléctrica', 'eléctricos', 'eléctricas', 'electricidad'],
+      'telescopica': ['telescopicas', 'telescópica', 'telescópicas', 'barra', 'barras', 'suspensión delantera', 'telescopio']
     };
 
     const expandidos = new Set<string>();
@@ -133,6 +134,7 @@ export default function App() {
       expandidos.add(termino);
       Object.entries(sinonimos).forEach(([clave, valores]) => {
         if (clave.includes(termino) || valores.some(v => v.includes(termino))) {
+          expandidos.add(clave); // Añadimos la clave original para búsquedas bidireccionales
           valores.forEach(sinonimo => expandidos.add(sinonimo));
         }
       });
