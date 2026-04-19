@@ -6,8 +6,8 @@ import './App.css';
 import { limpiarTexto } from './utils/helpers';
 import { APP_CONFIG } from './config/constants';
 import { Navbar } from './components/Navbar';
-import { HomeView } from './components/HomeView'; 
-import { WhatsAppButton } from './components/WhatsAppButton'; 
+import { HomeView } from './components/HomeView';
+import { WhatsAppButton } from './components/WhatsAppButton';
 
 // Carga Diferida (Lazy Loading)
 const CatalogView = lazy(() => import('./components/CatalogView').then(module => ({ default: module.CatalogView })));
@@ -39,19 +39,19 @@ export default function App() {
   const { productos, loading } = useProducts();
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   // Derivamos el producto seleccionado de la URL
   const prodId = searchParams.get('prod');
-  const selectedProduct = useMemo(() => 
+  const selectedProduct = useMemo(() =>
     prodId ? productos.find(p => p.id === prodId) || null : null
-  , [productos, prodId]);
+    , [productos, prodId]);
 
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  
+
   const [favs, setFavs] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
   });
-  
+
   const [busqueda, setBusqueda] = useState('');
 
   // Lógica de URL para el modelo
@@ -78,7 +78,7 @@ export default function App() {
   }, [navigate]);
 
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
-  
+
   // CAMBIO CLAVE: Aumentamos el tiempo a 250ms para no saturar el hilo principal filtrando más de 4000 items repetidas veces mientras se tipea
   const busquedaDebounced = useDebounce(busqueda, 250);
 
@@ -115,7 +115,7 @@ export default function App() {
       'aceite': ['aceite', 'lubricante', 'motor oil'],
       'bateria': ['batería', 'baterías', 'acumulador'],
       'cadena': ['cadena', 'transmisión', 'piñón'],
-      'amortiguador': ['amortiguadores', 'suspensión', 'shock'],
+      'amortiguador': ['amortiguadores', 'suspensión', 'monoshock'],
       'llanta': ['llantas', 'neumático', 'neumáticos', 'rueda', 'ruedas'],
       'faro': ['faros', 'luz', 'luces', 'farola'],
       'escape': ['escape', 'silenciador', 'tubo', 'caño'],
@@ -125,7 +125,13 @@ export default function App() {
       'carburador': ['carburador', 'carburadores', 'inyección', 'inyector'],
       'arranque': ['arranque', 'starter', 'partida'],
       'electrico': ['eléctrico', 'eléctrica', 'eléctricos', 'eléctricas', 'electricidad'],
-      'telescopica': ['telescopicas', 'telescópica', 'telescópicas', 'barra', 'barras', 'suspensión delantera', 'telescopio']
+      'telescopica': ['telescopicas', 'telescópica', 'telescópicas', 'barra', 'barras', 'suspensión delantera', 'telescopio', 'amortiguadores delanteros'],
+      'monoshock': ['monoshock', 'monoshocks', 'amortiguador trasero', 'suspensión trasera', 'amortiguador', 'suspensión'],
+      'kit run y luces': ['kit run y luces', 'kit run', 'kit luces', 'run y luces', 'run', 'luces', 'mandos', 'cerebro', 'cerebros'],
+      'instalacion electrica': ['arnes', 'cableado', 'instalacion electrica'],
+      'mesa': ['mesa', 'mesas', 'araña', 'arañas', 'castillo'],
+      'kit traccion': ['kit arrastre', 'kit traccion', 'kit tracción', 'arrastre'],
+      'bujia': ['bujia', 'bujias', 'bujías', 'bujías'],
     };
 
     const expandidos = new Set<string>();
@@ -146,7 +152,7 @@ export default function App() {
   // Función Custom ultra rápida de Fuzzy Matching para tolerar "dedos gordos" (1 error tipográfico)
   const isFuzzyMatch = useCallback((text: string, term: string): boolean => {
     if (text.includes(term)) return true;
-    if (term.length <= 3) return false; 
+    if (term.length <= 3) return false;
     const words = text.split(/[\s-]+/);
     for (const w of words) {
       if (Math.abs(w.length - term.length) <= 1) {
@@ -154,13 +160,13 @@ export default function App() {
         let i = 0, j = 0;
         while (i < term.length && j < w.length) {
           if (term[i] !== w[j]) {
-             mismatches++;
-             if (mismatches > 1) break; 
-             if (term[i+1] === w[j]) i++;
-             else if (term[i] === w[j+1]) j++;
-             else { i++; j++; }
+            mismatches++;
+            if (mismatches > 1) break;
+            if (term[i + 1] === w[j]) i++;
+            else if (term[i] === w[j + 1]) j++;
+            else { i++; j++; }
           } else {
-             i++; j++;
+            i++; j++;
           }
         }
         if (mismatches <= 1) return true;
@@ -187,7 +193,7 @@ export default function App() {
           return 1000;
         }
       }
-      
+
       let terminosEncontrados = 0;
 
       for (const termino of [...terminos, ...terminosExpandidos]) {
@@ -196,7 +202,7 @@ export default function App() {
 
         if (codigo.includes(terminoLower)) { puntuacion += 100; encontro = true; }
         else if (isFuzzyMatch(codigo, terminoLower)) { puntuacion += 80; encontro = true; }
-        
+
         if (nombre.startsWith(terminoLower)) { puntuacion += 50; encontro = true; }
         else if (nombre.includes(terminoLower)) { puntuacion += 30; encontro = true; }
         else if (isFuzzyMatch(nombre, terminoLower)) { puntuacion += 20; encontro = true; }
@@ -211,7 +217,7 @@ export default function App() {
       // Requisito dinámico: Si el usuario busca 2 palabras, idealmente las 2 (o sus sinónimos) deben existir.
       // Castigamos brutalmente los productos que no tienen todas las palabras clave originales.
       if (terminosEncontrados < terminos.length) {
-         puntuacion = puntuacion / 4; 
+        puntuacion = puntuacion / 4;
       }
 
       if (producto.stock === false) {
@@ -294,38 +300,38 @@ export default function App() {
                 <HomeView productos={productos} />
               </>
             } />
-            
+
             <Route path="/catalogo" element={
               <>
                 <Helmet><title>Catálogo | LV PARTS</title></Helmet>
-                <CatalogView 
+                <CatalogView
                   productos={filteredProducts}
-                  isFav={(id) => favs.includes(id)} 
+                  isFav={(id) => favs.includes(id)}
                   toggleFav={toggleFav}
-                  filtroModelo={filtroModelo} 
+                  filtroModelo={filtroModelo}
                   setFiltroModelo={handleSetFiltroModelo}
                   busqueda={busqueda}
                   setBusqueda={setBusqueda}
-                  filtroSeccion={filtroSeccion} 
+                  filtroSeccion={filtroSeccion}
                   setFiltroSeccion={setFiltroSeccion}
-                  onProductClick={handleProductClick} 
+                  onProductClick={handleProductClick}
                 />
               </>
             } />
             <Route path="/catalogo/:modelo" element={
               <>
                 <Helmet><title>{filtroModelo ? `Repuestos ${filtroModelo}` : 'Catálogo'} | LV PARTS</title></Helmet>
-                <CatalogView 
+                <CatalogView
                   productos={filteredProducts}
-                  isFav={(id) => favs.includes(id)} 
+                  isFav={(id) => favs.includes(id)}
                   toggleFav={toggleFav}
-                  filtroModelo={filtroModelo} 
+                  filtroModelo={filtroModelo}
                   setFiltroModelo={handleSetFiltroModelo}
                   busqueda={busqueda}
                   setBusqueda={setBusqueda}
-                  filtroSeccion={filtroSeccion} 
+                  filtroSeccion={filtroSeccion}
                   setFiltroSeccion={setFiltroSeccion}
-                  onProductClick={handleProductClick} 
+                  onProductClick={handleProductClick}
                 />
               </>
             } />
@@ -340,17 +346,17 @@ export default function App() {
                         <Heart className="text-red-600 fill-current" /> Mis Favoritos
                       </h2>
                     </div>
-                    <CatalogView 
+                    <CatalogView
                       productos={productosFavoritos}
-                      isFav={(id) => favs.includes(id)} 
+                      isFav={(id) => favs.includes(id)}
                       toggleFav={toggleFav}
-                      filtroModelo={filtroModelo} 
+                      filtroModelo={filtroModelo}
                       setFiltroModelo={setFiltroModelo}
-                      busqueda={busqueda} 
+                      busqueda={busqueda}
                       setBusqueda={setBusqueda}
-                      filtroSeccion={filtroSeccion} 
+                      filtroSeccion={filtroSeccion}
                       setFiltroSeccion={setFiltroSeccion}
-                      onProductClick={handleProductClick} 
+                      onProductClick={handleProductClick}
                     />
                   </div>
                 ) : (
@@ -369,9 +375,9 @@ export default function App() {
             <Route path="/contacto" element={<><Helmet><title>Contacto | LV PARTS</title></Helmet><ContactView /></>} />
             <Route path="*" element={
               <div className="flex flex-col items-center justify-center min-h-[60vh] p-4 text-center">
-                <img 
-                  src="/Error_404.webp" 
-                  alt="Error 404 - Página no encontrada" 
+                <img
+                  src="/Error_404.webp"
+                  alt="Error 404 - Página no encontrada"
                   className="max-w-xs md:max-w-md w-full mb-6 object-contain"
                 />
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
@@ -380,8 +386,8 @@ export default function App() {
                 <p className="text-gray-600 mb-6">
                   Lo sentimos, la página que buscas no existe.
                 </p>
-                <Link 
-                  to="/" 
+                <Link
+                  to="/"
                   className="bg-red-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-red-700 transition-colors shadow-md"
                 >
                   Volver al Inicio
@@ -391,17 +397,17 @@ export default function App() {
           </Routes>
         </Suspense>
       </main>
-      
-      <ProductDetailModal 
-        product={selectedProduct} 
-        allProducts={productos}         
+
+      <ProductDetailModal
+        product={selectedProduct}
+        allProducts={productos}
         currentList={location.pathname === '/favoritos' ? productosFavoritos : filteredProducts}
-        onClose={handleCloseModal} 
+        onClose={handleCloseModal}
         onSelectRelated={handleProductClick}
       />
       <CartDrawer />
       {/* Botón Flotante: Visible en todas las pantallas excepto al abrir un producto (ya tiene su propio botón) */}
-      <WhatsAppButton hideWhenModalOpen={!!selectedProduct} /> 
+      <WhatsAppButton hideWhenModalOpen={!!selectedProduct} />
       <ScrollToTopButton />
       <BottomNav />
       <Footer />
