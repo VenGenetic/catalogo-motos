@@ -219,15 +219,23 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
               {/* COLUMNA 2: INFO */}
               <div className="w-full md:w-5/12 lg:w-2/5 p-5 md:p-8 space-y-6 bg-white dark:bg-slate-900 overflow-y-auto">
                   <div>
-                    <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <span className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide border border-slate-200 dark:border-slate-700">
-                        {product.seccion}
-                      </span>
-                      {product.codigo_referencia && (
-                        <span className="text-xs text-slate-500 dark:text-slate-400 font-mono flex items-center gap-1 bg-gray-50 dark:bg-slate-800 px-2 py-1 rounded border border-gray-100 dark:border-slate-700">
-                          <Tag size={12} /> {product.codigo_referencia}
+                    <div className="flex items-center justify-between mb-2 gap-2">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide border border-slate-200 dark:border-slate-700">
+                          {product.seccion}
                         </span>
-                      )}
+                        {product.codigo_referencia && (
+                          <span className="text-xs text-slate-500 dark:text-slate-400 font-mono flex items-center gap-1 bg-gray-50 dark:bg-slate-800 px-2 py-1 rounded border border-gray-100 dark:border-slate-700">
+                            <Tag size={12} /> {product.codigo_referencia}
+                          </span>
+                        )}
+                      </div>
+                      
+                      {/* Logo LV PARTS a color original */}
+                      <div className="flex items-center gap-0.5 font-black text-[11px] md:text-sm tracking-tighter pointer-events-none select-none shrink-0">
+                        <span className="text-slate-900 dark:text-white">LV</span>
+                        <span className="text-red-600 italic">PARTS</span>
+                      </div>
                     </div>
                     <h2 className="text-xl md:text-2xl font-black text-gray-900 dark:text-white leading-snug">
                       {product.nombre}

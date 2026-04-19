@@ -187,10 +187,16 @@ export const CatalogView = memo(({
                   </div>
 
                   <div className="p-3 md:p-4 flex flex-col flex-grow relative z-10 bg-white dark:bg-slate-800">
-                    <div className="mb-1">
+                    <div className="mb-1 flex items-center justify-between gap-1">
                         <span className="inline-block px-1.5 py-0.5 rounded-md bg-gray-50 dark:bg-slate-700 text-gray-400 dark:text-gray-300 text-[9px] font-bold uppercase tracking-wide border border-gray-100 dark:border-slate-600">
                         {product.seccion}
                         </span>
+                        
+                        {/* Logo de LV PARTS integrado en la parte superior */}
+                        <div className="flex items-center gap-0.5 font-black text-[11px] tracking-tighter pointer-events-none select-none shrink-0">
+                          <span className="text-slate-900 dark:text-white">LV</span>
+                          <span className="text-red-600 italic">PARTS</span>
+                        </div>
                     </div>
 
                     {product.origenes?.length ? (
@@ -215,6 +221,7 @@ export const CatalogView = memo(({
                       <HighlightedText text={product.nombre} highlight={busqueda} />
                     </h3>
                     
+
                     <div className="mt-auto flex items-center justify-between">
                        <span className="text-sm md:text-lg font-extrabold text-gray-900 dark:text-white">
                          ${Number(product.precio).toFixed(2)}

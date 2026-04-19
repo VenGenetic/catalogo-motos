@@ -1,6 +1,7 @@
 // src/components/CartDrawer.tsx
 import { useState } from 'react';
-import { X, Minus, Plus, MessageCircle, User, ArrowRight, Check, FileText, Trash2, MapPin, Truck } from 'lucide-react';
+import { X, Minus, Plus, MessageCircle, User, ArrowRight, Check, FileText, Trash2, MapPin, Truck, Eye } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
 import { LazyImage } from './LazyImage';
@@ -14,6 +15,13 @@ export const CartDrawer = () => {
     updateQuantity, 
     cartTotal
   } = useCart();
+
+  const [, setSearchParams] = useSearchParams();
+
+  const handleOpenProduct = (id: string) => {
+    setSearchParams((prev) => { prev.set('prod', id); return prev; });
+    closeCart(); // Cerramos el carrito para permitir ver el modal cómodamente
+  };
 
   const [formData, setFormData] = useState({
     nombre: '',
@@ -167,16 +175,29 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
                   const subtotal = (Number(item.precio) || 0) * (item.cantidad || item.cant || 0);
                   return (
                     <div key={item.id} className="flex gap-4 p-3 bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl shadow-sm">
-                      {/* Imagen más grande */}
-                      <LazyImage 
-                        src={optimizarImg(item.imagen)} 
-                        alt={item.nombre}
-                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-gray-50 dark:bg-slate-700 shrink-0 object-cover border border-gray-100 dark:border-slate-600" 
-                      />
+                      {/* Imagen Clickable */}
+                      <div 
+                        className="cursor-pointer relative group shrink-0 w-16 h-16 sm:w-20 sm:h-20"
+                        onClick={() => handleOpenProduct(item.id)}
+                      >
+                        <LazyImage 
+                          src={optimizarImg(item.imagen)} 
+                          alt={item.nombre}
+                          className="w-full h-full rounded-xl bg-gray-50 dark:bg-slate-700 object-cover border border-gray-100 dark:border-slate-600 transition-colors" 
+                        />
+                        <div className="absolute inset-0 bg-black/40 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                           <Eye className="text-white w-5 h-5 shadow-sm" strokeWidth={2.5} /> 
+                        </div>
+                      </div>
                       
                       <div className="flex-1 flex flex-col justify-between">
                         <div className="flex justify-between items-start gap-2">
-                          <h4 className="text-xs sm:text-sm font-bold text-slate-800 dark:text-gray-200 leading-tight line-clamp-2">
+                          {/* Título Clickable */}
+                          <h4 
+                            onClick={() => handleOpenProduct(item.id)}
+                            className="text-xs sm:text-sm font-bold text-slate-800 dark:text-gray-200 leading-tight line-clamp-2 cursor-pointer hover:text-red-500 dark:hover:text-red-400 transition-colors"
+                            title="Ver detalles del repuesto"
+                          >
                             {item.nombre}
                           </h4>
                           <button 
