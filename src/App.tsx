@@ -127,7 +127,7 @@ export default function App() {
       'electrico': ['eléctrico', 'eléctrica', 'eléctricos', 'eléctricas', 'electricidad'],
       'telescopica': ['telescopicas', 'telescópica', 'telescópicas', 'barra', 'barras', 'suspensión delantera', 'telescopio', 'amortiguadores delanteros'],
       'monoshock': ['monoshock', 'monoshocks', 'amortiguador trasero', 'suspensión trasera', 'amortiguador', 'suspensión'],
-      'kit run y luces': ['kit run y luces', 'kit run', 'kit luces', 'run y luces', 'run', 'luces', 'mandos', 'cerebro', 'cerebros'],
+      'run y luces': ['kit run y luces', 'kit run', 'kit luces', 'run y luces', 'run', 'luces', 'mandos', 'cerebro', 'cerebros'],
       'instalacion electrica': ['arnes', 'cableado', 'instalacion electrica'],
       'mesa': ['mesa', 'mesas', 'araña', 'arañas', 'castillo'],
       'kit traccion': ['kit arrastre', 'kit traccion', 'kit tracción', 'arrastre'],

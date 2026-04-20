@@ -771,16 +771,6 @@
             "stock": true
         },
         {
-            "id": "FE250GP1R-024",
-            "codigo_referencia": "FE250GP1R-024",
-            "nombre": "CARBURADOR PZ32 CABLE DEKNI GP1-R/MAVERICK/WOLF 250/ADV300",
-            "marca": "DAYTONA",
-            "precio": 48,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "FE250GP1R-027 ",
             "codigo_referencia": "FE250GP1R-027 ",
             "nombre": "MANIGUETA EMBRAGUE CON BASE GP1-R/XPOWER 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC NEGRO ",
@@ -845,7 +835,7 @@
             "codigo_referencia": "CB200SRK-018N",
             "nombre": "FARO Y MASCARILLA SHARK II 200/DK200B/SHM ARMI150/AXXO TR1 NEGRO 2024/2025",
             "marca": "DAYTONA",
-            "precio": 64,
+            "precio": 49,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -1371,16 +1361,6 @@
             "stock": true
         },
         {
-            "id": "CB250ADV-035",
-            "codigo_referencia": "CB250ADV-035",
-            "nombre": "MONOSHOCK ADVENTURE-R 250/300CC",
-            "marca": "DAYTONA",
-            "precio": 104,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
             "id": "CB250GP1-042R",
             "codigo_referencia": "CB250GP1-042R",
             "nombre": "GUARDAFANGO DEL GP1 250/TUNDRA VELOCE 250CC ROJO",
@@ -1776,16 +1756,6 @@
             "nombre": "ESTRIBO DEL CON BASE (I-D) SUPER WOLF 300",
             "marca": "DAYTONA",
             "precio": 86,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CB200PDT-020A",
-            "codigo_referencia": "CB200PDT-020A",
-            "nombre": "PLACA TANQUE (I-D) PREDATOR 200 AZUL",
-            "marca": "DAYTONA",
-            "precio": 95,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -2391,6 +2361,16 @@
             "stock": true
         },
         {
+            "id": "CB200WF-016",
+            "codigo_referencia": "CB200WF-016",
+            "nombre": "ESCAPE COMP WOLF 200/RANGER CFZ 250/HONDA CB190",
+            "marca": "DAYTONA",
+            "precio": 86,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
             "id": "CB300SW-005N",
             "codigo_referencia": "CB300SW-005N",
             "nombre": "FARO Y MASCARILLA SUPER WOLF 300 N-VERDE",
@@ -2486,6 +2466,16 @@
             "nombre": "RADIADOR ACEITE CON MANGUERAS TEKKEN 4V",
             "marca": "DAYTONA",
             "precio": 60,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250GP1R-020",
+            "codigo_referencia": "FE250GP1R-020",
+            "nombre": "TIMON SET2 GP1-R 250/SHM CHIEF II/CHIEF 2.5//THUNDER F22 250CC B/N",
+            "marca": "DAYTONA",
+            "precio": 38,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -3146,16 +3136,6 @@
             "nombre": "MANIGUETA EMBRAGUE CON BASE WOLF/ADV200/RANGER CFZ 250/HONDA CB190/GY200/CG200 UNIVERSAL",
             "marca": "DAYTONA",
             "precio": 8,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CB250SCB-040",
-            "codigo_referencia": "CB250SCB-040",
-            "nombre": "MONOSHOCK SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC",
-            "marca": "DAYTONA",
-            "precio": 80,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -4296,16 +4276,6 @@
             "nombre": "PEDAL FRENO SHARK 3 2022",
             "marca": "DAYTONA",
             "precio": 14,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true
-        },
-        {
-            "id": "CGB200SR3-021N",
-            "codigo_referencia": "CGB200SR3-021N",
-            "nombre": "FARO Y MASCARILLA SHARK3 2022 NEGRO",
-            "marca": "DAYTONA",
-            "precio": 66,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
@@ -5476,6 +5446,56 @@
             "nombre": "VELOCIMETRO DIGITAL SPEED 200",
             "marca": "DAYTONA",
             "precio": 95,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "MMX-039",
+            "codigo_referencia": "MMX-039",
+            "nombre": "CARBURADOR PZ30 CABLE YOU ALL WOLF 200/ADV-R250/XPOWER 2019/SPITFIRE 250 ",
+            "marca": "DAYTONA",
+            "precio": 31,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-070",
+            "codigo_referencia": "CB200WF-070",
+            "nombre": "KIT EMPAQUES WOLF/AXXO ASFALT/AXXO F51 200cc",
+            "marca": "DAYTONA",
+            "precio": 10,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB200WF-008",
+            "codigo_referencia": "CB200WF-008",
+            "nombre": "CABLE EMBRAGUE WOLF/ADV 200/WOLF 250CC",
+            "marca": "DAYTONA",
+            "precio": 4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CAB-A1620",
+            "codigo_referencia": "CAB-A1620",
+            "nombre": "CABLE ACELERADOR DAYTONA DY200 WOLF /RANGER CFZ 250 94CM BOST",
+            "marca": "BOST",
+            "precio": 2,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "CB250GP1-021",
+            "codigo_referencia": "CB250GP1-021",
+            "nombre": "CAUCHO DESLIZ CADENA GP1 250/TUNDRA VELOCE 250CC",
+            "marca": "DAYTONA",
+            "precio": 6,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
