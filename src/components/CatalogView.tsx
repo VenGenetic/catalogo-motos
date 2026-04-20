@@ -217,9 +217,17 @@ export const CatalogView = memo(({
                     ) : null}
                     
                     {/* Título: Muestra TODO el texto (sin truncate) */}
-                    <h3 className="text-xs md:text-sm font-bold text-gray-900 dark:text-gray-100 mb-3 leading-snug group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                    <h3 className="text-xs md:text-sm font-bold text-gray-900 dark:text-gray-100 mb-1.5 leading-snug group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
                       <HighlightedText text={product.nombre} highlight={busqueda} />
                     </h3>
+                    
+                    {product.codigo_referencia && (
+                      <div className="mb-2">
+                        <span className="text-[10px] text-gray-400 dark:text-gray-500 font-mono bg-gray-50 dark:bg-slate-800/50 px-1.5 py-0.5 rounded border border-gray-100 dark:border-slate-700">
+                          Ref: {product.codigo_referencia}
+                        </span>
+                      </div>
+                    )}
                     
 
                     <div className="mt-auto flex items-center justify-between">
