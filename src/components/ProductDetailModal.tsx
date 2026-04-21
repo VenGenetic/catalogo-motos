@@ -21,9 +21,10 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
   const { addToCart } = useCart();
   
   // Detección de dispositivo para Habilitar/Deshabilitar el arrastre
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  // (Usamos 1024 para asegurar que tablets también tengan habilitado el swipe)
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 1024);
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -148,7 +149,8 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
           // CLAVE DESKTOP: Ancho máximo más generoso para mostrar bien la imagen 1024x535
           className="relative w-full h-full md:h-auto md:max-h-[95vh] md:max-w-6xl lg:max-w-7xl bg-white dark:bg-[#1a202c] md:rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           onClick={(e) => e.stopPropagation()} 
-          drag={isMobile ? "x" : false}
+          drag="x"
+          dragListener={isMobile}
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.4}
           onDragEnd={handleDragEnd}
