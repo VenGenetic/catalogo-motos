@@ -53,13 +53,31 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
     return () => window.removeEventListener('keydown', handleKey);
   }, [onClose, hasPrev, hasNext, currentIndex]);
 
-  const handleDragEnd = (_: any, info: PanInfo) => {
-    const swipeThreshold = 50;
-    if (info.offset.x > swipeThreshold && hasPrev) {
-      navigateTo(-1);
-      setShowSwipeHint(false); // Ocultar el texto si ya entendió
-    } else if (info.offset.x < -swipeThreshold && hasNext) {
-      navigateTo(1);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (touchStart === null || touchEnd === null) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe && hasNext) {
+      navigateTo(1); // Deslizar Izquierda -> Siguiente
+      setShowSwipeHint(false); 
+    } else if (isRightSwipe && hasPrev) {
+      navigateTo(-1); // Deslizar Derecha -> Anterior
       setShowSwipeHint(false);
     }
   };
@@ -149,11 +167,9 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
           // CLAVE DESKTOP: Ancho máximo más generoso para mostrar bien la imagen 1024x535
           className="relative w-full h-full md:h-auto md:max-h-[95vh] md:max-w-6xl lg:max-w-7xl bg-white dark:bg-[#1a202c] md:rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           onClick={(e) => e.stopPropagation()} 
-          drag="x"
-          dragListener={isMobile}
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.4}
-          onDragEnd={handleDragEnd}
+          onTouchStart={isMobile ? onTouchStart : undefined}
+          onTouchMove={isMobile ? onTouchMove : undefined}
+          onTouchEnd={isMobile ? onTouchEnd : undefined}
         >
             
             {/* Visual Hint / Onboarding Móvil */}
