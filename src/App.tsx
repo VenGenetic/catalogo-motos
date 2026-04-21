@@ -131,6 +131,7 @@ export default function App() {
       'mesa': ['mesa', 'mesas', 'araña', 'arañas', 'castillo'],
       'kit traccion': ['kit arrastre', 'kit traccion', 'kit tracción', 'arrastre'],
       'bujia': ['bujia', 'bujias', 'bujías', 'bujías'],
+      'placa': ['placa', 'placas', 'Plastico', 'plasticos']
     };
 
     const expandidos = new Set<string>();
