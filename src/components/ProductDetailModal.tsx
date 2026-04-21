@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info, ChevronLeft, ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence, PanInfo } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { Producto } from '../types';
 import { useCart } from '../context/CartContext';
@@ -165,7 +165,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
           transition={{ type: "spring", duration: 0.4 }}
           // CLAVE MÓVIL: w-full h-full (ocupa toda la pantalla)
           // CLAVE DESKTOP: Ancho máximo más generoso para mostrar bien la imagen 1024x535
-          className="relative w-full h-full md:h-auto md:max-h-[95vh] md:max-w-6xl lg:max-w-7xl bg-white dark:bg-[#1a202c] md:rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+          className="relative w-full h-full md:h-auto md:max-h-[95vh] md:max-w-6xl lg:max-w-7xl bg-white dark:bg-[#1a202c] md:rounded-2xl shadow-2xl flex flex-col overflow-hidden overscroll-x-none touch-pan-y"
           onClick={(e) => e.stopPropagation()} 
           onTouchStart={isMobile ? onTouchStart : undefined}
           onTouchMove={isMobile ? onTouchMove : undefined}
@@ -199,7 +199,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
             </div>
 
             {/* ÁREA SCROLLABLE (Imagen + Info) */}
-            <div className="flex-1 overflow-y-auto flex flex-col md:flex-row pb-safe">
+            <div className="flex-1 overflow-y-auto flex flex-col md:flex-row pb-safe overscroll-x-none touch-pan-y">
               
               {/* COLUMNA 1: IMAGEN - Mayor en desktop para mejor visualización */}
               <div className="w-full md:w-7/12 lg:w-3/5 bg-gray-50 dark:bg-slate-800 relative border-b md:border-b-0 md:border-r border-gray-100 dark:border-slate-700 shrink-0">
