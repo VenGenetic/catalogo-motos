@@ -10029,6 +10029,486 @@
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
+        },
+        {
+            "id": "FE250WFE-002",
+            "codigo_referencia": "FE250WFE-002",
+            "nombre": "CABLE EMBRAGUE WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 5,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-003",
+            "codigo_referencia": "FE250WFE-003",
+            "nombre": "CABLE ACELERADOR WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 3,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-004",
+            "codigo_referencia": "FE250WFE-004",
+            "nombre": "BASE CARBURADOR ALU WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 13,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-005",
+            "codigo_referencia": "FE250WFE-005",
+            "nombre": "PORTA PLACAS WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 35,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-006",
+            "codigo_referencia": "FE250WFE-006",
+            "nombre": "PROTEC MOTOR TIBURON WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 52,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-007",
+            "codigo_referencia": "FE250WFE-007",
+            "nombre": "STOP WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 45,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-008",
+            "codigo_referencia": "FE250WFE-008",
+            "nombre": "FARO LED WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 118,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-009",
+            "codigo_referencia": "FE250WFE-009",
+            "nombre": "LUZ LED PLACA TANQUE (I-D) WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 34,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-010",
+            "codigo_referencia": "FE250WFE-010",
+            "nombre": "DIRECCIONALES (SET4) WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 33,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-011",
+            "codigo_referencia": "FE250WFE-011",
+            "nombre": "CUBRE CADENA WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 20,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-012",
+            "codigo_referencia": "FE250WFE-012",
+            "nombre": "LUZ LATERAL MASCARILLA (I-D) WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 63,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-013",
+            "codigo_referencia": "FE250WFE-013",
+            "nombre": "INSTALACION ELECTRICA WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 47,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-014",
+            "codigo_referencia": "FE250WFE-014",
+            "nombre": "CARBURADOR PZ32 PALANCA WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 54,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-015",
+            "codigo_referencia": "FE250WFE-015",
+            "nombre": "MANGUERAS RADIADOR WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 40,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-016",
+            "codigo_referencia": "FE250WFE-016",
+            "nombre": "KIT RUN Y LUCES WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 103,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-017",
+            "codigo_referencia": "FE250WFE-017",
+            "nombre": "KIT SWITCH LLAVES WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 58,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-018",
+            "codigo_referencia": "FE250WFE-018",
+            "nombre": "MANUBRIOS (I-D) WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 10,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-019",
+            "codigo_referencia": "FE250WFE-019",
+            "nombre": "RADIADOR ACEITE CON MANGUERAS WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 117,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-020",
+            "codigo_referencia": "FE250WFE-020",
+            "nombre": "PATA APOYO LAT WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 13,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-021",
+            "codigo_referencia": "FE250WFE-021",
+            "nombre": "PATA APOYO CENTRAL WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 31,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-022",
+            "codigo_referencia": "FE250WFE-022",
+            "nombre": "KIT EJES WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 31,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-023",
+            "codigo_referencia": "FE250WFE-023",
+            "nombre": "OSCILANTE WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 117,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-024",
+            "codigo_referencia": "FE250WFE-024",
+            "nombre": "DEPURADOR WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 47,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-025",
+            "codigo_referencia": "FE250WFE-025",
+            "nombre": "MESA DIRECCION ARMADA WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 117,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-026",
+            "codigo_referencia": "FE250WFE-026",
+            "nombre": "MANIGUETA EMBRAGUE CON BASE WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 14,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-027",
+            "codigo_referencia": "FE250WFE-027",
+            "nombre": "KIT PISTAS DIRECCION WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 16,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-028A",
+            "codigo_referencia": "FE250WFE-028A",
+            "nombre": "GUARDAFANGO DEL. WOLF EVOLUTION 250CC N-AZUL",
+            "marca": "DAYTONA",
+            "precio": 47,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-028D",
+            "codigo_referencia": "FE250WFE-028D",
+            "nombre": "GUARDAFANGO DEL. WOLF EVOLUTION 250CC G-DORADO",
+            "marca": "DAYTONA",
+            "precio": 47,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-028V",
+            "codigo_referencia": "FE250WFE-028V",
+            "nombre": "GUARDAFANGO DEL. WOLF EVOLUTION 250CC G-VERDE",
+            "marca": "DAYTONA",
+            "precio": 47,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-029",
+            "codigo_referencia": "FE250WFE-029",
+            "nombre": "ESTRIBO DEL. CON BASE (I-D) WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 91,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-030",
+            "codigo_referencia": "FE250WFE-030",
+            "nombre": "ESTRIBO POST CON BASE (I-D) WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 47,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-031",
+            "codigo_referencia": "FE250WFE-031",
+            "nombre": "ASIENTO SET2 WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 83,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-032",
+            "codigo_referencia": "FE250WFE-032",
+            "nombre": "ESCAPE COMP. WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 156,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-033",
+            "codigo_referencia": "FE250WFE-033",
+            "nombre": "TANQUE GASOLINA WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 156,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-034",
+            "codigo_referencia": "FE250WFE-034",
+            "nombre": "VELOCIMETRO DIGITAL WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 143,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-035",
+            "codigo_referencia": "FE250WFE-035",
+            "nombre": "BOYA GASOLINA WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 10,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-036",
+            "codigo_referencia": "FE250WFE-036",
+            "nombre": "TEMPLADOR CADENA WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 13,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-037",
+            "codigo_referencia": "FE250WFE-037",
+            "nombre": "PEDAL CAMBIOS WOLF EVOLUTION 250CC",
+            "marca": "DAYTONA",
+            "precio": 20,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-038A",
+            "codigo_referencia": "FE250WFE-038A",
+            "nombre": "PLACA LAT POST (I-D) WOLF EVOLUTION 250CC N-AZUL",
+            "marca": "DAYTONA",
+            "precio": 99,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-038D",
+            "codigo_referencia": "FE250WFE-038D",
+            "nombre": "PLACA LAT POST (I-D) WOLF EVOLUTION 250CC G-DORADO",
+            "marca": "DAYTONA",
+            "precio": 99,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-038V",
+            "codigo_referencia": "FE250WFE-038V",
+            "nombre": "PLACA LAT POST (I-D) WOLF EVOLUTION 250CC G-VERDE",
+            "marca": "DAYTONA",
+            "precio": 99,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-039A",
+            "codigo_referencia": "FE250WFE-039A",
+            "nombre": "PLACA TANQUE (I-D) WOLF EVOLUTION 250CC N-AZUL",
+            "marca": "DAYTONA",
+            "precio": 209,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-039D",
+            "codigo_referencia": "FE250WFE-039D",
+            "nombre": "PLACA TANQUE (I-D) WOLF EVOLUTION 250CC G-DORADO",
+            "marca": "DAYTONA",
+            "precio": 209,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-039V",
+            "codigo_referencia": "FE250WFE-039V",
+            "nombre": "PLACA TANQUE (I-D) WOLF EVOLUTION 250CC G-VERDE",
+            "marca": "DAYTONA",
+            "precio": 209,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-040A",
+            "codigo_referencia": "FE250WFE-040A",
+            "nombre": "MASCARILLA COMP WOLF EVOLUTION 250CC N-AZUL",
+            "marca": "DAYTONA",
+            "precio": 65,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-040D",
+            "codigo_referencia": "FE250WFE-040D",
+            "nombre": "MASCARILLA COMP WOLF EVOLUTION 250CC G-DORADO",
+            "marca": "DAYTONA",
+            "precio": 65,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "FE250WFE-040V",
+            "codigo_referencia": "FE250WFE-040V",
+            "nombre": "MASCARILLA COMP WOLF EVOLUTION 250CC G-VERDE",
+            "marca": "DAYTONA",
+            "precio": 65,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
+        },
+        {
+            "id": "MMX-041",
+            "codigo_referencia": "MMX-041",
+            "nombre": "INSTALACION ELECTRICA GN 125 UNIVERSAL/CRUCERO 150/200CC",
+            "marca": "DAYTONA",
+            "precio": 26,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
         }
     ]
 }
