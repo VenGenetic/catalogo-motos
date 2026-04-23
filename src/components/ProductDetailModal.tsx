@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info, ChevronLeft, ChevronRight, MoveHorizontal, ZoomIn } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { Producto } from '../types';
@@ -75,10 +75,8 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
 
     if (isLeftSwipe && hasNext) {
       navigateTo(1); // Deslizar Izquierda -> Siguiente
-      setShowSwipeHint(false); 
     } else if (isRightSwipe && hasPrev) {
       navigateTo(-1); // Deslizar Derecha -> Anterior
-      setShowSwipeHint(false);
     }
   };
 
@@ -96,12 +94,18 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
     }
   }, [currentIndex, currentList, hasNext, hasPrev]);
 
-  // Indicador de "Onboarding" táctil
-  const [showSwipeHint, setShowSwipeHint] = useState(true);
+  // Tutorial Interactivo Primera Vez
+  const [showTutorial, setShowTutorial] = useState(false);
   useEffect(() => {
-    const t = setTimeout(() => setShowSwipeHint(false), 3500);
-    return () => clearTimeout(t);
-  }, [product?.id]); // Restart hint if they change products, but honestly best only once. Let's keep it simple.
+    if (product && !localStorage.getItem('LVPARTS_TUTORIAL_SEEN')) {
+      setShowTutorial(true);
+    }
+  }, [product]);
+
+  const dismissTutorial = () => {
+    localStorage.setItem('LVPARTS_TUTORIAL_SEEN', 'true');
+    setShowTutorial(false);
+  };
 
   // Bloquear scroll del body
   useEffect(() => {
@@ -172,21 +176,69 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
           onTouchEnd={isMobile ? onTouchEnd : undefined}
         >
             
-            {/* Visual Hint / Onboarding Móvil */}
+            {/* ====== TUTORIAL OVERLAY (ÚNICA VEZ) ====== */}
             <AnimatePresence>
-              {showSwipeHint && (hasNext || hasPrev) && (
+              {showTutorial && (
                 <motion.div 
-                   initial={{ opacity: 0, y: 10, scale: 0.9 }} 
-                   animate={{ opacity: 1, y: 0, scale: 1 }} 
-                   exit={{ opacity: 0, scale: 0.8 }} 
-                   className="md:hidden absolute top-[40%] left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-md text-white text-xs px-5 py-2.5 rounded-full font-bold tracking-wide pointer-events-none z-[110] flex items-center gap-2 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+                   initial={{ opacity: 0 }} 
+                   animate={{ opacity: 1 }} 
+                   exit={{ opacity: 0 }} 
+                   className="absolute inset-0 z-[110] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 md:p-8"
                  >
-                   {hasPrev && <ChevronLeft size={16} strokeWidth={3} className="opacity-80" />}
-                   Desliza para explorar
-                   {hasNext && <ChevronRight size={16} strokeWidth={3} className="opacity-80" />}
+                   <motion.div
+                     initial={{ scale: 0.9, y: 20 }}
+                     animate={{ scale: 1, y: 0 }}
+                     exit={{ scale: 0.9, y: 20 }}
+                     className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 w-full max-w-sm flex flex-col shadow-2xl"
+                   >
+                     {/* Encabezado Industrial */}
+                     <div className="bg-slate-900 dark:bg-black text-white p-4 text-center text-sm font-black uppercase tracking-widest border-b border-slate-200 dark:border-slate-700">
+                       Guía Rápida
+                     </div>
+                     
+                     <div className="p-6 md:p-8 flex flex-col gap-6">
+                        <div className="flex gap-4 items-center">
+                           <div className="w-12 h-12 bg-gray-50 dark:bg-slate-800 flex items-center justify-center shrink-0 border border-gray-200 dark:border-slate-700">
+                             <MoveHorizontal size={24} strokeWidth={2.5} className="text-red-600" />
+                           </div>
+                           <div>
+                             <h4 className="font-bold text-xs md:text-sm text-slate-900 dark:text-white uppercase">Desliza para ver más</h4>
+                             <p className="text-[11px] md:text-xs text-slate-500 font-medium">Mueve a los lados para cambiar entre repuestos rápidamente.</p>
+                           </div>
+                        </div>
+
+                        <div className="flex gap-4 items-center">
+                           <div className="w-12 h-12 bg-gray-50 dark:bg-slate-800 flex items-center justify-center shrink-0 border border-gray-200 dark:border-slate-700">
+                             <ZoomIn size={24} strokeWidth={2.5} className="text-red-600" />
+                           </div>
+                           <div>
+                             <h4 className="font-bold text-xs md:text-sm text-slate-900 dark:text-white uppercase">Toca para ampliar</h4>
+                             <p className="text-[11px] md:text-xs text-slate-500 font-medium">Pincha sobre la fotografía para inspeccionar el detalle técnico.</p>
+                           </div>
+                        </div>
+
+                        <div className="flex gap-4 items-center">
+                           <div className="w-12 h-12 bg-gray-50 dark:bg-slate-800 flex items-center justify-center shrink-0 border border-gray-200 dark:border-slate-700">
+                             <ShoppingCart size={24} strokeWidth={2.5} className="text-red-600" />
+                           </div>
+                           <div>
+                             <h4 className="font-bold text-xs md:text-sm text-slate-900 dark:text-white uppercase">Arma tu pedido</h4>
+                             <p className="text-[11px] md:text-xs text-slate-500 font-medium">Verifica código de fábrica y pásalo a tu carrito o envíalo por Whatsapp.</p>
+                           </div>
+                        </div>
+                     </div>
+
+                     <button 
+                       onClick={dismissTutorial}
+                       className="bg-red-600 text-white font-black uppercase text-sm md:text-base tracking-[0.1em] p-4 hover:bg-slate-900 active:bg-black transition-colors m-4 mt-0 border-2 border-transparent hover:border-slate-800"
+                     >
+                       ¡Entendido!
+                     </button>
+                   </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
+            {/* ====== FIN TUTORIAL ====== */}
             
             {/* Botón Cerrar: Ajustado para respetar el Notch/Safe Region en móviles */}
             <div className="absolute top-0 right-0 p-3 z-30 pt-[calc(0.75rem+env(safe-area-inset-top))]">
