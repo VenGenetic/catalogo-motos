@@ -6779,6 +6779,16 @@
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true
+        },
+        {
+            "id": "CB300SW-072",
+            "codigo_referencia": "CB300SW-072",
+            "nombre": "TAPA PINON MOTRIZ SUPER WOLF 300",
+            "marca": "DAYTONA",
+            "precio": 12,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true
         }
     ]
 }
