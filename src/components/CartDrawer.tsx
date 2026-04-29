@@ -45,9 +45,10 @@ export const CartDrawer = () => {
 
   // --- LÓGICA DE MENSAJES ---
   const generarMensajeWhatsApp = (costoEnvio: number) => {
-    const itemsList = cart.map(item => 
-      `▪️ *${item.cantidad}x* ${item.nombre} ($${(item.cantidad * (Number(item.precio) || 0)).toFixed(2)})`
-    ).join('\n');
+    const itemsList = cart.map(item => {
+      const ref = item.codigo_referencia ? ` (Ref: ${item.codigo_referencia})` : '';
+      return `▪️ *${item.cantidad}x* ${item.nombre}${ref} ($${(item.cantidad * (Number(item.precio) || 0)).toFixed(2)})`;
+    }).join('\n');
 
     const totalFinal = costoEnvio > 0 ? cartTotal + costoEnvio : cartTotal;
 
@@ -68,9 +69,10 @@ ${costoEnvio > 0 ? `▪️ *Envío / Transporte:* $${costoEnvio.toFixed(2)}` : '
 
   const generarTextoProforma = (costoEnvio: number) => {
     const date = new Date().toLocaleDateString('es-EC', { year: 'numeric', month: 'long', day: 'numeric' });
-    const itemsList = cart.map(item => 
-      `Cant: ${item.cantidad} | ${item.nombre} | $${(item.cantidad * (Number(item.precio) || 0)).toFixed(2)}`
-    ).join('\n');
+    const itemsList = cart.map(item => {
+      const ref = item.codigo_referencia ? ` (Ref: ${item.codigo_referencia})` : '';
+      return `Cant: ${item.cantidad} | ${item.nombre}${ref} | $${(item.cantidad * (Number(item.precio) || 0)).toFixed(2)}`;
+    }).join('\n');
 
     const totalFinal = costoEnvio > 0 ? cartTotal + costoEnvio : cartTotal;
 
