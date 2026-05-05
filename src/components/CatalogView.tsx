@@ -19,8 +19,6 @@ interface Props {
   setBusqueda: (s: string) => void;
   filtroSeccion: string;
   setFiltroSeccion: (s: string) => void;
-  selectedTags: string[];
-  setSelectedTags: (t: string[]) => void;
   onProductClick: (p: Producto) => void;
 }
 
@@ -29,7 +27,6 @@ export const CatalogView = memo(({
   filtroModelo, setFiltroModelo, 
   busqueda, setBusqueda,
   filtroSeccion, setFiltroSeccion,
-  selectedTags, setSelectedTags,
   onProductClick
 }: Props) => {
   const [pagina, setPagina] = useState(1);
@@ -38,14 +35,13 @@ export const CatalogView = memo(({
   const { addToCart } = useCart();
 
   // Resetear página cuando cambian los filtros
-  const [prevFilters, setPrevFilters] = useState({ busqueda, filtroModelo, filtroSeccion, selectedTagsCount: selectedTags.length });
+  const [prevFilters, setPrevFilters] = useState({ busqueda, filtroModelo, filtroSeccion });
   if (
     prevFilters.busqueda !== busqueda || 
     prevFilters.filtroModelo !== filtroModelo || 
-    prevFilters.filtroSeccion !== filtroSeccion ||
-    prevFilters.selectedTagsCount !== selectedTags.length
+    prevFilters.filtroSeccion !== filtroSeccion
   ) {
-    setPrevFilters({ busqueda, filtroModelo, filtroSeccion, selectedTagsCount: selectedTags.length });
+    setPrevFilters({ busqueda, filtroModelo, filtroSeccion });
     setPagina(1);
   }
 
@@ -59,34 +55,12 @@ export const CatalogView = memo(({
     return productos.slice(0, pagina * APP_CONFIG.ITEMS_PER_PAGE);
   }, [productos, pagina]);
 
-  // Extraer etiquetas únicas disponibles en los productos actuales
-  const availableTags = useMemo(() => {
-    const tagsMap = new Map<string, { name: string; color: string }>();
-    productos.forEach(p => {
-      if (p.tags && Array.isArray(p.tags)) {
-        p.tags.forEach(t => {
-          if (!tagsMap.has(t.name)) {
-            tagsMap.set(t.name, t);
-          }
-        });
-      }
-    });
-    return Array.from(tagsMap.values());
-  }, [productos]);
 
-  const toggleTag = (tagName: string) => {
-    if (selectedTags.includes(tagName)) {
-      setSelectedTags(selectedTags.filter(t => t !== tagName));
-    } else {
-      setSelectedTags([...selectedTags, tagName]);
-    }
-  };
 
   const handleCambiarMoto = () => {
     setFiltroModelo(''); 
     setBusqueda('');
     setFiltroSeccion('Todos');
-    setSelectedTags([]);
     window.scrollTo({ top: 0, behavior: 'auto' });
   };
 
@@ -175,42 +149,6 @@ export const CatalogView = memo(({
               ))}
             </div>
           </div>
-          
-          {/* BARRA DE ETIQUETAS (TAGS) */}
-          {availableTags.length > 0 && (
-            <div className="overflow-x-auto pb-2 pt-1 scrollbar-hide scroll-smooth -mx-2 px-2 md:mx-0 md:px-0 border-t border-gray-100 dark:border-slate-800/50 mt-1">
-              <div className="flex space-x-2 min-w-max items-center">
-                <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">sell</span> Etiquetas:
-                </span>
-                {availableTags.map((tag) => {
-                  const isSelected = selectedTags.includes(tag.name);
-                  return (
-                    <button
-                      key={tag.name}
-                      onClick={() => toggleTag(tag.name)}
-                      className={`px-3 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap transition-all duration-200 border flex items-center gap-1.5 ${
-                        isSelected 
-                          ? 'shadow-sm scale-105' 
-                          : 'bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700'
-                      }`}
-                      style={{
-                        backgroundColor: isSelected ? tag.color + '25' : undefined,
-                        color: isSelected ? tag.color : '#6b7280',
-                        borderColor: isSelected ? tag.color : 'var(--tw-border-opacity)',
-                      }}
-                    >
-                      <span 
-                        className="w-2 h-2 rounded-full" 
-                        style={{ backgroundColor: tag.color }}
-                      />
-                      {tag.name}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
         </div>
 
         {/* LISTADO DE PRODUCTOS */}

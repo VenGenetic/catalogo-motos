@@ -78,7 +78,6 @@ export default function App() {
   }, [navigate]);
 
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   // CAMBIO CLAVE: Aumentamos el tiempo a 250ms para no saturar el hilo principal filtrando más de 4000 items repetidas veces mientras se tipea
   const busquedaDebounced = useDebounce(busqueda, 250);
@@ -233,13 +232,6 @@ export default function App() {
         if (!p.precio) return false;
         if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
         if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
-        
-        // Filtro Múltiple por Etiquetas (Opción A - OR: Mostrar si tiene al menos una de las seleccionadas)
-        if (selectedTags.length > 0) {
-          if (!p.tags || p.tags.length === 0) return false;
-          const hasAtLeastOneTag = p.tags.some(t => selectedTags.includes(t.name));
-          if (!hasAtLeastOneTag) return false;
-        }
 
         if (terminos.length > 0) {
           const puntuacion = calcularRelevancia(p, terminos);
@@ -260,7 +252,7 @@ export default function App() {
       });
 
     return productosConPuntuacion;
-  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo, selectedTags, expandirTerminos, isFuzzyMatch]);
+  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo, expandirTerminos, isFuzzyMatch]);
 
   const handleProductClick = useCallback((p: Producto) => {
     setSearchParams((prev: URLSearchParams) => { prev.set('prod', p.id); return prev; });
@@ -320,8 +312,6 @@ export default function App() {
                   setBusqueda={setBusqueda}
                   filtroSeccion={filtroSeccion}
                   setFiltroSeccion={setFiltroSeccion}
-                  selectedTags={selectedTags}
-                  setSelectedTags={setSelectedTags}
                   onProductClick={handleProductClick}
                 />
               </>
@@ -339,8 +329,6 @@ export default function App() {
                   setBusqueda={setBusqueda}
                   filtroSeccion={filtroSeccion}
                   setFiltroSeccion={setFiltroSeccion}
-                  selectedTags={selectedTags}
-                  setSelectedTags={setSelectedTags}
                   onProductClick={handleProductClick}
                 />
               </>
@@ -366,8 +354,6 @@ export default function App() {
                       setBusqueda={setBusqueda}
                       filtroSeccion={filtroSeccion}
                       setFiltroSeccion={setFiltroSeccion}
-                      selectedTags={selectedTags}
-                      setSelectedTags={setSelectedTags}
                       onProductClick={handleProductClick}
                     />
                   </div>

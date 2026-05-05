@@ -12,7 +12,6 @@ export interface Producto {
   origenes?: string[];
   seccion?: string;       // Nueva propiedad para el filtro
   textoBusqueda?: string; // Nueva propiedad para búsqueda optimizada
-  tags?: { name: string; color: string }[]; // Etiquetas importadas de Supabase
 }
 
 export interface ItemCarrito extends Producto {
