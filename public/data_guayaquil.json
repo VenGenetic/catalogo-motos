@@ -199,17 +199,6 @@
             "tags": []
         },
         {
-            "id": "CG150WRF-013",
-            "codigo_referencia": "CG150WRF-013",
-            "nombre": "VELOCIMETRO (1 SALIDA) WORKFORCE/TH B52 150CC",
-            "marca": "DAYTONA",
-            "precio": 54,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CB125TNQ-024",
             "codigo_referencia": "CB125TNQ-024",
             "nombre": "GUARDAFANGO DEL TANQ 125CC",
@@ -292,6 +281,17 @@
             "nombre": "ARO DEL. MAGNECIO 1.60X18 DISCO 4H SPITFIRE 150CC NEGRO",
             "marca": "DAYTONA",
             "precio": 73,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-013",
+            "codigo_referencia": "CG150WRF-013",
+            "nombre": "VELOCIMETRO (1 SALIDA) WORKFORCE/TH B52 150CC",
+            "marca": "DAYTONA",
+            "precio": 54,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -639,11 +639,11 @@
             "tags": []
         },
         {
-            "id": "CBB250XP-022",
-            "codigo_referencia": "CBB250XP-022",
-            "nombre": "DISCO FRENO POST. XPOWER/GP1-R/CHIEF II/THD SR7/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
+            "id": "CB250TKN-042",
+            "codigo_referencia": "CB250TKN-042",
+            "nombre": "FARO Y MASCARILLA TEKKEN EVO/AXXO TRACKER 250cc",
             "marca": "DAYTONA",
-            "precio": 16,
+            "precio": 67,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -727,17 +727,6 @@
             "tags": []
         },
         {
-            "id": "CB250SCB-050",
-            "codigo_referencia": "CB250SCB-050",
-            "nombre": "MANIGUETA EMBRAGUE CON BASE SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC ",
-            "marca": "DAYTONA",
-            "precio": 8,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CB250SCB-060",
             "codigo_referencia": "CB250SCB-060",
             "nombre": "RECTIFICADOR CORRIENTE 6 CABLE SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC/300CC",
@@ -787,6 +776,17 @@
             "nombre": "FARO Y MASCARILLA COMP. DELTA 150 BLANCO",
             "marca": "DAYTONA",
             "precio": 67,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB250-267",
+            "codigo_referencia": "CB250-267",
+            "nombre": "DISCO FRENO POST TEKKEN",
+            "marca": "DAYTONA",
+            "precio": 42,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -903,11 +903,22 @@
             "tags": []
         },
         {
-            "id": "CB250-267",
-            "codigo_referencia": "CB250-267",
-            "nombre": "DISCO FRENO POST TEKKEN",
+            "id": "CBB250XP-022",
+            "codigo_referencia": "CBB250XP-022",
+            "nombre": "DISCO FRENO POST. XPOWER/GP1-R/CHIEF II/THD SR7/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
             "marca": "DAYTONA",
-            "precio": 42,
+            "precio": 16,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB200WF-09JRXN",
+            "codigo_referencia": "CB200WF-09JRXN",
+            "nombre": "PLACA TANQUE (I-D) WOLF 200CC ROJO",
+            "marca": "DAYTONA",
+            "precio": 150,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -1013,11 +1024,11 @@
             "tags": []
         },
         {
-            "id": "CG150PTH-037B",
-            "codigo_referencia": "CG150PTH-037B",
-            "nombre": "GUARDAFANGO DEL. PANTHER/RANGER 150USM//IGM ECO150/TK H2EVO/AXXO RAPTOR 150/THUNDER RT 150CC BLANCO",
+            "id": "CB250-165R",
+            "codigo_referencia": "CB250-165R",
+            "nombre": "PLACA TANQUE (I-D) SHARK II 19-22 ROJO",
             "marca": "DAYTONA",
-            "precio": 19,
+            "precio": 23,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -1222,17 +1233,6 @@
             "tags": []
         },
         {
-            "id": "CB200WF-09JRXN",
-            "codigo_referencia": "CB200WF-09JRXN",
-            "nombre": "PLACA TANQUE (I-D) WOLF 200CC ROJO",
-            "marca": "DAYTONA",
-            "precio": 150,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CB200SRK-018R",
             "codigo_referencia": "CB200SRK-018R",
             "nombre": "FARO Y MASCARILLA SHARK II 200/DK200B/SHM ARMI150/AXXO TR1 ROJO 2024/2025",
@@ -1316,17 +1316,6 @@
             "marca": "DAYTONA",
             "precio": 114,
             "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CB250-293N",
-            "codigo_referencia": "CB250-293N",
-            "nombre": "GUARDAFANGO DEL. SUPERIOR TEKKEN NEGRO 2022",
-            "marca": "DAYTONA",
-            "precio": 19,
-            "categoria": "corregir",
             "imagen": "sin_imagen.jpg",
             "stock": true,
             "tags": []
@@ -1477,7 +1466,7 @@
         {
             "id": "CGEA150-136",
             "codigo_referencia": "CGEA150-136",
-            "nombre": "DISCO FRENO POST. EAGLE 150CC III/DK FALCON BOST",
+            "nombre": "DISCO FRENO POST. EAGLE 150CC III/DK FALCON BOST 4H",
             "marca": "BOST",
             "precio": 15,
             "categoria": "General",
@@ -1651,17 +1640,6 @@
             "tags": []
         },
         {
-            "id": "CB250SC-004",
-            "codigo_referencia": "CB250SC-004",
-            "nombre": "ESCAPE COMP SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC",
-            "marca": "DAYTONA",
-            "precio": 95,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CG150SPF-032",
             "codigo_referencia": "CG150SPF-032",
             "nombre": "ESCAPE COMP. SPITFIRE 150",
@@ -1741,7 +1719,7 @@
         {
             "id": "CB250GP1-011",
             "codigo_referencia": "CB250GP1-011",
-            "nombre": "DISCO FRENO DEL GP-1 250",
+            "nombre": "DISCO FRENO DEL GP1 250",
             "marca": "DAYTONA",
             "precio": 16,
             "categoria": "General",
@@ -1776,7 +1754,7 @@
             "codigo_referencia": "CBB250XP-043",
             "nombre": "BOYA GASOLINA XPOWER/GP1R/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
             "marca": "DAYTONA",
-            "precio": 19,
+            "precio": 13,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -1800,6 +1778,17 @@
             "marca": "DAYTONA",
             "precio": 35,
             "categoria": "GUARDAFANGO",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CBB250XP-039",
+            "codigo_referencia": "CBB250XP-039",
+            "nombre": "ESCAPE COMP. XPOWER/ GP1R/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
+            "marca": "DAYTONA",
+            "precio": 95,
+            "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
             "tags": []
@@ -2074,17 +2063,6 @@
             "nombre": "DEPURADOR AIRE WOLF/ADV 200/MAVERICK/RANGER CFZ 250/HONDA CB190",
             "marca": "DAYTONA",
             "precio": 31,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CBB250XP-039",
-            "codigo_referencia": "CBB250XP-039",
-            "nombre": "ESCAPE COMP. XPOWER/ GP1R/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
-            "marca": "DAYTONA",
-            "precio": 95,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -2641,6 +2619,17 @@
             "tags": []
         },
         {
+            "id": "CG150WRF-009",
+            "codigo_referencia": "CG150WRF-009",
+            "nombre": "STOP WORKFORCE/TH-B52 150CC",
+            "marca": "DAYTONA",
+            "precio": 18,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
             "id": "CB250CRF-047",
             "codigo_referencia": "CB250CRF-047",
             "nombre": "DISCO FRENO POST CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
@@ -2668,6 +2657,17 @@
             "nombre": "PROTEC ESCAPE S1 150/180/BULTACO FREEDOM/EVO-2 180CC",
             "marca": "DAYTONA",
             "precio": 19,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-025",
+            "codigo_referencia": "CG150WRF-025",
+            "nombre": "ARO POST. ARMADO 1.60X17 ZAPATA WORKFORCE 150 NEGRO",
+            "marca": "DAYTONA",
+            "precio": 70,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -3433,22 +3433,44 @@
             "tags": []
         },
         {
-            "id": "CB250TKN-007",
-            "codigo_referencia": "CB250TKN-007",
-            "nombre": "TELESCOPICAS (I-D) TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC B/I",
+            "id": "CG150WRF-006",
+            "codigo_referencia": "CG150WRF-006",
+            "nombre": "CABLE ACELERADOR WORKFORCE/TH-B52 150CC",
             "marca": "DAYTONA",
-            "precio": 285,
+            "precio": 3,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
             "tags": []
         },
         {
-            "id": "CG200WEV-038",
-            "codigo_referencia": "CG200WEV-038",
-            "nombre": "INSTALACION ELECTRICA WING EVO 200",
+            "id": "CG150WRF-008",
+            "codigo_referencia": "CG150WRF-008",
+            "nombre": "FARO WORKFORCE/TH-B52 150CC",
             "marca": "DAYTONA",
-            "precio": 38,
+            "precio": 23,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-027",
+            "codigo_referencia": "CG150WRF-027",
+            "nombre": "ASIENTO WORKFORCE/TH-B52 150CC",
+            "marca": "DAYTONA",
+            "precio": 40,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB250TKN-007",
+            "codigo_referencia": "CB250TKN-007",
+            "nombre": "TELESCOPICAS (I-D) TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC B/I",
+            "marca": "DAYTONA",
+            "precio": 285,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -3504,17 +3526,6 @@
             "nombre": "KIT SWITCH,TAPA,LLAVES GP1 250/TUNDRA VELOCE 250CC",
             "marca": "DAYTONA",
             "precio": 42,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CB250TKN-034",
-            "codigo_referencia": "CB250TKN-034",
-            "nombre": "GUARDAFANGO DEL. INFERIOR TEKKEN EVO 250",
-            "marca": "DAYTONA",
-            "precio": 38,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -3609,6 +3620,138 @@
             "tags": []
         },
         {
+            "id": "CG150WRF-005",
+            "codigo_referencia": "CG150WRF-005",
+            "nombre": "CABLE EMBRAGUE WORKFORCE/TH-B52 150CC ",
+            "marca": "DAYTONA",
+            "precio": 3,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-030",
+            "codigo_referencia": "CG150WRF-030",
+            "nombre": "MANIGUETA EMBRAGUE CON BASE WORKFORCE/TH-B52 150CC ",
+            "marca": "DAYTONA",
+            "precio": 5,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-031N",
+            "codigo_referencia": "CG150WRF-031N",
+            "nombre": "PLACA LATERAL (I-D) WORKFORCE/TH-B52 150CC NEGRO",
+            "marca": "DAYTONA",
+            "precio": 35,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-032G",
+            "codigo_referencia": "CG150WRF-032G",
+            "nombre": "GUARDAFANGO DEL. WORKFORCE/TH-B52 150CC GRIS",
+            "marca": "DAYTONA",
+            "precio": 25,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-037",
+            "codigo_referencia": "CG150WRF-037",
+            "nombre": "TEMPLADOR CADENA WORKFORCE 150 2024",
+            "marca": "DAYTONA",
+            "precio": 4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-039",
+            "codigo_referencia": "CG150WRF-039",
+            "nombre": "STOP WORKFORCE-S/TH B52 150CC",
+            "marca": "DAYTONA",
+            "precio": 18,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-136N",
+            "codigo_referencia": "CG150WRF-136N",
+            "nombre": "TANQUE GASOLINA WORKFORCE/TH-B52 150CC NEGRO",
+            "marca": "DAYTONA",
+            "precio": 67,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-136P",
+            "codigo_referencia": "CG150WRF-136P",
+            "nombre": "TANQUE GASOLINA WORKFORCE/TH-B52 150CC PLOMO",
+            "marca": "DAYTONA",
+            "precio": 67,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-014",
+            "codigo_referencia": "CG150WRF-014",
+            "nombre": "BOYA GASOLINA WORKFORCE/TH-B52 150CC",
+            "marca": "DAYTONA",
+            "precio": 5,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "FE250GP1R-018A",
+            "codigo_referencia": "FE250GP1R-018A",
+            "nombre": "TANQUE GASOLINA GP1-R 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC AZUL",
+            "marca": "DAYTONA",
+            "precio": 124,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "MRZ200GP-WEV002",
+            "codigo_referencia": "MRZ200GP-WEV002",
+            "nombre": "TANQUE GASOLINA GP200 - GRIS CON NEGRO/ Wing Evo 2",
+            "marca": "DAYTONA",
+            "precio": 114,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB250SC-012R",
+            "codigo_referencia": "CB250SC-012R",
+            "nombre": "PLACA TANQUE (I-D) SCORPION AXXO",
+            "marca": "DAYTONA",
+            "precio": 55,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
             "id": "CB250CRF-040",
             "codigo_referencia": "CB250CRF-040",
             "nombre": "GUARDAFANGO DEL CROSSFIRE/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200 GRIS",
@@ -3691,17 +3834,6 @@
             "nombre": "TAPA MOTOR DER. EAGLE III.",
             "marca": "DAYTONA",
             "precio": 40,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CGB250SPF-058",
-            "codigo_referencia": "CGB250SPF-058",
-            "nombre": "TAPA MOTOR IZQ. SPITFIRE 250",
-            "marca": "DAYTONA",
-            "precio": 48,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -4120,17 +4252,6 @@
             "tags": []
         },
         {
-            "id": "CB250SC-113R",
-            "codigo_referencia": "CB250SC-113R",
-            "nombre": "PLACA TANQUE (I-D) SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC ROJO 2023/24/2025",
-            "marca": "DAYTONA",
-            "precio": 57,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CG200WEV2-019R",
             "codigo_referencia": "CG200WEV2-019R",
             "nombre": "ARO POST. MAGNECIO 2.50X17 DISCO 4H WING EVO I-II/GTR/PREDATOR 200 ROJO",
@@ -4362,17 +4483,6 @@
             "tags": []
         },
         {
-            "id": "CB150GHS1-034",
-            "codigo_referencia": "CB150GHS1-034",
-            "nombre": "DISCO FRENO DEL GH/S1 150CC",
-            "marca": "DAYTONA",
-            "precio": 18,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CB250TKN-038",
             "codigo_referencia": "CB250TKN-038",
             "nombre": "MANIGUETA EMBRAGUE CON BASE TEKKEN/FORCE/SHARK/SCORPION UNIVERSAL",
@@ -4395,11 +4505,33 @@
             "tags": []
         },
         {
+            "id": "CG150WRF-007",
+            "codigo_referencia": "CG150WRF-007",
+            "nombre": "CABLE VELOCIMETRO WORKFORCE/TH-B52 150CC",
+            "marca": "DAYTONA",
+            "precio": 3,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
             "id": "CB200WF-058",
             "codigo_referencia": "CB200WF-058",
             "nombre": "BOMBA ACEITE 39T WOLF/WING EVO P15/GN STARK/XY150/AXXO ASFALT/AXXO F51 2017 200cc",
             "marca": "DAYTONA",
             "precio": 11,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB250SC-113R",
+            "codigo_referencia": "CB250SC-113R",
+            "nombre": "PLACA TANQUE (I-D) SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC ROJO 2023/24/2025",
+            "marca": "DAYTONA",
+            "precio": 57,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -4510,6 +4642,17 @@
             "nombre": "VELOCIMETRO DIGITAL FEROCE 250CC",
             "marca": "DAYTONA",
             "precio": 105,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB150GHS1-034",
+            "codigo_referencia": "CB150GHS1-034",
+            "nombre": "DISCO FRENO DEL GH/S1 150CC",
+            "marca": "DAYTONA",
+            "precio": 18,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -4708,17 +4851,6 @@
             "nombre": "BOBINA CORONILLA 12M/3H TEKKEN EVO/SCB/GP-1 250CC/WOLF200/XPEDITION 300CC",
             "marca": "DAYTONA",
             "precio": 23,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CB300SW-166",
-            "codigo_referencia": "CB300SW-166",
-            "nombre": "FILTRO AIRE SUPER WOLF 300",
-            "marca": "DAYTONA",
-            "precio": 9,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -4981,17 +5113,6 @@
             "id": "CB150GHS1-030",
             "codigo_referencia": "CB150GHS1-030",
             "nombre": "KIT SWITCH LLAVES GH/S1 150CC",
-            "marca": "DAYTONA",
-            "precio": 35,
-            "categoria": "GENERAL",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CG200SPE-026 ",
-            "codigo_referencia": "CG200SPE-026 ",
-            "nombre": "KIT SWITCH LLAVES SPEED 200cc ",
             "marca": "DAYTONA",
             "precio": 35,
             "categoria": "GENERAL",
@@ -5572,9 +5693,9 @@
             "tags": []
         },
         {
-            "id": "MC7073 ",
-            "codigo_referencia": "MC7073 ",
-            "nombre": "DISCO FRENO POST 4H CR5/WOLF/CB190R UP TTKIN ",
+            "id": "MC-7073 ",
+            "codigo_referencia": "MC-7073 ",
+            "nombre": "DISCO FRENO POST 4H CR5/WOLF/CB190R UP TTKIN ALTERNA",
             "marca": "ALTERNA",
             "precio": 18,
             "categoria": "General",
@@ -5638,33 +5759,11 @@
             "tags": []
         },
         {
-            "id": "CB250GP1-052",
-            "codigo_referencia": "CB250GP1-052",
-            "nombre": "FILTRO AIRE GP1 250/TUNDRA VELOCE 250CC",
-            "marca": "DAYTONA",
-            "precio": 7,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "900584",
             "codigo_referencia": "900584",
             "nombre": "DIRECCIONALES POST. SCRAMBLER ",
             "marca": "ALTERNA",
             "precio": 16,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CG150WRF-025",
-            "codigo_referencia": "CG150WRF-025",
-            "nombre": "ARO POST. ARMADO 1.60X17 ZAPATA WORKFORCE 150 NEGRO",
-            "marca": "DAYTONA",
-            "precio": 70,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -5748,17 +5847,6 @@
             "tags": []
         },
         {
-            "id": "FIL-A802",
-            "codigo_referencia": "FIL-A802",
-            "nombre": "FILTRO AIRE BROSS200 /SKR200 /M1R250 DY250TEKKEN",
-            "marca": "TRESSUN",
-            "precio": 4,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CBB250XP-053",
             "codigo_referencia": "CBB250XP-053",
             "nombre": "ARBOL LEVAS 34T XPOWER/TEKKEN/CROSSFIRE/ADV-R/SCRAMBLER/CHIEF II 250CC ( 2V ) 2018-19-20-2022",
@@ -5770,11 +5858,11 @@
             "tags": []
         },
         {
-            "id": "CB200WF-048",
-            "codigo_referencia": "CB200WF-048",
-            "nombre": "FILTRO AIRE HONDA CB-1/WOLF200/RANGER CFZ 250/HONDA CB190",
-            "marca": "DAYTONA",
-            "precio": 8,
+            "id": "CB300SW-166ALT",
+            "codigo_referencia": "CB300SW-166ALT",
+            "nombre": "FILTRO AIRE SUPER WOLF 300 ALTERNA",
+            "marca": "ALTERNA",
+            "precio": 5,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -5913,11 +6001,11 @@
             "tags": []
         },
         {
-            "id": "CB250MVK-035",
-            "codigo_referencia": "CB250MVK-035",
-            "nombre": "FILTRO AIRE WOLF 200/250/MAVERICK 250/ADVENTURE 300 6 PATAS",
+            "id": "CB200WF-048",
+            "codigo_referencia": "CB200WF-048",
+            "nombre": "FILTRO AIRE HONDA CB-1/WOLF200/RANGER CFZ 250/HONDA CB190",
             "marca": "DAYTONA",
-            "precio": 12,
+            "precio": 8,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -6034,6 +6122,17 @@
             "tags": []
         },
         {
+            "id": "CB250MVK-035",
+            "codigo_referencia": "CB250MVK-035",
+            "nombre": "FILTRO AIRE WOLF 200/250/MAVERICK 250/ADVENTURE 300 6 PATAS",
+            "marca": "DAYTONA",
+            "precio": 12,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
             "id": "CB300SW-038 ",
             "codigo_referencia": "CB300SW-038 ",
             "nombre": "CILINDRO Y PISTON 300CC 74MM/PIN16 SUPER WOLF 300/SCRAMBLER 300 ",
@@ -6072,6 +6171,28 @@
             "nombre": "ARO DEL. WING EVO II 1.85 X 17 F/DISCO 4H ROJO",
             "marca": "ALTERNA",
             "precio": 69,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB250SC-066B",
+            "codigo_referencia": "CB250SC-066B",
+            "nombre": "PLACA TANQUE (I-D) SCORPION 250 BLANCO",
+            "marca": "ALTERNA",
+            "precio": 48,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB250GP1-052",
+            "codigo_referencia": "CB250GP1-052",
+            "nombre": "FILTRO AIRE GP1 250/TUNDRA VELOCE 250CC",
+            "marca": "DAYTONA",
+            "precio": 7,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -6363,17 +6484,6 @@
             "nombre": "FARO LED WING EVO II 2024 ",
             "marca": "DAYTONA",
             "precio": 86,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CB200SRK-018N",
-            "codigo_referencia": "CB200SRK-018N",
-            "nombre": "FARO Y MASCARILLA SHARK II 200/DK200B/SHM ARMI150/AXXO TR1 NEGRO 2024/2025 ",
-            "marca": "DAYTONA",
-            "precio": 48,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -6886,11 +6996,11 @@
             "tags": []
         },
         {
-            "id": "CB250TKN-051",
-            "codigo_referencia": "CB250TKN-051",
-            "nombre": "ARO POST ARMADO TEKKEN/SCRAMBLER 250 NEGRO",
+            "id": "CB250TKN-069",
+            "codigo_referencia": "CB250TKN-069",
+            "nombre": "CAUCHO DESLIZ CADENA TEKKEN/TRACKER/SCRAMBLER/AXXO SCRAM 250",
             "marca": "DAYTONA",
-            "precio": 116,
+            "precio": 9,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -7117,6 +7227,17 @@
             "tags": []
         },
         {
+            "id": "CB200SRK-018N",
+            "codigo_referencia": "CB200SRK-018N",
+            "nombre": "FARO Y MASCARILLA SHARK II 200/DK200B/SHM ARMI150/AXXO TR1 NEGRO 2024/2025 ",
+            "marca": "DAYTONA",
+            "precio": 48,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
             "id": "FE250-002",
             "codigo_referencia": "FE250-002",
             "nombre": "CAJA CAMBIOS ARMADA LEM167MM/LEP185MM ROSCA FE250 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5 250CC",
@@ -7144,17 +7265,6 @@
             "nombre": "PORTA PLACAS PREDATOR 200",
             "marca": "DAYTONA",
             "precio": 29,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CB250TKN-069",
-            "codigo_referencia": "CB250TKN-069",
-            "nombre": "CAUCHO DESLIZ CADENA TEKKEN/TRACKER/SCRAMBLER/AXXO SCRAM 250",
-            "marca": "DAYTONA",
-            "precio": 9,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -7216,17 +7326,6 @@
             "tags": []
         },
         {
-            "id": "MRZ250TKN-038",
-            "codigo_referencia": "MRZ250TKN-038",
-            "nombre": "MANIGUETA EMBRAGUE CON BASE TEKKEN ZRM",
-            "marca": "DAYTONA",
-            "precio": 7,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "MRZ200FC-013RJ",
             "codigo_referencia": "MRZ200FC-013RJ",
             "nombre": "MASCARILLA COMP FORCE 200/MRZ 250CC ROJO",
@@ -7260,11 +7359,11 @@
             "tags": []
         },
         {
-            "id": "CB250-266",
-            "codigo_referencia": "CB250-266",
-            "nombre": "DISCO FRENO DEL. TEKKEN",
+            "id": "CB250-266ALT",
+            "codigo_referencia": "CB250-266ALT",
+            "nombre": "DISCO FRENO DEL. TEKKEN ALTERNA",
             "marca": "ALTERNA",
-            "precio": 31,
+            "precio": 27,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -7298,17 +7397,6 @@
             "nombre": "PEDAL SPEED ORIGINAL",
             "marca": "DAYTONA",
             "precio": 46,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "MRZ345-TK45",
-            "codigo_referencia": "MRZ345-TK45",
-            "nombre": "PLACA TANQUE TEKKEN NATIVA",
-            "marca": "DAYTONA",
-            "precio": 105,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -7483,6 +7571,17 @@
             "id": "CB250-078",
             "codigo_referencia": "CB250-078",
             "nombre": "PINON VELOCIMETRO EJE 12MM CRUCERO/SHARK1/SCO B/I/GN125 UNIVERSAL",
+            "marca": "DAYTONA",
+            "precio": 7,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "MRZ250TKN-038",
+            "codigo_referencia": "MRZ250TKN-038",
+            "nombre": "MANIGUETA EMBRAGUE CON BASE TEKKEN ZRM",
             "marca": "DAYTONA",
             "precio": 7,
             "categoria": "General",
@@ -7777,6 +7876,17 @@
             "tags": []
         },
         {
+            "id": "CG200WEV-017",
+            "codigo_referencia": "CG200WEV-017",
+            "nombre": "DISCO FRENO DEL DEXT 240MM DINT 50MM WING EVO I/II 200/Z1 PHANTON/AXXO R51/IGM WIND 200CC",
+            "marca": "DAYTONA",
+            "precio": 17,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
             "id": "CB250-319",
             "codigo_referencia": "CB250-319",
             "nombre": "CABEZOTE COMP RE250 TEKKEN EVO/CROSSFIRE/SCRAMBLER/ADV-R/GP1 250CC",
@@ -7876,12 +7986,298 @@
             "tags": []
         },
         {
+            "id": "CB217TP-BT02",
+            "codigo_referencia": "CB217TP-BT02",
+            "nombre": "TAPAS BATERIAS WOLF",
+            "marca": "DAYTONA",
+            "precio": 28,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-021",
+            "codigo_referencia": "CG150WRF-021",
+            "nombre": "DEPURADOR WORKFORCE/TH-B52 150CC",
+            "marca": "DAYTONA",
+            "precio": 25,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
             "id": "CG150WRF-024",
             "codigo_referencia": "CG150WRF-024",
             "nombre": "ARO DEL. ARMADO 1.60X17 5H WORKFORCE 150 NEGRO",
             "marca": "DAYTONA",
             "precio": 60,
             "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-031G",
+            "codigo_referencia": "CG150WRF-031G",
+            "nombre": "PLACA LATERAL (I-D) WORKFORCE/TH-B52 150CC GR-NEGRO",
+            "marca": "DAYTONA",
+            "precio": 25,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-032B",
+            "codigo_referencia": "CG150WRF-032B",
+            "nombre": "GUARDAFANGO DEL. WORKFORCE/TH-B52 150CC BLANCO",
+            "marca": "DAYTONA",
+            "precio": 25,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-032N",
+            "codigo_referencia": "CG150WRF-032N",
+            "nombre": "GUARDAFANGO DEL. WORKFORCE/TH-B52 150CC NEGRO",
+            "marca": "DAYTONA",
+            "precio": 25,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-064",
+            "codigo_referencia": "CG150WRF-064",
+            "nombre": "DISCO FRENO DEL WORKFORCE 150CC ",
+            "marca": "DAYTONA",
+            "precio": 10,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-063",
+            "codigo_referencia": "CG150WRF-063",
+            "nombre": "PARRILLA POST WORKFORCE 150CC",
+            "marca": "DAYTONA",
+            "precio": 19,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-056",
+            "codigo_referencia": "CG150WRF-056",
+            "nombre": "GUARDAFANGO POST. WORKFORCE/TH-B52 150CC",
+            "marca": "DAYTONA",
+            "precio": 11,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150-163R",
+            "codigo_referencia": "CG150-163R",
+            "nombre": "TANQUE GASOLINA DELTA/IGM EC150/SK STIFF/AXXO AX150/TUKO H1 150CC ROJO",
+            "marca": "DAYTONA",
+            "precio": 86,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "FE250GP1R-018GM",
+            "codigo_referencia": "FE250GP1R-018GM",
+            "nombre": "TANQUE GASOLINA GP1-R 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC G-DORADO MATE",
+            "marca": "DAYTONA",
+            "precio": 124,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB250SCB-081N",
+            "codigo_referencia": "CB250SCB-081N",
+            "nombre": "TANQUE GASOLINA SCRAMBLER REVOLUTION 250CC NEGRO",
+            "marca": "DAYTONA",
+            "precio": 95,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CGB250SPF-058",
+            "codigo_referencia": "CGB250SPF-058",
+            "nombre": "TAPA MOTOR IZQ. SPITFIRE 250",
+            "marca": "DAYTONA",
+            "precio": 48,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG200SRK-004",
+            "codigo_referencia": "CG200SRK-004",
+            "nombre": "PLACA TANQUE (I-D) SHARK1 SENGO",
+            "marca": "DAYTONA",
+            "precio": 50,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "MRZ345-TK45G",
+            "codigo_referencia": "MRZ345-TK45G",
+            "nombre": "PLACA TANQUE TEKKEN NATIVA GRIS",
+            "marca": "DAYTONA",
+            "precio": 105,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "MRZ345-TK45V",
+            "codigo_referencia": "MRZ345-TK45V",
+            "nombre": "PLACA TANQUE TEKKEN NATIVA VERDE",
+            "marca": "DAYTONA",
+            "precio": 105,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB250-266",
+            "codigo_referencia": "CB250-266",
+            "nombre": "DISCO FRENO DEL. TEKKEN",
+            "marca": "DAYTONA",
+            "precio": 35,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB125CX7-005",
+            "codigo_referencia": "CB125CX7-005",
+            "nombre": "DISCO FRENO DEL. CX7 EVO/CABALLITO UNIVERSAL",
+            "marca": "DAYTONA",
+            "precio": 10,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150DELT-024",
+            "codigo_referencia": "CG150DELT-024",
+            "nombre": "DISCO FRENO DEL. DELTA/INDY/WORKFORCE ",
+            "marca": "DAYTONA",
+            "precio": 20,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB250-023UNI",
+            "codigo_referencia": "CB250-023UNI",
+            "nombre": "DISCO FRENO DEL UNIVERSAL",
+            "marca": "DAYTONA",
+            "precio": 15,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB250TKN-014",
+            "codigo_referencia": "CB250TKN-014",
+            "nombre": "DISCO FRENO DEL 6H TEKKEN EVO/SCRAMBLER/AXXO SCRAMBLER 250/SHARK SUV 200/XPEDITION/EVEREST 300CC",
+            "marca": "ALTERNA",
+            "precio": 29,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG200WEV-025",
+            "codigo_referencia": "CG200WEV-025",
+            "nombre": "DISCO FRENO POST. WING EVO 200 Dy 200",
+            "marca": "DAYTONA",
+            "precio": 23,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB300SW-166",
+            "codigo_referencia": "CB300SW-166",
+            "nombre": "FILTRO AIRE SUPER WOLF 300 ",
+            "marca": "DAYTONA",
+            "precio": 10,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "FIL-A802",
+            "codigo_referencia": "FIL-A802",
+            "nombre": "FILTRO AIRE BROSS200 /SKR200 /M1R250 DY250TEKKEN",
+            "marca": "TRESSUN",
+            "precio": 4,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CG150WRF-017",
+            "codigo_referencia": "CG150WRF-017",
+            "nombre": "KIT SWITCH LLAVES WORKFORCE/TH-B52 150CC",
+            "marca": "DAYTONA",
+            "precio": 25,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB250TKN-034",
+            "codigo_referencia": "CB250TKN-034",
+            "nombre": "GUARDAFANGO DEL. INFERIOR TEKKEN EVO 250",
+            "marca": "DAYTONA",
+            "precio": 38,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB250-293N",
+            "codigo_referencia": "CB250-293N",
+            "nombre": "GUARDAFANGO DEL. SUPERIOR TEKKEN NEGRO 2022",
+            "marca": "DAYTONA",
+            "precio": 19,
+            "categoria": "corregir",
             "imagen": "sin_imagen.jpg",
             "stock": true,
             "tags": []
