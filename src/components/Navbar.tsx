@@ -18,7 +18,7 @@ export const Navbar = () => {
           <Link to="/" className="flex items-center gap-2 cursor-pointer group">
             <div className="p-1 md:p-1.5 overflow-hidden">
               <img 
-                src="/icono-daytona.png" 
+                src="/logo.svg" 
                 alt="LV PARTS Logo" 
                 className="w-10 h-10 md:w-12 md:h-12 object-contain"
               />
