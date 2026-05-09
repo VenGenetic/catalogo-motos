@@ -320,17 +320,6 @@
             "tags": []
         },
         {
-            "id": "CB250SC-111R",
-            "codigo_referencia": "CB250SC-111R",
-            "nombre": "PLACA LAT POST (I-D) SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC ROJO 2023/24/2025",
-            "marca": "DAYTONA",
-            "precio": 48,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "POR-P29-RO",
             "codigo_referencia": "POR-P29-RO",
             "nombre": "PORTA PLACA UNIVERSAL ALUM. CON LUCES ROJO",
@@ -1321,6 +1310,17 @@
             "tags": []
         },
         {
+            "id": "CG200WEV2-029 ",
+            "codigo_referencia": "CG200WEV2-029 ",
+            "nombre": "ASIENTO SET2 WING EVO2 2018/19/20/21/2022/SHM GP200/Z1 AK200/AXXO F51/RANGER VENOOM F51/TUNDRA VENOM/PEGASSO VENTO/MT1 FX 200CC ",
+            "marca": "DAYTONA",
+            "precio": 73,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
             "id": "CB300SW-039",
             "codigo_referencia": "CB300SW-039",
             "nombre": "DISCO FRENO DEL SUPER WOLF 300",
@@ -2069,6 +2069,17 @@
             "tags": []
         },
         {
+            "id": "CB250SCB-018",
+            "codigo_referencia": "CB250SCB-018",
+            "nombre": "CABLE EMBRAGUE SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC/300CC",
+            "marca": "DAYTONA",
+            "precio": 5,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
             "id": "CB18051ADV-052",
             "codigo_referencia": "CB18051ADV-052",
             "nombre": "MANUBRIOS Y PESAS (I-D) S1 ADV",
@@ -2151,17 +2162,6 @@
             "nombre": "TAPA GASOLINA ICS150S /STIFF150 /FX200 /GP200 REDONDO 4PERNOS BOST",
             "marca": "DAYTONA",
             "precio": 8,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CB250SCB-018",
-            "codigo_referencia": "CB250SCB-018",
-            "nombre": "CABLE EMBRAGUE SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC/300CC",
-            "marca": "DAYTONA",
-            "precio": 5,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -2426,17 +2426,6 @@
             "nombre": "ARBOL LEVAS 34T WOLF/AXXO ASFALT/AXXO F51 200cc",
             "marca": "DAYTONA",
             "precio": 29,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CG200WEV2-029 ",
-            "codigo_referencia": "CG200WEV2-029 ",
-            "nombre": "ASIENTO SET2 WING EVO2 2018/19/20/21/2022/SHM GP200/Z1 AK200/AXXO F51/RANGER VENOOM F51/TUNDRA VENOM/PEGASSO VENTO/MT1 FX 200CC ",
-            "marca": "DAYTONA",
-            "precio": 73,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -5759,6 +5748,17 @@
             "tags": []
         },
         {
+            "id": "CB250GP1-052",
+            "codigo_referencia": "CB250GP1-052",
+            "nombre": "FILTRO AIRE GP1 250/TUNDRA VELOCE 250CC",
+            "marca": "DAYTONA",
+            "precio": 7,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
             "id": "900584",
             "codigo_referencia": "900584",
             "nombre": "DIRECCIONALES POST. SCRAMBLER ",
@@ -6182,17 +6182,6 @@
             "nombre": "PLACA TANQUE (I-D) SCORPION 250 BLANCO",
             "marca": "ALTERNA",
             "precio": 48,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CB250GP1-052",
-            "codigo_referencia": "CB250GP1-052",
-            "nombre": "FILTRO AIRE GP1 250/TUNDRA VELOCE 250CC",
-            "marca": "DAYTONA",
-            "precio": 7,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -8278,6 +8267,17 @@
             "marca": "DAYTONA",
             "precio": 19,
             "categoria": "corregir",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB250TRZ-010",
+            "codigo_referencia": "CB250TRZ-010",
+            "nombre": "ASIENTO AXXO TRZ 250",
+            "marca": "DAYTONA",
+            "precio": 40,
+            "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
             "tags": []
