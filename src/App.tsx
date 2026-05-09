@@ -1,7 +1,6 @@
 import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react';
 import { Routes, Route, useSearchParams, Link, useLocation, useNavigate, matchPath } from 'react-router-dom';
 import { Heart, WifiOff } from 'lucide-react';
-import { Helmet } from 'react-helmet-async';
 import './App.css';
 import { limpiarTexto } from './utils/helpers';
 import { APP_CONFIG } from './config/constants';
@@ -294,14 +293,14 @@ export default function App() {
           <Routes>
             <Route path="/" element={
               <>
-                <Helmet><title>LV PARTS | Repuestos de Moto Ecuador</title></Helmet>
+                <title>LV PARTS | Repuestos de Moto Ecuador</title>
                 <HomeView productos={productos} />
               </>
             } />
 
             <Route path="/catalogo" element={
               <>
-                <Helmet><title>Catálogo | LV PARTS</title></Helmet>
+                <title>Catálogo | LV PARTS</title>
                 <CatalogView
                   productos={filteredProducts}
                   isFav={(id) => favs.includes(id)}
@@ -318,7 +317,7 @@ export default function App() {
             } />
             <Route path="/catalogo/:modelo" element={
               <>
-                <Helmet><title>{filtroModelo ? `Repuestos ${filtroModelo}` : 'Catálogo'} | LV PARTS</title></Helmet>
+                <title>{filtroModelo ? `Repuestos ${filtroModelo}` : 'Catálogo'} | LV PARTS</title>
                 <CatalogView
                   productos={filteredProducts}
                   isFav={(id) => favs.includes(id)}
@@ -336,7 +335,7 @@ export default function App() {
 
             <Route path="/favoritos" element={
               <>
-                <Helmet><title>Mis Favoritos | LV PARTS</title></Helmet>
+                <title>Mis Favoritos | LV PARTS</title>
                 {favs.length > 0 ? (
                   <div className="animate-fade-in">
                     <div className="max-w-7xl mx-auto px-4 pt-6 pb-2">
@@ -370,7 +369,7 @@ export default function App() {
                 )}
               </>
             } />
-            <Route path="/contacto" element={<><Helmet><title>Contacto | LV PARTS</title></Helmet><ContactView /></>} />
+            <Route path="/contacto" element={<><title>Contacto | LV PARTS</title><ContactView /></>} />
             <Route path="*" element={
               <div className="flex flex-col items-center justify-center min-h-[60vh] p-4 text-center">
                 <img

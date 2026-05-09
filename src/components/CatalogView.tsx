@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef, memo } from 'react';
-import { Heart, ArrowLeft, Filter, Search, ShoppingBag } from 'lucide-react'; 
+import { Heart, ArrowLeft, Filter, Search, ShoppingBag, Copy, Check } from 'lucide-react'; 
 import { optimizarImg } from '../utils/helpers';
 import { APP_CONFIG, ORDEN_SECCIONES } from '../config/constants';
 import { Producto } from '../types';
@@ -31,6 +31,7 @@ export const CatalogView = memo(({
 }: Props) => {
   const [pagina, setPagina] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   
   const { addToCart } = useCart();
 
@@ -67,6 +68,13 @@ export const CatalogView = memo(({
   const handleQuickAdd = (e: React.MouseEvent, product: Producto) => {
     e.stopPropagation();
     addToCart(product);
+  };
+
+  const handleCopySku = (e: React.MouseEvent, sku: string, id: string) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(sku);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
   };
 
   // 1. MODO SELECTOR
@@ -224,7 +232,14 @@ export const CatalogView = memo(({
                     </h3>
                     
                     {product.codigo_referencia && (
-                      <div className="mb-2">
+                      <div className="mb-2 flex items-center">
+                        <button
+                          onClick={(e) => handleCopySku(e, product.codigo_referencia!, product.id)}
+                          className="mr-1.5 p-1 rounded-md text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
+                          title="Copiar código de referencia"
+                        >
+                          {copiedId === product.id ? <Check size={12} className="text-green-500" /> : <Copy size={12} />}
+                        </button>
                         <span className="text-[10px] text-gray-400 dark:text-gray-500 font-mono bg-gray-50 dark:bg-slate-800/50 px-1.5 py-0.5 rounded border border-gray-100 dark:border-slate-700">
                           Ref: {product.codigo_referencia}
                         </span>

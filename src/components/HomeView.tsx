@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { HeroSection } from './HeroSection';
 import { FeaturedCategories } from './FeaturedCategories';
 import { Producto } from '../types';
@@ -31,13 +30,11 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
 
   return (
     <div className="animate-fade-in">
-      <Helmet>
         <title>LV PARTS | Repuestos Daytona y Multimarca Ecuador</title>
         <meta name="description" content="Catálogo digital de repuestos originales y homologados. Encuentra piezas para motor, frenos y chasis de Daytona, Tekken e IGM." />
         <script type="application/ld+json">
           {JSON.stringify(businessSchema)}
         </script>
-      </Helmet>
 
       <HeroSection />
       

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info, ChevronLeft, ChevronRight, MoveHorizontal, ZoomIn } from 'lucide-react';
+import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info, ChevronLeft, ChevronRight, MoveHorizontal, ZoomIn, Copy } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { Producto } from '../types';
@@ -19,6 +19,15 @@ interface Props {
 
 export const ProductDetailModal = ({ product, allProducts, currentList, onClose, onSelectRelated }: Props) => {
   const { addToCart } = useCart();
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = (e: React.MouseEvent, text: string) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   
   // Detección de dispositivo para Habilitar/Deshabilitar el arrastre
   // (Usamos 1024 para asegurar que tablets también tengan habilitado el swipe)
@@ -304,6 +313,13 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                         </span>
                         {product.codigo_referencia && (
                           <span className="text-xs text-slate-500 dark:text-slate-400 font-mono flex items-center gap-1 bg-gray-50 dark:bg-slate-800 px-2 py-1 rounded border border-gray-100 dark:border-slate-700">
+                            <button
+                              onClick={(e) => handleCopy(e, product.codigo_referencia!)}
+                              className="p-1 -ml-1 rounded hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
+                              title="Copiar código"
+                            >
+                              {copied ? <Check size={12} className="text-green-500" /> : <Copy size={12} />}
+                            </button>
                             <Tag size={12} /> {product.codigo_referencia}
                           </span>
                         )}
