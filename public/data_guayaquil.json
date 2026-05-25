@@ -100,17 +100,6 @@
             "tags": []
         },
         {
-            "id": "CB200WF-010",
-            "codigo_referencia": "CB200WF-010",
-            "nombre": "KIT SWITCH LLAVES WOLF/ADV200/RANGER CFZ 250/HONDA CB190",
-            "marca": "DAYTONA",
-            "precio": 32,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CGB250SPF-064",
             "codigo_referencia": "CGB250SPF-064",
             "nombre": "CILINDRO Y PISTON 250CC 66.5MM/PIN16 SPITFIRE 250",
@@ -259,17 +248,6 @@
             "nombre": "DIRECCIONALES (SET4) TEKKEN EVO/AXXO TRACKER/DK NATIVA 250CC",
             "marca": "DAYTONA",
             "precio": 29,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "POR-P29-RO",
-            "codigo_referencia": "POR-P29-RO",
-            "nombre": "PORTA PLACA UNIVERSAL ALUM. CON LUCES ROJO",
-            "marca": "DAYTONA",
-            "precio": 18,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -886,17 +864,6 @@
             "nombre": "KIT PISTAS DIRECCION S1 ADVENTURE",
             "marca": "DAYTONA",
             "precio": 15,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "POR-P29-AZ",
-            "codigo_referencia": "POR-P29-AZ",
-            "nombre": "PORTA PLACA UNIVERSAL ALUM. CON LUCES AZUL",
-            "marca": "DAYTONA",
-            "precio": 18,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -4114,17 +4081,6 @@
             "tags": []
         },
         {
-            "id": "CBB250XP-002R",
-            "codigo_referencia": "CBB250XP-002R",
-            "nombre": "GUARDAFANGO DEL. XPOWER/THD SR71/PEGASSO DUK7K 250CC/FACTORY FZ 300CC ROJO B/N",
-            "marca": "DAYTONA",
-            "precio": 35,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CG150PTH-022",
             "codigo_referencia": "CG150PTH-022",
             "nombre": "TELESCOPICAS (I-D) PANTHER/RANGER 150USM//IGM ECO150/TK H2EVO/AXXO RAPTOR 150/THUNDER RT 150CC PLOMO",
@@ -6850,17 +6806,6 @@
             "tags": []
         },
         {
-            "id": "CBB250XP-002N",
-            "codigo_referencia": "CBB250XP-002N",
-            "nombre": "GUARDAFANGO DEL. XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC NEGRO B/N",
-            "marca": "DAYTONA",
-            "precio": 35,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CB150-028T-M/AC",
             "codigo_referencia": "CB150-028T-M/AC",
             "nombre": "GUARDAFANGO DEL MONTANA 150CC NARANJA M/AC",
@@ -8692,6 +8637,17 @@
             "nombre": "PLACA LAT. SCORPION ALTERNA",
             "marca": "ALTERNA",
             "precio": 30,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CBB250XP-002RBI",
+            "codigo_referencia": "CBB250XP-002RBI",
+            "nombre": "GUARDAFANGO DEL. XPOWER 250 ROJO BARRAS INVERTIDAS",
+            "marca": "DAYTONA",
+            "precio": 38,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
