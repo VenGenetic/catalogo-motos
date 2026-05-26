@@ -94,7 +94,7 @@ export const useProducts = () => {
 
         const fuentes = [
           { url: '/data_guayaquil.json', origen: 'Guayaquil' },
-          { url: '/data.json', origen: 'Cuenca (bajo pedido)' }
+          { url: '/data.json', origen: 'bajo pedido' }
         ];
 
         const fetchFuente = async (url: string) => {
@@ -145,7 +145,9 @@ export const useProducts = () => {
           const existente = mapaProductos.get(clave);
 
           if (existente) {
-            const origenes = Array.from(new Set([...(existente.origenes || []), ...(producto.origenes || [])]));
+            const rawOrigenes = Array.from(new Set([...(existente.origenes || []), ...(producto.origenes || [])]));
+            const tieneStock = rawOrigenes.some(o => o === 'Guayaquil' || o === 'En Stock');
+            const origenes = tieneStock ? ['En Stock'] : ['bajo pedido'];
 
             const imagenElegida = existente.imagen?.includes('sin_imagen') && producto.imagen
               ? producto.imagen
@@ -159,7 +161,13 @@ export const useProducts = () => {
               textoBusqueda: limpiarTexto(`${producto.nombre} ${producto.codigo_referencia || ''} ${producto.categoria || ''} ${producto.seccion || ''} ${origenes.join(' ')}`)
             });
           } else {
-            mapaProductos.set(clave, producto);
+            const tieneStock = producto.origenes?.some(o => o === 'Guayaquil' || o === 'En Stock');
+            const origenes = tieneStock ? ['En Stock'] : ['bajo pedido'];
+            mapaProductos.set(clave, {
+              ...producto,
+              origenes,
+              textoBusqueda: limpiarTexto(`${producto.nombre} ${producto.codigo_referencia || ''} ${producto.categoria || ''} ${producto.seccion || ''} ${origenes.join(' ')}`)
+            });
           }
         };
 

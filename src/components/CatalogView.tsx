@@ -215,7 +215,7 @@ export const CatalogView = memo(({
                           <span
                             key={origen}
                             className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border ${
-                              origen.toLowerCase().includes('guayaquil')
+                              origen.toLowerCase().includes('stock')
                                 ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-100 dark:border-green-800'
                                 : 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-100 dark:border-amber-800'
                             }`}
