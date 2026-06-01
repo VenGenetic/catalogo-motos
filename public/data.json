@@ -1,5 +1,16 @@
 [
     {
+        "id": "PR300XPD-051",
+        "codigo_referencia": "PR300XPD-051",
+        "nombre": "LUZ LED PLACA TANQUE (I-D) XPEDITION/TK SIKR 300a",
+        "marca": "DAYTONA",
+        "precio": 35,
+        "categoria": "General",
+        "imagen": "PR300XPD-051.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "CB300SW-206",
         "codigo_referencia": "CB300SW-206",
         "nombre": "TAPA RADIADOR AGUA SUPER WOLF/SCRAMBLER MAX 300CC",
@@ -66,13 +77,706 @@
         "tags": []
     },
     {
-        "id": "FE250-037",
-        "codigo_referencia": "FE250-037",
-        "nombre": "PASTILLA CALIBRACION VALVULA SET2 ( 1200 )",
+        "id": "CB200HTR-090",
+        "codigo_referencia": "CB200HTR-090",
+        "nombre": "ARO POST REFORZADO RIN 10 HUNTER 200",
         "marca": "DAYTONA",
-        "precio": 4,
+        "precio": 114,
         "categoria": "General",
-        "imagen": "FE250-037.webp",
+        "imagen": "CB200HTR-090.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-056",
+        "codigo_referencia": "FE300GPS-056",
+        "nombre": "CUBIERTA DELANTERA VELOCIMETRO GP1S 300",
+        "marca": "DAYTONA",
+        "precio": 9,
+        "categoria": "General",
+        "imagen": "FE300GPS-056.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-055",
+        "codigo_referencia": "FE300GPS-055",
+        "nombre": "SOPORTE VELOCIMETRO GP1S 300",
+        "marca": "DAYTONA",
+        "precio": 2,
+        "categoria": "General",
+        "imagen": "FE300GPS-055.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-054",
+        "codigo_referencia": "FE300GPS-054",
+        "nombre": "KIT FRENO DEL GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 67,
+        "categoria": "General",
+        "imagen": "FE300GPS-054.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-053",
+        "codigo_referencia": "FE300GPS-053",
+        "nombre": "MANGUERA RADIADOR SET2 GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 35,
+        "categoria": "General",
+        "imagen": "FE300GPS-053.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-051",
+        "codigo_referencia": "FE300GPS-051",
+        "nombre": "BOBINA BUJIA GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 12,
+        "categoria": "General",
+        "imagen": "FE300GPS-051.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-050",
+        "codigo_referencia": "FE300GPS-050",
+        "nombre": "STOP SET2 GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 48,
+        "categoria": "General",
+        "imagen": "FE300GPS-050.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-049",
+        "codigo_referencia": "FE300GPS-049",
+        "nombre": "LUZ PLACA GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 10,
+        "categoria": "General",
+        "imagen": "FE300GPS-049.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-048",
+        "codigo_referencia": "FE300GPS-048",
+        "nombre": "FARO LED GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 86,
+        "categoria": "General",
+        "imagen": "FE300GPS-048.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-047",
+        "codigo_referencia": "FE300GPS-047",
+        "nombre": "VELOCIMETRO DIGITAL GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 114,
+        "categoria": "General",
+        "imagen": "FE300GPS-047.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-046",
+        "codigo_referencia": "FE300GPS-046",
+        "nombre": "PASTILLA FRENO POST SET2 GP1S 300",
+        "marca": "DAYTONA",
+        "precio": 12,
+        "categoria": "General",
+        "imagen": "FE300GPS-046.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-045",
+        "codigo_referencia": "FE300GPS-045",
+        "nombre": "BOMBA FRENO POST GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 36,
+        "categoria": "General",
+        "imagen": "FE300GPS-045.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-044G",
+        "codigo_referencia": "FE300GPS-044G",
+        "nombre": "ARO DEL MAGNECIO 3.00X17 DISCO GP1S 300 GRIS",
+        "marca": "DAYTONA",
+        "precio": 114,
+        "categoria": "General",
+        "imagen": "FE300GPS-044G.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-044N",
+        "codigo_referencia": "FE300GPS-044N",
+        "nombre": "ARO DEL MAGNECIO 3.00X17 DISCO GP1S 300 NEGRO",
+        "marca": "DAYTONA",
+        "precio": 114,
+        "categoria": "General",
+        "imagen": "FE300GPS-044N.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-043G",
+        "codigo_referencia": "FE300GPS-043G",
+        "nombre": "ARO POST MAGNECIO 4.00X17 DISCO GP1S 300CC GRIS",
+        "marca": "DAYTONA",
+        "precio": 124,
+        "categoria": "General",
+        "imagen": "FE300GPS-043G.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-043N",
+        "codigo_referencia": "FE300GPS-043N",
+        "nombre": "ARO POST MAGNECIO 4.00X17 DISCO GP1S 300CC NEGRO",
+        "marca": "DAYTONA",
+        "precio": 124,
+        "categoria": "General",
+        "imagen": "FE300GPS-043N.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-042G",
+        "codigo_referencia": "FE300GPS-042G",
+        "nombre": "MONOSHOCK 280MM GP1S 300CC GRIS",
+        "marca": "DAYTONA",
+        "precio": 92,
+        "categoria": "General",
+        "imagen": "FE300GPS-042G.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-042V",
+        "codigo_referencia": "FE300GPS-042V",
+        "nombre": "MONOSHOCK 280MM GP1S 300CC VERDE",
+        "marca": "DAYTONA",
+        "precio": 92,
+        "categoria": "General",
+        "imagen": "FE300GPS-042V.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-041",
+        "codigo_referencia": "FE300GPS-041",
+        "nombre": "OSCILANTE GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 105,
+        "categoria": "General",
+        "imagen": "FE300GPS-041.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-040",
+        "codigo_referencia": "FE300GPS-040",
+        "nombre": "FILTRO AIRE GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 12,
+        "categoria": "General",
+        "imagen": "FE300GPS-040.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-039",
+        "codigo_referencia": "FE300GPS-039",
+        "nombre": "RETEN BARRAS SET4 GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 12,
+        "categoria": "General",
+        "imagen": "FE300GPS-039.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-038D",
+        "codigo_referencia": "FE300GPS-038D",
+        "nombre": "GUARDAFANGO DEL GP1S 300CC N-DORADO",
+        "marca": "DAYTONA",
+        "precio": 42,
+        "categoria": "General",
+        "imagen": "FE300GPS-038D.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-038V",
+        "codigo_referencia": "FE300GPS-038V",
+        "nombre": "GUARDAFANGO DEL GP1S 300CC N-VERDE",
+        "marca": "DAYTONA",
+        "precio": 42,
+        "categoria": "General",
+        "imagen": "FE300GPS-038V.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-038R",
+        "codigo_referencia": "FE300GPS-038R",
+        "nombre": "GUARDAFANGO DEL GP1S 300CC N-ROJO",
+        "marca": "DAYTONA",
+        "precio": 42,
+        "categoria": "General",
+        "imagen": "FE300GPS-038R.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-037",
+        "codigo_referencia": "FE300GPS-037",
+        "nombre": "ESTRIBOS ARMADOS CON BASE (I-D) GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 124,
+        "categoria": "General",
+        "imagen": "FE300GPS-037.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-036",
+        "codigo_referencia": "FE300GPS-036",
+        "nombre": "PORTA CATALINA GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 38,
+        "categoria": "General",
+        "imagen": "FE300GPS-036.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-035",
+        "codigo_referencia": "FE300GPS-035",
+        "nombre": "MANIGUETA EMBRAGUE CON BASE GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 19,
+        "categoria": "General",
+        "imagen": "FE300GPS-035.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-034",
+        "codigo_referencia": "FE300GPS-034",
+        "nombre": "PEDAL CAMBIOS GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 23,
+        "categoria": "General",
+        "imagen": "FE300GPS-034.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-033",
+        "codigo_referencia": "FE300GPS-033",
+        "nombre": "KIT SWITCH TAPA LLAVES GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 57,
+        "categoria": "General",
+        "imagen": "FE300GPS-033.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-032",
+        "codigo_referencia": "FE300GPS-032",
+        "nombre": "CABLE ACELERADOR GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 5,
+        "categoria": "General",
+        "imagen": "FE300GPS-032.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-031",
+        "codigo_referencia": "FE300GPS-031",
+        "nombre": "CABLE EMBRAGUE GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 6,
+        "categoria": "General",
+        "imagen": "FE300GPS-031.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-030",
+        "codigo_referencia": "FE300GPS-030",
+        "nombre": "CATALINA 520H/6H/42D GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 29,
+        "categoria": "General",
+        "imagen": "FE300GPS-030.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-029",
+        "codigo_referencia": "FE300GPS-029",
+        "nombre": "LLAVE GASOLINA GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 10,
+        "categoria": "General",
+        "imagen": "FE300GPS-029.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-028",
+        "codigo_referencia": "FE300GPS-028",
+        "nombre": "PUERTO CARGA USB GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 13,
+        "categoria": "General",
+        "imagen": "FE300GPS-028.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-027",
+        "codigo_referencia": "FE300GPS-027",
+        "nombre": "RECTIFICADOR VOLTAJE YAP108-12-HR 12V 80A 4 PATAS GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 9,
+        "categoria": "General",
+        "imagen": "FE300GPS-027.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-026",
+        "codigo_referencia": "FE300GPS-026",
+        "nombre": "RELAY EL302-12 12V 180W 3 PATAS GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 9,
+        "categoria": "General",
+        "imagen": "FE300GPS-026.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-025",
+        "codigo_referencia": "FE300GPS-025",
+        "nombre": "KIT RUN Y LUCES GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 26,
+        "categoria": "General",
+        "imagen": "FE300GPS-025.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-024",
+        "codigo_referencia": "FE300GPS-024",
+        "nombre": "INSTALACION ELECTRICA GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 67,
+        "categoria": "General",
+        "imagen": "FE300GPS-024.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-023",
+        "codigo_referencia": "FE300GPS-023",
+        "nombre": "DEPURADOR ARMADO GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 35,
+        "categoria": "General",
+        "imagen": "FE300GPS-023.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-022",
+        "codigo_referencia": "FE300GPS-022",
+        "nombre": "BOYA GASOLINA GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 29,
+        "categoria": "General",
+        "imagen": "FE300GPS-022.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-021",
+        "codigo_referencia": "FE300GPS-021",
+        "nombre": "CARBURADOR ARMADO PZ35 CABLE (DIAF) GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 80,
+        "categoria": "General",
+        "imagen": "FE300GPS-021.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-020",
+        "codigo_referencia": "FE300GPS-020",
+        "nombre": "DISCO FRENO POST GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 25,
+        "categoria": "General",
+        "imagen": "FE300GPS-020.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-018",
+        "codigo_referencia": "FE300GPS-018",
+        "nombre": "TELESCOPICAS (I-D) GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 285,
+        "categoria": "General",
+        "imagen": "FE300GPS-018.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-017",
+        "codigo_referencia": "FE300GPS-017",
+        "nombre": "ESPEJOS (I-D) GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 23,
+        "categoria": "General",
+        "imagen": "FE300GPS-017.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-016",
+        "codigo_referencia": "FE300GPS-016",
+        "nombre": "TANQUE GASOLINA GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 114,
+        "categoria": "General",
+        "imagen": "FE300GPS-016.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-015",
+        "codigo_referencia": "FE300GPS-015",
+        "nombre": "CAUCHO PORTA CATALINA SET6 GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 12,
+        "categoria": "General",
+        "imagen": "FE300GPS-015.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-014",
+        "codigo_referencia": "FE300GPS-014",
+        "nombre": "PEDAL FRENO GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 29,
+        "categoria": "General",
+        "imagen": "FE300GPS-014.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-013",
+        "codigo_referencia": "FE300GPS-013",
+        "nombre": "TEMPLADOR CADENA (I-D) GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 23,
+        "categoria": "General",
+        "imagen": "FE300GPS-013.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-012",
+        "codigo_referencia": "FE300GPS-012",
+        "nombre": "TIMON GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 42,
+        "categoria": "General",
+        "imagen": "FE300GPS-012.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-011",
+        "codigo_referencia": "FE300GPS-011",
+        "nombre": "RADIADOR ACEITE CON MANGUERAS GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 114,
+        "categoria": "General",
+        "imagen": "FE300GPS-011.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-010",
+        "codigo_referencia": "FE300GPS-010",
+        "nombre": "PORTA PLACAS GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 67,
+        "categoria": "General",
+        "imagen": "FE300GPS-010.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-009",
+        "codigo_referencia": "FE300GPS-009",
+        "nombre": "CUBRE CADENA GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 48,
+        "categoria": "General",
+        "imagen": "FE300GPS-009.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-008",
+        "codigo_referencia": "FE300GPS-008",
+        "nombre": "PINON VELOCIMETRO DIGITAL GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 16,
+        "categoria": "General",
+        "imagen": "FE300GPS-008.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-007",
+        "codigo_referencia": "FE300GPS-007",
+        "nombre": "CAUCHO DESLIZADOR CADENA GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 12,
+        "categoria": "General",
+        "imagen": "FE300GPS-007.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-006",
+        "codigo_referencia": "FE300GPS-006",
+        "nombre": "DIRECCIONALES SET4 GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 35,
+        "categoria": "General",
+        "imagen": "FE300GPS-006.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-005",
+        "codigo_referencia": "FE300GPS-005",
+        "nombre": "MESA DIRECCION ARMADA GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 114,
+        "categoria": "General",
+        "imagen": "FE300GPS-005.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-004D",
+        "codigo_referencia": "FE300GPS-004D",
+        "nombre": "PLACA TANQUE (I-D) GP1S 300CC N-DORADO",
+        "marca": "DAYTONA",
+        "precio": 171,
+        "categoria": "General",
+        "imagen": "FE300GPS-004D.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-004V",
+        "codigo_referencia": "FE300GPS-004V",
+        "nombre": "PLACA TANQUE (I-D) GP1S 300CC G-VERDE",
+        "marca": "DAYTONA",
+        "precio": 171,
+        "categoria": "General",
+        "imagen": "FE300GPS-004V.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-004R",
+        "codigo_referencia": "FE300GPS-004R",
+        "nombre": "PLACA TANQUE (I-D) GP1S 300CC G-ROJO",
+        "marca": "DAYTONA",
+        "precio": 171,
+        "categoria": "General",
+        "imagen": "FE300GPS-004R.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-003D",
+        "codigo_referencia": "FE300GPS-003D",
+        "nombre": "PLACA LAT POST (I-D) GP1S 300CC N-DORADO",
+        "marca": "DAYTONA",
+        "precio": 143,
+        "categoria": "General",
+        "imagen": "FE300GPS-003D.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-003V",
+        "codigo_referencia": "FE300GPS-003V",
+        "nombre": "PLACA LAT POST (I-D) GP1S 300CC G-VERDE",
+        "marca": "DAYTONA",
+        "precio": 143,
+        "categoria": "General",
+        "imagen": "FE300GPS-003V.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-003R",
+        "codigo_referencia": "FE300GPS-003R",
+        "nombre": "PLACA LAT POST (I-D) GP1S 300CC G-ROJO",
+        "marca": "DAYTONA",
+        "precio": 143,
+        "categoria": "General",
+        "imagen": "FE300GPS-003R.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-002",
+        "codigo_referencia": "FE300GPS-002",
+        "nombre": "KIT EJES SET3 GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 15,
+        "categoria": "General",
+        "imagen": "FE300GPS-002.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300GPS-001",
+        "codigo_referencia": "FE300GPS-001",
+        "nombre": "PROTEC MOTOR TIBURON  GP1S 300CC",
+        "marca": "DAYTONA",
+        "precio": 31,
+        "categoria": "General",
+        "imagen": "FE300GPS-001.webp",
         "stock": true,
         "tags": []
     },
@@ -84,28 +788,6 @@
         "precio": 23,
         "categoria": "General",
         "imagen": "RMDY-033.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
-        "id": "FE250ART-055",
-        "codigo_referencia": "FE250ART-055",
-        "nombre": "PEDAL FRENO ARTIC 250CC",
-        "marca": "DAYTONA",
-        "precio": 2,
-        "categoria": "General",
-        "imagen": "FE250ART-055.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
-        "id": "FE250ART-054",
-        "codigo_referencia": "FE250ART-054",
-        "nombre": "KIT EJES ARTIC B/N",
-        "marca": "DAYTONA",
-        "precio": 2,
-        "categoria": "General",
-        "imagen": "FE250ART-054.webp",
         "stock": true,
         "tags": []
     },
@@ -128,17 +810,6 @@
         "precio": 2,
         "categoria": "General",
         "imagen": "FE250ART-052.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
-        "id": "YB300TKD-001V",
-        "codigo_referencia": "YB300TKD-001V",
-        "nombre": "TANQUE GASOLINA TEKKEN DISCOVERY 300CC N-VERDE",
-        "marca": "DAYTONA",
-        "precio": 209,
-        "categoria": "General",
-        "imagen": "YB300TKD-001V.webp",
         "stock": true,
         "tags": []
     },
@@ -183,17 +854,6 @@
         "precio": 29,
         "categoria": "General",
         "imagen": "YB300-045.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
-        "id": "YB300-044",
-        "codigo_referencia": "YB300-044",
-        "nombre": "TENSOR ARRANQUE TEKKEN DISCOVERY 300CC",
-        "marca": "DAYTONA",
-        "precio": 10,
-        "categoria": "General",
-        "imagen": "YB300-044.webp",
         "stock": true,
         "tags": []
     },
@@ -304,6 +964,17 @@
         "precio": 67,
         "categoria": "General",
         "imagen": "YB300-018.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "YB300-017",
+        "codigo_referencia": "YB300-017",
+        "nombre": "FILTRO ACEITE TEKKEN DISCOVERY 300CC",
+        "marca": "DAYTONA",
+        "precio": 9,
+        "categoria": "General",
+        "imagen": "YB300-017.webp",
         "stock": true,
         "tags": []
     },
@@ -440,17 +1111,6 @@
         "tags": []
     },
     {
-        "id": "FE250WFE-034",
-        "codigo_referencia": "FE250WFE-034",
-        "nombre": "VELOCIMETRO DIGITAL WOLF EVOLUTION 250CC",
-        "marca": "DAYTONA",
-        "precio": 105,
-        "categoria": "General",
-        "imagen": "FE250WFE-034.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
         "id": "FE250WFE-031",
         "codigo_referencia": "FE250WFE-031",
         "nombre": "ASIENTO SET2 WOLF EVOLUTION 250CC",
@@ -524,6 +1184,17 @@
         "precio": 12,
         "categoria": "General",
         "imagen": "CB180S1ADV-067.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE250GP1R-041",
+        "codigo_referencia": "FE250GP1R-041",
+        "nombre": "PASTILLAS DEL SET2 GP1R 250CC",
+        "marca": "DAYTONA",
+        "precio": 7,
+        "categoria": "General",
+        "imagen": "FE250GP1R-041.webp",
         "stock": true,
         "tags": []
     },
@@ -656,6 +1327,149 @@
         "precio": 89,
         "categoria": "General",
         "imagen": "CB180S1ADV-046.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300-030",
+        "codigo_referencia": "PR300-030",
+        "nombre": "TAPA MOTOR IZQ. PR300 XPEDITION/EVEREST300/TD RAGNAROD 300/TK SIKR/DK MONACO 300/FACTORY T4 300CC TITANIO",
+        "marca": "DAYTONA",
+        "precio": 57,
+        "categoria": "General",
+        "imagen": "PR300-030.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300-029",
+        "codigo_referencia": "PR300-029",
+        "nombre": "CABEZOTE ARMADO PR300 XPEDITION/EVEREST300/TD RAGNAROD 300/TK SIKR/DK MONACO 300/FACTORY T4 300CC",
+        "marca": "DAYTONA",
+        "precio": 171,
+        "categoria": "General",
+        "imagen": "PR300-029.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300-031",
+        "codigo_referencia": "PR300-031",
+        "nombre": "MANGUERAS DE RADIADOR XPEDITION/TK SIKR 300 SET2",
+        "marca": "DAYTONA",
+        "precio": 48,
+        "categoria": "General",
+        "imagen": "PR300-031.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300XPD-043D",
+        "codigo_referencia": "PR300XPD-043D",
+        "nombre": "PLACA TANQUE (I-D) XPEDITION/TK SIKR 300 N-DORADO",
+        "marca": "DAYTONA",
+        "precio": 114,
+        "categoria": "General",
+        "imagen": "PR300XPD-043D.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300XPD-043NV",
+        "codigo_referencia": "PR300XPD-043NV",
+        "nombre": "PLACA TANQUE (I-D) XPEDITION/TK SIKR 300 N-VERDE",
+        "marca": "DAYTONA",
+        "precio": 114,
+        "categoria": "General",
+        "imagen": "PR300XPD-043NV.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300XPD-039NV",
+        "codigo_referencia": "PR300XPD-039NV",
+        "nombre": "MASCARILLA COMP. XPEDITION/TK SIKR 300 N-VERDE",
+        "marca": "DAYTONA",
+        "precio": 80,
+        "categoria": "General",
+        "imagen": "PR300XPD-039NV.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300XPD-039D",
+        "codigo_referencia": "PR300XPD-039D",
+        "nombre": "MASCARILLA COMP. XPEDITION/TK SIKR 300 N-DORADO",
+        "marca": "DAYTONA",
+        "precio": 80,
+        "categoria": "General",
+        "imagen": "PR300XPD-039D.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300XPD-050",
+        "codigo_referencia": "PR300XPD-050",
+        "nombre": "DEPURADOR AIRE XPEDITION/TK SIKR 300",
+        "marca": "DAYTONA",
+        "precio": 23,
+        "categoria": "General",
+        "imagen": "PR300XPD-050.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300XPD-049",
+        "codigo_referencia": "PR300XPD-049",
+        "nombre": "NEBLINEROS Y PESAS SLIDER (I-D) XPEDITION/TK SIKR 300",
+        "marca": "DAYTONA",
+        "precio": 86,
+        "categoria": "General",
+        "imagen": "PR300XPD-049.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300XPD-042D",
+        "codigo_referencia": "PR300XPD-042D",
+        "nombre": "GUARDAFANGO DEL. N-DORADO XPEDITION/TK SIKR 300",
+        "marca": "DAYTONA",
+        "precio": 35,
+        "categoria": "General",
+        "imagen": "PR300XPD-042D.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300XPD-042NV",
+        "codigo_referencia": "PR300XPD-042NV",
+        "nombre": "GUARDAFANGO DEL. N-VERDE XPEDITION/TK SIKR 300",
+        "marca": "DAYTONA",
+        "precio": 35,
+        "categoria": "General",
+        "imagen": "PR300XPD-042NV.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300XPD-048",
+        "codigo_referencia": "PR300XPD-048",
+        "nombre": "CAUCHO DESLIZADOR CADENA XPEDITION/TK SIKR 300",
+        "marca": "DAYTONA",
+        "precio": 7,
+        "categoria": "General",
+        "imagen": "PR300XPD-048.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300XPD-047",
+        "codigo_referencia": "PR300XPD-047",
+        "nombre": "KIT PISTAS DIRECCION XPEDITION /TK SIRK 300",
+        "marca": "DAYTONA",
+        "precio": 16,
+        "categoria": "General",
+        "imagen": "PR300XPD-047.webp",
         "stock": true,
         "tags": []
     },
@@ -825,17 +1639,6 @@
         "tags": []
     },
     {
-        "id": "PR300EVT-046D",
-        "codigo_referencia": "PR300EVT-046D",
-        "nombre": "GUARDAFANGO DEL. SUP. EVEREST DUAL SPORT 300CC N-DORADO",
-        "marca": "DAYTONA",
-        "precio": 29,
-        "categoria": "General",
-        "imagen": "PR300EVT-046D.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
         "id": "PR300EVT-046V",
         "codigo_referencia": "PR300EVT-046V",
         "nombre": "GUARDAFANGO DEL. SUP. EVEREST DUAL SPORT 300CC N-VERDE",
@@ -986,17 +1789,6 @@
         "precio": 31,
         "categoria": "General",
         "imagen": "PR300EVT-029.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
-        "id": "PR300EVT-026",
-        "codigo_referencia": "PR300EVT-026",
-        "nombre": "FARO LED EVEREST OFF ROAD/DUAL SPORT 300CC",
-        "marca": "DAYTONA",
-        "precio": 105,
-        "categoria": "General",
-        "imagen": "PR300EVT-026.webp",
         "stock": true,
         "tags": []
     },
@@ -1166,17 +1958,6 @@
         "tags": []
     },
     {
-        "id": "PR300EVT-001",
-        "codigo_referencia": "PR300EVT-001",
-        "nombre": "CATALINA 520H/38D EVEREST OFF ROAD/DUAL SPORT 300CC",
-        "marca": "DAYTONA",
-        "precio": 19,
-        "categoria": "General",
-        "imagen": "PR300EVT-001.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
         "id": "FE250-025",
         "codigo_referencia": "FE250-025",
         "nombre": "KIT EMPAQUES FE250 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5 250CC",
@@ -1210,13 +1991,13 @@
         "tags": []
     },
     {
-        "id": "FE300-021",
-        "codigo_referencia": "FE300-021",
-        "nombre": "BALANCINES SET2 SCRAMBLER MAX 300/GP1S/TERREX 300/SHM XTERRA/SPIDER 300/ TK STORM 300CC",
+        "id": "MMX-330",
+        "codigo_referencia": "MMX-330",
+        "nombre": "PINON MOTRIZ 15D/428H CG150/DELTA/PANTHER/WORKFORCE-S/STIFF/AXXO RAPTOR 150CC NEGRO",
         "marca": "DAYTONA",
-        "precio": 42,
+        "precio": 2,
         "categoria": "General",
-        "imagen": "FE300-021.webp",
+        "imagen": "MMX-330.webp",
         "stock": true,
         "tags": []
     },
@@ -1276,6 +2057,28 @@
         "tags": []
     },
     {
+        "id": "CG150-266",
+        "codigo_referencia": "CG150-266",
+        "nombre": "AMORTIGUADOR (I-D) ZERO 150CC N-ROJO",
+        "marca": "DAYTONA",
+        "precio": 16,
+        "categoria": "General",
+        "imagen": "CG150-266.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "CG150-073",
+        "codigo_referencia": "CG150-073",
+        "nombre": "AMORTIGUADOR (I-D) ZERO 150CC (CON GAS)",
+        "marca": "DAYTONA",
+        "precio": 16,
+        "categoria": "General",
+        "imagen": "CG150-073.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "CB200HTR-089",
         "codigo_referencia": "CB200HTR-089",
         "nombre": "ROTULA SUSPENSION INFERIOR SET2 HUNTER 200/ATV 150/200CC",
@@ -1320,6 +2123,17 @@
         "tags": []
     },
     {
+        "id": "FE250GP1R-022BI",
+        "codigo_referencia": "FE250GP1R-022BI",
+        "nombre": "GUARDAFANGO DEL. GP1-R 250/SHM CHIEF II PRO/XPOWER FIBRA CARBONO B/I",
+        "marca": "DAYTONA",
+        "precio": 35,
+        "categoria": "General",
+        "imagen": "FE250GP1R-022BI.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "CG150DELT-001A",
         "codigo_referencia": "CG150DELT-001A",
         "nombre": "PLACA LATERAL (I-D) DELTA 150CC AZUL",
@@ -1353,17 +2167,6 @@
         "tags": []
     },
     {
-        "id": "CB250GP1-073G",
-        "codigo_referencia": "CB250GP1-073G",
-        "nombre": "PLACA LAT POST (I-D) GP1 250/TUNDRA VELOCE 250CC G-VERDE",
-        "marca": "DAYTONA",
-        "precio": 42,
-        "categoria": "General",
-        "imagen": "CB250GP1-073G.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
         "id": "CB250GP1-068V",
         "codigo_referencia": "CB250GP1-068V",
         "nombre": "PLACA TANQUE SUP (I-D) GP1 250/TUNDRA VELOCE 250CC VERDE",
@@ -1386,17 +2189,6 @@
         "tags": []
     },
     {
-        "id": "CB250GP1-068G",
-        "codigo_referencia": "CB250GP1-068G",
-        "nombre": "PLACA TANQUE SUP (I-D) GP1 250/TUNDRA VELOCE 250CC G-VERDE",
-        "marca": "DAYTONA",
-        "precio": 42,
-        "categoria": "General",
-        "imagen": "CB250GP1-068G.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
         "id": "CB150DYP-055",
         "codigo_referencia": "CB150DYP-055",
         "nombre": "EMBLEMA DAYTONA (I-D) DYNAMIC PRO 150CC",
@@ -1404,6 +2196,50 @@
         "precio": 5,
         "categoria": "General",
         "imagen": "CB150DYP-055.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300-022",
+        "codigo_referencia": "PR300-022",
+        "nombre": "MAGNETO ARMADO PR300 XPEDITION/EVEREST300/TD RAGNAROD 300/TK SIKR/DK MONACO 300/FACTORY T4 300CC",
+        "marca": "DAYTONA",
+        "precio": 23,
+        "categoria": "General",
+        "imagen": "PR300-022.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300-014",
+        "codigo_referencia": "PR300-014",
+        "nombre": "BENDIX ARMADO PR300 XPEDITION/EVEREST300/TD RAGNAROD 300/TK SIKR/DK MONACO 300/FACTORY T4 300CC",
+        "marca": "DAYTONA",
+        "precio": 16,
+        "categoria": "General",
+        "imagen": "PR300-014.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300-008",
+        "codigo_referencia": "PR300-008",
+        "nombre": "BASE CARBURADOR PR300 XPEDITION/EVEREST300/TD RAGNAROD 300/TK SIKR/DK MONACO 300CC",
+        "marca": "DAYTONA",
+        "precio": 10,
+        "categoria": "General",
+        "imagen": "PR300-008.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300-001",
+        "codigo_referencia": "PR300-001",
+        "nombre": "RADIADOR ACEITE CON MANGUERAS PR300 XPEDITION/EVEREST300/TD RAGNAROD 300/TK SIKR/DK MONACO 300/FACTORY T4 300CC",
+        "marca": "DAYTONA",
+        "precio": 95,
+        "categoria": "General",
+        "imagen": "PR300-001.webp",
         "stock": true,
         "tags": []
     },
@@ -1536,6 +2372,17 @@
         "precio": 67,
         "categoria": "General",
         "imagen": "FE300-004.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "FE300-003",
+        "codigo_referencia": "FE300-003",
+        "nombre": "KIT EMBRAGUE ARMADO SCRAMBLER MAX 300/GP1S/TERREX 300/SHM XTERRA/SPIDER 300/ TK STORM 300CC",
+        "marca": "DAYTONA",
+        "precio": 114,
+        "categoria": "General",
+        "imagen": "FE300-003.webp",
         "stock": true,
         "tags": []
     },
@@ -1815,6 +2662,17 @@
         "tags": []
     },
     {
+        "id": "PR300XPD-008",
+        "codigo_referencia": "PR300XPD-008",
+        "nombre": "INST. ELECTRICA XPEDITION/TK SIKR 300",
+        "marca": "DAYTONA",
+        "precio": 48,
+        "categoria": "General",
+        "imagen": "PR300XPD-008.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "FE250-033",
         "codigo_referencia": "FE250-033",
         "nombre": "BOBINA BUJIA TEKKEN EVO/XPOWER/GP1R/WOLF EVOLUTION/GP1 4V 250CC",
@@ -2024,6 +2882,17 @@
         "tags": []
     },
     {
+        "id": "PR300XPD-015",
+        "codigo_referencia": "PR300XPD-015",
+        "nombre": "VELOCIMETRO DIGITAL XPEDITION/TK SIKR 300",
+        "marca": "DAYTONA",
+        "precio": 105,
+        "categoria": "General",
+        "imagen": "PR300XPD-015.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "352000-P14A-0000",
         "codigo_referencia": "352000-P14A-0000",
         "nombre": "VELOCIMETRO DIGITAL XCAPE 650",
@@ -2086,6 +2955,17 @@
         "precio": 57,
         "categoria": "General",
         "imagen": "CB250TKN-039.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "CGB250SPF-019",
+        "codigo_referencia": "CGB250SPF-019",
+        "nombre": "VELOCIMETRO DIGITAL SPITFIRE 250",
+        "marca": "DAYTONA",
+        "precio": 86,
+        "categoria": "General",
+        "imagen": "CGB250SPF-019.webp",
         "stock": true,
         "tags": []
     },
@@ -2255,17 +3135,6 @@
         "tags": []
     },
     {
-        "id": "CB180AGX-017",
-        "codigo_referencia": "CB180AGX-017",
-        "nombre": "VELOCIMETRO DIGITAL AGILITY X 180CC",
-        "marca": "DAYTONA",
-        "precio": 86,
-        "categoria": "General",
-        "imagen": "CB180AGX-017.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
         "id": "CB250ADV-026",
         "codigo_referencia": "CB250ADV-026",
         "nombre": "VELOCIMETRO DIGITAL AADVENTURE-R 250/300CC",
@@ -2372,6 +3241,17 @@
         "precio": 3,
         "categoria": "General",
         "imagen": "CB110CX79C-042.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300-004",
+        "codigo_referencia": "PR300-004",
+        "nombre": "VALVULAS (AD-ES) PR300 XPEDITION/EVEREST300/TD RAGNAROD 300/TK SIKR/DK MONACO 300/FACTORY T4 300CC",
+        "marca": "DAYTONA",
+        "precio": 29,
+        "categoria": "General",
+        "imagen": "PR300-004.webp",
         "stock": true,
         "tags": []
     },
@@ -2761,6 +3641,17 @@
         "tags": []
     },
     {
+        "id": "PR300-025",
+        "codigo_referencia": "PR300-025",
+        "nombre": "TENSOR ARRANQUE PR300 XPEDITION/EVEREST300/TD RAGNAROD 300/TK SIKR/DK MONACO 300/FACTORY T4 300CC",
+        "marca": "DAYTONA",
+        "precio": 10,
+        "categoria": "General",
+        "imagen": "PR300-025.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "CB125CX7-019",
         "codigo_referencia": "CB125CX7-019",
         "nombre": "TENSOR ARRANQUE CB125 CX7 EVO/TANQUE 125CC CABALLITO",
@@ -2772,13 +3663,13 @@
         "tags": []
     },
     {
-        "id": "CG150WRF-037",
-        "codigo_referencia": "CG150WRF-037",
-        "nombre": "TEMPLADOR CADENA WORKFORCE 150CC 2024",
+        "id": "PR300XPD-024",
+        "codigo_referencia": "PR300XPD-024",
+        "nombre": "TEMPLADOR CADENA XPEDITION/TK SIKR 300",
         "marca": "DAYTONA",
-        "precio": 4,
+        "precio": 12,
         "categoria": "General",
-        "imagen": "CG150WRF-037.webp",
+        "imagen": "PR300XPD-024.webp",
         "stock": true,
         "tags": []
     },
@@ -3311,6 +4202,17 @@
         "tags": []
     },
     {
+        "id": "PR300-023",
+        "codigo_referencia": "PR300-023",
+        "nombre": "TAPA MOTOR IZQ. Y PINON PR300 XPEDITION/EVEREST300/TD RAGNAROD 300/TK SIKR/DK MONACO 300/FACTORY T4 300CC TITANIO",
+        "marca": "DAYTONA",
+        "precio": 66,
+        "categoria": "General",
+        "imagen": "PR300-023.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "CGB200CRU-003",
         "codigo_referencia": "CGB200CRU-003",
         "nombre": "TAPA MOTOR IZQ. Y PINON CRUCER0 200 GRIS",
@@ -3505,6 +4407,17 @@
         "precio": 44,
         "categoria": "General",
         "imagen": "CGB200CRU-016.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300-026",
+        "codigo_referencia": "PR300-026",
+        "nombre": "TAPA MOTOR DER. PR300 XPEDITION/EVEREST300/TD RAGNAROD 300/TK SIKR/DK MONACO 300/FACTORY T4 300CC TITANIO",
+        "marca": "DAYTONA",
+        "precio": 69,
+        "categoria": "General",
+        "imagen": "PR300-026.webp",
         "stock": true,
         "tags": []
     },
@@ -4543,6 +5456,17 @@
         "tags": []
     },
     {
+        "id": "PR300-013",
+        "codigo_referencia": "PR300-013",
+        "nombre": "SELECTOR CAMBIOS ARMADO PR300XPEDITION/EVEREST300/TD RAGNAROD 300/TK SIKR/DK MONACO 300/FACTORY T4 300CC",
+        "marca": "DAYTONA",
+        "precio": 48,
+        "categoria": "General",
+        "imagen": "PR300-013.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "CG200-027",
         "codigo_referencia": "CG200-027",
         "nombre": "SELECTOR CAMBIOS ARMADO CG200 WINGEVO I-II/CAFE RACER 170/CRUCERO 200",
@@ -4829,6 +5753,17 @@
         "tags": []
     },
     {
+        "id": "CB250SCB-060",
+        "codigo_referencia": "CB250SCB-060",
+        "nombre": "RECTIFICADOR CORRIENTE 6 CABLE SCRAMBLER CLASICA/REVOLUTION/AXXO SCRAMBLER 250CC/300CC",
+        "marca": "DAYTONA",
+        "precio": 14,
+        "categoria": "General",
+        "imagen": "CB250SCB-060.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "CB125BIT-059",
         "codigo_referencia": "CB125BIT-059",
         "nombre": "RECTIFICADOR CORRIENTE 5 PIN BIT 125CC",
@@ -4858,17 +5793,6 @@
         "precio": 9,
         "categoria": "General",
         "imagen": "CB250-264.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
-        "id": "CB200WF-012",
-        "codigo_referencia": "CB200WF-012",
-        "nombre": "RECTIFICADOR CORRIENTE 5 CABLE WOLF/TEKKEN/SCORPION/SHARK-2/ADV200/ADV300/EVEREST 300CC",
-        "marca": "DAYTONA",
-        "precio": 10,
-        "categoria": "General",
-        "imagen": "CB200WF-012.webp",
         "stock": true,
         "tags": []
     },
@@ -5152,7 +6076,7 @@
         "codigo_referencia": "PR300XPD-041",
         "nombre": "PROTEC. ESCAPE XPEDITION/TK SIKR 300",
         "marca": "DAYTONA",
-        "precio": 20,
+        "precio": 23,
         "categoria": "General",
         "imagen": "PR300XPD-041.webp",
         "stock": true,
@@ -5656,9 +6580,9 @@
     {
         "id": "CBB250XP-010",
         "codigo_referencia": "CBB250XP-010",
-        "nombre": "PORTA PLACAS XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
+        "nombre": "PORTA PLACAS XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC/GP1RR 370CC",
         "marca": "DAYTONA",
-        "precio": 42,
+        "precio": 38,
         "categoria": "General",
         "imagen": "CBB250XP-010.webp",
         "stock": true,
@@ -5738,6 +6662,17 @@
         "precio": 12,
         "categoria": "General",
         "imagen": "CG200SR1-032.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "CB250SCB-071",
+        "codigo_referencia": "CB250SCB-071",
+        "nombre": "PORTA PLACAS SCRAMBLER REVOLUTION 250CC/SCB MAX 300CC",
+        "marca": "DAYTONA",
+        "precio": 29,
+        "categoria": "General",
+        "imagen": "CB250SCB-071.webp",
         "stock": true,
         "tags": []
     },
@@ -5870,17 +6805,6 @@
         "precio": 29,
         "categoria": "General",
         "imagen": "CB125BIT-055.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
-        "id": "FE250ART-007",
-        "codigo_referencia": "FE250ART-007",
-        "nombre": "PORTA PLACAS ARTIC 250/EVEREST 300CC",
-        "marca": "DAYTONA",
-        "precio": 23,
-        "categoria": "General",
-        "imagen": "FE250ART-007.webp",
         "stock": true,
         "tags": []
     },
@@ -6123,6 +7047,17 @@
         "precio": 114,
         "categoria": "General",
         "imagen": "PR300XPD-043V.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300XPD-043C",
+        "codigo_referencia": "PR300XPD-043C",
+        "nombre": "PLACA TANQUE (I-D) XPEDITION/TK SIKR 300 CREMA",
+        "marca": "DAYTONA",
+        "precio": 114,
+        "categoria": "General",
+        "imagen": "PR300XPD-043C.webp",
         "stock": true,
         "tags": []
     },
@@ -6604,7 +7539,7 @@
         "codigo_referencia": "CG150WRF-031N",
         "nombre": "PLACA LATERAL (I-D) WORKFORCE/TH-B52 150CC NEGRO",
         "marca": "DAYTONA",
-        "precio": 35,
+        "precio": 25,
         "categoria": "General",
         "imagen": "CG150WRF-031N.webp",
         "stock": true,
@@ -7238,17 +8173,6 @@
         "tags": []
     },
     {
-        "id": "CB150-031T",
-        "codigo_referencia": "CB150-031T",
-        "nombre": "PLACA LAT POST (I-D) MONTANA 150CC N-NARANJA",
-        "marca": "DAYTONA",
-        "precio": 54,
-        "categoria": "General",
-        "imagen": "CB150-031T.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
         "id": "CB250MVK-045R",
         "codigo_referencia": "CB250MVK-045R",
         "nombre": "PLACA LAT POST (I-D) MAVERICK 250 N-ROJO",
@@ -7344,17 +8268,6 @@
         "precio": 86,
         "categoria": "General",
         "imagen": "FE250FRC-008R.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
-        "id": "FE250FRC-008D",
-        "codigo_referencia": "FE250FRC-008D",
-        "nombre": "PLACA LAT. POST. (I-D) FEROCE 250CC N-DORADO",
-        "marca": "DAYTONA",
-        "precio": 86,
-        "categoria": "General",
-        "imagen": "FE250FRC-008D.webp",
         "stock": true,
         "tags": []
     },
@@ -7865,6 +8778,17 @@
         "tags": []
     },
     {
+        "id": "CB250SC-053B",
+        "codigo_referencia": "CB250SC-053B",
+        "nombre": "PLACA LAT POST (I-D) SCORPION 250 B-ROJO",
+        "marca": "DAYTONA",
+        "precio": 23,
+        "categoria": "General",
+        "imagen": "CB250SC-053B.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "CG150PTH-046",
         "codigo_referencia": "CG150PTH-046",
         "nombre": "PLACA LATERAL (I-D) PANTHER 150CC 2021/22/23/2024/PANTHER/RANGER 150USM//IGM ECO150/TK H2EVO/AXXO RAPTOR 150/THUNDER RT 150CC NEGRO",
@@ -7971,6 +8895,17 @@
         "precio": 33,
         "categoria": "General",
         "imagen": "RBE-027.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300XPD-026",
+        "codigo_referencia": "PR300XPD-026",
+        "nombre": "PINON VELOCIMETRO XPEDITION/TK SIKR 300",
+        "marca": "DAYTONA",
+        "precio": 16,
+        "categoria": "General",
+        "imagen": "PR300XPD-026.webp",
         "stock": true,
         "tags": []
     },
@@ -8426,6 +9361,17 @@
         "tags": []
     },
     {
+        "id": "CBB250XP-033",
+        "codigo_referencia": "CBB250XP-033",
+        "nombre": "PATA APOYO XPOWER/GP1-R/CHIEF II/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC/GP1RR 370CC",
+        "marca": "DAYTONA",
+        "precio": 14,
+        "categoria": "General",
+        "imagen": "CBB250XP-033.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "514100-P14A-0002",
         "codigo_referencia": "514100-P14A-0002",
         "nombre": "PATA APOYO XCAPE 650",
@@ -8593,7 +9539,7 @@
     {
         "id": "MMX-049",
         "codigo_referencia": "MMX-049",
-        "nombre": "PASTILLAS FRENO SHM XY150/IGM PANACHA 150/MOTOR1 FORTISIMA/FACTORY JOKER/T4 250CC/S15/S19/TS 125 CUADRADA UNIVERSAL",
+        "nombre": "PASTILLAS FRENO XPEDITION 300CC/TK SHM XY150/IGM PANACHA 150/MOTOR1 FORTISIMA/FACTORY JOKER/T4 250CC/S15/S19/TS 125 CUADRADA UNIVERSAL",
         "marca": "DAYTONA",
         "precio": 3,
         "categoria": "General",
@@ -8708,6 +9654,17 @@
         "precio": 4,
         "categoria": "General",
         "imagen": "CGEA150-128.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300XPD-019",
+        "codigo_referencia": "PR300XPD-019",
+        "nombre": "PASTILLA FRENO DEL. XPEDITION/TK SIKR 300",
+        "marca": "DAYTONA",
+        "precio": 8,
+        "categoria": "General",
+        "imagen": "PR300XPD-019.webp",
         "stock": true,
         "tags": []
     },
@@ -9317,13 +10274,13 @@
         "tags": []
     },
     {
-        "id": "CB250GP1-025",
-        "codigo_referencia": "CB250GP1-025",
-        "nombre": "MONOSHOCK 320MM GP1 250/TUNDRA VELOCE 250CC ROJO",
+        "id": "CBB250XP-026",
+        "codigo_referencia": "CBB250XP-026",
+        "nombre": "MONOSHOCK 310MM (TIPO U) XPOWER /GP1-R/CHIEF II 250/FK300/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC NEGRO",
         "marca": "DAYTONA",
-        "precio": 86,
+        "precio": 73,
         "categoria": "General",
-        "imagen": "CB250GP1-025.webp",
+        "imagen": "CBB250XP-026.webp",
         "stock": true,
         "tags": []
     },
@@ -9346,17 +10303,6 @@
         "precio": 57,
         "categoria": "General",
         "imagen": "CB125TNQ-048.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
-        "id": "CB150DYP-026",
-        "codigo_referencia": "CB150DYP-026",
-        "nombre": "MESA DIRECCION ARMADA DYNAMIC PRO/SHM JEDI 150CC",
-        "marca": "DAYTONA",
-        "precio": 48,
-        "categoria": "General",
-        "imagen": "CB150DYP-026.webp",
         "stock": true,
         "tags": []
     },
@@ -9610,17 +10556,6 @@
         "precio": 105,
         "categoria": "General",
         "imagen": "CB250ADV-033.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
-        "id": "CB180-024",
-        "codigo_referencia": "CB180-024",
-        "nombre": "MEDIDOR ACEITE S1 150/CB180 GY6 S1ADV/AGILITY/EVO2/S1ADV CROSSOVER/AGILITY X 180CC",
-        "marca": "DAYTONA",
-        "precio": 4,
-        "categoria": "General",
-        "imagen": "CB180-024.webp",
         "stock": true,
         "tags": []
     },
@@ -10010,6 +10945,17 @@
         "tags": []
     },
     {
+        "id": "PR300XPD-039C",
+        "codigo_referencia": "PR300XPD-039C",
+        "nombre": "MASCARILLA COMP. XPEDITION/TK SIKR 300 CREMA",
+        "marca": "DAYTONA",
+        "precio": 80,
+        "categoria": "General",
+        "imagen": "PR300XPD-039C.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "CGB250SPF-049V",
         "codigo_referencia": "CGB250SPF-049V",
         "nombre": "MASCARILLA COMP. SPITFIRE 250 N-VERDE",
@@ -10039,17 +10985,6 @@
         "precio": 67,
         "categoria": "General",
         "imagen": "CG150SF2-001R.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
-        "id": "CB180ADVCR-023G",
-        "codigo_referencia": "CB180ADVCR-023G",
-        "nombre": "MASCARILLA COMP S1 ADV CROSSOVER 180CC GRIS",
-        "marca": "DAYTONA",
-        "precio": 73,
-        "categoria": "General",
-        "imagen": "CB180ADVCR-023G.webp",
         "stock": true,
         "tags": []
     },
@@ -10945,6 +11880,17 @@
         "tags": []
     },
     {
+        "id": "PR300XPD-031",
+        "codigo_referencia": "PR300XPD-031",
+        "nombre": "KIT SWITCH,TAPA,LLAVES XPEDITION/TK SIKR 300",
+        "marca": "DAYTONA",
+        "precio": 35,
+        "categoria": "General",
+        "imagen": "PR300XPD-031.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "360000-P14A-0012",
         "codigo_referencia": "360000-P14A-0012",
         "nombre": "KIT SWITCH,TAPA,LLAVES XCAPE 650CC",
@@ -11352,13 +12298,13 @@
         "tags": []
     },
     {
-        "id": "CB200WF-103",
-        "codigo_referencia": "CB200WF-103",
-        "nombre": "KIT PISTAS DIRECCION WOLF/RANGER CFZ 250/HONDA CB190",
+        "id": "CB250MVK-049",
+        "codigo_referencia": "CB250MVK-049",
+        "nombre": "KIT PISTAS DIRECCION WOLF 250/MAVERICK",
         "marca": "DAYTONA",
-        "precio": 13,
+        "precio": 8,
         "categoria": "General",
-        "imagen": "CB200WF-103.webp",
+        "imagen": "CB250MVK-049.webp",
         "stock": true,
         "tags": []
     },
@@ -11601,6 +12547,17 @@
         "precio": 65,
         "categoria": "General",
         "imagen": "CB250ADV-022.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300XPD-018",
+        "codigo_referencia": "PR300XPD-018",
+        "nombre": "KIT FRENO DEL./POST. ARMADO XPEDITION/TK SIKR 300",
+        "marca": "DAYTONA",
+        "precio": 95,
+        "categoria": "General",
+        "imagen": "PR300XPD-018.webp",
         "stock": true,
         "tags": []
     },
@@ -12419,6 +13376,17 @@
         "tags": []
     },
     {
+        "id": "MMXE35V35",
+        "codigo_referencia": "MMXE35V35",
+        "nombre": "KIT BAUL MALETEROS BASE UNIVERSAL (3PCS) E35 V35",
+        "marca": "DAYTONA",
+        "precio": 221,
+        "categoria": "General",
+        "imagen": "MMXE35V35.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "802000-P14A-0002",
         "codigo_referencia": "802000-P14A-0002",
         "nombre": "KIT BAUL CON BASES SET3 MORINI",
@@ -12547,6 +13515,17 @@
         "precio": 44,
         "categoria": "General",
         "imagen": "CB200HTR-074.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "MMX-041",
+        "codigo_referencia": "MMX-041",
+        "nombre": "INSTALACION ELECTRICA GN 125 UNIVERSAL/CRUCERO 150/200CC",
+        "marca": "DAYTONA",
+        "precio": 19,
+        "categoria": "General",
+        "imagen": "MMX-041.webp",
         "stock": true,
         "tags": []
     },
@@ -12694,13 +13673,13 @@
         "tags": []
     },
     {
-        "id": "CB150GHS1-205",
-        "codigo_referencia": "CB150GHS1-205",
-        "nombre": "GUIA CADENILLA (1-2) S1/DYNAMIC PRO/SHM JEDI 150CC/EIVISA",
+        "id": "PR300-017",
+        "codigo_referencia": "PR300-017",
+        "nombre": "GUIA CADENILLA (1-2) PR300 XPEDITION/EVEREST300/TD RAGNAROD 300/TK SIKR/DK MONACO 300/FACTORY T4 300CC",
         "marca": "DAYTONA",
-        "precio": 8,
+        "precio": 15,
         "categoria": "General",
-        "imagen": "CB150GHS1-205.webp",
+        "imagen": "PR300-017.webp",
         "stock": true,
         "tags": []
     },
@@ -13101,17 +14080,6 @@
         "tags": []
     },
     {
-        "id": "CB250HTR-020",
-        "codigo_referencia": "CB250HTR-020",
-        "nombre": "GUARDAFANGO HUNTER 200",
-        "marca": "DAYTONA",
-        "precio": 50,
-        "categoria": "General",
-        "imagen": "CB250HTR-020.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
         "id": "534001-P14A-0400",
         "codigo_referencia": "534001-P14A-0400",
         "nombre": "GUARDAFANGO DELANTERO XCAPE 650 NEGRO",
@@ -13174,17 +14142,6 @@
         "precio": 6,
         "categoria": "General",
         "imagen": "RKX-026.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
-        "id": "CG150WRF-032G",
-        "codigo_referencia": "CG150WRF-032G",
-        "nombre": "GUARDAFANGO DEL. WORKFORCE/TH-B52 150CC GRIS",
-        "marca": "DAYTONA",
-        "precio": 25,
-        "categoria": "General",
-        "imagen": "CG150WRF-032G.webp",
         "stock": true,
         "tags": []
     },
@@ -13306,6 +14263,17 @@
         "precio": 35,
         "categoria": "General",
         "imagen": "PR300XPD-042R.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300XPD-042C",
+        "codigo_referencia": "PR300XPD-042C",
+        "nombre": "GUARDAFANGO DEL. N-CAFE XPEDITION/TK SIKR 300",
+        "marca": "DAYTONA",
+        "precio": 35,
+        "categoria": "General",
+        "imagen": "PR300XPD-042C.webp",
         "stock": true,
         "tags": []
     },
@@ -14124,17 +15092,6 @@
         "tags": []
     },
     {
-        "id": "CB200-041",
-        "codigo_referencia": "CB200-041",
-        "nombre": "FARO SHARK III N/M",
-        "marca": "DAYTONA",
-        "precio": 23,
-        "categoria": "General",
-        "imagen": "CB200-041.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
         "id": "CB200HTR-064",
         "codigo_referencia": "CB200HTR-064",
         "nombre": "FARO SET2 HUNTER 200 2025",
@@ -14465,6 +15422,17 @@
         "tags": []
     },
     {
+        "id": "PR300XPD-004",
+        "codigo_referencia": "PR300XPD-004",
+        "nombre": "ESTRIBOS POST CON BASE (I-D) XPEDITION/TK SIKR 300",
+        "marca": "DAYTONA",
+        "precio": 35,
+        "categoria": "General",
+        "imagen": "PR300XPD-004.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "CB200HTR-068",
         "codigo_referencia": "CB200HTR-068",
         "nombre": "ESTRIBOS DEL ( I-D ) HUNTER 200 2025",
@@ -14483,17 +15451,6 @@
         "precio": 49,
         "categoria": "General",
         "imagen": "FE250FRC-035.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
-        "id": "CGB200GTR-012",
-        "codigo_referencia": "CGB200GTR-012",
-        "nombre": "ESTRIBO POST. CON BASE (I-D) GTR 200",
-        "marca": "DAYTONA",
-        "precio": 40,
-        "categoria": "General",
-        "imagen": "CGB200GTR-012.webp",
         "stock": true,
         "tags": []
     },
@@ -14817,13 +15774,13 @@
         "tags": []
     },
     {
-        "id": "CB200PDT-010",
-        "codigo_referencia": "CB200PDT-010",
-        "nombre": "ESPEJOS (I-D) PREDATOR 200",
+        "id": "FE250GP1R-007",
+        "codigo_referencia": "FE250GP1R-007",
+        "nombre": "ESPEJOS (I-D) GP1-R 250/FACTORY F370/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC",
         "marca": "DAYTONA",
-        "precio": 15,
+        "precio": 23,
         "categoria": "General",
-        "imagen": "CB200PDT-010.webp",
+        "imagen": "FE250GP1R-007.webp",
         "stock": true,
         "tags": []
     },
@@ -14835,17 +15792,6 @@
         "precio": 17,
         "categoria": "General",
         "imagen": "CB150EIV-027.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
-        "id": "CB250CRF-016",
-        "codigo_referencia": "CB250CRF-016",
-        "nombre": "ESPEJOS (I-D) CROSSFIRE/ARTIC/XTREEM/THUNDER F16/DK HORNET/IGM WIND250/Z1 V8200",
-        "marca": "DAYTONA",
-        "precio": 19,
-        "categoria": "General",
-        "imagen": "CB250CRF-016.webp",
         "stock": true,
         "tags": []
     },
@@ -15283,9 +16229,20 @@
         "codigo_referencia": "CBB250XP-022",
         "nombre": "DISCO FRENO POST. XPOWER/GP1-R/CHIEF II/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
         "marca": "DAYTONA",
-        "precio": 16,
+        "precio": 19,
         "categoria": "General",
         "imagen": "CBB250XP-022.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "CB200WF-030",
+        "codigo_referencia": "CB200WF-030",
+        "nombre": "DISCO FRENO POST WOLF/ADV 200/MAVERICK/WOLF 250/FEROCE/WOLF EVOLUTION/RANGER CFZ 250/HONDA CB190",
+        "marca": "DAYTONA",
+        "precio": 19,
+        "categoria": "General",
+        "imagen": "CB200WF-030.webp",
         "stock": true,
         "tags": []
     },
@@ -15319,6 +16276,17 @@
         "precio": 33,
         "categoria": "General",
         "imagen": "CB250ADV-018.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "CB250TKN-012",
+        "codigo_referencia": "CB250TKN-012",
+        "nombre": "DISCO FRENO POST 4H TEKKEN EVO/SCRAMBLER/AXXO SCRAMBLER 250CC/XPEDITION/EVEREST 300CC",
+        "marca": "DAYTONA",
+        "precio": 19,
+        "categoria": "General",
+        "imagen": "CB250TKN-012.webp",
         "stock": true,
         "tags": []
     },
@@ -15418,6 +16386,17 @@
         "precio": 19,
         "categoria": "General",
         "imagen": "CB180AGTY-025.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "CB250TKN-014",
+        "codigo_referencia": "CB250TKN-014",
+        "nombre": "DISCO FRENO DEL 6H TEKKEN EVO/SCRAMBLER/AXXO SCRAMBLER 250/SHARK SUV 200/XPEDITION/EVEREST 300CC",
+        "marca": "DAYTONA",
+        "precio": 29,
+        "categoria": "General",
+        "imagen": "CB250TKN-014.webp",
         "stock": true,
         "tags": []
     },
@@ -15616,6 +16595,28 @@
         "precio": 23,
         "categoria": "General",
         "imagen": "CB180AGX-008.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "CBB250XP-012",
+        "codigo_referencia": "CBB250XP-012",
+        "nombre": "DIRECCIONALES (SET4) XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC/GP1RR 370CC",
+        "marca": "DAYTONA",
+        "precio": 29,
+        "categoria": "General",
+        "imagen": "CBB250XP-012.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300XPD-035",
+        "codigo_referencia": "PR300XPD-035",
+        "nombre": "DIRECCIONALES (SET4) XPEDITION/TK SIKR 300",
+        "marca": "DAYTONA",
+        "precio": 24,
+        "categoria": "General",
+        "imagen": "PR300XPD-035.webp",
         "stock": true,
         "tags": []
     },
@@ -16313,6 +17314,17 @@
         "tags": []
     },
     {
+        "id": "PR300-006",
+        "codigo_referencia": "PR300-006",
+        "nombre": "CILINDRO Y PISTON 75MM/PIN16 PR300 XPEDITION/EVEREST300/TD RAGNAROD 300/TK SIKR/DK MONACO 300/FACTORY T4 300CC",
+        "marca": "DAYTONA",
+        "precio": 114,
+        "categoria": "General",
+        "imagen": "PR300-006.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "CB200ADV-052",
         "codigo_referencia": "CB200ADV-052",
         "nombre": "CILINDRO Y PISTON 65MM/PIN13 CB200 ADVENTURE GRIS",
@@ -16511,17 +17523,6 @@
         "tags": []
     },
     {
-        "id": "TY300-013",
-        "codigo_referencia": "TY300-013",
-        "nombre": "CDI 5 PIN CUADRADO ADVENTURE 300 TY",
-        "marca": "DAYTONA",
-        "precio": 16,
-        "categoria": "General",
-        "imagen": "TY300-013.webp",
-        "stock": true,
-        "tags": []
-    },
-    {
         "id": "CB200GP1-046",
         "codigo_referencia": "CB200GP1-046",
         "nombre": "CD1 6 PIN CUADRADO GP1 250",
@@ -16584,6 +17585,17 @@
         "precio": 5,
         "categoria": "General",
         "imagen": "FE250FRC-005.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "CBB250XP-070",
+        "codigo_referencia": "CBB250XP-070",
+        "nombre": "CAUCHO DESLIZ. CADENA XPOWER/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC/GP1RR 370CC",
+        "marca": "DAYTONA",
+        "precio": 8,
+        "categoria": "General",
+        "imagen": "CBB250XP-070.webp",
         "stock": true,
         "tags": []
     },
@@ -17703,7 +18715,7 @@
         "codigo_referencia": "PR300XPD-010",
         "nombre": "CABLE EMBRAGUE XPEDITION/TK SIKR 300",
         "marca": "DAYTONA",
-        "precio": 5,
+        "precio": 4,
         "categoria": "General",
         "imagen": "PR300XPD-010.webp",
         "stock": true,
@@ -17725,7 +18737,7 @@
         "codigo_referencia": "CG150SF2-013",
         "nombre": "CABLE EMBRAGUE SPITFIRE 150CC 2025",
         "marca": "DAYTONA",
-        "precio": 5,
+        "precio": 4,
         "categoria": "General",
         "imagen": "CG150SF2-013.webp",
         "stock": true,
@@ -17736,7 +18748,7 @@
         "codigo_referencia": "CB200FC-050",
         "nombre": "CABLE EMBRAGUE-FORCE 200/DK XTZ250/GY200/CG200 UNIVERSAL",
         "marca": "DAYTONA",
-        "precio": 5,
+        "precio": 3,
         "categoria": "General",
         "imagen": "CB200FC-050.webp",
         "stock": true,
@@ -17747,7 +18759,7 @@
         "codigo_referencia": "FE250FRC-014",
         "nombre": "CABLE EMBRAGUE FEROCE 250CC",
         "marca": "DAYTONA",
-        "precio": 5,
+        "precio": 3,
         "categoria": "General",
         "imagen": "FE250FRC-014.webp",
         "stock": true,
@@ -18425,6 +19437,17 @@
         "tags": []
     },
     {
+        "id": "CB250-407",
+        "codigo_referencia": "CB250-407",
+        "nombre": "BOBINA CORONILLA 12M/3H TEKKEN EVO/SCB/GP-1 250CC/WOLF200/XPEDITION 300CC",
+        "marca": "DAYTONA",
+        "precio": 23,
+        "categoria": "General",
+        "imagen": "CB250-407.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
         "id": "CB125BIT-008",
         "codigo_referencia": "CB125BIT-008",
         "nombre": "BOBINA CORONILLA 12M/3H BIT 125CC",
@@ -18465,6 +19488,17 @@
         "precio": 6,
         "categoria": "General",
         "imagen": "CB150GHS1-218.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "CB250-041",
+        "codigo_referencia": "CB250-041",
+        "nombre": "BOBINA BUJIA CG150/CB 200/250 UNIVERSAL",
+        "marca": "DAYTONA",
+        "precio": 5,
+        "categoria": "General",
+        "imagen": "CB250-041.webp",
         "stock": true,
         "tags": []
     },
@@ -18894,6 +19928,17 @@
         "precio": 10,
         "categoria": "General",
         "imagen": "CB125CX7-012.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "PR300-009",
+        "codigo_referencia": "PR300-009",
+        "nombre": "BALANCINES SET2 PR300 XPEDITION/EVEREST300/TD RAGNAROD 300/TK SIKR/DK MONACO 300/FACTORY T4 300CC",
+        "marca": "DAYTONA",
+        "precio": 38,
+        "categoria": "General",
+        "imagen": "PR300-009.webp",
         "stock": true,
         "tags": []
     },
@@ -20434,6 +21479,17 @@
         "precio": 2,
         "categoria": "General",
         "imagen": "CB200FC-051.webp",
+        "stock": true,
+        "tags": []
+    },
+    {
+        "id": "CGEA150-158",
+        "codigo_referencia": "CGEA150-158",
+        "nombre": "ABRAZADERA SUPERIOR TIMON SET2 EAGLE 150CC I-II-III/DK FALCON NEGRO",
+        "marca": "DAYTONA",
+        "precio": 2,
+        "categoria": "General",
+        "imagen": "CGEA150-158.webp",
         "stock": true,
         "tags": []
     }
