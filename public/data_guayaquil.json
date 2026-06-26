@@ -677,17 +677,6 @@
             ]
         },
         {
-            "id": "CB18051ADV-031",
-            "codigo_referencia": "CB18051ADV-031",
-            "nombre": "FILTRO AIRE S1 ADVENTURE 180CC",
-            "marca": "DAYTONA",
-            "precio": 12,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CB200WF-090FMN",
             "codigo_referencia": "CB200WF-090FMN",
             "nombre": "FARO Y MASCARILLA WOLF/RANGER CFZ 250/HONDA CB190 NEGRO",
@@ -796,11 +785,11 @@
             "tags": []
         },
         {
-            "id": "CBB250XP-036",
-            "codigo_referencia": "CBB250XP-036",
-            "nombre": "ESTRIBO DEL. CON BASE (I-D) XPOWER/GP1-R 250/FK370/FK 400/F 370/CHEF II/CHIEF II PRO/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
+            "id": "CB18051ADV-031",
+            "codigo_referencia": "CB18051ADV-031",
+            "nombre": "FILTRO AIRE S1 ADVENTURE 180CC",
             "marca": "DAYTONA",
-            "precio": 86,
+            "precio": 12,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -988,6 +977,17 @@
             "nombre": "KIT EMBRAGUE ARMADO TEKKEN/SCRAMBLER",
             "marca": "DAYTONA",
             "precio": 67,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CBB250XP-036",
+            "codigo_referencia": "CBB250XP-036",
+            "nombre": "ESTRIBO DEL. CON BASE (I-D) XPOWER/GP1-R 250/FK370/FK 400/F 370/CHEF II/CHIEF II PRO/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
+            "marca": "DAYTONA",
+            "precio": 86,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -1866,17 +1866,6 @@
             "nombre": "DEPURADOR AIRE WOLF/ADV 200/MAVERICK/RANGER CFZ 250/HONDA CB190",
             "marca": "DAYTONA",
             "precio": 31,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CBB250XP-074",
-            "codigo_referencia": "CBB250XP-074",
-            "nombre": "TEMPLADOR CADENA XPOWER/GP1R/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
-            "marca": "DAYTONA",
-            "precio": 12,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -3702,17 +3691,6 @@
             ]
         },
         {
-            "id": "CG150-163B",
-            "codigo_referencia": "CG150-163B",
-            "nombre": "TANQUE GASOLINA DELTA/IGM EC150/SK STIFF/AXXO AX150/TUKO H1 150CC BLANCO",
-            "marca": "DAYTONA",
-            "precio": 86,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CB250ADV-036",
             "codigo_referencia": "CB250ADV-036",
             "nombre": "CATALINA 428H/50T ADVENTURE-R 250/300CC",
@@ -5148,6 +5126,26 @@
             "tags": []
         },
         {
+            "id": "FE250-018",
+            "codigo_referencia": "FE250-018",
+            "nombre": "KIT EMBRAGUE ARMADO 5H/5D 63T FE250 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5 250CC",
+            "marca": "DAYTONA",
+            "precio": 153,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": [
+                {
+                    "name": "4",
+                    "color": "#10B981"
+                },
+                {
+                    "name": "J",
+                    "color": "#F97316"
+                }
+            ]
+        },
+        {
             "id": "CB200WF-101",
             "codigo_referencia": "CB200WF-101",
             "nombre": "CATALINA 428/45T/4H WOLF/ADV 200/MAVERICK/WOLF/RANGER CFZ 250/HONDA CB190/ADV 300 TY",
@@ -5239,6 +5237,26 @@
             "imagen": "sin_imagen.jpg",
             "stock": true,
             "tags": []
+        },
+        {
+            "id": "CB300SW-038 ",
+            "codigo_referencia": "CB300SW-038 ",
+            "nombre": "CILINDRO Y PISTON 300CC 74MM/PIN16 SUPER WOLF 300/SCRAMBLER 300 ",
+            "marca": "DAYTONA",
+            "precio": 190,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": [
+                {
+                    "name": "4",
+                    "color": "#10B981"
+                },
+                {
+                    "name": "C",
+                    "color": "#F97316"
+                }
+            ]
         },
         {
             "id": "CGB200CRU-014",
@@ -5349,17 +5367,6 @@
             "tags": []
         },
         {
-            "id": "CB150S1-007 ",
-            "codigo_referencia": "CB150S1-007 ",
-            "nombre": "BANDA TRANSMISION QINJIANG 842x20x30 S1 150CC 2024 ",
-            "marca": "DAYTONA",
-            "precio": 23,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "RMDY-032",
             "codigo_referencia": "RMDY-032",
             "nombre": "CARBURADOR PZ30 CABLE YOU ALL WOLF 200/ADV-R250/XPOWER 2019/SPITFIRE 250 ",
@@ -5416,17 +5423,6 @@
             "nombre": "FILTRO AIRE WOLF 200/250/MAVERICK 250/ADVENTURE 300 6 PATAS",
             "marca": "DAYTONA",
             "precio": 8,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "FE250-018",
-            "codigo_referencia": "FE250-018",
-            "nombre": "KIT EMBRAGUE ARMADO 5H/5D 63T FE250 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5 250CC",
-            "marca": "DAYTONA",
-            "precio": 153,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -5621,17 +5617,6 @@
             "nombre": "MASCARILLA CON FARO DAYTONA DY250 TEKKEN /AXXO TRACKER250 BLANCO ",
             "marca": "DAYTONA",
             "precio": 36,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CG200WINGEV-007 ",
-            "codigo_referencia": "CG200WINGEV-007 ",
-            "nombre": "FARO LED WING EVO II 2024 ",
-            "marca": "DAYTONA",
-            "precio": 86,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -7963,17 +7948,6 @@
             "tags": []
         },
         {
-            "id": "FE250FRC-021",
-            "codigo_referencia": "FE250FRC-021",
-            "nombre": "STOP FEROCE 250CC",
-            "marca": "DAYTONA",
-            "precio": 54,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CGEA150-102",
             "codigo_referencia": "CGEA150-102",
             "nombre": "STOP EAGLE 150CC III/DK FALCON",
@@ -8761,6 +8735,17 @@
             "nombre": " FILTRO ACEITE TEKKEN DISCOVERY 300CC",
             "marca": "DAYTONA",
             "precio": 9,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "FE250FRC-021",
+            "codigo_referencia": "FE250FRC-021",
+            "nombre": "STOP FEROCE 250CC",
+            "marca": "DAYTONA",
+            "precio": 54,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -9729,7 +9714,7 @@
             "codigo_referencia": "CB300SCB-003",
             "nombre": "RADIADOR AGUA ARMADO SCRAMBLER 300",
             "marca": "DAYTONA",
-            "precio": 171,
+            "precio": 185,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -10415,6 +10400,37 @@
             "imagen": "sin_imagen.jpg",
             "stock": true,
             "tags": []
+        },
+        {
+            "id": "CB180S1ADV-007",
+            "codigo_referencia": "CB180S1ADV-007",
+            "nombre": "TELESCOPICAS (I-D) S1 ADVENTURE 180CC",
+            "marca": "DAYTONA",
+            "precio": 86,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "FEDK250-029",
+            "codigo_referencia": "FEDK250-029",
+            "nombre": "KIT EMBRAGUE ARMADO ALTERNO DUKKARE 5H/5D 63T FE250 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5 250CC",
+            "marca": "DK",
+            "precio": 35,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": [
+                {
+                    "name": "4",
+                    "color": "#10B981"
+                },
+                {
+                    "name": "J",
+                    "color": "#F97316"
+                }
+            ]
         }
     ]
 }
