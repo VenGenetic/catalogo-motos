@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef, memo } from 'react';
-import { Heart, ArrowLeft, Filter, Search, ShoppingBag, Copy, Check } from 'lucide-react'; 
+import { ArrowLeft, Filter, Search, ShoppingBag, Copy, Check } from 'lucide-react'; 
 import { optimizarImg } from '../utils/helpers';
 import { APP_CONFIG, ORDEN_SECCIONES } from '../config/constants';
 import { Producto } from '../types';
@@ -11,8 +11,6 @@ import { useCart } from '../context/CartContext';
 
 interface Props {
   productos: Producto[];
-  isFav: (id: string) => boolean;
-  toggleFav: (id: string) => void;
   filtroModelo: string;
   setFiltroModelo: (m: string) => void;
   busqueda: string;
@@ -23,7 +21,7 @@ interface Props {
 }
 
 export const CatalogView = memo(({ 
-  productos, isFav, toggleFav,
+  productos,
   filtroModelo, setFiltroModelo, 
   busqueda, setBusqueda,
   filtroSeccion, setFiltroSeccion,
@@ -169,17 +167,6 @@ export const CatalogView = memo(({
                   className="group bg-white dark:bg-slate-800 rounded-2xl shadow-md border border-gray-100 dark:border-slate-700 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-xl hover:border-gray-200 dark:hover:border-slate-600 hover:-translate-y-1 active:scale-[0.98] [content-visibility:auto] [contain-intrinsic-size:300px]"
                   onClick={() => onProductClick(product)}
                 >
-                  {/* Corazón pequeño (como pediste) */}
-                  <button 
-                    className={`absolute top-2 right-2 p-1.5 rounded-full z-20 transition-all duration-200 ${
-                      isFav(product.id) 
-                        ? 'text-red-500 scale-110' 
-                        : 'text-gray-300 dark:text-gray-500 bg-transparent hover:text-red-400'
-                    }`}
-                    onClick={(e) => { e.stopPropagation(); toggleFav(product.id); }}
-                  >
-                    <Heart className={`w-4 h-4 ${isFav(product.id) ? 'fill-current' : ''}`} strokeWidth={2.5} />
-                  </button>
 
                   <div className="relative h-28 md:h-40 bg-white dark:bg-slate-800 overflow-hidden p-2 rounded-t-xl">
                     <LazyImage 

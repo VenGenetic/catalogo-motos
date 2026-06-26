@@ -135,7 +135,7 @@ export const SearchBar = ({
         <input
           ref={inputRef}
           type="text"
-          placeholder={placeholder || (filtroModelo ? `Buscar en ${filtroModelo}...` : "Buscar repuesto, código...")}
+          placeholder={placeholder || (filtroModelo ? `Buscar en ${filtroModelo}...` : "Escriba el modelo y el repuesto que necesita")}
           className="w-full px-3 py-3.5 bg-transparent text-slate-800 text-base placeholder:text-gray-400 outline-none rounded-2xl"
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}

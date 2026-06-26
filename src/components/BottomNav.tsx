@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Grid, ShoppingBag, Phone, Heart } from 'lucide-react'; // Importamos Heart
+import { Home, Grid, ShoppingBag, Phone } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 export const BottomNav = () => {
@@ -34,18 +34,7 @@ export const BottomNav = () => {
         <span className="text-[9px] font-bold">Catálogo</span>
       </Link>
 
-      {/* NUEVO BOTÓN FAVORITOS */}
-      <Link 
-        to="/favoritos"
-        className={`flex flex-col items-center gap-0.5 min-w-[55px] p-1.5 rounded-lg transition-all duration-200 ${
-          isActive('/favoritos') 
-            ? 'text-red-600 bg-red-50' 
-            : 'text-gray-400 hover:text-gray-600 active:scale-95'
-        }`}
-      >
-        <Heart className="w-5 h-5" />
-        <span className="text-[9px] font-bold">Favoritos</span>
-      </Link>
+
 
       <button 
         onClick={openCart}

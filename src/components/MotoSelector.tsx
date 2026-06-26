@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Wrench } from 'lucide-react';
+import { Wrench } from 'lucide-react';
 import { MODELOS } from '../config/constants';
 import { getMotoImage } from '../config/motoImages';
 
@@ -10,15 +10,14 @@ interface Props {
 
 export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [partSearch, setPartSearch] = useState(''); 
 
   const modelosFiltrados = MODELOS.filter(m => 
     m.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleGlobalSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && partSearch.trim()) {
-      onSearchGlobal(partSearch);
+    if (e.key === 'Enter' && searchTerm.trim()) {
+      onSearchGlobal(searchTerm);
     }
   };
 
@@ -35,45 +34,26 @@ export const MotoSelector = ({ onSelectModel, onSearchGlobal }: Props) => {
             Busca tu repuesto directo o selecciona tu moto
           </p>
           
-          <div className="max-w-xl mx-auto space-y-3 md:space-y-4">
+          <div className="max-w-xl mx-auto">
             
-            {/* 1. PRIMERO: BUSCADOR DE REPUESTOS (Ahora arriba) */}
+            {/* BUSCADOR ÚNICO DE REPUESTOS Y MODELOS */}
             <div className="relative group z-20">
               <input
                 type="text"
-                placeholder="Busca un repuesto (ej. Bujía)..."
+                placeholder="Escriba el modelo y el repuesto que necesita"
                 className="w-full pl-10 md:pl-12 pr-16 md:pr-20 py-3 md:py-4 rounded-lg md:rounded-xl border-2 border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:bg-white dark:focus:bg-slate-900 focus:border-red-500 dark:focus:border-red-500 focus:ring-4 focus:ring-red-100 dark:focus:ring-slate-900 dark:text-white outline-none transition-all text-sm md:text-lg shadow-sm"
-                value={partSearch}
-                onChange={(e) => setPartSearch(e.target.value)}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={handleGlobalSearch}
                 autoFocus // Le damos foco automático a este input
               />
               <Wrench className="absolute left-4 top-4.5 text-slate-400 dark:text-slate-500 w-6 h-6" />
               <button 
-                onClick={() => partSearch.trim() && onSearchGlobal(partSearch)}
+                onClick={() => searchTerm.trim() && onSearchGlobal(searchTerm)}
                 className="absolute right-2 top-2 bottom-2 bg-red-700 hover:bg-red-800 text-white px-4 md:px-6 rounded-lg font-semibold text-sm transition-colors"
               >
                 Buscar
               </button>
-            </div>
-
-            {/* DIVISOR */}
-            <div className="flex items-center justify-center gap-4 text-gray-300 dark:text-gray-600 font-bold text-sm">
-              <div className="h-px bg-gray-200 dark:bg-slate-800 flex-1"></div>
-              O ELIGE TU MOTO
-              <div className="h-px bg-gray-200 dark:bg-slate-800 flex-1"></div>
-            </div>
-
-            {/* 2. SEGUNDO: BUSCADOR DE MOTOS (Ahora abajo) */}
-            <div className="relative group z-10">
-              <input
-                type="text"
-                placeholder="Filtra por modelo (ej. Tekken)..."
-                className="w-full pl-12 pr-4 py-3 md:py-4 rounded-lg md:rounded-xl border-2 border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 dark:text-white focus:border-red-500 focus:ring-4 focus:ring-red-100 outline-none transition-all text-sm md:text-lg shadow-sm"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <Search className="absolute left-4 top-4.5 text-gray-400 dark:text-gray-500 w-6 h-6" />
             </div>
 
           </div>

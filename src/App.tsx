@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react';
 import { Routes, Route, useSearchParams, Link, useLocation, useNavigate, matchPath } from 'react-router-dom';
-import { Heart, WifiOff } from 'lucide-react';
+import { WifiOff } from 'lucide-react';
 import './App.css';
 import { limpiarTexto } from './utils/helpers';
 import { APP_CONFIG } from './config/constants';
@@ -47,10 +47,6 @@ export default function App() {
 
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
-  const [favs, setFavs] = useState<string[]>(() => {
-    try { return JSON.parse(localStorage.getItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS) || '[]'); } catch { return []; }
-  });
-
   const [busqueda, setBusqueda] = useState('');
 
   // Lógica de URL para el modelo
@@ -94,17 +90,7 @@ export default function App() {
     };
   }, []);
 
-  const toggleFav = useCallback((id: string) => {
-    setFavs(prev => {
-      const nuevos = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
-      localStorage.setItem(APP_CONFIG.LOCAL_STORAGE_KEY_FAVS, JSON.stringify(nuevos));
-      return nuevos;
-    });
-  }, []);
 
-  const productosFavoritos = useMemo(() => {
-    return productos.filter(p => favs.includes(p.id));
-  }, [productos, favs]);
 
   // Memoizar la función de expansión de términos
   const expandirTerminos = useMemo(() => (terminos: string[]): string[] => {
@@ -303,8 +289,6 @@ export default function App() {
                 <title>Catálogo | LV PARTS</title>
                 <CatalogView
                   productos={filteredProducts}
-                  isFav={(id) => favs.includes(id)}
-                  toggleFav={toggleFav}
                   filtroModelo={filtroModelo}
                   setFiltroModelo={handleSetFiltroModelo}
                   busqueda={busqueda}
@@ -320,8 +304,6 @@ export default function App() {
                 <title>{filtroModelo ? `Repuestos ${filtroModelo}` : 'Catálogo'} | LV PARTS</title>
                 <CatalogView
                   productos={filteredProducts}
-                  isFav={(id) => favs.includes(id)}
-                  toggleFav={toggleFav}
                   filtroModelo={filtroModelo}
                   setFiltroModelo={handleSetFiltroModelo}
                   busqueda={busqueda}
@@ -333,42 +315,6 @@ export default function App() {
               </>
             } />
 
-            <Route path="/favoritos" element={
-              <>
-                <title>Mis Favoritos | LV PARTS</title>
-                {favs.length > 0 ? (
-                  <div className="animate-fade-in">
-                    <div className="max-w-7xl mx-auto px-4 pt-6 pb-2">
-                      <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                        <Heart className="text-red-600 fill-current" /> Mis Favoritos
-                      </h2>
-                    </div>
-                    <CatalogView
-                      productos={productosFavoritos}
-                      isFav={(id) => favs.includes(id)}
-                      toggleFav={toggleFav}
-                      filtroModelo={filtroModelo}
-                      setFiltroModelo={setFiltroModelo}
-                      busqueda={busqueda}
-                      setBusqueda={setBusqueda}
-                      filtroSeccion={filtroSeccion}
-                      setFiltroSeccion={setFiltroSeccion}
-                      onProductClick={handleProductClick}
-                    />
-                  </div>
-                ) : (
-                  <div className="min-h-[60vh] flex flex-col items-center justify-center text-center p-4">
-                    <div className="bg-gray-100 p-6 rounded-full mb-4">
-                      <Heart className="w-12 h-12 text-gray-400" />
-                    </div>
-                    <h2 className="text-xl font-bold text-slate-900 mb-2">Aún no tienes favoritos</h2>
-                    <Link to="/catalogo" className="bg-red-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-red-700 transition-colors shadow-lg shadow-red-200">
-                      Explorar Catálogo
-                    </Link>
-                  </div>
-                )}
-              </>
-            } />
             <Route path="/contacto" element={<><title>Contacto | LV PARTS</title><ContactView /></>} />
             <Route path="*" element={
               <div className="flex flex-col items-center justify-center min-h-[60vh] p-4 text-center">
@@ -398,7 +344,7 @@ export default function App() {
       <ProductDetailModal
         product={selectedProduct}
         allProducts={productos}
-        currentList={location.pathname === '/favoritos' ? productosFavoritos : filteredProducts}
+        currentList={filteredProducts}
         onClose={handleCloseModal}
         onSelectRelated={handleProductClick}
       />
