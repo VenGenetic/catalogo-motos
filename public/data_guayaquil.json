@@ -4255,17 +4255,6 @@
             "tags": []
         },
         {
-            "id": "CGB250SPF-043",
-            "codigo_referencia": "CGB250SPF-043",
-            "nombre": "PEDAL CAMBIOS SPITFIRE 250",
-            "marca": "DAYTONA",
-            "precio": 12,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "TY300ADV-016 ",
             "codigo_referencia": "TY300ADV-016 ",
             "nombre": "TIMON ADVENTURE 300TY ",
@@ -10431,6 +10420,28 @@
                     "color": "#F97316"
                 }
             ]
+        },
+        {
+            "id": "CB300SW-055",
+            "codigo_referencia": "CB300SW-055",
+            "nombre": "CILINDRO Y PISTON SUPER WOLF 300",
+            "marca": "DAYTONA",
+            "precio": 148,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "FE0GP1R-016D",
+            "codigo_referencia": "FE0GP1R-016D",
+            "nombre": "MASCARILLA COMP. GP1-R 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC G-DORADO 2023",
+            "marca": "DAYTONA",
+            "precio": 105,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
         }
     ]
 }
