@@ -17,7 +17,16 @@ export const HighlightedText = memo(({ text, highlight }: HighlightedTextProps) 
 
   let content;
   try {
-    const regex = new RegExp(`(${escapeRegExp(highlight)})`, 'gi');
+    // Si highlight contiene múltiples palabras (ej. de múltiples filtros), las separamos y escapamos individualmente
+    const cleanHighlight = highlight.replace(/"/g, '');
+    const terms = cleanHighlight.split(/\s+/).filter(t => t.length > 0);
+    
+    if (terms.length === 0) {
+      return <span>{text}</span>;
+    }
+
+    const pattern = terms.map(escapeRegExp).join('|');
+    const regex = new RegExp(`(${pattern})`, 'gi');
     const parts = text.split(regex);
 
     content = parts.map((part, i) => 

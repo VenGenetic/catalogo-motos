@@ -785,17 +785,6 @@
             "tags": []
         },
         {
-            "id": "CB18051ADV-031",
-            "codigo_referencia": "CB18051ADV-031",
-            "nombre": "FILTRO AIRE S1 ADVENTURE 180CC",
-            "marca": "DAYTONA",
-            "precio": 12,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CB18051ADV-004",
             "codigo_referencia": "CB18051ADV-004",
             "nombre": "KIT PISTAS DIRECCION S1 ADVENTURE",
@@ -939,17 +928,6 @@
             "tags": []
         },
         {
-            "id": "CBB250XP-009",
-            "codigo_referencia": "CBB250XP-009",
-            "nombre": "ESTRIBO POST. CON BASE (I-D) XPOWER/GP1-R/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
-            "marca": "DAYTONA",
-            "precio": 48,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CG200WEV2-006",
             "codigo_referencia": "CG200WEV2-006",
             "nombre": "STOP WING EVO2 2018/19/20/21/2022/SHM GP200/Z1 AK200/AXXO F51/RANGER VENOOM F51/TUNDRA VENOM/PEGASSO VENTO/MT1 FX 200CC",
@@ -977,28 +955,6 @@
             "nombre": "KIT EMBRAGUE ARMADO TEKKEN/SCRAMBLER",
             "marca": "DAYTONA",
             "precio": 67,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CBB250XP-036",
-            "codigo_referencia": "CBB250XP-036",
-            "nombre": "ESTRIBO DEL. CON BASE (I-D) XPOWER/GP1-R 250/FK370/FK 400/F 370/CHEF II/CHIEF II PRO/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
-            "marca": "DAYTONA",
-            "precio": 86,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "FE250GP1R-027 ",
-            "codigo_referencia": "FE250GP1R-027 ",
-            "nombre": "MANIGUETA EMBRAGUE CON BASE GP1-R/XPOWER 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC NEGRO ",
-            "marca": "DAYTONA",
-            "precio": 13,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -1138,6 +1094,17 @@
             ]
         },
         {
+            "id": "CBB250XP-036",
+            "codigo_referencia": "CBB250XP-036",
+            "nombre": "ESTRIBO DEL. CON BASE (I-D) XPOWER/GP1-R 250/FK370/FK 400/F 370/CHEF II/CHIEF II PRO/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
+            "marca": "DAYTONA",
+            "precio": 86,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
             "id": "CB250-267",
             "codigo_referencia": "CB250-267",
             "nombre": "DISCO FRENO POST TEKKEN",
@@ -1159,6 +1126,17 @@
             "nombre": "STOP WOLF/ADV200/MAVERICK/WOLF250/RANGER CFZ 250/HONDA CB190",
             "marca": "DAYTONA",
             "precio": 31,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "FE250GP1R-027 ",
+            "codigo_referencia": "FE250GP1R-027 ",
+            "nombre": "MANIGUETA EMBRAGUE CON BASE GP1-R/XPOWER 250/SHM CHIEF II/CHIEF 2.5/CHIEF II PRO//THUNDER F22 250CC NEGRO ",
+            "marca": "DAYTONA",
+            "precio": 13,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -4423,26 +4401,6 @@
             ]
         },
         {
-            "id": "CG200WEV-019",
-            "codigo_referencia": "CG200WEV-019",
-            "nombre": "ARO POST. MAGNECIO 2.50X17 DISCO 4H WING EVO I-II/GTR/PREDATOR 200 NEGRO ",
-            "marca": "DAYTONA",
-            "precio": 114,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": [
-                {
-                    "name": "1",
-                    "color": "#10B981"
-                },
-                {
-                    "name": "B",
-                    "color": "#F97316"
-                }
-            ]
-        },
-        {
             "id": "CB200SRK-017",
             "codigo_referencia": "CB200SRK-017",
             "nombre": "VELOCIMETRO SHARK II 200 FONDO AMARILLO",
@@ -5195,11 +5153,11 @@
             "tags": []
         },
         {
-            "id": "CB250GP1-035",
-            "codigo_referencia": "CB250GP1-035",
-            "nombre": "TEMPLADOR CADENA GP1 250/TUNDRA VELOCE 250CC",
+            "id": "FE250-032",
+            "codigo_referencia": "FE250-032",
+            "nombre": "BUJIA NGK LMAR8J-9E FE250 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5 250CC",
             "marca": "DAYTONA",
-            "precio": 35,
+            "precio": 23,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -5345,15 +5303,24 @@
             "tags": []
         },
         {
-            "id": "FE250-032",
-            "codigo_referencia": "FE250-032",
-            "nombre": "BUJIA NGK LMAR8J-9E FE250 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5 250CC",
+            "id": "CG200WEV-019",
+            "codigo_referencia": "CG200WEV-019",
+            "nombre": "ARO POST. MAGNECIO 2.50X17 DISCO 4H WING EVO I-II/GTR/PREDATOR 200 NEGRO ",
             "marca": "DAYTONA",
-            "precio": 23,
+            "precio": 114,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
-            "tags": []
+            "tags": [
+                {
+                    "name": "1",
+                    "color": "#10B981"
+                },
+                {
+                    "name": "B",
+                    "color": "#F97316"
+                }
+            ]
         },
         {
             "id": "RMDY-032",
@@ -5412,6 +5379,17 @@
             "nombre": "FILTRO AIRE WOLF 200/250/MAVERICK 250/ADVENTURE 300 6 PATAS",
             "marca": "DAYTONA",
             "precio": 8,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "CB250GP1-035",
+            "codigo_referencia": "CB250GP1-035",
+            "nombre": "TEMPLADOR CADENA GP1 250/TUNDRA VELOCE 250CC",
+            "marca": "DAYTONA",
+            "precio": 35,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -5979,17 +5957,6 @@
             "tags": []
         },
         {
-            "id": "CBB250XP-086",
-            "codigo_referencia": "CBB250XP-086",
-            "nombre": "PROTEC. ESCAPE (FIBRA CARBONO) XPOWER/GP1R/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
-            "marca": "DAYTONA",
-            "precio": 16,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "MRZCBB250XP-024",
             "codigo_referencia": "MRZCBB250XP-024",
             "nombre": "CATALINA XPOWER 6 HUECOS",
@@ -6126,17 +6093,6 @@
             "nombre": "ESTRIBO POSTERIOR SHINERAY GP200 SOLO /TUNDRA VENOM 200GT BOST",
             "marca": "BOST",
             "precio": 8,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "TY300-013",
-            "codigo_referencia": "TY300-013",
-            "nombre": "CDI 5 PIN CUADRADO ADVENTURE 300 TY",
-            "marca": "DAYTONA",
-            "precio": 16,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -6700,24 +6656,15 @@
             ]
         },
         {
-            "id": "CB250GP1-027",
-            "codigo_referencia": "CB250GP1-027",
-            "nombre": "VELOCIMETRO DIGITAL GP1 250/TUNDRA VELOCE 250CC",
+            "id": "CBB250XP-086",
+            "codigo_referencia": "CBB250XP-086",
+            "nombre": "PROTEC. ESCAPE (FIBRA CARBONO) XPOWER/GP1R/THD SR71/PEGASSO DUKK 250CC/FACTORY FZ 300CC",
             "marca": "DAYTONA",
-            "precio": 95,
+            "precio": 16,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
-            "tags": [
-                {
-                    "name": "15",
-                    "color": "#3B82F6"
-                },
-                {
-                    "name": "C",
-                    "color": "#F97316"
-                }
-            ]
+            "tags": []
         },
         {
             "id": "BOM-F3142-NE",
@@ -6948,17 +6895,6 @@
             "nombre": "DIRECCIONALES LED (SET4) EVO2/S1 ADVENTURE/S1 CROSSOVER 180CC",
             "marca": "DAYTONA",
             "precio": 23,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CB180ADVCR-015",
-            "codigo_referencia": "CB180ADVCR-015",
-            "nombre": "EXPLORADORAS BUO (I-D) S1 ADV CROSSOVER 180CC",
-            "marca": "DAYTONA",
-            "precio": 38,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -9776,17 +9712,6 @@
             "tags": []
         },
         {
-            "id": "CB180ADVCR-013",
-            "codigo_referencia": "CB180ADVCR-013",
-            "nombre": "ESCAPE COMPLETO S1 ADV CROSSOVER 180CC",
-            "marca": "DAYTONA",
-            "precio": 76,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CB180GHS1-016",
             "codigo_referencia": "CB180GHS1-016",
             "nombre": "AMORTIGUADOR (I-D) SCOOTER EVO2/S1/JOY/DK150B/POWERMAX 335MM NEGRO",
@@ -10087,17 +10012,6 @@
             "tags": []
         },
         {
-            "id": "CB250SC-098",
-            "codigo_referencia": "CB250SC-098",
-            "nombre": "CATALINA 428H/46D SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC",
-            "marca": "DAYTONA",
-            "precio": 18,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "RMDY-071",
             "codigo_referencia": "RMDY-071",
             "nombre": "BOBINA CORONILLA 12M/2H 1 PULSER 5 PIN CB200/250/RX/SCORPION/BULL/SHARKII 200CC",
@@ -10193,11 +10107,11 @@
             ]
         },
         {
-            "id": "FE250-030",
-            "codigo_referencia": "FE250-030",
-            "nombre": "FILTRO ACEITE FE250/300 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5/WOLF EVOL./MOTOR1 NOMADA/BEAST/IGM DESERT 250CC/SCRAMBLER MAX 300CC",
+            "id": "CB250SC-098",
+            "codigo_referencia": "CB250SC-098",
+            "nombre": "CATALINA 428H/46D SCORPION 200/250/AXXO TRX/TH MIG25/DK250-D SPORT 250CC",
             "marca": "DAYTONA",
-            "precio": 6,
+            "precio": 18,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
@@ -10220,6 +10134,17 @@
             "nombre": "RECTIFICADOR CORRIENTE 6 CABLES S1/ADVENTURE/CROSSOVER/EVO2/AGILITY/EIVISSA 150/180CC",
             "marca": "DAYTONA",
             "precio": 15,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
+            "id": "FE250-030",
+            "codigo_referencia": "FE250-030",
+            "nombre": "FILTRO ACEITE FE250/300 4V TEKKEN EVO/GP1R/XPOWER/ARTIC/GP1/FEROCE/TUKO Z250/CR5 TG/IGM VENTURE/DK NATIVA/CHIEF 2.5/WOLF EVOL./MOTOR1 NOMADA/BEAST/IGM DESERT 250CC/SCRAMBLER MAX 300CC",
+            "marca": "DAYTONA",
+            "precio": 6,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,

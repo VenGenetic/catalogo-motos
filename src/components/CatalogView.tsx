@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef, memo } from 'react';
-import { ArrowLeft, Filter, Search, ShoppingBag, Copy, Check } from 'lucide-react'; 
+import { ArrowLeft, Filter, Search, ShoppingBag, Copy, Check, X } from 'lucide-react'; 
 import { optimizarImg } from '../utils/helpers';
 import { APP_CONFIG, ORDEN_SECCIONES } from '../config/constants';
 import { Producto } from '../types';
@@ -13,8 +13,10 @@ interface Props {
   productos: Producto[];
   filtroModelo: string;
   setFiltroModelo: (m: string) => void;
-  busqueda: string;
-  setBusqueda: (s: string) => void;
+  busquedas: string[];
+  setBusquedas: React.Dispatch<React.SetStateAction<string[]>>;
+  expanded: boolean[];
+  setExpanded: React.Dispatch<React.SetStateAction<boolean[]>>;
   filtroSeccion: string;
   setFiltroSeccion: (s: string) => void;
   onProductClick: (p: Producto) => void;
@@ -23,7 +25,8 @@ interface Props {
 export const CatalogView = memo(({ 
   productos,
   filtroModelo, setFiltroModelo, 
-  busqueda, setBusqueda,
+  busquedas, setBusquedas,
+  expanded, setExpanded,
   filtroSeccion, setFiltroSeccion,
   onProductClick
 }: Props) => {
@@ -33,32 +36,35 @@ export const CatalogView = memo(({
   
   const { addToCart } = useCart();
 
+  const busquedasString = useMemo(() => JSON.stringify(busquedas), [busquedas]);
+
   // Resetear página cuando cambian los filtros
-  const [prevFilters, setPrevFilters] = useState({ busqueda, filtroModelo, filtroSeccion });
+  const [prevFilters, setPrevFilters] = useState({ busquedasString, filtroModelo, filtroSeccion });
   if (
-    prevFilters.busqueda !== busqueda || 
+    prevFilters.busquedasString !== busquedasString || 
     prevFilters.filtroModelo !== filtroModelo || 
     prevFilters.filtroSeccion !== filtroSeccion
   ) {
-    setPrevFilters({ busqueda, filtroModelo, filtroSeccion });
+    setPrevFilters({ busquedasString, filtroModelo, filtroSeccion });
     setPagina(1);
   }
 
+  const hasActiveSearch = useMemo(() => busquedas.some(b => b.trim().length > 0), [busquedas]);
+
   useEffect(() => { 
-    if (busqueda || filtroSeccion !== 'Todos') {
+    if (hasActiveSearch || filtroSeccion !== 'Todos') {
       window.scrollTo({ top: 0, behavior: 'auto' });
     }
-  }, [busqueda, filtroModelo, filtroSeccion]);
+  }, [hasActiveSearch, filtroModelo, filtroSeccion]);
 
   const visibles = useMemo(() => {
     return productos.slice(0, pagina * APP_CONFIG.ITEMS_PER_PAGE);
   }, [productos, pagina]);
 
-
-
   const handleCambiarMoto = () => {
     setFiltroModelo(''); 
-    setBusqueda('');
+    setBusquedas(['']);
+    setExpanded([true]);
     setFiltroSeccion('Todos');
     window.scrollTo({ top: 0, behavior: 'auto' });
   };
@@ -75,8 +81,49 @@ export const CatalogView = memo(({
     setTimeout(() => setCopiedId(null), 2000);
   };
 
+  // Funciones para gestionar filtros dinámicos múltiples
+  const addSearchFilter = () => {
+    setBusquedas(prev => [...prev, '']);
+    setExpanded(prev => [...prev, true]); // El nuevo filtro empieza expandido
+  };
+
+  const removeSearchFilter = (index: number) => {
+    setBusquedas(prev => prev.filter((_, i) => i !== index));
+    setExpanded(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const toggleExpandFilter = (index: number) => {
+    setExpanded(prev => prev.map((exp, i) => i === index ? !exp : exp));
+  };
+
+  const setBusquedaAt = (index: number, value: string) => {
+    setBusquedas(prev => prev.map((val, i) => i === index ? value : val));
+  };
+
+  const collapseAllFilters = () => {
+    setExpanded(prev => prev.map((_, i) => i === 0 ? true : false));
+  };
+
+  const clearAllAdditionalFilters = () => {
+    setBusquedas([busquedas[0]]);
+    setExpanded([true]);
+  };
+
+  // Manejo inteligente del desenfoque: eliminar filtro si se hace clic fuera y está vacío
+  const handleBlurContainer = (event: React.FocusEvent<HTMLDivElement>, index: number) => {
+    const currentTarget = event.currentTarget;
+    setTimeout(() => {
+      if (!currentTarget.contains(document.activeElement)) {
+        const query = busquedas[index];
+        if (!query || !query.trim()) {
+          removeSearchFilter(index);
+        }
+      }
+    }, 250);
+  };
+
   // 1. MODO SELECTOR
-  if (!filtroModelo && !busqueda) {
+  if (!filtroModelo && !hasActiveSearch) {
     return (
       <MotoSelector 
         onSelectModel={(modelo: string) => {
@@ -84,7 +131,8 @@ export const CatalogView = memo(({
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }} 
         onSearchGlobal={(termino: string) => {
-          setBusqueda(termino);
+          setBusquedas([termino]);
+          setExpanded([true]);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
       />
@@ -98,22 +146,130 @@ export const CatalogView = memo(({
         
         {/* BARRA SUPERIOR */}
         <div className="sticky top-[64px] z-30 bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur-md pb-2 pt-2 px-1 md:px-0 transition-all border-b border-gray-100/50 dark:border-slate-800/50 md:border-none">
-          <div className="flex gap-2 mb-3 items-center">
-            <button 
-              onClick={handleCambiarMoto}
-              className="h-[52px] w-[52px] flex items-center justify-center rounded-2xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-sm active:scale-95 transition-all hover:bg-gray-50 dark:hover:bg-slate-700 hover:border-gray-300 dark:hover:border-slate-600 shrink-0"
-            >
-              <ArrowLeft className="w-6 h-6" />
-            </button>
+          <div className="flex flex-col gap-2 mb-3">
+            <div className="flex gap-2 items-center">
+              <button 
+                onClick={handleCambiarMoto}
+                className="h-[52px] w-[52px] flex items-center justify-center rounded-2xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-sm active:scale-95 transition-all hover:bg-gray-50 dark:hover:bg-slate-700 hover:border-gray-300 dark:hover:border-slate-600 shrink-0"
+              >
+                <ArrowLeft className="w-6 h-6" />
+              </button>
 
-            <div className="flex-1 relative z-40">
-              <SearchBar
-                busqueda={busqueda}
-                setBusqueda={setBusqueda}
-                productos={productos}
-                filtroModelo={filtroModelo}
-              />
+              <div className="flex-1 relative z-40">
+                <SearchBar
+                  busqueda={busquedas[0] || ''}
+                  setBusqueda={(val) => setBusquedaAt(0, val)}
+                  productos={productos}
+                  filtroModelo={filtroModelo}
+                />
+              </div>
+
+              {/* Botón PLUS (+) para agregar palabra clave adicional */}
+              <button
+                onClick={addSearchFilter}
+                title="Agregar palabra clave adicional"
+                className="h-[52px] w-[52px] flex items-center justify-center rounded-2xl bg-red-650 hover:bg-red-700 text-white font-black text-2xl shadow-md shadow-red-650/20 active:scale-95 transition-all shrink-0 hover:scale-105 flex items-center justify-center"
+              >
+                +
+              </button>
             </div>
+
+            {/* Listado de búsquedas adicionales */}
+            {busquedas.length > 1 && (
+              <div className="flex flex-col gap-2 mt-2 p-3 bg-white dark:bg-slate-900 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm">
+                {/* Cabecera del listado de filtros con acciones rápidas */}
+                <div className="flex items-center justify-between px-1 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                  <span>Filtros Adicionales</span>
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={collapseAllFilters} 
+                      className="text-red-500 hover:text-red-600 transition-colors"
+                      title="Contraer todas las palabras clave"
+                    >
+                      Contraer todos
+                    </button>
+                    <span>•</span>
+                    <button 
+                      onClick={clearAllAdditionalFilters} 
+                      className="text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
+                      title="Eliminar todos los filtros extra"
+                    >
+                      Borrar filtros
+                    </button>
+                  </div>
+                </div>
+
+                {/* Contenedor de los filtros */}
+                <div className="flex flex-wrap gap-2 items-center mt-1">
+                  {busquedas.slice(1).map((query, idx) => {
+                    const actualIdx = idx + 1;
+                    const isCollapsed = !expanded[actualIdx];
+
+                    return (
+                      <div 
+                        key={actualIdx} 
+                        className="transition-all duration-300"
+                        onBlur={(e) => handleBlurContainer(e, actualIdx)}
+                      >
+                        {isCollapsed ? (
+                          /* Pill/Badge cuando está contraído (retraído) */
+                          <div 
+                            onClick={() => toggleExpandFilter(actualIdx)}
+                            className="flex items-center gap-2 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-850 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-full font-bold text-xs shadow-sm border border-gray-200 dark:border-slate-750 cursor-pointer transition-all hover:scale-105 active:scale-95"
+                          >
+                            <Search className="w-3.5 h-3.5 text-red-500" strokeWidth={2.5} />
+                            <span className="truncate max-w-[120px]">
+                              {query.trim() || `Filtro ${actualIdx}`}
+                            </span>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                removeSearchFilter(actualIdx);
+                              }}
+                              className="ml-1 p-0.5 hover:bg-slate-250 dark:hover:bg-slate-700 rounded-full transition-colors text-gray-400 hover:text-red-550"
+                              title="Eliminar filtro"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        ) : (
+                          /* Input expandido con todas las features */
+                          <div className="flex gap-2 items-center min-w-[280px] sm:min-w-[340px] bg-slate-50 dark:bg-slate-800 p-1.5 rounded-2xl border border-gray-200/50 dark:border-slate-700">
+                            <div className="flex-1 relative z-40">
+                              <SearchBar
+                                busqueda={query}
+                                setBusqueda={(val) => setBusquedaAt(actualIdx, val)}
+                                productos={productos}
+                                filtroModelo={filtroModelo}
+                                placeholder={`Palabra clave ${actualIdx}...`}
+                              />
+                            </div>
+                            
+                            {/* Botón para contraer */}
+                            <button
+                              onClick={() => toggleExpandFilter(actualIdx)}
+                              title="Contraer filtro"
+                              className="h-[52px] px-3 flex items-center justify-center rounded-2xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-750 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 shadow-sm active:scale-95 transition-all text-xs font-bold shrink-0"
+                            >
+                              Contraer
+                            </button>
+
+                            {/* Botón para eliminar */}
+                            <button
+                              onClick={() => removeSearchFilter(actualIdx)}
+                              title="Eliminar filtro"
+                              className="h-[52px] w-[52px] flex items-center justify-center rounded-2xl bg-red-50 hover:bg-red-100 text-red-650 border border-red-200 shadow-sm active:scale-95 transition-all shrink-0 dark:bg-red-950/20 dark:border-red-900/40 dark:text-red-400"
+                            >
+                              <X className="w-5 h-5" strokeWidth={2.5} />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
           
           <div className="mb-2 px-1 flex items-center justify-between text-xs text-gray-500">
@@ -215,7 +371,7 @@ export const CatalogView = memo(({
                     
                     {/* Título: Muestra TODO el texto (sin truncate) */}
                     <h3 className="text-xs md:text-sm font-bold text-gray-900 dark:text-gray-100 mb-1.5 leading-snug group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                      <HighlightedText text={product.nombre} highlight={busqueda} />
+                      <HighlightedText text={product.nombre} highlight={busquedas.join(' ')} />
                     </h3>
                     
                     {product.codigo_referencia && (
@@ -275,15 +431,18 @@ export const CatalogView = memo(({
                 <Search className="h-10 w-10 text-slate-300" />
              </div>
              <h3 className="text-xl font-bold text-slate-900 mb-2">
-               {busqueda ? "No encontramos repuestos" : "Sin resultados"}
+               {hasActiveSearch ? "No encontramos repuestos" : "Sin resultados"}
              </h3>
              <p className="text-slate-500 max-w-xs mx-auto mb-6">
                Intenta cambiar los términos de búsqueda o filtros.
              </p>
              <div className="flex gap-3">
-               {busqueda && (
+               {hasActiveSearch && (
                  <button 
-                   onClick={() => setBusqueda('')} 
+                   onClick={() => {
+                     setBusquedas(['']);
+                     setExpanded([true]);
+                   }} 
                    className="px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors"
                  >
                   Limpiar búsqueda

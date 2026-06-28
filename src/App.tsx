@@ -3,7 +3,6 @@ import { Routes, Route, useSearchParams, Link, useLocation, useNavigate, matchPa
 import { WifiOff } from 'lucide-react';
 import './App.css';
 import { limpiarTexto } from './utils/helpers';
-import { APP_CONFIG } from './config/constants';
 import { Navbar } from './components/Navbar';
 import { HomeView } from './components/HomeView';
 import { WhatsAppButton } from './components/WhatsAppButton';
@@ -47,7 +46,101 @@ export default function App() {
 
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
-  const [busqueda, setBusqueda] = useState('');
+  // Array de búsquedas: busquedas[0] es la principal, busquedas[1..] son las adicionales
+  const [busquedas, setBusquedas] = useState<string[]>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get('q');
+    const k = params.getAll('k');
+    
+    if (q !== null || k.length > 0) {
+      return [q || '', ...k];
+    }
+    
+    try {
+      const saved = localStorage.getItem('last_catalog_queries');
+      const savedTime = localStorage.getItem('last_catalog_queries_time');
+      if (saved && savedTime) {
+        const ageMs = Date.now() - parseInt(savedTime, 10);
+        if (ageMs < 24 * 60 * 60 * 1000) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed;
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Error al leer búsquedas de localStorage', e);
+    }
+    
+    return [''];
+  });
+
+  // Estado de expansión de los filtros adicionales (el principal siempre está expandido)
+  const [expanded, setExpanded] = useState<boolean[]>(() => {
+    return [true, ...Array(Math.max(0, busquedas.length - 1)).fill(false)];
+  });
+
+  // Guardar en localStorage cuando cambie el array de búsquedas
+  useEffect(() => {
+    const hasAnyQuery = busquedas.some(b => b.trim().length > 0);
+    if (hasAnyQuery) {
+      localStorage.setItem('last_catalog_queries', JSON.stringify(busquedas));
+      localStorage.setItem('last_catalog_queries_time', Date.now().toString());
+    } else {
+      localStorage.removeItem('last_catalog_queries');
+      localStorage.removeItem('last_catalog_queries_time');
+    }
+  }, [busquedas]);
+
+  // Sincronizar estado local de búsquedas hacia la URL de forma dinámica
+  useEffect(() => {
+    if (location.pathname.startsWith('/catalogo')) {
+      const q = busquedas[0] || '';
+      const k = busquedas.slice(1).map(s => s.trim()).filter(s => s.length > 0);
+      
+      setSearchParams((prev) => {
+        const newParams = new URLSearchParams(prev);
+        if (q) {
+          newParams.set('q', q);
+        } else {
+          newParams.delete('q');
+        }
+        
+        newParams.delete('k');
+        k.forEach(keyword => {
+          newParams.append('k', keyword);
+        });
+        
+        return newParams;
+      }, { replace: true });
+    }
+  }, [busquedas, setSearchParams, location.pathname]);
+
+  // Sincronizar desde la URL hacia el estado local (ej. si el usuario usa navegación Atrás/Adelante)
+  useEffect(() => {
+    if (location.pathname.startsWith('/catalogo')) {
+      const params = new URLSearchParams(location.search);
+      const q = params.get('q') || '';
+      const k = params.getAll('k');
+      
+      const currentQ = busquedas[0] || '';
+      const currentK = busquedas.slice(1);
+      
+      const qChanged = q !== currentQ;
+      const kChanged = k.length !== currentK.length || k.some((val, idx) => val !== currentK[idx]);
+      
+      if (qChanged || kChanged) {
+        setBusquedas([q, ...k]);
+        setExpanded(prev => {
+          const nextExpanded = [true];
+          for (let i = 0; i < k.length; i++) {
+            nextExpanded.push(prev[i + 1] !== undefined ? prev[i + 1] : false);
+          }
+          return nextExpanded;
+        });
+      }
+    }
+  }, [location.search, location.pathname]);
 
   // Lógica de URL para el modelo
   const getModelFromUrl = useCallback((pathname: string) => {
@@ -74,8 +167,10 @@ export default function App() {
 
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
 
-  // CAMBIO CLAVE: Aumentamos el tiempo a 250ms para no saturar el hilo principal filtrando más de 4000 items repetidas veces mientras se tipea
-  const busquedaDebounced = useDebounce(busqueda, 250);
+  // Sincronizar y debouncer las búsquedas (serializado a JSON para mantener la estabilidad del useEffect)
+  const busquedasString = useMemo(() => JSON.stringify(busquedas), [busquedas]);
+  const busquedasDebouncedString = useDebounce(busquedasString, 250);
+  const busquedasDebounced = useMemo(() => JSON.parse(busquedasDebouncedString) as string[], [busquedasDebouncedString]);
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -159,7 +254,8 @@ export default function App() {
   }, []);
 
   const filteredProducts = useMemo(() => {
-    if (!busquedaDebounced && filtroSeccion === 'Todos' && !filtroModelo) return productos;
+    const hasActiveSearch = busquedasDebounced.some(b => b.trim().length > 0);
+    if (!hasActiveSearch && filtroSeccion === 'Todos' && !filtroModelo) return productos;
 
     const calcularRelevancia = (producto: Producto, terminos: string[]): number => {
       const textoBusqueda = (producto.textoBusqueda || '').toLowerCase();
@@ -170,9 +266,19 @@ export default function App() {
 
       const terminosExpandidos = expandirTerminos(terminos);
 
-      if (busquedaDebounced.includes('"')) {
-        const match = busquedaDebounced.match(/"([^"]+)"/);
-        if (match && codigo.includes(match[1].toLowerCase())) {
+      // Buscar si alguna de las búsquedas contiene comillas dobles (SKU exacto)
+      const exactSkuMatches = busquedasDebounced
+        .map(q => {
+          if (q.includes('"')) {
+            const match = q.match(/"([^"]+)"/);
+            return match ? match[1].toLowerCase() : null;
+          }
+          return null;
+        })
+        .filter(Boolean) as string[];
+
+      for (const exactSku of exactSkuMatches) {
+        if (codigo.includes(exactSku)) {
           return 1000;
         }
       }
@@ -210,7 +316,10 @@ export default function App() {
       return puntuacion;
     };
 
-    const terminos = busquedaDebounced ? limpiarTexto(busquedaDebounced).split(' ').filter(t => t.length > 0) : [];
+    // Extraemos todos los términos de todas las búsquedas no vacías
+    const terminos = busquedasDebounced
+      .filter(b => b.trim().length > 0)
+      .flatMap(b => limpiarTexto(b).split(' ').filter(t => t.length > 0));
 
     const productosConPuntuacion = productos
       .filter((p) => {
@@ -237,7 +346,7 @@ export default function App() {
       });
 
     return productosConPuntuacion;
-  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo, expandirTerminos, isFuzzyMatch]);
+  }, [productos, busquedasDebounced, filtroSeccion, filtroModelo, expandirTerminos, isFuzzyMatch]);
 
   const handleProductClick = useCallback((p: Producto) => {
     setSearchParams((prev: URLSearchParams) => { prev.set('prod', p.id); return prev; });
@@ -291,8 +400,10 @@ export default function App() {
                   productos={filteredProducts}
                   filtroModelo={filtroModelo}
                   setFiltroModelo={handleSetFiltroModelo}
-                  busqueda={busqueda}
-                  setBusqueda={setBusqueda}
+                  busquedas={busquedas}
+                  setBusquedas={setBusquedas}
+                  expanded={expanded}
+                  setExpanded={setExpanded}
                   filtroSeccion={filtroSeccion}
                   setFiltroSeccion={setFiltroSeccion}
                   onProductClick={handleProductClick}
@@ -306,8 +417,10 @@ export default function App() {
                   productos={filteredProducts}
                   filtroModelo={filtroModelo}
                   setFiltroModelo={handleSetFiltroModelo}
-                  busqueda={busqueda}
-                  setBusqueda={setBusqueda}
+                  busquedas={busquedas}
+                  setBusquedas={setBusquedas}
+                  expanded={expanded}
+                  setExpanded={setExpanded}
                   filtroSeccion={filtroSeccion}
                   setFiltroSeccion={setFiltroSeccion}
                   onProductClick={handleProductClick}
