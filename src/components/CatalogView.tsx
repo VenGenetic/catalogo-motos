@@ -6,13 +6,11 @@ import { Producto } from '../types';
 import { LazyImage } from './LazyImage';
 import { SearchBar } from './SearchBar';
 import { HighlightedText } from './HighlightedText';
-import { MotoSelector } from './MotoSelector';
 import { useCart } from '../context/CartContext';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   productos: Producto[];
-  filtroModelo: string;
-  setFiltroModelo: (m: string) => void;
   busquedas: string[];
   setBusquedas: React.Dispatch<React.SetStateAction<string[]>>;
   expanded: boolean[];
@@ -24,7 +22,6 @@ interface Props {
 
 export const CatalogView = memo(({ 
   productos,
-  filtroModelo, setFiltroModelo, 
   busquedas, setBusquedas,
   expanded, setExpanded,
   filtroSeccion, setFiltroSeccion,
@@ -39,35 +36,28 @@ export const CatalogView = memo(({
   const busquedasString = useMemo(() => JSON.stringify(busquedas), [busquedas]);
 
   // Resetear página cuando cambian los filtros
-  const [prevFilters, setPrevFilters] = useState({ busquedasString, filtroModelo, filtroSeccion });
+  const [prevFilters, setPrevFilters] = useState({ busquedasString, filtroSeccion });
   if (
     prevFilters.busquedasString !== busquedasString || 
-    prevFilters.filtroModelo !== filtroModelo || 
     prevFilters.filtroSeccion !== filtroSeccion
   ) {
-    setPrevFilters({ busquedasString, filtroModelo, filtroSeccion });
+    setPrevFilters({ busquedasString, filtroSeccion });
     setPagina(1);
   }
 
   const hasActiveSearch = useMemo(() => busquedas.some(b => b.trim().length > 0), [busquedas]);
 
+  const navigate = useNavigate();
+
   useEffect(() => { 
     if (hasActiveSearch || filtroSeccion !== 'Todos') {
       window.scrollTo({ top: 0, behavior: 'auto' });
     }
-  }, [hasActiveSearch, filtroModelo, filtroSeccion]);
+  }, [hasActiveSearch, filtroSeccion]);
 
   const visibles = useMemo(() => {
     return productos.slice(0, pagina * APP_CONFIG.ITEMS_PER_PAGE);
   }, [productos, pagina]);
-
-  const handleCambiarMoto = () => {
-    setFiltroModelo(''); 
-    setBusquedas(['']);
-    setExpanded([true]);
-    setFiltroSeccion('Todos');
-    window.scrollTo({ top: 0, behavior: 'auto' });
-  };
 
   const handleQuickAdd = (e: React.MouseEvent, product: Producto) => {
     e.stopPropagation();
@@ -122,22 +112,7 @@ export const CatalogView = memo(({
     }, 250);
   };
 
-  // 1. MODO SELECTOR
-  if (!filtroModelo && !hasActiveSearch) {
-    return (
-      <MotoSelector 
-        onSelectModel={(modelo: string) => {
-          setFiltroModelo(modelo);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }} 
-        onSearchGlobal={(termino: string) => {
-          setBusquedas([termino]);
-          setExpanded([true]);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-      />
-    );
-  }
+  // Se eliminó la pantalla de selección de motos.
 
   // 2. MODO CATÁLOGO
   return (
@@ -149,8 +124,9 @@ export const CatalogView = memo(({
           <div className="flex flex-col gap-2 mb-3">
             <div className="flex gap-2 items-center">
               <button 
-                onClick={handleCambiarMoto}
+                onClick={() => navigate('/')}
                 className="h-[52px] w-[52px] flex items-center justify-center rounded-2xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-sm active:scale-95 transition-all hover:bg-gray-50 dark:hover:bg-slate-700 hover:border-gray-300 dark:hover:border-slate-600 shrink-0"
+                title="Volver al inicio"
               >
                 <ArrowLeft className="w-6 h-6" />
               </button>
@@ -160,7 +136,8 @@ export const CatalogView = memo(({
                   busqueda={busquedas[0] || ''}
                   setBusqueda={(val) => setBusquedaAt(0, val)}
                   productos={productos}
-                  filtroModelo={filtroModelo}
+                  filtroModelo=""
+                  placeholder="Escribe el nombre del repuesto que necesitas..."
                 />
               </div>
 
@@ -240,7 +217,7 @@ export const CatalogView = memo(({
                                 busqueda={query}
                                 setBusqueda={(val) => setBusquedaAt(actualIdx, val)}
                                 productos={productos}
-                                filtroModelo={filtroModelo}
+                                filtroModelo=""
                                 placeholder={`Palabra clave ${actualIdx}...`}
                               />
                             </div>
@@ -275,15 +252,9 @@ export const CatalogView = memo(({
           <div className="mb-2 px-1 flex items-center justify-between text-xs text-gray-500">
              <div className="flex items-center gap-2">
                 <span className="hidden md:inline">Viendo:</span>
-                {filtroModelo ? (
-                    <span className="font-extrabold text-red-600 bg-red-50 px-2 py-1 rounded-md border border-red-100 flex items-center gap-1">
-                      {filtroModelo}
-                    </span>
-                ) : (
-                    <span className="font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 px-2 py-1 rounded-md border border-gray-200 dark:border-slate-700 shadow-sm">
-                      Global
-                    </span>
-                )}
+                <span className="font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 px-2 py-1 rounded-md border border-gray-200 dark:border-slate-700 shadow-sm">
+                  Catálogo
+                </span>
              </div>
              <div className="flex items-center gap-2">
                 <span className="text-gray-400">{visibles.length} resultados</span>
@@ -427,26 +398,28 @@ export const CatalogView = memo(({
           </>
         ) : (
           <div className="flex flex-col items-center justify-center py-24 px-4 text-center">
-             <div className="bg-slate-50 p-6 rounded-full mb-6 animate-pulse">
-                <Search className="h-10 w-10 text-slate-300" />
+             <div className="bg-slate-50 dark:bg-slate-800 p-6 rounded-full mb-6 animate-bounce">
+                <Search className="h-10 w-10 text-red-500" />
              </div>
-             <h3 className="text-xl font-bold text-slate-900 mb-2">
-               {hasActiveSearch ? "No encontramos repuestos" : "Sin resultados"}
+             <h3 className="text-xl font-extrabold text-slate-900 dark:text-white mb-2">
+               {hasActiveSearch ? "No encontramos repuestos" : "Busca tu repuesto"}
              </h3>
-             <p className="text-slate-500 max-w-xs mx-auto mb-6">
-               Intenta cambiar los términos de búsqueda o filtros.
+             <p className="text-slate-500 dark:text-gray-400 max-w-xs mx-auto mb-6 text-sm font-semibold">
+               {hasActiveSearch 
+                 ? "Intenta cambiar los términos de búsqueda o filtros." 
+                 : "Empieza a escribir el nombre del repuesto en el buscador de arriba para ver los resultados."}
              </p>
              <div className="flex gap-3">
                {hasActiveSearch && (
-                 <button 
-                   onClick={() => {
-                     setBusquedas(['']);
-                     setExpanded([true]);
-                   }} 
-                   className="px-4 py-2 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors"
-                 >
-                  Limpiar búsqueda
-                 </button>
+                  <button 
+                    onClick={() => {
+                      setBusquedas(['']);
+                      setExpanded([true]);
+                    }} 
+                    className="px-5 py-2.5 bg-red-650 hover:bg-red-700 text-white font-bold rounded-xl transition-all shadow-md hover:scale-105 active:scale-95 text-sm"
+                  >
+                   Limpiar búsqueda
+                  </button>
                )}
              </div>
           </div>

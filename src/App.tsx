@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react';
-import { Routes, Route, useSearchParams, Link, useLocation, useNavigate, matchPath } from 'react-router-dom';
+import { Routes, Route, useSearchParams, Link, useLocation, Navigate } from 'react-router-dom';
 import { WifiOff } from 'lucide-react';
 import './App.css';
 import { limpiarTexto } from './utils/helpers';
@@ -36,7 +36,6 @@ export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { productos, loading } = useProducts();
   const location = useLocation();
-  const navigate = useNavigate();
 
   // Derivamos el producto seleccionado de la URL
   const prodId = searchParams.get('prod');
@@ -142,28 +141,7 @@ export default function App() {
     }
   }, [location.search, location.pathname]);
 
-  // Lógica de URL para el modelo
-  const getModelFromUrl = useCallback((pathname: string) => {
-    const match = matchPath({ path: "/catalogo/:modelo", end: true }, pathname);
-    return match?.params?.modelo ? decodeURIComponent(match.params.modelo) : '';
-  }, []);
-
-  const [filtroModelo, setFiltroModelo] = useState(() => getModelFromUrl(location.pathname));
-
-  useEffect(() => {
-    // Solo sincronizamos si estamos en la sección de catálogo
-    if (location.pathname.startsWith('/catalogo')) {
-      const modelInUrl = getModelFromUrl(location.pathname);
-      if (modelInUrl !== filtroModelo) {
-        setFiltroModelo(modelInUrl);
-      }
-    }
-  }, [location.pathname, getModelFromUrl, filtroModelo]);
-
-  const handleSetFiltroModelo = useCallback((modelo: string) => {
-    if (modelo) navigate(`/catalogo/${encodeURIComponent(modelo)}`);
-    else navigate('/catalogo');
-  }, [navigate]);
+  // Se eliminó la lógica de modelos.
 
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
 
@@ -247,6 +225,7 @@ export default function App() {
             i++; j++;
           }
         }
+        mismatches += (term.length - i) + (w.length - j);
         if (mismatches <= 1) return true;
       }
     }
@@ -255,7 +234,7 @@ export default function App() {
 
   const filteredProducts = useMemo(() => {
     const hasActiveSearch = busquedasDebounced.some(b => b.trim().length > 0);
-    if (!hasActiveSearch && filtroSeccion === 'Todos' && !filtroModelo) return productos;
+    if (!hasActiveSearch) return [];
 
     const calcularRelevancia = (producto: Producto, terminos: string[]): number => {
       const textoBusqueda = (producto.textoBusqueda || '').toLowerCase();
@@ -263,8 +242,6 @@ export default function App() {
       const codigo = producto.codigo_referencia?.toLowerCase() || '';
       const categoria = (producto.categoria || '').toLowerCase();
       let puntuacion = 0;
-
-      const terminosExpandidos = expandirTerminos(terminos);
 
       // Buscar si alguna de las búsquedas contiene comillas dobles (SKU exacto)
       const exactSkuMatches = busquedasDebounced
@@ -285,22 +262,36 @@ export default function App() {
 
       let terminosEncontrados = 0;
 
-      for (const termino of [...terminos, ...terminosExpandidos]) {
-        const terminoLower = termino.toLowerCase();
-        let encontro = false;
+      for (const term of terminos) {
+        const termLower = term.toLowerCase();
+        const expansions = expandirTerminos([termLower]);
+        let maxTermScore = 0;
 
-        if (codigo.includes(terminoLower)) { puntuacion += 100; encontro = true; }
-        else if (isFuzzyMatch(codigo, terminoLower)) { puntuacion += 80; encontro = true; }
+        for (const exp of expansions) {
+          const expLower = exp.toLowerCase();
+          let termScore = 0;
+          let matchedInExp = false;
 
-        if (nombre.startsWith(terminoLower)) { puntuacion += 50; encontro = true; }
-        else if (nombre.includes(terminoLower)) { puntuacion += 30; encontro = true; }
-        else if (isFuzzyMatch(nombre, terminoLower)) { puntuacion += 20; encontro = true; }
+          if (codigo.includes(expLower)) { termScore += 100; matchedInExp = true; }
+          else if (isFuzzyMatch(codigo, expLower)) { termScore += 80; matchedInExp = true; }
 
-        if (categoria.includes(terminoLower)) { puntuacion += 15; encontro = true; }
+          if (nombre.startsWith(expLower)) { termScore += 50; matchedInExp = true; }
+          else if (nombre.includes(expLower)) { termScore += 30; matchedInExp = true; }
+          else if (isFuzzyMatch(nombre, expLower)) { termScore += 20; matchedInExp = true; }
 
-        if (textoBusqueda.includes(terminoLower)) { puntuacion += 5; encontro = true; }
+          if (categoria.includes(expLower)) { termScore += 15; matchedInExp = true; }
 
-        if (encontro) terminosEncontrados++;
+          if (textoBusqueda.includes(expLower)) { termScore += 5; matchedInExp = true; }
+
+          if (matchedInExp && termScore > maxTermScore) {
+            maxTermScore = termScore;
+          }
+        }
+
+        if (maxTermScore > 0) {
+          puntuacion += maxTermScore;
+          terminosEncontrados++;
+        }
       }
 
       // Requisito dinámico: Si el usuario busca 2 palabras, idealmente las 2 (o sus sinónimos) deben existir.
@@ -325,8 +316,6 @@ export default function App() {
       .filter((p) => {
         if (!p.precio) return false;
         if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
-        if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
-
         if (terminos.length > 0) {
           const puntuacion = calcularRelevancia(p, terminos);
           return puntuacion > 2; // Filtro mínimo
@@ -346,7 +335,7 @@ export default function App() {
       });
 
     return productosConPuntuacion;
-  }, [productos, busquedasDebounced, filtroSeccion, filtroModelo, expandirTerminos, isFuzzyMatch]);
+  }, [productos, busquedasDebounced, filtroSeccion, expandirTerminos, isFuzzyMatch]);
 
   const handleProductClick = useCallback((p: Producto) => {
     setSearchParams((prev: URLSearchParams) => { prev.set('prod', p.id); return prev; });
@@ -398,8 +387,6 @@ export default function App() {
                 <title>Catálogo | LV PARTS</title>
                 <CatalogView
                   productos={filteredProducts}
-                  filtroModelo={filtroModelo}
-                  setFiltroModelo={handleSetFiltroModelo}
                   busquedas={busquedas}
                   setBusquedas={setBusquedas}
                   expanded={expanded}
@@ -410,23 +397,7 @@ export default function App() {
                 />
               </>
             } />
-            <Route path="/catalogo/:modelo" element={
-              <>
-                <title>{filtroModelo ? `Repuestos ${filtroModelo}` : 'Catálogo'} | LV PARTS</title>
-                <CatalogView
-                  productos={filteredProducts}
-                  filtroModelo={filtroModelo}
-                  setFiltroModelo={handleSetFiltroModelo}
-                  busquedas={busquedas}
-                  setBusquedas={setBusquedas}
-                  expanded={expanded}
-                  setExpanded={setExpanded}
-                  filtroSeccion={filtroSeccion}
-                  setFiltroSeccion={setFiltroSeccion}
-                  onProductClick={handleProductClick}
-                />
-              </>
-            } />
+            <Route path="/catalogo/:modelo" element={<Navigate to="/catalogo" replace />} />
 
             <Route path="/contacto" element={<><title>Contacto | LV PARTS</title><ContactView /></>} />
             <Route path="*" element={
