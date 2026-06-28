@@ -45,110 +45,71 @@ export default function App() {
 
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
-  // Array de búsquedas: busquedas[0] es la principal, busquedas[1..] son las adicionales
-  const [busquedas, setBusquedas] = useState<string[]>(() => {
+  // Estado local para la búsqueda principal
+  const [busqueda, setBusqueda] = useState<string>(() => {
     const params = new URLSearchParams(window.location.search);
     const q = params.get('q');
-    const k = params.getAll('k');
-    
-    if (q !== null || k.length > 0) {
-      return [q || '', ...k];
+    if (q !== null) {
+      return q;
     }
     
     try {
-      const saved = localStorage.getItem('last_catalog_queries');
-      const savedTime = localStorage.getItem('last_catalog_queries_time');
+      const saved = localStorage.getItem('last_catalog_query');
+      const savedTime = localStorage.getItem('last_catalog_query_time');
       if (saved && savedTime) {
         const ageMs = Date.now() - parseInt(savedTime, 10);
         if (ageMs < 24 * 60 * 60 * 1000) {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            return parsed;
-          }
+          return saved;
         }
       }
     } catch (e) {
-      console.error('Error al leer búsquedas de localStorage', e);
+      console.error('Error al leer búsqueda de localStorage', e);
     }
     
-    return [''];
+    return '';
   });
 
-  // Estado de expansión de los filtros adicionales (el principal siempre está expandido)
-  const [expanded, setExpanded] = useState<boolean[]>(() => {
-    return [true, ...Array(Math.max(0, busquedas.length - 1)).fill(false)];
-  });
-
-  // Guardar en localStorage cuando cambie el array de búsquedas
+  // Guardar en localStorage cuando cambie la búsqueda
   useEffect(() => {
-    const hasAnyQuery = busquedas.some(b => b.trim().length > 0);
-    if (hasAnyQuery) {
-      localStorage.setItem('last_catalog_queries', JSON.stringify(busquedas));
-      localStorage.setItem('last_catalog_queries_time', Date.now().toString());
+    if (busqueda.trim().length > 0) {
+      localStorage.setItem('last_catalog_query', busqueda);
+      localStorage.setItem('last_catalog_query_time', Date.now().toString());
     } else {
-      localStorage.removeItem('last_catalog_queries');
-      localStorage.removeItem('last_catalog_queries_time');
+      localStorage.removeItem('last_catalog_query');
+      localStorage.removeItem('last_catalog_query_time');
     }
-  }, [busquedas]);
+  }, [busqueda]);
 
-  // Sincronizar estado local de búsquedas hacia la URL de forma dinámica
+  // Sincronizar estado local de búsqueda hacia la URL de forma dinámica
   useEffect(() => {
     if (location.pathname.startsWith('/catalogo')) {
-      const q = busquedas[0] || '';
-      const k = busquedas.slice(1).map(s => s.trim()).filter(s => s.length > 0);
-      
       setSearchParams((prev) => {
         const newParams = new URLSearchParams(prev);
-        if (q) {
-          newParams.set('q', q);
+        if (busqueda.trim()) {
+          newParams.set('q', busqueda);
         } else {
           newParams.delete('q');
         }
-        
-        newParams.delete('k');
-        k.forEach(keyword => {
-          newParams.append('k', keyword);
-        });
-        
         return newParams;
       }, { replace: true });
     }
-  }, [busquedas, setSearchParams, location.pathname]);
+  }, [busqueda, setSearchParams, location.pathname]);
 
   // Sincronizar desde la URL hacia el estado local (ej. si el usuario usa navegación Atrás/Adelante)
   useEffect(() => {
     if (location.pathname.startsWith('/catalogo')) {
       const params = new URLSearchParams(location.search);
       const q = params.get('q') || '';
-      const k = params.getAll('k');
-      
-      const currentQ = busquedas[0] || '';
-      const currentK = busquedas.slice(1);
-      
-      const qChanged = q !== currentQ;
-      const kChanged = k.length !== currentK.length || k.some((val, idx) => val !== currentK[idx]);
-      
-      if (qChanged || kChanged) {
-        setBusquedas([q, ...k]);
-        setExpanded(prev => {
-          const nextExpanded = [true];
-          for (let i = 0; i < k.length; i++) {
-            nextExpanded.push(prev[i + 1] !== undefined ? prev[i + 1] : false);
-          }
-          return nextExpanded;
-        });
+      if (q !== busqueda) {
+        setBusqueda(q);
       }
     }
-  }, [location.search, location.pathname]);
-
-  // Se eliminó la lógica de modelos.
+  }, [location.search, location.pathname, busqueda]);
 
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
 
-  // Sincronizar y debouncer las búsquedas (serializado a JSON para mantener la estabilidad del useEffect)
-  const busquedasString = useMemo(() => JSON.stringify(busquedas), [busquedas]);
-  const busquedasDebouncedString = useDebounce(busquedasString, 250);
-  const busquedasDebounced = useMemo(() => JSON.parse(busquedasDebouncedString) as string[], [busquedasDebouncedString]);
+  // Debounce de la búsqueda
+  const busquedaDebounced = useDebounce(busqueda, 250);
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -233,7 +194,7 @@ export default function App() {
   }, []);
 
   const filteredProducts = useMemo(() => {
-    const hasActiveSearch = busquedasDebounced.some(b => b.trim().length > 0);
+    const hasActiveSearch = busquedaDebounced.trim().length > 0;
     if (!hasActiveSearch) return [];
 
     const calcularRelevancia = (producto: Producto, terminos: string[]): number => {
@@ -243,16 +204,14 @@ export default function App() {
       const categoria = (producto.categoria || '').toLowerCase();
       let puntuacion = 0;
 
-      // Buscar si alguna de las búsquedas contiene comillas dobles (SKU exacto)
-      const exactSkuMatches = busquedasDebounced
-        .map(q => {
-          if (q.includes('"')) {
-            const match = q.match(/"([^"]+)"/);
-            return match ? match[1].toLowerCase() : null;
-          }
-          return null;
-        })
-        .filter(Boolean) as string[];
+      // Buscar si la búsqueda contiene comillas dobles (SKU exacto)
+      const exactSkuMatches: string[] = [];
+      if (busquedaDebounced.includes('"')) {
+        const match = busquedaDebounced.match(/"([^"]+)"/);
+        if (match && match[1]) {
+          exactSkuMatches.push(match[1].toLowerCase());
+        }
+      }
 
       for (const exactSku of exactSkuMatches) {
         if (codigo.includes(exactSku)) {
@@ -307,10 +266,10 @@ export default function App() {
       return puntuacion;
     };
 
-    // Extraemos todos los términos de todas las búsquedas no vacías
-    const terminos = busquedasDebounced
-      .filter(b => b.trim().length > 0)
-      .flatMap(b => limpiarTexto(b).split(' ').filter(t => t.length > 0));
+    // Extraemos todos los términos de la búsqueda no vacía
+    const terminos = limpiarTexto(busquedaDebounced)
+      .split(' ')
+      .filter(t => t.length > 0);
 
     const productosConPuntuacion = productos
       .filter((p) => {
@@ -335,7 +294,7 @@ export default function App() {
       });
 
     return productosConPuntuacion;
-  }, [productos, busquedasDebounced, filtroSeccion, expandirTerminos, isFuzzyMatch]);
+  }, [productos, busquedaDebounced, filtroSeccion, expandirTerminos, isFuzzyMatch]);
 
   const handleProductClick = useCallback((p: Producto) => {
     setSearchParams((prev: URLSearchParams) => { prev.set('prod', p.id); return prev; });
@@ -387,10 +346,8 @@ export default function App() {
                 <title>Catálogo | LV PARTS</title>
                 <CatalogView
                   productos={filteredProducts}
-                  busquedas={busquedas}
-                  setBusquedas={setBusquedas}
-                  expanded={expanded}
-                  setExpanded={setExpanded}
+                  busqueda={busqueda}
+                  setBusqueda={setBusqueda}
                   filtroSeccion={filtroSeccion}
                   setFiltroSeccion={setFiltroSeccion}
                   onProductClick={handleProductClick}
