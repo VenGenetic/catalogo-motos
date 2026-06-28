@@ -4090,6 +4090,17 @@
             "tags": []
         },
         {
+            "id": "CG200WEV2-018R",
+            "codigo_referencia": "CG200WEV2-018R",
+            "nombre": "ARO DEL. MAGNECIO 1.85X17 DISCO 4H WING EVO I-II/GTR/PREDATOR 200 ROJO",
+            "marca": "DAYTONA",
+            "precio": 105,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
             "id": "CB150-006",
             "codigo_referencia": "CB150-006",
             "nombre": "VALVULA (AD315mm-ES26mm) PICO LARGO MONTANA CB150CC",
@@ -7052,17 +7063,6 @@
             "tags": []
         },
         {
-            "id": "CB180S1ADV-058",
-            "codigo_referencia": "CB180S1ADV-058",
-            "nombre": "ESCAPE COMP S1 ADVENTURE 180CC 2026",
-            "marca": "DAYTONA",
-            "precio": 80,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
             "id": "CB180S1ADV-052",
             "codigo_referencia": "CB180S1ADV-052",
             "nombre": "MANUBRIOS Y PESAS (I-D) S1 ADVENTURE 180CC 2026",
@@ -9074,17 +9074,6 @@
             "nombre": "FILTRO AIRE SUPER WOLF 300 ",
             "marca": "DAYTONA",
             "precio": 10,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "CG200WEV2-018V",
-            "codigo_referencia": "CG200WEV2-018V",
-            "nombre": "ARO DEL. MAGNECIO 1.85X17 DISCO 4H WING EVO I-II/GTR/PREDATOR 200 VERDE",
-            "marca": "DAYTONA",
-            "precio": 105,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
