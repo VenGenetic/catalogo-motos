@@ -2293,6 +2293,17 @@
             "tags": []
         },
         {
+            "id": "CB200WF-014",
+            "codigo_referencia": "CB200WF-014",
+            "nombre": "TANQUE GASOLINA WOLF/RANGER CFZ 250/HONDA CB190",
+            "marca": "DAYTONA",
+            "precio": 75,
+            "categoria": "General",
+            "imagen": "sin_imagen.jpg",
+            "stock": true,
+            "tags": []
+        },
+        {
             "id": "CB300SW-014",
             "codigo_referencia": "CB300SW-014",
             "nombre": "KIT RUN Y LUCES SUPER WOLF 300",
@@ -9457,17 +9468,6 @@
             "nombre": "MANGUERA DE FRENO DELANTERO COMPLETO ALTA PRESION 115cm SHINERAY XY200GY / RANGER CROSS 200GY-8 / END200",
             "marca": "DAYTONA",
             "precio": 11,
-            "categoria": "General",
-            "imagen": "sin_imagen.jpg",
-            "stock": true,
-            "tags": []
-        },
-        {
-            "id": "M03537",
-            "codigo_referencia": "M03537",
-            "nombre": "TANQUE DE GASOLINA DAYTONA DY200 WOLF NEGRO",
-            "marca": "DAYTONA",
-            "precio": 93,
             "categoria": "General",
             "imagen": "sin_imagen.jpg",
             "stock": true,
