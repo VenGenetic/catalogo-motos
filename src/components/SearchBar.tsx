@@ -123,13 +123,13 @@ export const SearchBar = ({
     <div className="relative group w-full">
       <div className={`relative flex items-center transition-all duration-300 rounded-2xl border ${
           isFocused 
-            ? 'bg-white border-red-500 shadow-[0_4px_20px_rgba(220,38,38,0.15)] ring-4 ring-red-500/10' 
-            : 'bg-white border-gray-200 shadow-sm hover:border-gray-300'
+            ? 'bg-white dark:bg-slate-900 border-slate-400 dark:border-slate-500 shadow-[0_4px_20px_rgba(0,0,0,0.05)] ring-4 ring-slate-500/10' 
+            : 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-700 shadow-sm hover:border-gray-300 dark:hover:border-slate-650'
         }`}>
         
         {/* Icono Lupa */}
         <div className="pl-4 text-gray-400">
-           <Search className={`w-5 h-5 transition-colors ${isFocused ? 'text-red-500' : ''}`} strokeWidth={2.5} />
+           <Search className={`w-5 h-5 transition-colors ${isFocused ? 'text-slate-700 dark:text-slate-300' : ''}`} strokeWidth={2.5} />
         </div>
 
         <input
