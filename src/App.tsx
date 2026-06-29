@@ -104,7 +104,8 @@ export default function App() {
         setBusqueda(q);
       }
     }
-  }, [location.search, location.pathname, busqueda]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search, location.pathname]);
 
   const [filtroSeccion, setFiltroSeccion] = useState('Todos');
 
