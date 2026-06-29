@@ -5,7 +5,6 @@ import { APP_CONFIG, ORDEN_SECCIONES } from '../config/constants';
 import { Producto } from '../types';
 import { LazyImage } from './LazyImage';
 import { SearchBar } from './SearchBar';
-import { HighlightedText } from './HighlightedText';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -137,15 +136,15 @@ export const CatalogView = memo(({
               {visibles.map((product: Producto) => (
                 <div
                   key={product.id}
-                  className="group bg-white dark:bg-slate-800 rounded-2xl shadow-md border border-gray-100 dark:border-slate-700 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-xl hover:border-gray-200 dark:hover:border-slate-600 hover:-translate-y-1 active:scale-[0.98] [content-visibility:auto] [contain-intrinsic-size:300px]"
+                  className="group bg-white dark:bg-slate-900 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.03)] border-t border-l border-slate-200/70 dark:border-slate-800/60 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-[0_20px_45px_rgba(0,0,0,0.08)] hover:-translate-y-1.5 active:scale-[0.98] [content-visibility:auto] [contain-intrinsic-size:300px]"
                   onClick={() => onProductClick(product)}
                 >
 
-                  <div className="relative h-28 md:h-40 bg-white dark:bg-slate-800 overflow-hidden p-2 rounded-t-xl">
+                  <div className="relative h-28 md:h-40 bg-white dark:bg-slate-950/20 overflow-hidden p-2 border-b border-slate-100/50 dark:border-slate-800/50">
                     <LazyImage 
                       src={optimizarImg(product.imagen)} 
                       alt={product.nombre}
-                      className="w-full h-full rounded-xl transition-transform duration-500 group-hover:scale-105" 
+                      className="w-full h-full rounded-2xl transition-transform duration-500 group-hover:scale-105" 
                       cropBottom={false}
                     />
                     
@@ -156,7 +155,7 @@ export const CatalogView = memo(({
                     )}
                   </div>
 
-                  <div className="p-3 md:p-4 flex flex-col flex-grow relative z-10 bg-white dark:bg-slate-800">
+                  <div className="p-3 md:p-4 flex flex-col flex-grow relative z-10">
                     <div className="mb-1 flex items-center justify-between gap-1">
                         <span className="inline-block px-1.5 py-0.5 rounded-md bg-gray-50 dark:bg-slate-700 text-gray-400 dark:text-gray-300 text-[9px] font-bold uppercase tracking-wide border border-gray-100 dark:border-slate-600">
                         {product.seccion}
@@ -186,8 +185,8 @@ export const CatalogView = memo(({
                       </div>
                     ) : null}
                                       {/* Título: Muestra TODO el texto (sin truncate) */}
-                    <h3 className="text-xs md:text-sm font-bold text-gray-900 dark:text-gray-100 mb-1.5 leading-snug group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                      <HighlightedText text={product.nombre} highlight={busqueda} />
+                    <h3 className="text-xs md:text-sm font-bold text-gray-900 dark:text-gray-100 mb-1.5 leading-snug group-hover:text-slate-950 dark:group-hover:text-white transition-colors">
+                      {product.nombre}
                     </h3>
                     
                     {product.codigo_referencia && (
