@@ -74,7 +74,7 @@ const ContactView = () => (
         </div>
 
         <a 
-          href="https://maps.app.goo.gl/6L6JP7QC51UqXJPf7" 
+          href="https://maps.app.goo.gl/xj8vjxQYTpfZ7XhRA" 
           target="_blank" 
           rel="noopener noreferrer"
           className="p-4 flex items-center gap-4 hover:bg-slate-50 transition-colors"
