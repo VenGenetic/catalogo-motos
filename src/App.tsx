@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react';
-import { Routes, Route, useSearchParams, Link, useLocation, Navigate } from 'react-router-dom';
+import { Routes, Route, useSearchParams, Link, useLocation, useNavigate, matchPath } from 'react-router-dom';
 import { WifiOff } from 'lucide-react';
 import './App.css';
 import { limpiarTexto } from './utils/helpers';
@@ -44,6 +44,31 @@ export default function App() {
     , [productos, prodId]);
 
   const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const navigate = useNavigate();
+
+  // Lógica de URL para el modelo
+  const getModelFromUrl = useCallback((pathname: string) => {
+    const match = matchPath({ path: "/catalogo/:modelo", end: true }, pathname);
+    return match?.params?.modelo ? decodeURIComponent(match.params.modelo) : '';
+  }, []);
+
+  const [filtroModelo, setFiltroModelo] = useState(() => getModelFromUrl(location.pathname));
+
+  useEffect(() => {
+    if (location.pathname.startsWith('/catalogo')) {
+      const modelInUrl = getModelFromUrl(location.pathname);
+      if (modelInUrl !== filtroModelo) {
+        setFiltroModelo(modelInUrl);
+      }
+    } else {
+      setFiltroModelo('');
+    }
+  }, [location.pathname, getModelFromUrl, filtroModelo]);
+
+  const handleSetFiltroModelo = useCallback((modelo: string) => {
+    if (modelo) navigate(`/catalogo/${encodeURIComponent(modelo)}`);
+    else navigate('/catalogo');
+  }, [navigate]);
 
   // Estado local para la búsqueda principal
   const [busqueda, setBusqueda] = useState<string>(() => {
@@ -196,7 +221,8 @@ export default function App() {
 
   const filteredProducts = useMemo(() => {
     const hasActiveSearch = busquedaDebounced.trim().length > 0;
-    if (!hasActiveSearch) return [];
+    const hasModelFilter = (filtroModelo || '').trim().length > 0;
+    if (!hasActiveSearch && !hasModelFilter) return [];
 
     const calcularRelevancia = (producto: Producto, terminos: string[]): number => {
       const textoBusqueda = (producto.textoBusqueda || '').toLowerCase();
@@ -276,6 +302,7 @@ export default function App() {
       .filter((p) => {
         if (!p.precio) return false;
         if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
+        if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
         if (terminos.length > 0) {
           const puntuacion = calcularRelevancia(p, terminos);
           return puntuacion > 2; // Filtro mínimo
@@ -295,7 +322,7 @@ export default function App() {
       });
 
     return productosConPuntuacion;
-  }, [productos, busquedaDebounced, filtroSeccion, expandirTerminos, isFuzzyMatch]);
+  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo, expandirTerminos, isFuzzyMatch]);
 
   const handleProductClick = useCallback((p: Producto) => {
     setSearchParams((prev: URLSearchParams) => { prev.set('prod', p.id); return prev; });
@@ -347,6 +374,8 @@ export default function App() {
                 <title>Catálogo | LV PARTS</title>
                 <CatalogView
                   productos={filteredProducts}
+                  filtroModelo={filtroModelo}
+                  setFiltroModelo={handleSetFiltroModelo}
                   busqueda={busqueda}
                   setBusqueda={setBusqueda}
                   filtroSeccion={filtroSeccion}
@@ -355,7 +384,21 @@ export default function App() {
                 />
               </>
             } />
-            <Route path="/catalogo/:modelo" element={<Navigate to="/catalogo" replace />} />
+            <Route path="/catalogo/:modelo" element={
+              <>
+                <title>{filtroModelo ? `Repuestos ${filtroModelo}` : 'Catálogo'} | LV PARTS</title>
+                <CatalogView
+                  productos={filteredProducts}
+                  filtroModelo={filtroModelo}
+                  setFiltroModelo={handleSetFiltroModelo}
+                  busqueda={busqueda}
+                  setBusqueda={setBusqueda}
+                  filtroSeccion={filtroSeccion}
+                  setFiltroSeccion={setFiltroSeccion}
+                  onProductClick={handleProductClick}
+                />
+              </>
+            } />
 
             <Route path="/contacto" element={<><title>Contacto | LV PARTS</title><ContactView /></>} />
             <Route path="*" element={
