@@ -5,7 +5,6 @@ import { APP_CONFIG, ORDEN_SECCIONES, MODELOS } from '../config/constants';
 import { Producto } from '../types';
 import { LazyImage } from './LazyImage';
 import { SearchBar } from './SearchBar';
-import { HighlightedText } from './HighlightedText';
 import { getMotoImage } from '../config/motoImages';
 import { useCart } from '../context/CartContext';
 
@@ -258,8 +257,8 @@ export const CatalogView = memo(({
                               </div>
                             ) : null}
                             
-                            <h3 className="text-xs md:text-sm font-bold text-gray-900 dark:text-gray-100 mb-1.5 leading-snug group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
-                              <HighlightedText text={product.nombre} highlight={busqueda} />
+                            <h3 className="text-xs md:text-sm font-bold text-gray-900 dark:text-gray-100 mb-1.5 leading-snug transition-colors">
+                              {product.nombre}
                             </h3>
                             
                             {product.codigo_referencia && (

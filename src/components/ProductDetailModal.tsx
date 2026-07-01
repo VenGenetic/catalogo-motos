@@ -398,7 +398,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                                  />
                               </div>
                               <div className="min-w-0">
-                                <p className="text-[10px] font-bold text-slate-700 dark:text-slate-200 truncate group-hover:text-red-600 dark:group-hover:text-red-400">
+                                <p className="text-[10px] font-bold text-slate-700 dark:text-slate-200 truncate">
                                   {rel.nombre}
                                 </p>
                                 <p className="text-[10px] font-bold text-slate-900 dark:text-slate-100">
