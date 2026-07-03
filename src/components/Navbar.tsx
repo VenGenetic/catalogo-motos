@@ -116,7 +116,7 @@ export const Navbar = () => {
             {/* Botón WhatsApp Cotizar */}
             <button 
               onClick={handleWhatsappClick}
-              className="bg-[#25D366] hover:bg-[#20ba5a] text-black px-4 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all duration-300 shadow-md active:scale-95 font-geist text-[10px] md:text-xs uppercase tracking-wider shrink-0 animate-bounce"
+              className="bg-[#25D366] hover:bg-[#20ba5a] text-black px-4 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all duration-300 shadow-md active:scale-95 font-geist text-[10px] md:text-xs uppercase tracking-wider shrink-0"
             >
               <MessageCircle className="w-4 h-4 md:w-5 md:h-5 fill-current" />
               <span className="hidden sm:inline">Cotizar</span>
