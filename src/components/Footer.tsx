@@ -1,71 +1,74 @@
-import { ShieldCheck, Truck, CreditCard, Facebook, Instagram } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Facebook, Instagram } from 'lucide-react';
 
 export const Footer = () => {
   return (
-    <footer className="bg-[#1a202c] text-gray-400 py-12 pb-32 md:pb-12 border-t border-[#2d3748] font-sans">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-sm">
+    <footer className="w-full bg-[#010f1f] dark:bg-brand-bg border-t border-gray-150 dark:border-brand-border text-gray-500 dark:text-gray-400 font-sans pb-32 md:pb-12 transition-colors">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 flex flex-col md:flex-row justify-between items-center gap-6">
         
-        {/* Columna 1: Marca y Promesa */}
-        <div className="space-y-4">
-          <h3 className="text-white font-bold text-lg">LV PARTS</h3>
-          <p className="text-gray-500 leading-relaxed">
-            Especialistas en repuestos de motocicletas. Calidad garantizada y asesoría personalizada en cada compra.
-          </p>
-          <div className="flex gap-4 pt-2">
-            <a href="https://www.facebook.com/profile.php?id=61583611217559" target="_blank" rel="noopener noreferrer" title="Facebook">
-              <Facebook className="w-5 h-5 hover:text-white cursor-pointer transition-colors" />
-            </a>
-            <a href="https://www.instagram.com/love_daytona_oficial/" target="_blank" rel="noopener noreferrer" title="Instagram">
-              <Instagram className="w-5 h-5 hover:text-white cursor-pointer transition-colors" />
-            </a>
+        {/* Lado izquierdo: Marca, Redes y Copyright */}
+        <div className="flex flex-col items-center md:items-start text-center md:text-left">
+          <div className="flex items-center gap-4 mb-3">
+            <div className="font-anton text-2xl tracking-widest text-slate-800 dark:text-white uppercase">
+              LV <span className="text-brand-orange">PARTS</span>
+            </div>
+            
+            {/* Redes Sociales */}
+            <div className="flex gap-3">
+              <a 
+                href="https://www.facebook.com/profile.php?id=61583611217559" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                title="Facebook"
+                className="text-gray-400 hover:text-brand-orange transition-colors"
+              >
+                <Facebook className="w-4.5 h-4.5" />
+              </a>
+              <a 
+                href="https://www.instagram.com/love_daytona_oficial/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                title="Instagram"
+                className="text-gray-400 hover:text-brand-orange transition-colors"
+              >
+                <Instagram className="w-4.5 h-4.5" />
+              </a>
+            </div>
           </div>
-        </div>
-
-        {/* Columna 2: Enlaces */}
-        <div className="space-y-4">
-          <h4 className="text-white font-bold">Atención al Cliente</h4>
-          <ul className="space-y-2">
-            <li className="hover:text-white cursor-pointer transition-colors">Rastrea tu pedido</li>
-            <li className="hover:text-white cursor-pointer transition-colors">Política de Envíos</li>
-            <li className="hover:text-white cursor-pointer transition-colors">Términos y Condiciones</li>
-            <li className="hover:text-white cursor-pointer transition-colors">Preguntas Frecuentes</li>
-          </ul>
-        </div>
-
-        {/* Columna 3: Seguridad (CORREGIDO) */}
-        <div className="space-y-4">
-          <h4 className="text-white font-bold">Compra Segura</h4>
-          <ul className="space-y-3">
-            <li className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-green-500" />
-              <span>Garantía de Fábrica</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <Truck className="w-4 h-4 text-blue-400" />
-              <span>Envíos a todo el País</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <CreditCard className="w-4 h-4 text-purple-400" />
-              {/* Ajuste aquí: Solo métodos reales */}
-              <span>Transferencia o Depósito</span>
-            </li>
-          </ul>
-        </div>
-
-        {/* Columna 4: Contacto */}
-        <div className="space-y-4">
-          <h4 className="text-white font-bold">Contacto</h4>
-          <p>Lunes a Sábado: 9:00 AM - 6:00 PM</p>
-          <p className="text-gray-500">Ventas WhatsApp: +593 99 327 9707</p>
-          <p className="text-xs text-gray-600 pt-2">
-            Despachos seguros previo pago verificado.
+          
+          <p className="font-geist text-[10px] uppercase tracking-widest text-slate-400 dark:text-gray-500">
+            &copy; {new Date().getFullYear()} LV PARTS - REPUESTOS ORIGINALES DAYTONA. TODOS LOS DERECHOS RESERVADOS.
           </p>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 pt-8 border-t border-slate-800 text-center text-xs text-gray-600 flex flex-col md:flex-row justify-between items-center gap-2">
-        <p>&copy; {new Date().getFullYear()} LV PARTS. Todos los derechos reservados.</p>
-        <p>Sitio seguro y verificado</p>
+        {/* Lado derecho: Enlaces */}
+        <div className="flex flex-wrap justify-center gap-6 md:gap-8 font-geist text-[10px] font-bold uppercase tracking-widest">
+          <Link 
+            to="/contacto" 
+            className="text-slate-500 dark:text-gray-400 hover:text-brand-orange transition-colors"
+          >
+            Soporte
+          </Link>
+          <Link 
+            to="/catalogo" 
+            className="text-slate-500 dark:text-gray-400 hover:text-brand-orange transition-colors"
+          >
+            Distribuidores
+          </Link>
+          <a 
+            href="#" 
+            className="text-slate-500 dark:text-gray-400 hover:text-brand-orange transition-colors"
+          >
+            Términos
+          </a>
+          <a 
+            href="#" 
+            className="text-slate-500 dark:text-gray-400 hover:text-brand-orange transition-colors"
+          >
+            Privacidad
+          </a>
+        </div>
+
       </div>
     </footer>
   );

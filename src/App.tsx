@@ -77,7 +77,7 @@ export default function App() {
     if (q !== null) {
       return q;
     }
-    
+
     try {
       const saved = localStorage.getItem('last_catalog_query');
       const savedTime = localStorage.getItem('last_catalog_query_time');
@@ -90,7 +90,7 @@ export default function App() {
     } catch (e) {
       console.error('Error al leer búsqueda de localStorage', e);
     }
-    
+
     return '';
   });
 
@@ -172,9 +172,14 @@ export default function App() {
       'monoshock': ['monoshock', 'monoshocks', 'amortiguador trasero', 'suspensión trasera', 'amortiguador', 'suspensión'],
       'instalacion electrica': ['arnes', 'cableado', 'instalacion electrica'],
       'mesa': ['mesa', 'mesas', 'araña', 'arañas', 'castillo'],
-      'kit traccion': ['kit arrastre', 'kit traccion', 'kit tracción', 'arrastre'],
+      'traccion': ['arrastre'],
       'bujia': ['bujia', 'bujias', 'bujías', 'bujías'],
-      'placa': ['placa', 'placas', 'Plastico', 'plasticos']
+      'placa': ['placa', 'placas', 'Plastico', 'plasticos'],
+      'del': ['delantero', 'delantera', 'delanteros', 'delanteras'],
+      'post': ['posterior', 'trasero', 'posteriores', 'traseros'],
+      'der': ['derecha', 'derecho', 'derechos', 'derechas'],
+      'izq': ['izquierda', 'izquierdo', 'izquierdos', 'izquierdas'],
+      'protec': ['protector', 'protectores'],
     };
 
     const expandidos = new Set<string>();

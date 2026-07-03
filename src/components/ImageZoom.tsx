@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { X, ZoomIn } from 'lucide-react';
 
 interface ImageZoomProps {
@@ -238,10 +239,10 @@ export const ImageZoom = ({ src, alt, className }: ImageZoomProps) => {
         </div>
       </div>
 
-      {/* MODAL DE IMAGEN EN PANTALLA COMPLETA */}
-      {isModalOpen && (
+      {/* MODAL DE IMAGEN EN PANTALLA COMPLETA (Renderizado via Portal) */}
+      {isModalOpen && createPortal(
         <div
-          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center animate-fade-in"
+          className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-sm flex items-center justify-center animate-fade-in"
           onClick={closeModal}
         >
           {/* Botón cerrar */}
@@ -260,7 +261,7 @@ export const ImageZoom = ({ src, alt, className }: ImageZoomProps) => {
             <img
               src={hasError ? '/sin_imagen.webp' : src}
               alt={hasError ? 'Sin imagen' : alt}
-              className="w-full h-full object-contain select-none"
+              className="w-full h-full object-contain select-none bg-white rounded-3xl p-4 md:p-6 shadow-2xl"
               draggable={false}
               onError={() => setHasError(true)}
               style={{
@@ -277,7 +278,7 @@ export const ImageZoom = ({ src, alt, className }: ImageZoomProps) => {
           </div>
 
           {/* Indicador de cómo cerrar / Zoom */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm text-white text-xs px-4 py-2 rounded-full flex flex-col items-center gap-1">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm text-white text-xs px-4 py-2 rounded-full flex flex-col items-center gap-1 z-20">
             <span className="flex items-center gap-2">
               <X size={14} />
               Toca fuera para cerrar
@@ -286,7 +287,8 @@ export const ImageZoom = ({ src, alt, className }: ImageZoomProps) => {
               Pellizca con dos dedos para ampliar
             </span>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

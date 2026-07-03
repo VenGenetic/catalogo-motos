@@ -1,12 +1,13 @@
 import { useState, useMemo, useEffect, useRef, memo } from 'react';
-import { ArrowLeft, Filter, Search, ShoppingBag, Copy, Check } from 'lucide-react'; 
+import { ArrowLeft, Search, ShoppingBag, Copy, Check, X } from 'lucide-react'; 
 import { optimizarImg } from '../utils/helpers';
-import { APP_CONFIG, ORDEN_SECCIONES, MODELOS } from '../config/constants';
+import { APP_CONFIG, MODELOS } from '../config/constants';
 import { Producto } from '../types';
 import { LazyImage } from './LazyImage';
 import { SearchBar } from './SearchBar';
 import { getMotoImage } from '../config/motoImages';
 import { useCart } from '../context/CartContext';
+import { ImageZoom } from './ImageZoom';
 
 interface Props {
   productos: Producto[];
@@ -29,8 +30,15 @@ export const CatalogView = memo(({
   const [pagina, setPagina] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [busquedaModelo, setBusquedaModelo] = useState('');
   
   const { addToCart } = useCart();
+
+  const modelosFiltrados = useMemo(() => {
+    if (!busquedaModelo.trim()) return MODELOS;
+    const term = busquedaModelo.toLowerCase();
+    return MODELOS.filter(m => m.toLowerCase().includes(term));
+  }, [busquedaModelo]);
 
   // Resetear página cuando cambian los filtros
   const [prevFilters, setPrevFilters] = useState({ busqueda, filtroModelo, filtroSeccion });
@@ -111,8 +119,15 @@ export const CatalogView = memo(({
              <div className="flex items-center gap-2">
                 <span className="hidden md:inline">Viendo:</span>
                 {filtroModelo ? (
-                    <span className="font-extrabold text-red-600 bg-red-50 dark:bg-red-950/20 px-2 py-1 rounded-md border border-red-100 dark:border-red-900/50 flex items-center gap-1">
-                      {filtroModelo}
+                    <span className="font-extrabold text-red-600 bg-red-50 dark:bg-red-950/20 px-2 py-1 rounded-md border border-red-100 dark:border-red-900/50 flex items-center gap-1.5 shadow-sm">
+                      <span>{filtroModelo}</span>
+                      <button
+                        onClick={() => setFiltroModelo('')}
+                        className="hover:bg-red-200/50 dark:hover:bg-red-900/40 p-0.5 rounded-full transition-colors active:scale-90 flex items-center justify-center"
+                        title="Quitar filtro"
+                      >
+                        <X className="w-3 h-3" strokeWidth={3} />
+                      </button>
                     </span>
                 ) : (
                     <span className="font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 px-2 py-1 rounded-md border border-gray-200 dark:border-slate-700 shadow-sm">
@@ -124,35 +139,8 @@ export const CatalogView = memo(({
                 <span className="text-gray-400">
                   {(filtroModelo || busqueda) ? `${visibles.length} repuestos` : `${MODELOS.length} modelos`}
                 </span>
-                {(filtroModelo || busqueda) && (
-                  <div className="flex items-center gap-1 text-gray-400 bg-white dark:bg-slate-800 px-2 py-0.5 rounded-full border border-gray-100 dark:border-slate-700">
-                    <Filter className="w-3 h-3" />
-                    <span>{filtroSeccion}</span>
-                  </div>
-                )}
              </div>
           </div>
-
-          {/* Filtro de secciones (sistemas) - Solo se muestra si estamos viendo repuestos */}
-          {(filtroModelo || busqueda) && (
-            <div className="overflow-x-auto pb-2 scrollbar-hide scroll-smooth -mx-2 px-2 md:mx-0 md:px-0">
-              <div className="flex space-x-2 min-w-max">
-                {ORDEN_SECCIONES.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setFiltroSeccion(category)}
-                    className={`px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap transition-all duration-300 border ${
-                      filtroSeccion === category 
-                        ? 'bg-gray-900 dark:bg-slate-100 text-white dark:text-slate-900 border-gray-900 dark:border-slate-100 shadow-md' 
-                        : 'bg-white dark:bg-slate-800 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-700 active:scale-95'
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
         {/* CONTENEDOR DE DOS COLUMNAS */}
@@ -204,6 +192,31 @@ export const CatalogView = memo(({
               <div className="animate-fade-in">
                 {visibles.length > 0 ? (
                   <>
+                    {filtroModelo && (
+                      <div className="bg-white dark:bg-slate-900 border border-gray-150 dark:border-slate-800 rounded-3xl p-4 md:p-6 mb-6 flex flex-col md:flex-row items-center gap-6 shadow-sm">
+                        {/* Contenedor de la Imagen con zoom */}
+                        <div className="w-full md:w-72 shrink-0 aspect-[4/3] md:aspect-[16/11] bg-gray-50 dark:bg-slate-850 rounded-2xl overflow-hidden border border-gray-100 dark:border-slate-800 flex items-center justify-center p-2 relative shadow-inner group">
+                          <ImageZoom 
+                            src={getMotoImage(filtroModelo)} 
+                            alt={filtroModelo}
+                            className="w-full h-full"
+                          />
+                        </div>
+
+                        {/* Detalles del modelo */}
+                        <div className="flex-1 text-center md:text-left">
+                          <span className="text-[10px] font-bold text-brand-orange uppercase tracking-widest font-geist bg-brand-orange/10 px-3 py-1 rounded-full border border-brand-orange/15">
+                            Modelo Daytona
+                          </span>
+                          <h2 className="font-anton text-2xl md:text-4xl text-slate-800 dark:text-white uppercase mt-3 mb-2 tracking-wider">
+                            {filtroModelo}
+                          </h2>
+                          <p className="font-hanken text-xs md:text-sm text-slate-500 dark:text-gray-400 max-w-xl uppercase tracking-wide">
+                            Catálogo completo de repuestos originales Daytona disponibles en inventario. Toca la imagen para ampliar los detalles técnicos del modelo.
+                          </p>
+                        </div>
+                      </div>
+                    )}
                     <div className="grid grid-cols-2 gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-6 px-0">
                       {visibles.map((product: Producto) => (
                         <div
@@ -340,9 +353,30 @@ export const CatalogView = memo(({
 
           {/* COLUMNA DERECHA (SIDEBAR DE MODELOS) - Oculto en móviles */}
           <aside className="w-72 shrink-0 hidden md:block sticky top-[150px] bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm max-h-[calc(100vh-180px)] overflow-y-auto scrollbar-thin">
-            <h2 className="text-xs font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-4 border-b border-gray-100 dark:border-slate-800 pb-2">
+            <h2 className="text-xs font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3 border-b border-gray-100 dark:border-slate-800 pb-2">
               Modelos Daytona
             </h2>
+            
+            {/* Buscador de modelos */}
+            <div className="relative mb-3">
+              <input
+                type="text"
+                placeholder="Buscar modelo..."
+                value={busquedaModelo}
+                onChange={(e) => setBusquedaModelo(e.target.value)}
+                className="w-full pl-8 pr-8 py-2 text-xs rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 focus:border-red-500 dark:focus:border-red-500 outline-none text-slate-750 dark:text-white transition-colors"
+              />
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+              {busquedaModelo && (
+                <button
+                  onClick={() => setBusquedaModelo('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
             <nav className="flex flex-col space-y-1">
               <button
                 onClick={handleClearAllFilters}
@@ -356,24 +390,30 @@ export const CatalogView = memo(({
                 {!filtroModelo && <span className="w-1.5 h-1.5 rounded-full bg-red-600"></span>}
               </button>
               
-              {MODELOS.map((modelo) => {
-                const term = modelo.split(' ')[0];
-                const isSelected = filtroModelo.toLowerCase() === term.toLowerCase();
-                return (
-                  <button
-                    key={modelo}
-                    onClick={() => handleSelectModelFromLayout(modelo)}
-                    className={`w-full text-left py-2.5 px-3 rounded-xl text-sm transition-all flex items-center justify-between ${
-                      isSelected 
-                        ? 'text-red-600 bg-red-50 dark:bg-red-950/20 font-extrabold shadow-sm border-l-4 border-red-600 pl-2' 
-                        : 'text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-500 hover:bg-gray-50 dark:hover:bg-slate-850 border-l-4 border-transparent pl-3'
-                    }`}
-                  >
-                    <span className="truncate pr-2">{modelo}</span>
-                    {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0"></span>}
-                  </button>
-                );
-              })}
+              {modelosFiltrados.length === 0 ? (
+                <p className="text-center text-xs text-gray-400 dark:text-gray-500 py-4">
+                  No se encontraron modelos
+                </p>
+              ) : (
+                modelosFiltrados.map((modelo) => {
+                  const term = modelo.split(' ')[0];
+                  const isSelected = filtroModelo.toLowerCase() === term.toLowerCase();
+                  return (
+                    <button
+                      key={modelo}
+                      onClick={() => handleSelectModelFromLayout(modelo)}
+                      className={`w-full text-left py-2.5 px-3 rounded-xl text-sm transition-all flex items-center justify-between ${
+                        isSelected 
+                          ? 'text-red-600 bg-red-50 dark:bg-red-950/20 font-extrabold shadow-sm border-l-4 border-red-600 pl-2' 
+                          : 'text-slate-700 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-500 hover:bg-gray-50 dark:hover:bg-slate-850 border-l-4 border-transparent pl-3'
+                      }`}
+                    >
+                      <span className="truncate pr-2">{modelo}</span>
+                      {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0"></span>}
+                    </button>
+                  );
+                })
+              )}
             </nav>
           </aside>
 

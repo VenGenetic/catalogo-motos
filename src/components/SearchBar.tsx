@@ -136,7 +136,7 @@ export const SearchBar = ({
           ref={inputRef}
           type="text"
           placeholder={placeholder || (filtroModelo ? `Buscar en ${filtroModelo}...` : "Escriba el modelo y el repuesto que necesita")}
-          className="w-full px-3 py-3.5 bg-transparent text-slate-800 text-base placeholder:text-gray-400 outline-none rounded-2xl"
+          className="w-full px-3 py-3.5 bg-transparent text-slate-800 dark:text-white text-base placeholder:text-gray-400 outline-none rounded-2xl"
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
           onFocus={() => setIsFocused(true)}
@@ -148,14 +148,14 @@ export const SearchBar = ({
           {busqueda && (
             <button
               onClick={() => { setBusqueda(''); inputRef.current?.focus(); }}
-              className="p-2 text-gray-300 hover:text-slate-500 rounded-full hover:bg-gray-100 transition-all"
+              className="p-2 text-gray-300 hover:text-slate-500 dark:hover:text-slate-300 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 transition-all"
             >
               <X className="w-5 h-5" strokeWidth={2.5} />
             </button>
           )}
 
           {/* Divisor vertical suave */}
-          <div className="h-6 w-px bg-gray-200 mx-1"></div>
+          <div className="h-6 w-px bg-gray-200 dark:bg-slate-700 mx-1"></div>
 
           {hasSpeechSupport && (
             <button
@@ -163,7 +163,7 @@ export const SearchBar = ({
               className={`p-2.5 rounded-xl transition-all active:scale-95 ${
                 isListening
                   ? 'bg-red-500 text-white shadow-lg shadow-red-500/30 animate-pulse'
-                  : 'text-slate-400 hover:text-red-500 hover:bg-red-50'
+                  : 'text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-slate-800'
               }`}
             >
               {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
@@ -174,12 +174,12 @@ export const SearchBar = ({
 
       {/* PANEL DE SUGERENCIAS */}
       {showSuggestions && (
-        <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white border border-gray-100 rounded-2xl shadow-2xl shadow-slate-200/50 z-50 overflow-hidden animate-fade-in-up origin-top">
+        <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-2xl shadow-2xl shadow-slate-200/50 dark:shadow-none z-50 overflow-hidden animate-fade-in-up origin-top">
           
           {/* Si NO hay búsqueda: Mostrar Populares */}
           {!busqueda ? (
             <div className="p-4">
-              <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-3">
+              <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
                 <TrendingUp className="w-3 h-3" />
                 Lo más buscado
               </div>
@@ -188,7 +188,7 @@ export const SearchBar = ({
                   <button
                     key={term}
                     onClick={() => handleSuggestionClick(term)}
-                    className="px-4 py-2 bg-gray-50 hover:bg-slate-800 hover:text-white text-slate-600 text-sm font-medium rounded-xl transition-all active:scale-95 border border-transparent hover:border-slate-800 hover:shadow-lg hover:shadow-slate-800/20"
+                    className="px-4 py-2 bg-gray-50 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 hover:text-white dark:hover:text-white text-slate-600 dark:text-gray-300 text-sm font-medium rounded-xl transition-all active:scale-95 border border-transparent hover:border-slate-800 dark:hover:border-slate-700 hover:shadow-lg hover:shadow-slate-800/20"
                   >
                     {term}
                   </button>
@@ -198,7 +198,7 @@ export const SearchBar = ({
           ) : (
             /* Si HAY búsqueda: Mostrar Resultados */
             <div className="py-2">
-              <div className="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider flex justify-between">
+              <div className="px-4 py-2 text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider flex justify-between">
                 <span>Coincidencias</span>
                 <span className="text-red-500">{sugerencias.length} resultados</span>
               </div>
@@ -209,12 +209,12 @@ export const SearchBar = ({
                   <button
                     key={index}
                     onClick={() => handleSuggestionClick(sugerencia)}
-                    className="w-full text-left px-4 py-3 hover:bg-gray-50 flex items-center gap-3 group transition-colors border-l-2 border-transparent hover:border-red-500"
+                    className="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-slate-800 flex items-center gap-3 group transition-colors border-l-2 border-transparent hover:border-red-500"
                   >
-                    <div className={`p-1.5 rounded-lg ${isCode ? 'bg-blue-50 text-blue-600' : 'bg-gray-100 text-gray-400 group-hover:bg-white group-hover:text-red-500 group-hover:shadow-sm'}`}>
+                    <div className={`p-1.5 rounded-lg ${isCode ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'bg-gray-100 dark:bg-slate-800 text-gray-400 group-hover:bg-white dark:group-hover:bg-slate-700 group-hover:text-red-500 group-hover:shadow-sm'}`}>
                        {isCode ? <History className="w-4 h-4"/> : <Search className="w-4 h-4" />}
                     </div>
-                    <span className={`flex-1 text-sm ${isCode ? 'font-mono text-blue-700 font-bold' : 'text-slate-700 font-medium'}`}>
+                    <span className={`flex-1 text-sm ${isCode ? 'font-mono text-blue-700 dark:text-blue-450 font-bold' : 'text-slate-700 dark:text-gray-300 font-medium'}`}>
                       {sugerencia.replace(/"/g, '')}
                     </span>
                     <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0" />

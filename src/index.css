@@ -16,7 +16,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  @apply bg-gray-50 text-gray-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300;
+  @apply bg-gray-50 text-gray-900 dark:bg-brand-bg dark:text-slate-100 transition-colors duration-300;
   -webkit-tap-highlight-color: transparent; /* Quitar flash azul en tap */
 }
 
@@ -32,4 +32,23 @@ html {
   .pt-safe {
     padding-top: env(safe-area-inset-top);
   }
+}
+
+/* UTILIDADES DE DISEÑO INDUSTRIAL */
+.hero-text-stroke {
+  -webkit-text-stroke: 1px rgba(255, 86, 38, 0.15);
+  color: transparent;
+}
+
+.industrial-grid {
+  background-image: radial-gradient(circle at 1.5px 1.5px, rgba(255, 86, 38, 0.08) 1.5px, transparent 0);
+  background-size: 32px 32px;
+}
+
+.primary-button-glow {
+  transition: all 0.3s ease;
+}
+
+.primary-button-glow:hover {
+  box-shadow: 0 0 25px rgba(255, 86, 38, 0.45);
 }
