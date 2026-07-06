@@ -29,7 +29,6 @@ const generarIdDeterministico = (p: any) => {
 const CACHE_KEY = 'cached_products_v4';
 const CACHE_TIME_KEY = 'cached_products_time';
 const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
-const FRESH_CACHE_TIME = 1000 * 60 * 15; // 15 minutos
 
 export const useProducts = () => {
   const [productos, setProductos] = useState<Producto[]>(() => {
@@ -59,27 +58,10 @@ export const useProducts = () => {
     let retryCount = 0;
     const MAX_RETRIES = 3;
 
-    // 1. CARGA INICIAL DESDE CACHÉ (Estrategia: Cache-First con TTL corto, luego Stale-While-Revalidate)
-    let shouldUseCache = false;
-    try {
-      if (productos.length > 0) {
-        const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
-        if (cachedTime) {
-          const age = Date.now() - parseInt(cachedTime);
-          if (age < FRESH_CACHE_TIME) {
-            shouldUseCache = true;
-            console.log('⚡ Usando caché fresco, omitiendo red');
-            return; // <--- SALIR AQUÍ PARA EVITAR FETCH
-          }
-        }
-      }
-    } catch (e) {
-      console.warn('Error validando edad de caché', e);
-    }
-
+    // 1. CARGA INICIAL DESDE CACHÉ (Estrategia: Stale-While-Revalidate)
+    // Mostramos los datos de localStorage al instante, pero SIEMPRE consultamos
+    // a Supabase en segundo plano para actualizar y refrescar los cambios de ERP.
     const fetchProducts = async (): Promise<void> => {
-      // Doble verificación por si acaso
-      if (shouldUseCache) return;
 
       try {
         // Verificar conectividad antes de hacer la petición
