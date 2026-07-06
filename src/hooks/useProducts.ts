@@ -93,9 +93,14 @@ export const useProducts = () => {
           const existente = mapaProductos.get(clave);
 
           if (existente) {
-            const rawOrigenes = Array.from(new Set([...(existente.origenes || []), ...(producto.origenes || [])]));
-            const tieneStock = rawOrigenes.some(o => o === 'Guayaquil' || o === 'En Stock');
-            const origenes = tieneStock ? ['En Stock'] : ['bajo pedido'];
+            // Combinar orígenes respetando si está vacío
+            const todosOrigenes = new Set([...(existente.origenes || []), ...(producto.origenes || [])]);
+            let origenes: string[] = [];
+            if (todosOrigenes.has('En Stock') || todosOrigenes.has('Guayaquil')) {
+              origenes = ['En Stock'];
+            } else if (todosOrigenes.has('bajo pedido')) {
+              origenes = ['bajo pedido'];
+            }
 
             const imagenElegida = existente.imagen?.includes('sin_imagen') && producto.imagen
               ? producto.imagen
@@ -109,8 +114,15 @@ export const useProducts = () => {
               textoBusqueda: limpiarTexto(`${producto.nombre} ${producto.codigo_referencia || ''} ${producto.categoria || ''} ${producto.seccion || ''} ${origenes.join(' ')}`)
             });
           } else {
-            const tieneStock = producto.origenes?.some(o => o === 'Guayaquil' || o === 'En Stock');
-            const origenes = tieneStock ? ['En Stock'] : ['bajo pedido'];
+            // Para productos nuevos, respetar la lista de orígenes calculada
+            let origenes: string[] = [];
+            const prodOrigenes = producto.origenes || [];
+            if (prodOrigenes.includes('En Stock') || prodOrigenes.includes('Guayaquil')) {
+              origenes = ['En Stock'];
+            } else if (prodOrigenes.includes('bajo pedido')) {
+              origenes = ['bajo pedido'];
+            }
+
             mapaProductos.set(clave, {
               ...producto,
               origenes,
