@@ -95,11 +95,11 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
     
     if (hasNext) {
        const nextImg = new Image();
-       nextImg.src = optimizarImg(currentList[currentIndex + 1].imagen);
+       nextImg.src = optimizarImg(currentList[currentIndex + 1].imagen, 1024);
     }
     if (hasPrev) {
        const prevImg = new Image();
-       prevImg.src = optimizarImg(currentList[currentIndex - 1].imagen);
+       prevImg.src = optimizarImg(currentList[currentIndex - 1].imagen, 1024);
     }
   }, [currentIndex, currentList, hasNext, hasPrev]);
 
@@ -286,7 +286,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                  {/* Aspect Ratio 1024/535 en móvil, Full Height en Desktop */}
                  <div className="w-full aspect-[1024/535] md:aspect-auto md:h-full relative group bg-white dark:bg-slate-900">
                    <ImageZoom 
-                     src={optimizarImg(product.imagen)} 
+                     src={optimizarImg(product.imagen, 1024)} 
                      alt={product.nombre}
                      className="w-full h-full" 
                    />
