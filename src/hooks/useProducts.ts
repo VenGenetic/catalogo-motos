@@ -29,6 +29,7 @@ const generarIdDeterministico = (p: any) => {
 const CACHE_KEY = 'cached_products_v4';
 const CACHE_TIME_KEY = 'cached_products_time';
 const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
+const FRESH_CACHE_TIME = 1000 * 60 * 10; // 10 Minutos (Evita spam a Supabase)
 
 export const useProducts = () => {
   const [productos, setProductos] = useState<Producto[]>(() => {
@@ -64,6 +65,16 @@ export const useProducts = () => {
     const fetchProducts = async (): Promise<void> => {
 
       try {
+        // Evitar consultas repetidas en segundo plano si la caché es fresca (menos de 10 min)
+        const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+        if (cachedTime && productos.length > 0) {
+          const age = Date.now() - parseInt(cachedTime);
+          if (age < FRESH_CACHE_TIME) {
+            console.log('⚡ La caché es fresca (menos de 10 min). Evitando consulta a Supabase.');
+            setLoading(false);
+            return;
+          }
+        }
         // Verificar conectividad antes de hacer la petición
         if (typeof navigator !== 'undefined' && !navigator.onLine) {
           // Si no hay internet y ya cargamos caché, no tiramos error, solo avisamos
@@ -118,14 +129,24 @@ export const useProducts = () => {
         if (!isPlaceholder) {
           console.log('📡 Consultando productos desde Supabase Pro...');
           try {
-            const { data, error } = await supabase
-              .from('products')
-              .select('*');
+            let allData: any[] = [];
+            let pageNum = 0;
+            const pageSize = 1000;
+            
+            while (true) {
+              const { data, error } = await supabase
+                .from('products')
+                .select('*')
+                .range(pageNum * pageSize, (pageNum + 1) * pageSize - 1);
 
-            if (error) throw error;
-            if (data && data.length > 0) {
-              rawProducts = data;
+              if (error) throw error;
+              if (!data || data.length === 0) break;
+              allData = allData.concat(data);
+              if (data.length < pageSize) break; // Fin de los registros
+              pageNum++;
             }
+
+            rawProducts = allData;
           } catch (sbErr) {
             console.warn('⚠️ Supabase falló, recurriendo a archivos JSON estáticos:', sbErr);
           }
@@ -190,10 +211,24 @@ export const useProducts = () => {
             const categoryVal = (p.category || p.categoria || 'General').trim();
             const priceVal = p.price !== undefined ? p.price : (p.precio || 0);
 
-            // Evaluar stock basado en la cantidad (importer_stock) o el booleano (stock)
-            const hasQtyStock = p.importer_stock !== undefined && p.importer_stock > 0;
-            const hasBoolStock = p.stock === true;
-            const tieneStock = (hasQtyStock || hasBoolStock) && p.is_active !== false;
+            const localStockQty = parseInt(p.local_stock) || 0;
+            const importerStockQty = parseInt(p.importer_stock) || 0;
+
+            // Almacén Local -> 'En Stock'
+            // Solo Importadora -> 'bajo pedido'
+            // Sin stock en ninguno -> Agotado
+            let tieneStock = false;
+            let origenesRaw: string[] = [];
+
+            if (p.is_active !== false) {
+              if (localStockQty > 0) {
+                tieneStock = true;
+                origenesRaw = ['En Stock'];
+              } else if (importerStockQty > 0) {
+                tieneStock = true;
+                origenesRaw = ['bajo pedido'];
+              }
+            }
 
             const seccionCalc = p.seccion || detectarSeccion({
               nombre: nameVal,
@@ -204,8 +239,6 @@ export const useProducts = () => {
             // Imagen desde la URL de Supabase storage o local fallback
             const imageVal = p.image_url || (skuVal ? `/imagenes_repuestos/${skuVal}.webp` : 'sin_imagen.jpg');
 
-            const origenesRaw = tieneStock ? ['En Stock'] : ['bajo pedido'];
-
             const procesado: Producto = {
               id: String(p.id || skuVal),
               codigo_referencia: skuVal,
@@ -215,7 +248,7 @@ export const useProducts = () => {
               seccion: seccionCalc,
               imagen: imageVal,
               stock: tieneStock,
-              cantidad_disponible: p.importer_stock !== undefined ? p.importer_stock : undefined,
+              cantidad_disponible: localStockQty > 0 ? localStockQty : (importerStockQty > 0 ? importerStockQty : undefined),
               origenes: origenesRaw,
               textoBusqueda: limpiarTexto(`${nameVal} ${skuVal} ${categoryVal} ${seccionCalc} ${origenesRaw.join(' ')}`)
             };
