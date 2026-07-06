@@ -6,11 +6,11 @@ import { supabase } from '../config/supabase';
 
 // Helper local para limpiar precios
 const limpiarPrecio = (valor: unknown): number => {
-  if (typeof valor === 'number') return valor;
+  if (typeof valor === 'number') return Math.ceil(valor);
   if (!valor) return 0;
   const limpio = String(valor).replace(/[^0-9.]/g, '');
   const numero = parseFloat(limpio);
-  return isNaN(numero) ? 0 : numero;
+  return isNaN(numero) ? 0 : Math.ceil(numero);
 };
 
 // Función para generar un ID consistente
