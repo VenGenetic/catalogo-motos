@@ -119,7 +119,7 @@ export const useProducts = () => {
           console.log('📡 Consultando productos desde Supabase Pro...');
           try {
             const { data, error } = await supabase
-              .from('productos')
+              .from('products')
               .select('*');
 
             if (error) throw error;
@@ -182,24 +182,42 @@ export const useProducts = () => {
             });
           });
         } else {
-          // 3. Procesar datos exitosos de Supabase
+          // 3. Procesar datos exitosos de Supabase (Mapeo de la tabla 'products')
           console.log(`📦 Procesando ${rawProducts.length} productos cargados de Supabase.`);
           rawProducts.forEach((p) => {
-            const seccionCalc = p.seccion || detectarSeccion(p);
-            const nombreImagenLocal = p.codigo_referencia
-              ? `/imagenes_repuestos/${p.codigo_referencia}.webp`
-              : null;
+            const skuVal = (p.sku || p.codigo_referencia || '').trim();
+            const nameVal = (p.name || p.nombre || '').trim();
+            const categoryVal = (p.category || p.categoria || 'General').trim();
+            const priceVal = p.price !== undefined ? p.price : (p.precio || 0);
 
-            const origenesRaw = Array.isArray(p.origenes) ? p.origenes : [p.origen || 'En Stock'];
+            // Evaluar stock basado en la cantidad (importer_stock) o el booleano (stock)
+            const hasQtyStock = p.importer_stock !== undefined && p.importer_stock > 0;
+            const hasBoolStock = p.stock === true;
+            const tieneStock = (hasQtyStock || hasBoolStock) && p.is_active !== false;
+
+            const seccionCalc = p.seccion || detectarSeccion({
+              nombre: nameVal,
+              categoria: categoryVal,
+              codigo_referencia: skuVal
+            } as any);
+
+            // Imagen desde la URL de Supabase storage o local fallback
+            const imageVal = p.image_url || (skuVal ? `/imagenes_repuestos/${skuVal}.webp` : 'sin_imagen.jpg');
+
+            const origenesRaw = tieneStock ? ['En Stock'] : ['bajo pedido'];
 
             const procesado: Producto = {
-              ...p,
-              id: String(p.id),
-              precio: limpiarPrecio(p.precio),
+              id: String(p.id || skuVal),
+              codigo_referencia: skuVal,
+              nombre: nameVal,
+              precio: limpiarPrecio(priceVal),
+              categoria: categoryVal,
               seccion: seccionCalc,
-              imagen: nombreImagenLocal || p.imagen,
+              imagen: imageVal,
+              stock: tieneStock,
+              cantidad_disponible: p.importer_stock !== undefined ? p.importer_stock : undefined,
               origenes: origenesRaw,
-              textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc} ${origenesRaw.join(' ')}`)
+              textoBusqueda: limpiarTexto(`${nameVal} ${skuVal} ${categoryVal} ${seccionCalc} ${origenesRaw.join(' ')}`)
             };
             agregarProducto(procesado);
           });
