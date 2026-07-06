@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Producto } from '../types';
 import { detectarSeccion } from '../utils/categories';
 import { limpiarTexto } from '../utils/helpers';
+import { supabase } from '../config/supabase';
 
 // Helper local para limpiar precios
 const limpiarPrecio = (valor: unknown): number => {
@@ -92,52 +93,6 @@ export const useProducts = () => {
           throw new Error('Sin conexión a internet. Verifica tu conexión y recarga la página.');
         }
 
-        const fuentes = [
-          { url: '/data_guayaquil.json', origen: 'Guayaquil' },
-          { url: '/data.json', origen: 'bajo pedido' }
-        ];
-
-        const fetchFuente = async (url: string) => {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 15000);
-
-          const res = await fetch(url, {
-            signal: controller.signal,
-            headers: {
-              'Cache-Control': 'max-age=300',
-              'Accept': 'application/json'
-            }
-          });
-
-          clearTimeout(timeoutId);
-
-          if (!res.ok) {
-            if (res.status === 404) {
-              throw new Error(`Archivo de datos no encontrado (${url}). Contacta al soporte.`);
-            } else if (res.status >= 500) {
-              throw new Error('Error del servidor. Intenta nuevamente en unos minutos.');
-            } else {
-              throw new Error(`Error al cargar datos (${res.status})`);
-            }
-          }
-
-          return res.json();
-        };
-
-        const resultados = await Promise.all(
-          fuentes.map(async (fuente) => {
-            const data = await fetchFuente(fuente.url);
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            let raw: any[] = [];
-
-            if (Array.isArray(data)) raw = data;
-            else if (Array.isArray(data.RAW_SCRAPED_DATA)) raw = data.RAW_SCRAPED_DATA;
-            else if (Array.isArray(data.products)) raw = data.products;
-
-            return { raw, origen: fuente.origen };
-          })
-        );
-
         const mapaProductos = new Map<string, Producto>();
 
         const agregarProducto = (producto: Producto) => {
@@ -171,26 +126,102 @@ export const useProducts = () => {
           }
         };
 
-        resultados.forEach(({ raw, origen }) => {
-          raw.forEach((p) => {
-            const seccionCalc = detectarSeccion(p);
+        // 1. Cargar desde Supabase Pro (si no es placeholder)
+        const isPlaceholder = !import.meta.env.VITE_SUPABASE_URL || 
+                              !import.meta.env.VITE_SUPABASE_ANON_KEY || 
+                              import.meta.env.VITE_SUPABASE_URL.includes('tu-proyecto');
+
+        let rawProducts: any[] = [];
+
+        if (!isPlaceholder) {
+          console.log('📡 Consultando productos desde Supabase Pro...');
+          try {
+            const { data, error } = await supabase
+              .from('productos')
+              .select('*');
+
+            if (error) throw error;
+            if (data && data.length > 0) {
+              rawProducts = data;
+            }
+          } catch (sbErr) {
+            console.warn('⚠️ Supabase falló, recurriendo a archivos JSON estáticos:', sbErr);
+          }
+        }
+
+        // 2. Si no hay datos de Supabase, cargar los JSON estáticos locales (Fallback)
+        if (rawProducts.length === 0) {
+          console.log('📂 Usando archivos JSON locales estáticos (Fallback)...');
+          const fuentes = [
+            { url: '/data_guayaquil.json', origen: 'Guayaquil' },
+            { url: '/data.json', origen: 'bajo pedido' }
+          ];
+
+          const fetchFuente = async (url: string) => {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000);
+            const res = await fetch(url, {
+              signal: controller.signal,
+              headers: { 'Cache-Control': 'max-age=300', 'Accept': 'application/json' }
+            });
+            clearTimeout(timeoutId);
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            return res.json();
+          };
+
+          const resultados = await Promise.all(
+            fuentes.map(async (fuente) => {
+              const data = await fetchFuente(fuente.url);
+              let raw: any[] = [];
+              if (Array.isArray(data)) raw = data;
+              else if (Array.isArray(data.RAW_SCRAPED_DATA)) raw = data.RAW_SCRAPED_DATA;
+              else if (Array.isArray(data.products)) raw = data.products;
+              return { raw, origen: fuente.origen };
+            })
+          );
+
+          resultados.forEach(({ raw, origen }) => {
+            raw.forEach((p) => {
+              const seccionCalc = detectarSeccion(p);
+              const nombreImagenLocal = p.codigo_referencia
+                ? `/imagenes_repuestos/${p.codigo_referencia}.webp`
+                : null;
+
+              const procesado: Producto = {
+                ...p,
+                id: generarIdDeterministico(p),
+                precio: limpiarPrecio(p.precio),
+                seccion: seccionCalc,
+                imagen: nombreImagenLocal || p.imagen,
+                origenes: [origen],
+                textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc} ${origen}`)
+              };
+              agregarProducto(procesado);
+            });
+          });
+        } else {
+          // 3. Procesar datos exitosos de Supabase
+          console.log(`📦 Procesando ${rawProducts.length} productos cargados de Supabase.`);
+          rawProducts.forEach((p) => {
+            const seccionCalc = p.seccion || detectarSeccion(p);
             const nombreImagenLocal = p.codigo_referencia
               ? `/imagenes_repuestos/${p.codigo_referencia}.webp`
               : null;
 
+            const origenesRaw = Array.isArray(p.origenes) ? p.origenes : [p.origen || 'En Stock'];
+
             const procesado: Producto = {
               ...p,
-              id: generarIdDeterministico(p),
+              id: String(p.id),
               precio: limpiarPrecio(p.precio),
               seccion: seccionCalc,
               imagen: nombreImagenLocal || p.imagen,
-              origenes: [origen],
-              textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc} ${origen}`)
+              origenes: origenesRaw,
+              textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc} ${origenesRaw.join(' ')}`)
             };
-
             agregarProducto(procesado);
           });
-        });
+        }
 
         // Sincronización con API de Inventario (Pagina Vendedor) - Solo en local/desarrollo
         const esLocal = typeof window !== 'undefined' && 
