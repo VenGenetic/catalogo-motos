@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info, ChevronLeft, ChevronRight, MoveHorizontal, ZoomIn, Copy } from 'lucide-react';
+import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info, ChevronLeft, ChevronRight, MoveHorizontal, ZoomIn, Copy, Clipboard } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { Producto } from '../types';
 import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
+import { useToast } from '../context/ToastContext';
+import { shareProductAsImage } from '../utils/shareHelper';
 import { APP_CONFIG } from '../config/constants';
 import { ImageZoom } from './ImageZoom';
 import { LazyImage } from './LazyImage';
@@ -20,6 +22,13 @@ interface Props {
 export const ProductDetailModal = ({ product, allProducts, currentList, onClose, onSelectRelated }: Props) => {
   const { addToCart } = useCart();
   const [copied, setCopied] = useState(false);
+  const { showToast } = useToast();
+
+  const handleShareProduct = async () => {
+    if (product) {
+      await shareProductAsImage(product, showToast);
+    }
+  };
 
   const handleCopy = (e: React.MouseEvent, text: string) => {
     e.stopPropagation();
@@ -423,6 +432,15 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                 >
                   <MessageCircle size={20} className="fill-current shrink-0" />
                   <span className="truncate">Whatsapp</span>
+                </button>
+
+                <button 
+                  onClick={handleShareProduct}
+                  className="py-3.5 px-3.5 rounded-xl font-bold text-sm bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-800 dark:text-white border border-slate-200 dark:border-slate-700 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
+                  title="Compartir repuesto como imagen"
+                >
+                  <Clipboard size={20} className="shrink-0" />
+                  <span className="hidden sm:inline">Compartir</span>
                 </button>
 
                 <button 

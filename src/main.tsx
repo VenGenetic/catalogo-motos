@@ -6,6 +6,7 @@ import './index.css'
 import App from './App.tsx'
 import { CartProvider } from './context/CartContext'
 import { ThemeProvider } from './context/ThemeContext'
+import { ToastProvider } from './context/ToastContext'
 import { ScrollToTop } from './components/ScrollToTop'
 import { HelmetProvider } from 'react-helmet-async'
 
@@ -15,9 +16,11 @@ createRoot(document.getElementById('root')!).render(
         <ScrollToTop />
         <ThemeProvider>
           <CartProvider>
-            <HelmetProvider>
-              <App />
-            </HelmetProvider>
+            <ToastProvider>
+              <HelmetProvider>
+                <App />
+              </HelmetProvider>
+            </ToastProvider>
           </CartProvider>
         </ThemeProvider>
       </BrowserRouter>

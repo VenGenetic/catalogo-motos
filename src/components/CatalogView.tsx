@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef, memo } from 'react';
-import { ArrowLeft, Search, ShoppingBag, Copy, Check, X } from 'lucide-react'; 
+import { ArrowLeft, Search, ShoppingBag, Copy, Check, X, Clipboard } from 'lucide-react'; 
 import { optimizarImg } from '../utils/helpers';
 import { APP_CONFIG, MODELOS } from '../config/constants';
 import { Producto } from '../types';
@@ -8,6 +8,8 @@ import { SearchBar } from './SearchBar';
 import { getMotoImage } from '../config/motoImages';
 import { useCart } from '../context/CartContext';
 import { ImageZoom } from './ImageZoom';
+import { useToast } from '../context/ToastContext';
+import { shareProductAsImage } from '../utils/shareHelper';
 
 interface Props {
   productos: Producto[];
@@ -33,6 +35,12 @@ export const CatalogView = memo(({
   const [busquedaModelo, setBusquedaModelo] = useState('');
   
   const { addToCart } = useCart();
+  const { showToast } = useToast();
+
+  const handleShare = async (e: React.MouseEvent, product: Producto) => {
+    e.stopPropagation();
+    await shareProductAsImage(product, showToast);
+  };
 
   const modelosFiltrados = useMemo(() => {
     if (!busquedaModelo.trim()) return MODELOS;
@@ -94,7 +102,7 @@ export const CatalogView = memo(({
       <div className="max-w-7xl mx-auto">
         
         {/* BARRA SUPERIOR STICKY */}
-        <div className="sticky top-[64px] z-30 bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur-md pb-2 pt-2 px-1 md:px-0 transition-all border-b border-gray-100/50 dark:border-slate-800/50 md:border-none">
+        <div className="sticky top-[80px] z-30 bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur-md pb-2 pt-2 px-1 md:px-0 transition-all border-b border-gray-100/50 dark:border-slate-800/50 md:border-none">
           <div className="flex gap-2 mb-3 items-center">
             {(filtroModelo || busqueda) && (
               <button 
@@ -161,9 +169,9 @@ export const CatalogView = memo(({
                     <button
                       key={modelo}
                       onClick={() => handleSelectModelFromLayout(modelo)}
-                      className="group relative flex flex-col bg-white dark:bg-slate-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-700 overflow-hidden text-left hover:-translate-y-1.5 active:scale-95"
+                      className="group relative flex flex-col bg-white dark:bg-slate-900 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.03)] border-t border-l border-slate-200/70 dark:border-slate-800/60 overflow-hidden text-left hover:shadow-[0_20px_45px_rgba(0,0,0,0.08)] hover:-translate-y-1.5 transition-all duration-300 active:scale-95"
                     >
-                      <div className="w-full h-40 md:h-48 bg-gray-50 dark:bg-slate-700 relative overflow-hidden flex items-center justify-center p-4">
+                      <div className="w-full h-28 md:h-44 bg-slate-50 dark:bg-slate-950/20 relative overflow-hidden flex items-center justify-center p-3 border-b border-slate-100/50 dark:border-slate-800/50">
                         <img 
                           src={getMotoImage(modelo)} 
                           alt={modelo}
@@ -174,12 +182,12 @@ export const CatalogView = memo(({
                             (e.target as HTMLImageElement).parentElement!.classList.add('bg-slate-200', 'dark:bg-slate-700');
                           }}
                         />
-                        <div className="absolute top-2 right-2 bg-black/5 dark:bg-white/10 text-black/40 dark:text-white/60 text-[10px] px-2 py-1 rounded-full font-bold group-hover:bg-red-600 group-hover:text-white transition-colors">
+                        <div className="absolute top-2 right-2 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-slate-200 text-[9px] px-2.5 py-0.5 rounded-full font-black group-hover:bg-red-650 group-hover:text-white group-hover:border-red-650 transition-all shadow-sm">
                           VER
                         </div>
                       </div>
-                      <div className="p-4 border-t border-gray-100 dark:border-slate-700 flex-grow bg-white dark:bg-slate-800">
-                        <h3 className="font-bold text-slate-800 dark:text-gray-100 text-sm md:text-base leading-tight group-hover:text-red-600 transition-colors">
+                      <div className="p-3.5 flex-grow">
+                        <h3 className="font-bold text-slate-800 dark:text-gray-100 text-sm md:text-base leading-tight group-hover:text-slate-950 dark:group-hover:text-white transition-colors">
                           {modelo}
                         </h3>
                       </div>
@@ -193,9 +201,9 @@ export const CatalogView = memo(({
                 {visibles.length > 0 ? (
                   <>
                     {filtroModelo && (
-                      <div className="bg-white dark:bg-slate-900 border border-gray-150 dark:border-slate-800 rounded-3xl p-4 md:p-6 mb-6 flex flex-col md:flex-row items-center gap-6 shadow-sm">
+                      <div className="bg-white dark:bg-slate-900 border-t border-l border-slate-200/70 dark:border-slate-800/60 rounded-3xl p-4 md:p-6 mb-6 flex flex-col md:flex-row items-center gap-6 shadow-[0_8px_30px_rgba(0,0,0,0.03)]">
                         {/* Contenedor de la Imagen con zoom */}
-                        <div className="w-full md:w-72 shrink-0 aspect-[4/3] md:aspect-[16/11] bg-gray-50 dark:bg-slate-850 rounded-2xl overflow-hidden border border-gray-100 dark:border-slate-800 flex items-center justify-center p-2 relative shadow-inner group">
+                        <div className="w-full md:w-72 shrink-0 aspect-[4/3] md:aspect-[16/11] bg-slate-50 dark:bg-slate-950/20 rounded-2xl overflow-hidden border-t border-l border-slate-200/70 dark:border-slate-800/55 flex items-center justify-center p-2 relative shadow-inner group">
                           <ImageZoom 
                             src={getMotoImage(filtroModelo)} 
                             alt={filtroModelo}
@@ -221,14 +229,14 @@ export const CatalogView = memo(({
                       {visibles.map((product: Producto) => (
                         <div
                           key={product.id}
-                          className="group bg-white dark:bg-slate-800 rounded-2xl shadow-md border border-gray-100 dark:border-slate-700 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-xl hover:border-gray-200 dark:hover:border-slate-600 hover:-translate-y-1 active:scale-[0.98] [content-visibility:auto] [contain-intrinsic-size:300px]"
+                          className="group bg-white dark:bg-slate-900 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.03)] border-t border-l border-slate-200/70 dark:border-slate-800/60 flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:shadow-[0_20px_45px_rgba(0,0,0,0.08)] hover:-translate-y-1.5 active:scale-[0.98] [content-visibility:auto] [contain-intrinsic-size:300px]"
                           onClick={() => onProductClick(product)}
                         >
-                          <div className="relative w-full aspect-[1024/535] bg-white dark:bg-slate-800 overflow-hidden p-2 rounded-t-xl">
+                          <div className="relative w-full aspect-[1024/535] bg-slate-50 dark:bg-slate-950/20 overflow-hidden p-2 border-b border-slate-100/50 dark:border-slate-800/50">
                             <LazyImage 
                               src={optimizarImg(product.imagen)} 
                               alt={product.nombre}
-                              className="w-full h-full rounded-xl transition-transform duration-500 group-hover:scale-105" 
+                              className="w-full h-full rounded-2xl transition-transform duration-500 group-hover:scale-105" 
                               cropBottom={false}
                               imageFit="contain"
                             />
@@ -240,7 +248,7 @@ export const CatalogView = memo(({
                             )}
                           </div>
 
-                          <div className="p-3 md:p-4 flex flex-col flex-grow relative z-10 bg-white dark:bg-slate-800">
+                          <div className="p-3 md:p-4 flex flex-col flex-grow relative z-10">
                             <div className="mb-1 flex items-center justify-between gap-1">
                               <span className="inline-block px-1.5 py-0.5 rounded-md bg-gray-50 dark:bg-slate-700 text-gray-400 dark:text-gray-300 text-[9px] font-bold uppercase tracking-wide border border-gray-100 dark:border-slate-600">
                                 {product.seccion}
@@ -270,7 +278,7 @@ export const CatalogView = memo(({
                               </div>
                             ) : null}
                             
-                            <h3 className="text-xs md:text-sm font-bold text-gray-900 dark:text-gray-100 mb-1.5 leading-snug transition-colors">
+                            <h3 className="text-xs md:text-sm font-bold text-gray-900 dark:text-gray-100 mb-1.5 leading-snug group-hover:text-slate-950 dark:group-hover:text-white transition-colors">
                               {product.nombre}
                             </h3>
                             
@@ -294,17 +302,27 @@ export const CatalogView = memo(({
                                 ${Number(product.precio).toFixed(2)}
                               </span>
                               
-                              <button
-                                onClick={(e) => handleQuickAdd(e, product)}
-                                disabled={!product.stock}
-                                className={`p-2 rounded-full transition-all shadow-sm flex items-center justify-center ${
-                                  product.stock 
-                                    ? 'bg-slate-900 dark:bg-slate-700 text-white hover:bg-red-600 dark:hover:bg-red-600 hover:scale-110 hover:shadow-red-200' 
-                                    : 'bg-gray-100 dark:bg-slate-700 text-gray-300 dark:text-gray-500 cursor-not-allowed'
-                                }`}
-                              >
-                                <ShoppingBag size={16} strokeWidth={2.5} />
-                              </button>
+                              <div className="flex items-center gap-2">
+                                <button
+                                  onClick={(e) => handleShare(e, product)}
+                                  className="p-2 rounded-full bg-gray-50 dark:bg-slate-700 text-slate-650 dark:text-slate-300 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-slate-600 dark:hover:text-rose-400 transition-all shadow-sm flex items-center justify-center hover:scale-110 active:scale-95"
+                                  title="Compartir repuesto"
+                                >
+                                  <Clipboard size={16} strokeWidth={2.5} />
+                                </button>
+                                
+                                <button
+                                  onClick={(e) => handleQuickAdd(e, product)}
+                                  disabled={!product.stock}
+                                  className={`p-2 rounded-full transition-all shadow-sm flex items-center justify-center ${
+                                    product.stock 
+                                      ? 'bg-slate-900 dark:bg-slate-700 text-white hover:bg-red-600 dark:hover:bg-red-600 hover:scale-110 hover:shadow-red-200' 
+                                      : 'bg-gray-100 dark:bg-slate-700 text-gray-300 dark:text-gray-500 cursor-not-allowed'
+                                  }`}
+                                >
+                                  <ShoppingBag size={16} strokeWidth={2.5} />
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
