@@ -154,15 +154,34 @@ export const shareProductAsImage = async (
     const priceText = `$${Number(product.precio).toFixed(2)}`;
     ctx.fillText(priceText, textX, priceY);
 
+    // Determinar estado de stock y estilo del badge
+    let badgeText = 'AGOTADO';
+    let badgeBgColor = '#fee2e2'; // red-100
+    let badgeTextColor = '#991b1b'; // red-800
+
+    if (product.stock) {
+      const tieneBajoPedido = product.origenes?.some(o => o.toLowerCase().includes('pedido'));
+      if (tieneBajoPedido) {
+        badgeText = 'BAJO PEDIDO';
+        badgeBgColor = '#fef3c7'; // amber-100
+        badgeTextColor = '#92400e'; // amber-800
+      } else {
+        badgeText = 'DISPONIBLE';
+        badgeBgColor = '#dcfce7'; // green-100
+        badgeTextColor = '#166534'; // green-800
+      }
+    }
+
     // Badge de Stock
     const priceWidth = ctx.measureText(priceText).width;
     const badgeX = textX + priceWidth + 35;
     const badgeY = priceY - 62;
-    const badgeWidth = 190;
+    // Si dice "BAJO PEDIDO", necesitamos un ancho ligeramente mayor para el badge (ej. 210)
+    const badgeWidth = badgeText === 'BAJO PEDIDO' ? 210 : 190;
     const badgeHeight = 56;
 
     // Fondo del badge con esquinas redondeadas
-    ctx.fillStyle = product.stock ? '#dcfce7' : '#fee2e2'; // green-100 / red-100
+    ctx.fillStyle = badgeBgColor;
     ctx.beginPath();
     if (typeof ctx.roundRect === 'function') {
       ctx.roundRect(badgeX, badgeY, badgeWidth, badgeHeight, 12);
@@ -172,11 +191,11 @@ export const shareProductAsImage = async (
     ctx.fill();
 
     // Texto del badge
-    ctx.fillStyle = product.stock ? '#166534' : '#991b1b'; // green-800 / red-800
+    ctx.fillStyle = badgeTextColor;
     ctx.font = 'bold 18px "Inter", "Helvetica Neue", Arial, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(
-      product.stock ? 'DISPONIBLE' : 'AGOTADO',
+      badgeText,
       badgeX + badgeWidth / 2,
       badgeY + 36
     );

@@ -290,10 +290,12 @@ export const useProducts = () => {
                   const existente = mapaProductos.get(clave);
 
                   if (existente) {
+                    const nuevoStock = typeof p.stock === 'boolean' ? p.stock : existente.stock;
                     mapaProductos.set(clave, {
                       ...existente,
                       precio: typeof p.precio === 'number' ? p.precio : existente.precio,
-                      stock: typeof p.stock === 'boolean' ? p.stock : existente.stock,
+                      stock: nuevoStock,
+                      origenes: nuevoStock ? existente.origenes : [],
                       cantidad_disponible: typeof p.cantidad === 'number' ? p.cantidad : undefined,
                       // Si el nombre en el CSV es mejor, se podría actualizar aqui
                     });

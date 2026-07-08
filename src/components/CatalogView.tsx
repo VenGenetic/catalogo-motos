@@ -261,7 +261,7 @@ export const CatalogView = memo(({
                               </div>
                             </div>
 
-                            {product.origenes?.length ? (
+                            {product.stock && product.origenes?.length ? (
                               <div className="mt-1 flex flex-wrap gap-1">
                                 {product.origenes.map((origen) => (
                                   <span

@@ -361,7 +361,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                              <AlertCircle size={14}/> Agotado
                            </span>
                        )}
-                       {product.origenes?.length ? (
+                       {product.stock && product.origenes?.length ? (
                          <div className="mt-1 flex flex-wrap gap-1 justify-end">
                            {product.origenes.map((origen) => (
                              <span
