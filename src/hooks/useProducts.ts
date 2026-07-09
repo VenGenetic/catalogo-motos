@@ -29,7 +29,7 @@ const generarIdDeterministico = (p: any) => {
 const CACHE_KEY = 'cached_products_v4';
 const CACHE_TIME_KEY = 'cached_products_time';
 const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
-const FRESH_CACHE_TIME = 1000 * 60 * 10; // 10 Minutos (Evita spam a Supabase)
+const FRESH_CACHE_TIME = 1000 * 30; // 30 Segundos (Evita spam en sesión, pero actualiza rápido)
 
 export const useProducts = () => {
   const [productos, setProductos] = useState<Producto[]>(() => {
@@ -65,12 +65,17 @@ export const useProducts = () => {
     const fetchProducts = async (): Promise<void> => {
 
       try {
-        // Evitar consultas repetidas en segundo plano si la caché es fresca (menos de 10 min)
+        // Evitar consultas repetidas en segundo plano si la caché es fresca (menos de 30s en producción)
+        const esLocal = typeof window !== 'undefined' && 
+          (window.location.hostname === 'localhost' || 
+           window.location.hostname === '127.0.0.1' || 
+           window.location.hostname === '[::1]');
+
         const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
-        if (cachedTime && productos.length > 0) {
+        if (cachedTime && productos.length > 0 && !esLocal) {
           const age = Date.now() - parseInt(cachedTime);
           if (age < FRESH_CACHE_TIME) {
-            console.log('⚡ La caché es fresca (menos de 10 min). Evitando consulta a Supabase.');
+            console.log('⚡ La caché es fresca (menos de 30 segundos). Evitando consulta a Supabase.');
             setLoading(false);
             return;
           }
@@ -273,11 +278,6 @@ export const useProducts = () => {
         }
 
         // Sincronización con API de Inventario (Pagina Vendedor) - Solo en local/desarrollo
-        const esLocal = typeof window !== 'undefined' && 
-          (window.location.hostname === 'localhost' || 
-           window.location.hostname === '127.0.0.1' || 
-           window.location.hostname === '[::1]');
-
         if (esLocal) {
           try {
             const apiRes = await fetch('http://localhost:3000/api/inventory');
