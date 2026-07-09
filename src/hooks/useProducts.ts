@@ -223,8 +223,8 @@ export const useProducts = () => {
           // 3. Procesar datos exitosos de Supabase (Mapeo de la tabla 'products')
           console.log(`📦 Procesando ${rawProducts.length} productos cargados de Supabase.`);
           rawProducts.forEach((p) => {
-            // Omitir productos descontinuados en el ERP
-            if (p.is_discontinued === true) {
+            // Omitir productos inactivos o descontinuados en el ERP
+            if (p.is_discontinued === true || p.is_active === false) {
               return;
             }
             const skuVal = (p.sku || p.codigo_referencia || '').trim();
