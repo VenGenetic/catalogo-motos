@@ -314,9 +314,9 @@ export const CatalogView = memo(({
                                 <button
                                   onClick={(e) => handleQuickAdd(e, product)}
                                   disabled={!product.stock}
-                                  className={`p-2 rounded-full transition-all shadow-sm flex items-center justify-center ${
+                                  className={`p-2 rounded-full transition-all duration-300 shadow-sm flex items-center justify-center ${
                                     product.stock 
-                                      ? 'bg-slate-900 dark:bg-slate-700 text-white hover:bg-red-600 dark:hover:bg-red-600 hover:scale-110 hover:shadow-red-200' 
+                                      ? 'bg-slate-900 dark:bg-slate-700 text-white hover:bg-brand-orange dark:hover:bg-brand-orange primary-button-glow hover:scale-110' 
                                       : 'bg-gray-100 dark:bg-slate-700 text-gray-300 dark:text-gray-500 cursor-not-allowed'
                                   }`}
                                 >

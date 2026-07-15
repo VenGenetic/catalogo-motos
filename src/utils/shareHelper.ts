@@ -3,9 +3,8 @@ import { Producto } from '../types';
 import { optimizarImg } from './helpers';
 
 /**
- * Genera una tarjeta de repuesto de SÚPER ALTA CALIDAD (1200x1400) en un Canvas de HTML5.
- * - En móviles (Android/iOS): abre la ventana de compartir nativa (ideal para WhatsApp).
- * - En computadoras (Windows/macOS): copia la imagen directamente al portapapeles.
+ * Genera una tarjeta de repuesto CUADRADA de ALTA CALIDAD (1200x1200) en un Canvas de HTML5.
+ * Calcula dinámicamente el tamaño de la imagen para que nunca se recorte el texto largo.
  */
 export const shareProductAsImage = async (
   product: Producto,
@@ -18,54 +17,65 @@ export const shareProductAsImage = async (
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('No se pudo inicializar el contexto del Canvas');
 
-    // Activar suavizado de imagen de alta calidad
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
 
-    // 1. Configurar dimensiones de súper alta resolución (1200 x 1400) para nitidez extrema
+    // Formato Cuadrado (Instagram/WhatsApp ready)
     const width = 1200;
-    const height = 1400;
+    const height = 1200;
     canvas.width = width;
     canvas.height = height;
 
     // --- FONDO DE LA TARJETA ---
-    // Fondo blanco puro
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, width, height);
 
-    // Borde exterior slate-100 elegante
+    // Borde exterior ancho (slate-100 elegante)
     ctx.strokeStyle = '#f1f5f9';
-    ctx.lineWidth = 30;
-    ctx.strokeRect(15, 15, width - 30, height - 30);
+    ctx.lineWidth = 40;
+    ctx.strokeRect(20, 20, width - 40, height - 40);
 
-    // --- ENCABEZADO DE MARCA (Fondo oscuro premium) ---
-    ctx.fillStyle = '#0f172a'; // slate-900
-    ctx.fillRect(30, 30, width - 60, 160);
+    // --- ENCABEZADO DE MARCA ---
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(40, 40, width - 80, 130);
 
-    // Dibujar logo: "LV" en blanco y "PARTS" en rojo
+    // Centrar Logo LV PARTS
+    ctx.font = '900 54px "Inter", "Helvetica Neue", Arial, sans-serif';
+    const lvWidth = ctx.measureText('LV').width;
+    ctx.font = 'italic 900 54px "Inter", "Helvetica Neue", Arial, sans-serif';
+    const partsWidth = ctx.measureText('PARTS').width;
+    const logoTotalWidth = lvWidth + 10 + partsWidth;
+    
+    const logoStartX = 600 - logoTotalWidth / 2;
+    ctx.textAlign = 'left';
     ctx.fillStyle = '#ffffff';
     ctx.font = '900 54px "Inter", "Helvetica Neue", Arial, sans-serif';
-    ctx.fillText('LV', 70, 128);
-
-    ctx.fillStyle = '#e11d48'; // rose-600/red-600
+    ctx.fillText('LV', logoStartX, 105);
+    ctx.fillStyle = '#e11d48';
     ctx.font = 'italic 900 54px "Inter", "Helvetica Neue", Arial, sans-serif';
-    ctx.fillText('PARTS', 150, 128);
+    ctx.fillText('PARTS', logoStartX + lvWidth + 10, 105);
 
     // Subtítulo del catálogo oficial
-    ctx.fillStyle = '#94a3b8'; // slate-400
-    ctx.font = 'bold 18px "Inter", "Helvetica Neue", Arial, sans-serif';
-    ctx.fillText('CATÁLOGO OFICIAL DE REPUESTOS', 480, 118);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = 'bold 16px "Inter", "Helvetica Neue", Arial, sans-serif';
+    ctx.fillText('CATÁLOGO OFICIAL DE REPUESTOS', 600, 145);
 
     // Línea de acento roja
     ctx.fillStyle = '#e11d48';
-    ctx.fillRect(30, 190, width - 60, 8);
+    ctx.fillRect(40, 170, width - 80, 8);
 
-    // --- CARGA Y DIBUJO DE IMAGEN DEL REPUESTO ---
+    // --- PIE DE PÁGINA ---
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(40, 1080, width - 80, 80);
+
+    ctx.fillStyle = '#64748b';
+    ctx.font = 'medium 20px "Inter", "Helvetica Neue", Arial, sans-serif';
+    ctx.fillText('Catálogo en línea: lvparts.com  •  Contacto de pedidos vía WhatsApp', 600, 1128);
+
+    // --- CARGA DE IMAGEN ---
     const imgUrl = optimizarImg(product.imagen, 1000);
-    const fullImgUrl = imgUrl.startsWith('/')
-      ? window.location.origin + imgUrl
-      : imgUrl;
-
+    const fullImgUrl = imgUrl.startsWith('/') ? window.location.origin + imgUrl : imgUrl;
     const img = new Image();
     img.crossOrigin = 'anonymous';
 
@@ -75,86 +85,7 @@ export const shareProductAsImage = async (
       img.src = fullImgUrl;
     });
 
-    // Contenedor de la imagen (recuadro gris claro elegante)
-    const boxX = 60;
-    const boxY = 240;
-    const boxWidth = width - 120; // 1080px
-    const boxHeight = 620;
-
-    ctx.fillStyle = '#f8fafc'; // slate-50
-    ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
-    ctx.strokeStyle = '#e2e8f0'; // slate-200
-    ctx.lineWidth = 3;
-    ctx.strokeRect(boxX, boxY, boxWidth, boxHeight);
-
-    // Ajustar imagen para que quepa ("contain") manteniendo aspect ratio
-    const imgRatio = img.width / img.height;
-    const boxRatio = boxWidth / boxHeight;
-    let drawWidth = boxWidth - 60; // Padding de 30px
-    let drawHeight = boxHeight - 60;
-    let drawX = boxX + 30;
-    let drawY = boxY + 30;
-
-    if (imgRatio > boxRatio) {
-      drawHeight = (boxWidth - 60) / imgRatio;
-      drawY = boxY + (boxHeight - drawHeight) / 2;
-    } else {
-      drawWidth = (boxHeight - 60) * imgRatio;
-      drawX = boxX + (boxWidth - drawWidth) / 2;
-    }
-
-    ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
-
-    // --- DETALLES DEL REPUESTO (TEXTOS) ---
-    // Título/Nombre del repuesto (bold y grande)
-    ctx.fillStyle = '#0f172a'; // slate-900
-    ctx.font = 'bold 42px "Inter", "Helvetica Neue", Arial, sans-serif';
-
-    const textX = 60;
-    const textY = 940;
-    const textMaxWidth = width - 120;
-    const lineHeight = 54;
-
-    // Envoltura de texto inteligente
-    const words = product.nombre.split(' ');
-    let line = '';
-    let currentY = textY;
-
-    for (let n = 0; n < words.length; n++) {
-      const testLine = line + words[n] + ' ';
-      const metrics = ctx.measureText(testLine);
-      const testWidth = metrics.width;
-      if (testWidth > textMaxWidth && n > 0) {
-        ctx.fillText(line, textX, currentY);
-        line = words[n] + ' ';
-        currentY += lineHeight;
-      } else {
-        line = testLine;
-      }
-    }
-    ctx.fillText(line, textX, currentY);
-
-    // Sección y Referencia
-    const detailsY = currentY + 60;
-    ctx.fillStyle = '#64748b'; // slate-500
-    ctx.font = 'bold 22px "Inter", "Helvetica Neue", Arial, sans-serif';
-    
-    let infoStr = `SECCIÓN: ${String(product.seccion || 'General').toUpperCase()}`;
-    if (product.codigo_referencia) {
-      infoStr += `   |   REFERENCIA: ${product.codigo_referencia}`;
-    }
-    ctx.fillText(infoStr, textX, detailsY);
-
-    // --- PRECIO Y DISPONIBILIDAD ---
-    const priceY = detailsY + 110;
-
-    // Valor del repuesto
-    ctx.fillStyle = '#0f172a'; // slate-900
-    ctx.font = '900 76px "Inter", "Helvetica Neue", Arial, sans-serif';
-    const priceText = `$${Number(product.precio).toFixed(2)}`;
-    ctx.fillText(priceText, textX, priceY);
-
-    // Determinar estado de stock y estilo del badge
+    // --- DETERMINAR ESTADO DE STOCK TEMP ---
     let badgeText = 'AGOTADO';
     let badgeBgColor = '#fee2e2'; // red-100
     let badgeTextColor = '#991b1b'; // red-800
@@ -172,44 +103,142 @@ export const shareProductAsImage = async (
       }
     }
 
-    // Badge de Stock
-    const priceWidth = ctx.measureText(priceText).width;
-    const badgeX = textX + priceWidth + 35;
-    const badgeY = priceY - 62;
-    // Si dice "BAJO PEDIDO", necesitamos un ancho ligeramente mayor para el badge (ej. 210)
-    const badgeWidth = badgeText === 'BAJO PEDIDO' ? 210 : 190;
-    const badgeHeight = 56;
+    // --- CALCULO DINÁMICO DE ESPACIO PARA TEXTO ---
+    ctx.font = 'bold 36px "Inter", "Helvetica Neue", Arial, sans-serif';
+    const words = product.nombre.split(' ');
+    const titleLines = [];
+    let currentLine = '';
+    for (const word of words) {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      if (ctx.measureText(testLine).width > 1040) {
+        if (currentLine) titleLines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
+    if (currentLine) titleLines.push(currentLine);
 
-    // Fondo del badge con esquinas redondeadas
+    const titleLineHeight = 44;
+    const titleBlockHeight = titleLines.length * titleLineHeight;
+    const spacingBelowImage = 40;
+    const spacingBelowTitle = 15;
+    const subHeight = 24;
+    const spacingBelowSub = 30;
+    const priceHeight = 75; // Aumentado ligeramente para el badge mas grande
+
+    const totalTextHeight = spacingBelowImage + titleBlockHeight + spacingBelowTitle + subHeight + spacingBelowSub + priceHeight;
+
+    // Área de contenido dinámico disponible = de Y=178 a Y=1080 (902px)
+    const contentAreaHeight = 902;
+    const boxY = 208; // 178 + 30 padding top
+    const boxHeight = contentAreaHeight - totalTextHeight - 50; // restante para la imagen
+    const boxWidth = 1040;
+    const boxX = 80;
+
+    // Contenedor de la imagen
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
+    ctx.strokeStyle = '#e2e8f0';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(boxX, boxY, boxWidth, boxHeight);
+
+    // Ajustar imagen
+    const imgRatio = img.width / img.height;
+    const boxRatio = boxWidth / boxHeight;
+    let drawWidth = boxWidth - 40;
+    let drawHeight = boxHeight - 40;
+    let drawX = boxX + 20;
+    let drawY = boxY + 20;
+
+    if (imgRatio > boxRatio) {
+      drawHeight = (boxWidth - 40) / imgRatio;
+      drawY = boxY + (boxHeight - drawHeight) / 2;
+    } else {
+      drawWidth = (boxHeight - 40) * imgRatio;
+      drawX = boxX + (boxWidth - drawWidth) / 2;
+    }
+
+    ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+
+    // --- MARCA DE AGUA SI ESTA AGOTADO ---
+    if (badgeText === 'AGOTADO') {
+      ctx.save();
+      const centerX = boxX + boxWidth / 2;
+      const centerY = boxY + boxHeight / 2;
+      ctx.translate(centerX, centerY);
+      ctx.rotate(-Math.PI / 6); // Rotacion de -30 grados
+      
+      ctx.fillStyle = 'rgba(220, 38, 38, 0.7)'; // red-600 transparente
+      ctx.font = '900 130px "Inter", "Helvetica Neue", Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      
+      // Borde blanco exterior para mayor legibilidad
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.lineWidth = 14;
+      ctx.strokeText('AGOTADO', 0, 0);
+      ctx.fillText('AGOTADO', 0, 0);
+      ctx.restore();
+    }
+
+    // --- DIBUJO DE TEXTOS ---
+    let currentY = boxY + boxHeight + spacingBelowImage + 30;
+
+    ctx.fillStyle = '#0f172a';
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 36px "Inter", "Helvetica Neue", Arial, sans-serif';
+    titleLines.forEach(line => {
+      ctx.fillText(line, 600, currentY);
+      currentY += titleLineHeight;
+    });
+
+    currentY += spacingBelowTitle;
+    ctx.fillStyle = '#64748b';
+    ctx.font = 'bold 20px "Inter", "Helvetica Neue", Arial, sans-serif';
+    let infoStr = `SECCIÓN: ${String(product.seccion || 'General').toUpperCase()}`;
+    if (product.codigo_referencia) infoStr += `   |   REFERENCIA: ${product.codigo_referencia}`;
+    ctx.fillText(infoStr, 600, currentY);
+
+    currentY += spacingBelowSub + 40;
+    ctx.fillStyle = '#0f172a';
+    ctx.font = '900 68px "Inter", "Helvetica Neue", Arial, sans-serif';
+    const priceText = `$${Number(product.precio).toFixed(2)}`;
+    
+    const priceWidth = ctx.measureText(priceText).width;
+    const badgeWidth = badgeText === 'BAJO PEDIDO' ? 240 : 210;
+    const badgeHeight = 64;
+    const totalWidth = priceWidth + 30 + badgeWidth;
+    const startX = 600 - totalWidth / 2;
+
+    ctx.textAlign = 'left';
+    ctx.fillText(priceText, startX, currentY);
+
+    const badgeX = startX + priceWidth + 30;
+    const badgeY = currentY - 56;
+    
+    // Fondo del Badge
     ctx.fillStyle = badgeBgColor;
     ctx.beginPath();
     if (typeof ctx.roundRect === 'function') {
-      ctx.roundRect(badgeX, badgeY, badgeWidth, badgeHeight, 12);
+      ctx.roundRect(badgeX, badgeY, badgeWidth, badgeHeight, 16);
     } else {
       ctx.rect(badgeX, badgeY, badgeWidth, badgeHeight);
     }
     ctx.fill();
+    
+    // Borde del Badge
+    ctx.strokeStyle = badgeTextColor;
+    ctx.lineWidth = 3;
+    ctx.stroke();
 
-    // Texto del badge
+    // Texto del Badge
     ctx.fillStyle = badgeTextColor;
-    ctx.font = 'bold 18px "Inter", "Helvetica Neue", Arial, sans-serif';
+    ctx.font = '900 22px "Inter", "Helvetica Neue", Arial, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(
-      badgeText,
-      badgeX + badgeWidth / 2,
-      badgeY + 36
-    );
-    ctx.textAlign = 'left'; // Resetear alineación
+    ctx.fillText(badgeText, badgeX + badgeWidth / 2, badgeY + 40);
 
-    // --- PIE DE PÁGINA DE LA TARJETA ---
-    ctx.fillStyle = '#f8fafc'; // slate-50
-    ctx.fillRect(30, height - 120, width - 60, 90);
-
-    ctx.fillStyle = '#64748b'; // slate-500
-    ctx.font = 'medium 20px "Inter", "Helvetica Neue", Arial, sans-serif';
-    ctx.fillText('Catálogo en línea: lvparts.com  •  Contacto de pedidos vía WhatsApp', 70, height - 68);
-
-    // --- PROCESAMIENTO E INTERACCIÓN SEGÚN DISPOSITIVO ---
+    // --- SALIDA Y COMPARTIR ---
     return new Promise<boolean>((resolve) => {
       canvas.toBlob(async (blob) => {
         if (!blob) {
@@ -220,13 +249,8 @@ export const shareProductAsImage = async (
 
         const fileName = `repuesto-${product.codigo_referencia || product.id}.png`;
         const file = new File([blob], fileName, { type: 'image/png' });
+        const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-        // Identificar si es un dispositivo móvil (Android/iOS)
-        const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
-        );
-
-        // 1. En móviles (Android/iOS): priorizar menú de compartir nativo (para WhatsApp)
         if (isMobileDevice && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
           try {
             await navigator.share({
@@ -247,24 +271,16 @@ export const shareProductAsImage = async (
           }
         }
 
-        // 2. En computadoras (Windows/macOS) o si falla compartir nativo en móvil:
-        // Copiar la imagen directamente al portapapeles (ideal para pegar con Ctrl+V)
         try {
           if (navigator.clipboard && window.ClipboardItem) {
-            await navigator.clipboard.write([
-              new ClipboardItem({
-                [blob.type]: blob
-              })
-            ]);
+            await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
             showToast('¡Ficha de repuesto copiada al portapapeles!', 'success');
             resolve(true);
           } else {
             throw new Error('Clipboard API no soportada en este navegador');
           }
         } catch (clipErr) {
-          console.warn('Fallo al escribir en portapapeles, intentando descargar imagen:', clipErr);
-
-          // 3. Fallback de emergencia: Descarga directa de la imagen
+          console.warn('Fallo al escribir en portapapeles, intentando descargar...', clipErr);
           try {
             const downloadUrl = URL.createObjectURL(blob);
             const link = document.createElement('a');

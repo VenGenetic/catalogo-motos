@@ -17,9 +17,9 @@ export const HeroSection = () => {
       {/* Fondo con Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="/hero-nueva.png" 
-          alt="Repuestos Daytona" 
-          className="w-full h-full object-cover object-center opacity-30 grayscale brightness-50"
+          src="/hero-perchas.png" 
+          alt="Perchas de Repuestos Daytona" 
+          className="w-full h-full object-cover object-center opacity-40 grayscale brightness-75"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-brand-bg via-brand-bg/60 to-brand-bg z-10"></div>
         <div className="absolute inset-0 industrial-grid z-10 opacity-40"></div>
