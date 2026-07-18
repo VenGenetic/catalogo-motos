@@ -174,7 +174,8 @@ export const useProducts = () => {
           console.log('📂 Usando archivos JSON locales estáticos (Fallback)...');
           const fuentes = [
             { url: '/data_guayaquil.json', origen: 'Guayaquil' },
-            { url: '/data.json', origen: 'bajo pedido' }
+            { url: '/data.json', origen: 'bajo pedido' },
+            { url: '/inventario_supabase.json', origen: 'En Stock' }
           ];
 
           const fetchFuente = async (url: string) => {
@@ -207,14 +208,18 @@ export const useProducts = () => {
                 ? `/imagenes_repuestos/${p.codigo_referencia}.webp`
                 : null;
 
+              const tieneStock = p.stock !== undefined ? p.stock : true;
+              const origenesRaw = tieneStock ? [origen] : [];
+
               const procesado: Producto = {
                 ...p,
                 id: generarIdDeterministico(p),
                 precio: limpiarPrecio(p.precio),
                 seccion: seccionCalc,
                 imagen: nombreImagenLocal || p.imagen,
-                origenes: [origen],
-                textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc} ${origen}`)
+                stock: tieneStock,
+                origenes: origenesRaw,
+                textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc} ${origenesRaw.join(' ')}`)
               };
               agregarProducto(procesado);
             });
@@ -223,10 +228,6 @@ export const useProducts = () => {
           // 3. Procesar datos exitosos de Supabase (Mapeo de la tabla 'products')
           console.log(`📦 Procesando ${rawProducts.length} productos cargados de Supabase.`);
           rawProducts.forEach((p) => {
-            // Omitir productos inactivos o descontinuados en el ERP
-            if (p.is_discontinued === true || p.is_active === false) {
-              return;
-            }
             const skuVal = (p.sku || p.codigo_referencia || '').trim();
             const nameVal = (p.name || p.nombre || '').trim();
             const categoryVal = (p.category || p.categoria || 'General').trim();
@@ -271,6 +272,8 @@ export const useProducts = () => {
               stock: tieneStock,
               cantidad_disponible: localStockQty > 0 ? localStockQty : (importerStockQty > 0 ? importerStockQty : undefined),
               origenes: origenesRaw,
+              is_discontinued: p.is_discontinued === true,
+              is_active: p.is_active !== false,
               textoBusqueda: limpiarTexto(`${nameVal} ${skuVal} ${categoryVal} ${seccionCalc} ${origenesRaw.join(' ')}`)
             };
             agregarProducto(procesado);

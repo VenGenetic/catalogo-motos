@@ -145,7 +145,7 @@ export const CatalogView = memo(({
              </div>
              <div className="flex items-center gap-2">
                 <span className="text-gray-400">
-                  {(filtroModelo || busqueda) ? `${visibles.length} repuestos` : `${MODELOS.length} modelos`}
+                  {`${visibles.length} de ${productos.length} repuestos`}
                 </span>
              </div>
           </div>
@@ -157,45 +157,7 @@ export const CatalogView = memo(({
           {/* COLUMNA PRINCIPAL (LISTADO) */}
           <div className="flex-1 w-full">
             
-            {/* CASO A: NO HAY BÚSQUEDA Y NO SE HA SELECCIONADO UN MODELO -> Mostrar sólo las motos */}
-            {!busqueda && !filtroModelo ? (
-              <div className="animate-fade-in">
-                <h2 className="text-lg md:text-xl font-black text-slate-800 dark:text-slate-100 mb-6">
-                  Selecciona tu modelo de moto
-                </h2>
-                
-                <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                  {MODELOS.map((modelo) => (
-                    <button
-                      key={modelo}
-                      onClick={() => handleSelectModelFromLayout(modelo)}
-                      className="group relative flex flex-col bg-white dark:bg-slate-900 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.03)] border-t border-l border-slate-200/70 dark:border-slate-800/60 overflow-hidden text-left hover:shadow-[0_20px_45px_rgba(0,0,0,0.08)] hover:-translate-y-1.5 transition-all duration-300 active:scale-95"
-                    >
-                      <div className="w-full h-28 md:h-44 bg-slate-50 dark:bg-slate-950/20 relative overflow-hidden flex items-center justify-center p-3 border-b border-slate-100/50 dark:border-slate-800/50">
-                        <img 
-                          src={getMotoImage(modelo)} 
-                          alt={modelo}
-                          loading="lazy"
-                          className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).style.display = 'none';
-                            (e.target as HTMLImageElement).parentElement!.classList.add('bg-slate-200', 'dark:bg-slate-700');
-                          }}
-                        />
-                        <div className="absolute top-2 right-2 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-slate-200/50 dark:border-slate-700/50 text-slate-700 dark:text-slate-200 text-[9px] px-2.5 py-0.5 rounded-full font-black group-hover:bg-red-650 group-hover:text-white group-hover:border-red-650 transition-all shadow-sm">
-                          VER
-                        </div>
-                      </div>
-                      <div className="p-3.5 flex-grow">
-                        <h3 className="font-bold text-slate-800 dark:text-gray-100 text-sm md:text-base leading-tight group-hover:text-slate-950 dark:group-hover:text-white transition-colors">
-                          {modelo}
-                        </h3>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ) : (
+            {
               /* CASO B: SE BUSCA O FILTRA -> Mostrar listado de repuestos */
               <div className="animate-fade-in">
                 {visibles.length > 0 ? (
@@ -246,6 +208,25 @@ export const CatalogView = memo(({
                                 AGOTADO
                               </div>
                             )}
+                            
+                            {/* Badges de estado del producto */}
+                            <div className="absolute top-2 left-2 flex flex-col gap-1">
+                              {product.is_discontinued && (
+                                <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-red-600/90 text-white text-[9px] font-bold backdrop-blur-sm shadow-sm">
+                                  DESCONTINUADO
+                                </span>
+                              )}
+                              {product.is_active === false && !product.is_discontinued && (
+                                <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-orange-500/90 text-white text-[9px] font-bold backdrop-blur-sm shadow-sm">
+                                  INACTIVO
+                                </span>
+                              )}
+                              {(!product.precio || product.precio === 0) && (
+                                <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-slate-700/80 text-white text-[9px] font-bold backdrop-blur-sm shadow-sm">
+                                  SIN PRECIO
+                                </span>
+                              )}
+                            </div>
                           </div>
 
                           <div className="p-3 md:p-4 flex flex-col flex-grow relative z-10">
@@ -298,8 +279,8 @@ export const CatalogView = memo(({
                             )}
                             
                             <div className="mt-auto flex items-center justify-between">
-                              <span className="text-sm md:text-lg font-extrabold text-gray-900 dark:text-white">
-                                ${Number(product.precio).toFixed(2)}
+                              <span className={`text-sm md:text-lg font-extrabold ${product.precio ? 'text-gray-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 italic'}`}>
+                                {product.precio ? `$${Number(product.precio).toFixed(2)}` : 'Sin precio'}
                               </span>
                               
                               <div className="flex items-center gap-2">
@@ -365,7 +346,7 @@ export const CatalogView = memo(({
                   </div>
                 )}
               </div>
-            )}
+            }
 
           </div>
 

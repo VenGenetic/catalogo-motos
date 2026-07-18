@@ -227,7 +227,6 @@ export default function App() {
   const filteredProducts = useMemo(() => {
     const hasActiveSearch = busquedaDebounced.trim().length > 0;
     const hasModelFilter = (filtroModelo || '').trim().length > 0;
-    if (!hasActiveSearch && !hasModelFilter) return [];
 
     const calcularRelevancia = (producto: Producto, terminos: string[]): number => {
       const textoBusqueda = (producto.textoBusqueda || '').toLowerCase();
@@ -305,7 +304,6 @@ export default function App() {
 
     const productosConPuntuacion = productos
       .filter((p) => {
-        if (!p.precio) return false;
         if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
         if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
         if (terminos.length > 0) {

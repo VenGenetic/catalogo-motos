@@ -348,8 +348,8 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                   <div className="bg-gray-50 dark:bg-slate-800 p-4 rounded-xl border border-gray-100 dark:border-slate-700 flex items-center justify-between">
                     <div>
                        <span className="text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase block">Precio</span>
-                       <span className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">
-                         ${Number(product.precio).toFixed(2)}
+                       <span className={`text-3xl font-black tracking-tight ${product.precio ? 'text-gray-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 italic text-xl'}`}>
+                         {product.precio ? `$${Number(product.precio).toFixed(2)}` : 'Sin precio'}
                        </span>
                     </div>
                     <div className="text-right">
@@ -379,6 +379,27 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                        ) : null}
                     </div>
                   </div>
+
+                  {/* Badges de estado del producto */}
+                  {(product.is_discontinued || product.is_active === false || !product.precio) && (
+                    <div className="flex flex-wrap gap-2">
+                      {product.is_discontinued && (
+                        <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs font-bold border border-red-200 dark:border-red-800">
+                          <AlertCircle size={14}/> Descontinuado
+                        </span>
+                      )}
+                      {product.is_active === false && !product.is_discontinued && (
+                        <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 text-xs font-bold border border-orange-200 dark:border-orange-800">
+                          <AlertCircle size={14}/> Inactivo
+                        </span>
+                      )}
+                      {(!product.precio || product.precio === 0) && (
+                        <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-xs font-bold border border-slate-200 dark:border-slate-600">
+                          <Info size={14}/> Sin precio registrado
+                        </span>
+                      )}
+                    </div>
+                  )}
 
                   <div className="flex gap-3 p-3 bg-blue-50/50 dark:bg-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-900 text-xs text-blue-800 dark:text-blue-200 leading-relaxed">
                      <Info size={16} className="shrink-0 mt-0.5" />
