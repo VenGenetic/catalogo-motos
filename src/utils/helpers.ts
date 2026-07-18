@@ -16,8 +16,10 @@ export const optimizarImg = (url: string | null | undefined, size: number = 500)
     return url;
   }
 
-  // Devolvemos la URL directamente en lugar de pasar por wsrv.nl
-  // Ya que pasar por un proxy hace que los fallos 404 tarden más en saltar,
-  // ralentizando la carga del fallback de la imagen.
+  // Optimize using Supabase Pro Image Transformations
+  if (url.includes('supabase.co') && !url.includes('?')) {
+    return `${url}?width=${size}&resize=contain`;
+  }
+
   return url;
 };
