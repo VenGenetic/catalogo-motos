@@ -143,6 +143,12 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
       .slice(0, 4);
   }, [product, allProducts]);
 
+  const galleryImages = useMemo(() => {
+    return product?.gallery?.filter(item => item.type === 'image') || [];
+  }, [product]);
+
+  const hasGallery = galleryImages.length > 0;
+
   if (!product) return null;
 
   const handleDirectQuote = () => {
@@ -407,7 +413,27 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                      <p>Verifica que la foto y código coincidan con tu repuesto usado.</p>
                   </div>
 
-                  {relacionados.length > 0 && (
+                  {hasGallery ? (
+                    <div className="pt-4 border-t border-gray-100 dark:border-slate-700">
+                      <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+                        Galería
+                      </h3>
+                      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
+                         {galleryImages.map((img, idx) => (
+                           <div 
+                              key={idx} 
+                              className="w-16 h-16 shrink-0 bg-white dark:bg-slate-700 rounded border border-gray-100 dark:border-slate-600 overflow-hidden"
+                           >
+                              <ImageZoom 
+                                 src={optimizarImg(img.url)} 
+                                 alt={`${product.nombre} - vista ${idx + 1}`}
+                                 className="w-full h-full object-contain"
+                              />
+                           </div>
+                         ))}
+                      </div>
+                    </div>
+                  ) : relacionados.length > 0 && (
                     <div className="pt-4 border-t border-gray-100 dark:border-slate-700">
                       <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
                         Relacionados

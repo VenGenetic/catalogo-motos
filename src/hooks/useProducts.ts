@@ -26,7 +26,7 @@ const generarIdDeterministico = (p: any) => {
   }
 };
 
-const CACHE_KEY = 'cached_products_v6';
+const CACHE_KEY = 'cached_products_v7';
 const CACHE_TIME_KEY = 'cached_products_time';
 const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
 const FRESH_CACHE_TIME = 1000 * 60 * 30; // 30 Minutos (Evita sobreconsumo de ancho de banda en Vercel)
@@ -153,7 +153,7 @@ export const useProducts = () => {
             while (true) {
               const { data, error } = await supabase
                 .from('products')
-                .select('id, sku, name, category, price, local_stock, importer_stock, is_active, is_discontinued, seccion, image_url')
+                .select('id, sku, name, category, price, local_stock, importer_stock, is_active, is_discontinued, seccion, image_url, gallery')
                 .range(pageNum * pageSize, (pageNum + 1) * pageSize - 1);
 
               if (error) throw error;
@@ -274,6 +274,7 @@ export const useProducts = () => {
               origenes: origenesRaw,
               is_discontinued: p.is_discontinued === true,
               is_active: p.is_active !== false,
+              gallery: Array.isArray(p.gallery) ? p.gallery : [],
               textoBusqueda: limpiarTexto(`${nameVal} ${skuVal} ${categoryVal} ${seccionCalc} ${origenesRaw.join(' ')}`)
             };
             agregarProducto(procesado);
