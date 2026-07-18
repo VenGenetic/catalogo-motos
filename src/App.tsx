@@ -225,8 +225,6 @@ export default function App() {
   }, []);
 
   const filteredProducts = useMemo(() => {
-    const hasActiveSearch = busquedaDebounced.trim().length > 0;
-    const hasModelFilter = (filtroModelo || '').trim().length > 0;
 
     const calcularRelevancia = (producto: Producto, terminos: string[]): number => {
       const textoBusqueda = (producto.textoBusqueda || '').toLowerCase();
