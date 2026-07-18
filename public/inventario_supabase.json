@@ -43765,10 +43765,10 @@
             "codigo_referencia": "CG200WINGEV-001R",
             "nombre": "TANQUE GASOLINA WING EVO 2 2024/TD VENOM GT/TH R200/TK CR3 MAX 200CC N-ROJO",
             "marca": "DAYTONA",
-            "precio": 105,
+            "precio": 165,
             "categoria": "ORIGINAL",
             "imagen": "sin_imagen.jpg",
-            "stock": false
+            "stock": true
         },
         {
             "id": "CG200WINGEV-001V",
