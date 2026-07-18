@@ -26,7 +26,7 @@ const generarIdDeterministico = (p: any) => {
   }
 };
 
-const CACHE_KEY = 'cached_products_v9';
+const CACHE_KEY = 'cached_products_v10';
 const CACHE_TIME_KEY = 'cached_products_time';
 const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
 const FRESH_CACHE_TIME = 1000 * 60 * 30; // 30 Minutos (Evita sobreconsumo de ancho de banda en Vercel)
@@ -136,97 +136,39 @@ export const useProducts = () => {
           }
         };
 
-        // 1. Cargar desde Supabase Pro (si no es placeholder)
-        const isPlaceholder = !import.meta.env.VITE_SUPABASE_URL || 
-                              !import.meta.env.VITE_SUPABASE_ANON_KEY || 
-                              import.meta.env.VITE_SUPABASE_URL.includes('tu-proyecto');
-
         let rawProducts: any[] = [];
 
-        if (!isPlaceholder) {
-          console.log('📡 Consultando productos desde Supabase Pro...');
-          try {
-            let allData: any[] = [];
-            let pageNum = 0;
-            const pageSize = 1000;
-            
-            while (true) {
-              const { data, error } = await supabase
-                .from('products')
-                .select('id, sku, name, category, price, local_stock, importer_stock, is_active, is_discontinued, seccion, image_url, gallery')
-                .range(pageNum * pageSize, (pageNum + 1) * pageSize - 1);
+        console.log('📡 Consultando productos desde Supabase...');
+        try {
+          let allData: any[] = [];
+          let pageNum = 0;
+          const pageSize = 1000;
+          
+          while (true) {
+            const { data, error } = await supabase
+              .from('products')
+              .select('id, sku, name, category, price, local_stock, importer_stock, is_active, is_discontinued, seccion, image_url, gallery')
+              .range(pageNum * pageSize, (pageNum + 1) * pageSize - 1);
 
-              if (error) throw error;
-              if (!data || data.length === 0) break;
-              allData = allData.concat(data);
-              if (data.length < pageSize) break; // Fin de los registros
-              pageNum++;
-            }
-
-            rawProducts = allData;
-          } catch (sbErr) {
-            console.warn('⚠️ Supabase falló, recurriendo a archivos JSON estáticos:', sbErr);
+            if (error) throw error;
+            if (!data || data.length === 0) break;
+            allData = allData.concat(data);
+            if (data.length < pageSize) break; // Fin de los registros
+            pageNum++;
           }
+
+          rawProducts = allData;
+        } catch (sbErr) {
+          console.error('⚠️ Supabase falló al cargar productos:', sbErr);
+          throw sbErr;
         }
 
-        // 2. Si no hay datos de Supabase, cargar los JSON estáticos locales (Fallback)
         if (rawProducts.length === 0) {
-          console.log('📂 Usando archivos JSON locales estáticos (Fallback)...');
-          const fuentes = [
-            { url: '/data_guayaquil.json', origen: 'Guayaquil' },
-            { url: '/data.json', origen: 'bajo pedido' },
-            { url: '/inventario_supabase.json', origen: 'En Stock' }
-          ];
+           throw new Error('No se encontraron productos en Supabase.');
+        }
 
-          const fetchFuente = async (url: string) => {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 15000);
-            const res = await fetch(url, {
-              signal: controller.signal,
-              headers: { 'Cache-Control': 'max-age=300', 'Accept': 'application/json' }
-            });
-            clearTimeout(timeoutId);
-            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-            return res.json();
-          };
-
-          const resultados = await Promise.all(
-            fuentes.map(async (fuente) => {
-              const data = await fetchFuente(fuente.url);
-              let raw: any[] = [];
-              if (Array.isArray(data)) raw = data;
-              else if (Array.isArray(data.RAW_SCRAPED_DATA)) raw = data.RAW_SCRAPED_DATA;
-              else if (Array.isArray(data.products)) raw = data.products;
-              return { raw, origen: fuente.origen };
-            })
-          );
-
-          resultados.forEach(({ raw, origen }) => {
-            raw.forEach((p) => {
-              const seccionCalc = detectarSeccion(p);
-              const nombreImagenLocal = p.codigo_referencia
-                ? `/imagenes_repuestos/${p.codigo_referencia}.webp`
-                : null;
-
-              const tieneStock = p.stock !== undefined ? p.stock : true;
-              const origenesRaw = tieneStock ? [origen] : [];
-
-              const procesado: Producto = {
-                ...p,
-                id: generarIdDeterministico(p),
-                precio: limpiarPrecio(p.precio),
-                seccion: seccionCalc,
-                imagen: nombreImagenLocal || p.imagen,
-                stock: tieneStock,
-                origenes: origenesRaw,
-                textoBusqueda: limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${seccionCalc} ${origenesRaw.join(' ')}`)
-              };
-              agregarProducto(procesado);
-            });
-          });
-        } else {
-          // 3. Procesar datos exitosos de Supabase (Mapeo de la tabla 'products')
-          console.log(`📦 Procesando ${rawProducts.length} productos cargados de Supabase.`);
+        // Procesar datos exitosos de Supabase (Mapeo de la tabla 'products')
+        console.log(`📦 Procesando ${rawProducts.length} productos cargados de Supabase.`);
           rawProducts.forEach((p) => {
             const skuVal = (p.sku || p.codigo_referencia || '').trim();
             const nameVal = (p.name || p.nombre || '').trim();
