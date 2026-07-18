@@ -296,8 +296,9 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                  <div className="w-full aspect-[1024/535] md:aspect-auto md:h-full relative group bg-white dark:bg-slate-900">
                    <ImageZoom 
                      src={optimizarImg(product.imagen, 1024)} 
+                     fallbackSrc={`/imagenes_repuestos/${product.codigo_referencia}.webp`}
                      alt={product.nombre}
-                     className="w-full h-full" 
+                     className="w-full h-full object-contain p-2 md:p-6" 
                    />
                    
                    <div className="absolute top-4 left-4 pointer-events-none">
@@ -421,6 +422,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                               <div className="w-10 h-10 bg-white dark:bg-slate-700 rounded border border-gray-100 dark:border-slate-600 shrink-0 overflow-hidden">
                                  <LazyImage 
                                     src={optimizarImg(rel.imagen)} 
+                                    fallbackSrc={`/imagenes_repuestos/${rel.codigo_referencia}.webp`}
                                     alt={rel.nombre}
                                     className="w-full h-full" 
                                     imageFit="contain"

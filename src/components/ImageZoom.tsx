@@ -6,11 +6,14 @@ interface ImageZoomProps {
   src: string;
   alt: string;
   className?: string;
+  fallbackSrc?: string;
 }
 
-export const ImageZoom = ({ src, alt, className }: ImageZoomProps) => {
+export const ImageZoom = ({ src, alt, className, fallbackSrc }: ImageZoomProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [currentSrc, setCurrentSrc] = useState(src);
+  const [triedFallback, setTriedFallback] = useState(false);
 
   // Zoom and Pan states (Mobile Touch focused)
   const [scale, setScale] = useState(1);
@@ -36,7 +39,9 @@ export const ImageZoom = ({ src, alt, className }: ImageZoomProps) => {
 
   // Reiniciar estado de error si la imagen origen cambia (ej. al deslizar productos)
   useEffect(() => {
+    setCurrentSrc(src);
     setHasError(false);
+    setTriedFallback(false);
   }, [src]);
 
   // Reset zoom state on modal close or image source change
@@ -50,6 +55,15 @@ export const ImageZoom = ({ src, alt, className }: ImageZoomProps) => {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const handleError = () => {
+    if (!triedFallback && fallbackSrc) {
+      setTriedFallback(true);
+      setCurrentSrc(fallbackSrc);
+    } else {
+      setHasError(true);
+    }
+  };
 
   // Manejar el botón de retroceso del navegador
   useEffect(() => {
@@ -223,12 +237,12 @@ export const ImageZoom = ({ src, alt, className }: ImageZoomProps) => {
         onClick={openModal}
       >
         <img
-          src={hasError ? '/sin_imagen.webp' : src}
+          src={hasError ? '/sin_imagen.webp' : currentSrc}
           alt={hasError ? 'Sin imagen' : alt}
           className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
           draggable={false}
-          onError={() => setHasError(true)}
+          onError={handleError}
         />
 
         {/* Overlay con icono de zoom */}
@@ -259,11 +273,11 @@ export const ImageZoom = ({ src, alt, className }: ImageZoomProps) => {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={hasError ? '/sin_imagen.webp' : src}
+              src={hasError ? '/sin_imagen.webp' : currentSrc}
               alt={hasError ? 'Sin imagen' : alt}
               className="w-full h-full object-contain select-none bg-white rounded-3xl p-4 md:p-6 shadow-2xl"
               draggable={false}
-              onError={() => setHasError(true)}
+              onError={handleError}
               style={{
                 transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
                 transition: isAnimating ? 'transform 0.2s ease-out' : 'none',

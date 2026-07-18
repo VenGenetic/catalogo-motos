@@ -197,6 +197,7 @@ export const CatalogView = memo(({
                           <div className="relative w-full aspect-[1024/535] bg-slate-50 dark:bg-slate-950/20 overflow-hidden p-2 border-b border-slate-100/50 dark:border-slate-800/50">
                             <LazyImage 
                               src={optimizarImg(product.imagen)} 
+                              fallbackSrc={`/imagenes_repuestos/${product.codigo_referencia}.webp`}
                               alt={product.nombre}
                               className="w-full h-full rounded-2xl transition-transform duration-500 group-hover:scale-105" 
                               cropBottom={false}

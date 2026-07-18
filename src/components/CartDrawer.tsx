@@ -184,6 +184,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
                       >
                         <LazyImage 
                           src={optimizarImg(item.imagen)} 
+                          fallbackSrc={`/imagenes_repuestos/${item.codigo_referencia}.webp`}
                           alt={item.nombre}
                           className="w-full h-full rounded-xl bg-gray-50 dark:bg-slate-700 object-cover border border-gray-100 dark:border-slate-600 transition-colors" 
                         />

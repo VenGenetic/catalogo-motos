@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Props {
   src: string;
@@ -8,11 +8,21 @@ interface Props {
   onClick?: () => void;
   cropBottom?: boolean; 
   imageFit?: 'cover' | 'contain';
+  fallbackSrc?: string; // Nuevo prop para fallback
 }
 
-export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = false, imageFit = 'cover' }: Props) => {
+export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = false, imageFit = 'cover', fallbackSrc }: Props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [currentSrc, setCurrentSrc] = useState(src);
+  const [triedFallback, setTriedFallback] = useState(false);
+
+  useEffect(() => {
+    setCurrentSrc(src);
+    setHasError(false);
+    setTriedFallback(false);
+    setIsLoaded(false);
+  }, [src]);
 
   const cropClasses = cropBottom ? '' : '';
   const fitClass = imageFit === 'contain' ? 'object-contain' : 'object-cover';
@@ -25,7 +35,17 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (navigator as any).connection?.effectiveType === '2g');
 
-  const isPlaceholder = hasError || src.includes('sin_imagen');
+  const isPlaceholder = hasError || currentSrc.includes('sin_imagen');
+
+  const handleError = () => {
+    if (!triedFallback && fallbackSrc) {
+      setTriedFallback(true);
+      setCurrentSrc(fallbackSrc);
+    } else {
+      setHasError(true);
+      setIsLoaded(true);
+    }
+  };
 
   return (
     <div
@@ -51,12 +71,12 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
         </div>
       ) : (
         <img
-          src={src}
+          src={currentSrc}
           alt={alt || 'Producto'}
           loading={isSlowConnection ? 'eager' : 'lazy'}
           decoding="async"
           onLoad={() => setIsLoaded(true)}
-          onError={() => { setHasError(true); setIsLoaded(true); }}
+          onError={handleError}
           className={`w-full h-full ${fitClass} ${cropClasses} object-center transition-opacity duration-500 ease-out ${
             isLoaded ? 'opacity-100' : 'opacity-0'
           }`}
