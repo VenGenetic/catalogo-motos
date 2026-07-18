@@ -12,19 +12,12 @@ export const optimizarImg = (url: string | null | undefined, size: number = 500)
   }
 
   // 2. NUEVO: Si es una ruta local (empieza con /), devolver tal cual
-  // Esto evita que wsrv.nl intente procesar un archivo local
   if (url.startsWith('/')) {
     return url;
   }
 
-  // 3. Si ya viene de wsrv, retornar tal cual
-  if (url.includes('wsrv.nl')) return url;
-
-  // 4. Optimización LIMPIA (Para URLs externas)
-  try {
-    if (size === 0) return url; // Retorna la original sin redimensionar
-    return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=${size}&q=85&output=webp`;
-  } catch {
-    return '/sin_imagen.webp';
-  }
+  // Devolvemos la URL directamente en lugar de pasar por wsrv.nl
+  // Ya que pasar por un proxy hace que los fallos 404 tarden más en saltar,
+  // ralentizando la carga del fallback de la imagen.
+  return url;
 };

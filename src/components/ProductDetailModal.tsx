@@ -144,7 +144,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
   }, [product, allProducts]);
 
   const galleryImages = useMemo(() => {
-    return product?.gallery?.filter(item => item.type === 'image') || [];
+    return product?.gallery || [];
   }, [product]);
 
   const hasGallery = galleryImages.length > 0;
@@ -419,16 +419,38 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                         Galería
                       </h3>
                       <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
-                         {galleryImages.map((img, idx) => (
+                         {galleryImages.map((item, idx) => (
                            <div 
                               key={idx} 
-                              className="w-16 h-16 shrink-0 bg-white dark:bg-slate-700 rounded border border-gray-100 dark:border-slate-600 overflow-hidden"
+                              className="w-16 h-16 shrink-0 bg-white dark:bg-slate-700 rounded border border-gray-100 dark:border-slate-600 overflow-hidden relative cursor-pointer"
+                              onClick={() => {
+                                if (item.type === 'video') {
+                                  window.open(item.url, '_blank');
+                                }
+                              }}
                            >
-                              <ImageZoom 
-                                 src={optimizarImg(img.url)} 
-                                 alt={`${product.nombre} - vista ${idx + 1}`}
-                                 className="w-full h-full object-contain"
-                              />
+                              {item.type === 'video' ? (
+                                <>
+                                  <video 
+                                    src={item.url} 
+                                    className="w-full h-full object-cover" 
+                                    muted 
+                                    playsInline 
+                                  />
+                                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                                    <div className="w-6 h-6 rounded-full bg-white/80 flex items-center justify-center">
+                                      <div className="w-0 h-0 border-t-4 border-b-4 border-l-[6px] border-t-transparent border-b-transparent border-l-black ml-0.5" />
+                                    </div>
+                                  </div>
+                                </>
+                              ) : (
+                                <ImageZoom 
+                                   src={optimizarImg(item.url)} 
+                                   fallbackSrc={`/imagenes_repuestos/${product.codigo_referencia}.webp`}
+                                   alt={`${product.nombre} - vista ${idx + 1}`}
+                                   className="w-full h-full object-contain"
+                                />
+                              )}
                            </div>
                          ))}
                       </div>

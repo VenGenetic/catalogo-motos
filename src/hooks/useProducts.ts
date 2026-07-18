@@ -26,7 +26,7 @@ const generarIdDeterministico = (p: any) => {
   }
 };
 
-const CACHE_KEY = 'cached_products_v7';
+const CACHE_KEY = 'cached_products_v8';
 const CACHE_TIME_KEY = 'cached_products_time';
 const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
 const FRESH_CACHE_TIME = 1000 * 60 * 30; // 30 Minutos (Evita sobreconsumo de ancho de banda en Vercel)
