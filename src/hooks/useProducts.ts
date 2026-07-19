@@ -13,18 +13,7 @@ const limpiarPrecio = (valor: unknown): number => {
   return isNaN(numero) ? 0 : Math.ceil(numero);
 };
 
-// Función para generar un ID consistente
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const generarIdDeterministico = (p: any) => {
-  if (p.id) return String(p.id);
 
-  const clave = `${p.codigo_referencia || ''}-${p.nombre}`;
-  try {
-    return btoa(clave).replace(/[^a-zA-Z0-9]/g, '').substring(0, 16);
-  } catch {
-    return String(Math.abs(clave.split('').reduce((a, b) => ((a << 5) - a) + b.charCodeAt(0), 0)));
-  }
-};
 
 const CACHE_KEY = 'cached_products_v10';
 const CACHE_TIME_KEY = 'cached_products_time';
@@ -221,7 +210,6 @@ export const useProducts = () => {
             };
             agregarProducto(procesado);
           });
-        }
 
         // Sincronización con API de Inventario (Pagina Vendedor) - Solo en local/desarrollo
         if (esLocal) {
