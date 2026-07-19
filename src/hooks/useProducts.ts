@@ -136,7 +136,7 @@ export const useProducts = () => {
           while (true) {
             const { data, error } = await supabase
               .from('products')
-              .select('id, sku, name, category, price, local_stock, importer_stock, is_active, is_discontinued, seccion, image_url, gallery')
+              .select('id, sku, name, category, price, local_stock, importer_stock, is_active, is_discontinued, image_url, gallery')
               .range(pageNum * pageSize, (pageNum + 1) * pageSize - 1);
 
             if (error) throw error;
@@ -183,7 +183,7 @@ export const useProducts = () => {
               }
             }
 
-            const seccionCalc = p.seccion || detectarSeccion({
+            const seccionCalc = detectarSeccion({
               nombre: nameVal,
               categoria: categoryVal,
               codigo_referencia: skuVal
