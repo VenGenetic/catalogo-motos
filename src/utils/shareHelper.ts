@@ -74,15 +74,27 @@ export const shareProductAsImage = async (
     ctx.fillText('Catálogo en línea: lvparts.com  •  Contacto de pedidos vía WhatsApp', 600, 1128);
 
     // --- CARGA DE IMAGEN ---
-    const imgUrl = optimizarImg(product.imagen, 1000);
-    const fullImgUrl = imgUrl.startsWith('/') ? window.location.origin + imgUrl : imgUrl;
+    const primaryImgUrl = optimizarImg(product.imagen, 1000);
+    const getFullUrl = (url: string) => url.startsWith('/') ? window.location.origin + url : url;
+    
     const img = new Image();
     img.crossOrigin = 'anonymous';
 
     await new Promise<void>((resolve, reject) => {
+      let fallbackTried = false;
+      
       img.onload = () => resolve();
-      img.onerror = () => reject(new Error('No se pudo cargar la imagen del repuesto'));
-      img.src = fullImgUrl;
+      img.onerror = () => {
+        if (!fallbackTried && product.codigo_referencia) {
+          fallbackTried = true;
+          const fallbackUrl = `/imagenes_repuestos/${product.codigo_referencia}.webp`;
+          img.src = getFullUrl(fallbackUrl);
+        } else {
+          reject(new Error('No se pudo cargar la imagen del repuesto'));
+        }
+      };
+      
+      img.src = getFullUrl(primaryImgUrl);
     });
 
     // --- DETERMINAR ESTADO DE STOCK TEMP ---
@@ -271,16 +283,7 @@ export const shareProductAsImage = async (
           }
         }
 
-        try {
-          if (navigator.clipboard && window.ClipboardItem) {
-            await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
-            showToast('¡Ficha de repuesto copiada al portapapeles!', 'success');
-            resolve(true);
-          } else {
-            throw new Error('Clipboard API no soportada en este navegador');
-          }
-        } catch (clipErr) {
-          console.warn('Fallo al escribir en portapapeles, intentando descargar...', clipErr);
+        const handleFallbackDownload = () => {
           try {
             const downloadUrl = URL.createObjectURL(blob);
             const link = document.createElement('a');
@@ -297,6 +300,40 @@ export const shareProductAsImage = async (
             showToast('Error al procesar la imagen', 'error');
             resolve(false);
           }
+        };
+
+        const attemptClipboardWrite = async () => {
+          try {
+            await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+            showToast('¡Ficha de repuesto copiada al portapapeles!', 'success');
+            resolve(true);
+          } catch (clipErr: any) {
+            console.warn('Fallo al copiar al portapapeles. Intentando descarga directa...', clipErr);
+            handleFallbackDownload();
+          }
+        };
+
+        if (navigator.clipboard && window.ClipboardItem) {
+          if (document.hasFocus()) {
+            // Si tenemos el foco, copiar de inmediato
+            await attemptClipboardWrite();
+          } else {
+            // Si el usuario cambió de pestaña, le avisamos y esperamos a que regrese
+            showToast('Imagen lista. Vuelve a la pestaña para copiarla.', 'info');
+            
+            const onFocus = () => {
+              window.removeEventListener('focus', onFocus);
+              // Un ligero delay permite al navegador asentar el evento de interacción (click en la pestaña)
+              setTimeout(() => {
+                attemptClipboardWrite();
+              }, 300);
+            };
+            window.addEventListener('focus', onFocus);
+          }
+        } else {
+          // Si no hay API de portapapeles, saltar directo a descarga
+          console.warn('Clipboard API no soportada en este navegador');
+          handleFallbackDownload();
         }
       }, 'image/png');
     });
