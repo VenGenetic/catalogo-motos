@@ -257,19 +257,36 @@ export default function App() {
 
         for (const exp of expansions) {
           const expLower = exp.toLowerCase();
+          const isOriginal = expLower === termLower;
           let termScore = 0;
           let matchedInExp = false;
 
-          if (codigo.includes(expLower)) { termScore += 100; matchedInExp = true; }
+          if (codigo === expLower) { termScore += 200; matchedInExp = true; }
+          else if (codigo.includes(expLower)) { termScore += 100; matchedInExp = true; }
           else if (isFuzzyMatch(codigo, expLower)) { termScore += 80; matchedInExp = true; }
 
-          if (nombre.startsWith(expLower)) { termScore += 50; matchedInExp = true; }
+          // Boost para coincidencia exacta de palabra completa en el nombre
+          const wordRegex = new RegExp(`\\b${expLower}\\b`, 'i');
+          
+          if (nombre === expLower) { termScore += 150; matchedInExp = true; }
+          else if (wordRegex.test(nombre)) {
+            // Si es la primera palabra, vale un poco más
+            if (nombre.startsWith(expLower)) { termScore += 90; matchedInExp = true; }
+            else { termScore += 70; matchedInExp = true; }
+          }
+          else if (nombre.startsWith(expLower)) { termScore += 50; matchedInExp = true; }
           else if (nombre.includes(expLower)) { termScore += 30; matchedInExp = true; }
           else if (isFuzzyMatch(nombre, expLower)) { termScore += 20; matchedInExp = true; }
 
           if (categoria.includes(expLower)) { termScore += 15; matchedInExp = true; }
 
           if (textoBusqueda.includes(expLower)) { termScore += 5; matchedInExp = true; }
+
+          // Si la coincidencia provino de la palabra original exacta que escribió el usuario, 
+          // le damos un bono gigante para que gane contra sus propios sinónimos
+          if (matchedInExp && isOriginal) {
+            termScore += 50;
+          }
 
           if (matchedInExp && termScore > maxTermScore) {
             maxTermScore = termScore;

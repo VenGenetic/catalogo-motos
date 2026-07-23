@@ -60,7 +60,7 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
       )}
 
       {isPlaceholder ? (
-        <div className={`w-full h-full flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-900/50 p-3 text-center industrial-grid ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-500`}>
+        <div className={`w-full h-full flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-900/50 p-3 text-center industrial-grid ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-200`}>
            <div className="flex items-center gap-0.5 font-black text-2xl tracking-tighter opacity-30 mb-2 select-none">
              <span className="text-slate-900 dark:text-white">LV</span>
              <span className="text-red-600 italic">PARTS</span>
@@ -73,11 +73,11 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
         <img
           src={currentSrc}
           alt={alt || 'Producto'}
-          loading={isSlowConnection ? 'eager' : 'lazy'}
+          loading="lazy"
           decoding="async"
           onLoad={() => setIsLoaded(true)}
           onError={handleError}
-          className={`w-full h-full ${fitClass} ${cropClasses} object-center transition-opacity duration-500 ease-out ${
+          className={`w-full h-full ${fitClass} ${cropClasses} object-center transition-opacity duration-200 ease-out ${
             isLoaded ? 'opacity-100' : 'opacity-0'
           }`}
           // Optimizar para móviles
