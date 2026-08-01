@@ -8,18 +8,15 @@ import { CartProvider } from './context/CartContext'
 import { ThemeProvider } from './context/ThemeContext'
 import { ToastProvider } from './context/ToastContext'
 import { ScrollToTop } from './components/ScrollToTop'
-import { HelmetProvider } from 'react-helmet-async'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-      <BrowserRouter> 
+      <BrowserRouter>
         <ScrollToTop />
         <ThemeProvider>
           <CartProvider>
             <ToastProvider>
-              <HelmetProvider>
-                <App />
-              </HelmetProvider>
+              <App />
             </ToastProvider>
           </CartProvider>
         </ThemeProvider>

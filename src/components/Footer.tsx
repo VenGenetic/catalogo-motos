@@ -49,24 +49,12 @@ export const Footer = () => {
           >
             Soporte
           </Link>
-          <Link 
-            to="/catalogo" 
+          <Link
+            to="/catalogo"
             className="text-slate-500 dark:text-gray-400 hover:text-brand-orange transition-colors"
           >
             Distribuidores
           </Link>
-          <a 
-            href="#" 
-            className="text-slate-500 dark:text-gray-400 hover:text-brand-orange transition-colors"
-          >
-            Términos
-          </a>
-          <a 
-            href="#" 
-            className="text-slate-500 dark:text-gray-400 hover:text-brand-orange transition-colors"
-          >
-            Privacidad
-          </a>
         </div>
 
       </div>

@@ -4,28 +4,31 @@ import { WifiOff } from 'lucide-react';
 import './App.css';
 import { limpiarTexto } from './utils/helpers';
 import { Navbar } from './components/Navbar';
+import { TopBanner } from './components/TopBanner';
 import { HomeView } from './components/HomeView';
 import { WhatsAppButton } from './components/WhatsAppButton';
 
 // Carga Diferida (Lazy Loading)
 const CatalogView = lazy(() => import('./components/CatalogView').then(module => ({ default: module.CatalogView })));
 const ContactView = lazy(() => import('./components/ContactView'));
+// Diferidos: solo se necesitan tras una interacción del usuario (abrir producto / carrito)
+const ProductDetailModal = lazy(() => import('./components/ProductDetailModal').then(module => ({ default: module.ProductDetailModal })));
+const CartDrawer = lazy(() => import('./components/CartDrawer').then(module => ({ default: module.CartDrawer })));
 
-import { ProductDetailModal } from './components/ProductDetailModal';
 import { BottomNav } from './components/BottomNav';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
-import { CartDrawer } from './components/CartDrawer';
 import { Footer } from './components/Footer';
 import { Producto } from './types';
 import { useProducts } from './hooks/useProducts';
 import { useDebounce } from './hooks/useDebounce';
+import { useCart } from './context/CartContext';
 
 const PageLoader = () => (
   <div className="flex h-[60vh] w-full items-center justify-center">
     <div className="flex flex-col items-center gap-4">
       <div className="relative">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-red-200 border-t-red-600"></div>
-        <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-red-400 animate-spin animation-delay-300"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-brand-orange/20 border-t-brand-orange"></div>
+        <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-brand-orange/60 animate-spin animation-delay-300"></div>
       </div>
       <p className="text-gray-500 font-medium animate-pulse">Cargando catálogo...</p>
     </div>
@@ -36,6 +39,7 @@ export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { productos, loading } = useProducts();
   const location = useLocation();
+  const { isOpen: isCartOpen } = useCart();
 
   // Derivamos el producto seleccionado de la URL
   const prodId = searchParams.get('prod');
@@ -132,7 +136,22 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search, location.pathname]);
 
-  const [filtroSeccion, setFiltroSeccion] = useState('Todos');
+  const [filtroSeccion, setFiltroSeccion] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('seccion') || 'Todos';
+  });
+
+  // Leer la sección desde la URL cuando se llega desde un enlace externo (ej. categorías del home)
+  useEffect(() => {
+    if (location.pathname.startsWith('/catalogo')) {
+      const params = new URLSearchParams(location.search);
+      const seccion = params.get('seccion');
+      if (seccion && seccion !== filtroSeccion) {
+        setFiltroSeccion(seccion);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search, location.pathname]);
 
   // Debounce de la búsqueda
   const busquedaDebounced = useDebounce(busqueda, 250);
@@ -226,7 +245,11 @@ export default function App() {
 
   const filteredProducts = useMemo(() => {
 
-    const calcularRelevancia = (producto: Producto, terminos: string[]): number => {
+    const calcularRelevancia = (
+      producto: Producto,
+      terminos: string[],
+      expansionesPorTermino: Map<string, string[]>
+    ): number => {
       const textoBusqueda = (producto.textoBusqueda || '').toLowerCase();
       const nombre = producto.nombre.toLowerCase();
       const codigo = producto.codigo_referencia?.toLowerCase() || '';
@@ -252,7 +275,7 @@ export default function App() {
 
       for (const term of terminos) {
         const termLower = term.toLowerCase();
-        const expansions = expandirTerminos([termLower]);
+        const expansions = expansionesPorTermino.get(termLower) || [termLower];
         let maxTermScore = 0;
 
         for (const exp of expansions) {
@@ -317,29 +340,32 @@ export default function App() {
       .split(' ')
       .filter(t => t.length > 0);
 
-    const productosConPuntuacion = productos
+    // Precalculamos la expansión de sinónimos UNA sola vez por búsqueda
+    // (antes se recalculaba por cada uno de los ~6000 productos).
+    const expansionesPorTermino = new Map<string, string[]>();
+    terminos.forEach(term => {
+      const termLower = term.toLowerCase();
+      expansionesPorTermino.set(termLower, expandirTerminos([termLower]));
+    });
+
+    let resultado = productos
       .filter((p) => {
         if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
         if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
-        if (terminos.length > 0) {
-          const puntuacion = calcularRelevancia(p, terminos);
-          return puntuacion > 2; // Filtro mínimo
-        }
-
         return true;
       })
       .map((p) => ({
         ...p,
-        relevancia: terminos.length > 0 ? calcularRelevancia(p, terminos) : 0
-      }))
-      .sort((a, b) => {
-        if (terminos.length > 0) {
-          return b.relevancia - a.relevancia;
-        }
-        return 0;
-      });
+        relevancia: terminos.length > 0 ? calcularRelevancia(p, terminos, expansionesPorTermino) : 0
+      }));
 
-    return productosConPuntuacion;
+    if (terminos.length > 0) {
+      resultado = resultado
+        .filter((p) => p.relevancia > 2) // Filtro mínimo
+        .sort((a, b) => b.relevancia - a.relevancia);
+    }
+
+    return resultado;
   }, [productos, busquedaDebounced, filtroSeccion, filtroModelo, expandirTerminos, isFuzzyMatch]);
 
   const handleProductClick = useCallback((p: Producto) => {
@@ -355,8 +381,8 @@ export default function App() {
       <div className="flex h-screen w-full items-center justify-center bg-gray-50">
         <div className="flex flex-col items-center gap-6">
           <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-red-200 border-t-red-600"></div>
-            <div className="absolute inset-2 rounded-full border-4 border-transparent border-t-red-400 animate-spin animation-delay-300"></div>
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-brand-orange/20 border-t-brand-orange"></div>
+            <div className="absolute inset-2 rounded-full border-4 border-transparent border-t-brand-orange/60 animate-spin animation-delay-300"></div>
           </div>
           <div className="text-center">
             <p className="text-gray-600 font-bold text-lg animate-pulse">Cargando catálogo</p>
@@ -376,6 +402,7 @@ export default function App() {
         </div>
       )}
 
+      <TopBanner />
       <Navbar />
       <main className="fade-in flex-1">
         <Suspense fallback={<PageLoader />}>
@@ -434,7 +461,7 @@ export default function App() {
                 </p>
                 <Link
                   to="/"
-                  className="bg-red-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-red-700 transition-colors shadow-md"
+                  className="bg-brand-orange text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors shadow-md"
                 >
                   Volver al Inicio
                 </Link>
@@ -444,14 +471,22 @@ export default function App() {
         </Suspense>
       </main>
 
-      <ProductDetailModal
-        product={selectedProduct}
-        allProducts={productos}
-        currentList={filteredProducts}
-        onClose={handleCloseModal}
-        onSelectRelated={handleProductClick}
-      />
-      <CartDrawer />
+      {selectedProduct && (
+        <Suspense fallback={null}>
+          <ProductDetailModal
+            product={selectedProduct}
+            allProducts={productos}
+            currentList={filteredProducts}
+            onClose={handleCloseModal}
+            onSelectRelated={handleProductClick}
+          />
+        </Suspense>
+      )}
+      {isCartOpen && (
+        <Suspense fallback={null}>
+          <CartDrawer />
+        </Suspense>
+      )}
       {/* Botón Flotante: Visible en todas las pantallas excepto al abrir un producto (ya tiene su propio botón) */}
       <WhatsAppButton hideWhenModalOpen={!!selectedProduct} />
       <ScrollToTopButton />

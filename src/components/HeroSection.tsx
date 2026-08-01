@@ -17,7 +17,7 @@ export const HeroSection = () => {
       {/* Fondo con Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="/hero-perchas.png" 
+          src="/hero-perchas.webp"
           alt="Perchas de Repuestos Daytona" 
           className="w-full h-full object-cover object-center opacity-40 grayscale brightness-75"
         />
@@ -38,7 +38,7 @@ export const HeroSection = () => {
         {/* Título y Fondo con Outline */}
         <div className="relative group w-full mb-8">
           {/* Texto Outline Gigante de Fondo */}
-          <h1 className="absolute -top-12 md:-top-20 left-1/2 -translate-x-1/2 w-full font-anton text-[70px] md:text-[160px] lg:text-[200px] hero-text-stroke opacity-15 select-none pointer-events-none uppercase leading-none tracking-widest text-center">
+          <h1 className="absolute -top-8 md:-top-20 left-1/2 -translate-x-1/2 w-full font-anton text-[56px] md:text-[160px] lg:text-[200px] hero-text-stroke opacity-10 select-none pointer-events-none uppercase leading-none tracking-widest text-center">
             ORIGINAL
           </h1>
           {/* Título Principal */}
@@ -48,7 +48,7 @@ export const HeroSection = () => {
           </h2>
         </div>
 
-        <p className="max-w-2xl mx-auto font-hanken text-base md:text-xl text-gray-400 mb-12 uppercase tracking-wide leading-relaxed animate-fade-in-up delay-200">
+        <p className="max-w-2xl mx-auto font-hanken text-base md:text-xl text-gray-400 mb-12 leading-relaxed animate-fade-in-up delay-200">
           Especialistas en la marca Daytona. Recibe asesoría técnica personalizada y envíos seguros a todo el Ecuador.
         </p>
 

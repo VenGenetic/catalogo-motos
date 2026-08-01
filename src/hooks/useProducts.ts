@@ -129,21 +129,36 @@ export const useProducts = () => {
 
         console.log('📡 Consultando productos desde Supabase...');
         try {
-          let allData: any[] = [];
-          let pageNum = 0;
           const pageSize = 1000;
-          
-          while (true) {
-            const { data, error } = await supabase
-              .from('products')
-              .select('id, sku, name, category, price, local_stock, importer_stock, is_active, is_discontinued, image_url, gallery')
-              .range(pageNum * pageSize, (pageNum + 1) * pageSize - 1);
+          const selectCols = 'id, sku, name, category, price, local_stock, importer_stock, is_active, is_discontinued, image_url, gallery';
 
-            if (error) throw error;
-            if (!data || data.length === 0) break;
-            allData = allData.concat(data);
-            if (data.length < pageSize) break; // Fin de los registros
-            pageNum++;
+          // Primera página: pedimos el conteo total en la misma consulta para saber
+          // cuántas páginas faltan y traerlas todas EN PARALELO (en vez de una por una).
+          const { data: firstPage, error: firstError, count } = await supabase
+            .from('products')
+            .select(selectCols, { count: 'exact' })
+            .range(0, pageSize - 1);
+
+          if (firstError) throw firstError;
+
+          let allData: any[] = firstPage || [];
+
+          const totalPages = count ? Math.ceil(count / pageSize) : 1;
+          if (totalPages > 1) {
+            const pagePromises = [];
+            for (let page = 1; page < totalPages; page++) {
+              pagePromises.push(
+                supabase
+                  .from('products')
+                  .select(selectCols)
+                  .range(page * pageSize, (page + 1) * pageSize - 1)
+              );
+            }
+            const results = await Promise.all(pagePromises);
+            for (const r of results) {
+              if (r.error) throw r.error;
+              if (r.data) allData = allData.concat(r.data);
+            }
           }
 
           rawProducts = allData;

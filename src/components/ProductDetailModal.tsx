@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info, ChevronLeft, ChevronRight, MoveHorizontal, ZoomIn, Copy, Clipboard } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
 import { Producto } from '../types';
 import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
@@ -177,10 +176,8 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
       {/* Z-100 para asegurar que esté ENCIMA de todo */}
       <div className="fixed inset-0 z-[100] flex items-center justify-center">
         
-        <Helmet>
-          <title>{`${product.nombre} | LV PARTS`}</title>
-          <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
-        </Helmet>
+        <title>{`${product.nombre} | LV PARTS`}</title>
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
 
         {/* Overlay oscuro */}
         <div className="absolute inset-0 bg-black/90 backdrop-blur-sm" onClick={onClose} />
@@ -193,7 +190,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
           transition={{ type: "spring", duration: 0.4 }}
           // CLAVE MÓVIL: w-full h-full (ocupa toda la pantalla)
           // CLAVE DESKTOP: Ancho máximo más generoso para mostrar bien la imagen 1024x535
-          className="relative w-full h-full md:h-auto md:max-h-[95vh] md:max-w-6xl lg:max-w-7xl bg-white dark:bg-[#1a202c] md:rounded-2xl shadow-2xl flex flex-col overflow-hidden overscroll-x-none touch-pan-y"
+          className="relative w-full h-full md:h-auto md:max-h-[95vh] md:max-w-6xl lg:max-w-7xl bg-white dark:bg-brand-surface-1 md:rounded-2xl shadow-2xl flex flex-col overflow-hidden overscroll-x-none touch-pan-y"
           onClick={(e) => e.stopPropagation()} 
           onTouchStart={isMobile ? onTouchStart : undefined}
           onTouchMove={isMobile ? onTouchMove : undefined}
@@ -213,17 +210,17 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                      initial={{ scale: 0.9, y: 20 }}
                      animate={{ scale: 1, y: 0 }}
                      exit={{ scale: 0.9, y: 20 }}
-                     className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 w-full max-w-sm flex flex-col shadow-2xl"
+                     className="bg-white dark:bg-brand-surface-1 border border-slate-200 dark:border-brand-surface-3 w-full max-w-sm flex flex-col shadow-2xl"
                    >
                      {/* Encabezado Industrial */}
-                     <div className="bg-slate-900 dark:bg-black text-white p-4 text-center text-sm font-black uppercase tracking-widest border-b border-slate-200 dark:border-slate-700">
+                     <div className="bg-slate-900 dark:bg-black text-white p-4 text-center text-sm font-black uppercase tracking-widest border-b border-slate-200 dark:border-brand-surface-3">
                        Guía Rápida
                      </div>
                      
                      <div className="p-6 md:p-8 flex flex-col gap-6">
                         <div className="flex gap-4 items-center">
-                           <div className="w-12 h-12 bg-gray-50 dark:bg-slate-800 flex items-center justify-center shrink-0 border border-gray-200 dark:border-slate-700">
-                             <MoveHorizontal size={24} strokeWidth={2.5} className="text-red-600" />
+                           <div className="w-12 h-12 bg-gray-50 dark:bg-brand-surface-2 flex items-center justify-center shrink-0 border border-gray-200 dark:border-brand-surface-3">
+                             <MoveHorizontal size={24} strokeWidth={2.5} className="text-brand-orange" />
                            </div>
                            <div>
                              <h4 className="font-bold text-xs md:text-sm text-slate-900 dark:text-white uppercase">Desliza para ver más</h4>
@@ -232,8 +229,8 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                         </div>
 
                         <div className="flex gap-4 items-center">
-                           <div className="w-12 h-12 bg-gray-50 dark:bg-slate-800 flex items-center justify-center shrink-0 border border-gray-200 dark:border-slate-700">
-                             <ZoomIn size={24} strokeWidth={2.5} className="text-red-600" />
+                           <div className="w-12 h-12 bg-gray-50 dark:bg-brand-surface-2 flex items-center justify-center shrink-0 border border-gray-200 dark:border-brand-surface-3">
+                             <ZoomIn size={24} strokeWidth={2.5} className="text-brand-orange" />
                            </div>
                            <div>
                              <h4 className="font-bold text-xs md:text-sm text-slate-900 dark:text-white uppercase">Toca para ampliar</h4>
@@ -242,8 +239,8 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                         </div>
 
                         <div className="flex gap-4 items-center">
-                           <div className="w-12 h-12 bg-gray-50 dark:bg-slate-800 flex items-center justify-center shrink-0 border border-gray-200 dark:border-slate-700">
-                             <ShoppingCart size={24} strokeWidth={2.5} className="text-red-600" />
+                           <div className="w-12 h-12 bg-gray-50 dark:bg-brand-surface-2 flex items-center justify-center shrink-0 border border-gray-200 dark:border-brand-surface-3">
+                             <ShoppingCart size={24} strokeWidth={2.5} className="text-brand-orange" />
                            </div>
                            <div>
                              <h4 className="font-bold text-xs md:text-sm text-slate-900 dark:text-white uppercase">Arma tu pedido</h4>
@@ -254,7 +251,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
 
                      <button 
                        onClick={dismissTutorial}
-                       className="bg-red-600 text-white font-black uppercase text-sm md:text-base tracking-[0.1em] p-4 hover:bg-slate-900 active:bg-black transition-colors m-4 mt-0 border-2 border-transparent hover:border-slate-800"
+                       className="bg-brand-orange text-white font-black uppercase text-sm md:text-base tracking-[0.1em] p-4 hover:bg-slate-900 active:bg-black transition-colors m-4 mt-0 border-2 border-transparent hover:border-slate-800"
                      >
                        ¡Entendido!
                      </button>
@@ -268,7 +265,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
             <div className="absolute top-0 right-0 p-3 z-30 pt-[calc(0.75rem+env(safe-area-inset-top))]">
               <button 
                 onClick={onClose}
-                className="p-2 bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-700 rounded-full text-slate-800 dark:text-white shadow-sm backdrop-blur-md active:scale-90 transition-transform"
+                className="p-2 bg-white/90 dark:bg-brand-surface-2/90 hover:bg-white dark:hover:bg-brand-surface-3 rounded-full text-slate-800 dark:text-white shadow-sm backdrop-blur-md active:scale-90 transition-transform"
               >
                 <X size={24} />
               </button>
@@ -278,7 +275,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
             <div className="flex-1 overflow-y-auto flex flex-col md:flex-row pb-safe overscroll-x-none touch-pan-y">
               
               {/* COLUMNA 1: IMAGEN - Mayor en desktop para mejor visualización */}
-              <div className="w-full md:w-7/12 lg:w-3/5 bg-gray-50 dark:bg-slate-800 relative border-b md:border-b-0 md:border-r border-gray-100 dark:border-slate-700 shrink-0">
+              <div className="w-full md:w-7/12 lg:w-3/5 bg-gray-50 dark:bg-brand-surface-2 relative border-b md:border-b-0 md:border-r border-gray-100 dark:border-brand-surface-3 shrink-0">
                  
                  {/* Controles de Navegación Desktop */}
                  {hasPrev && (
@@ -299,7 +296,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                  )}
 
                  {/* Aspect Ratio 1024/535 en móvil, Full Height en Desktop */}
-                 <div className="w-full aspect-[1024/535] md:aspect-auto md:h-full relative group bg-white dark:bg-slate-900">
+                 <div className="w-full aspect-[1024/535] md:aspect-auto md:h-full relative group bg-white dark:bg-brand-surface-1">
                    <ImageZoom 
                      src={optimizarImg(product.imagen, 1024)} 
                      fallbackSrc={`/imagenes_repuestos/${product.codigo_referencia}.webp`}
@@ -320,18 +317,18 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
               </div>
 
               {/* COLUMNA 2: INFO */}
-              <div className="w-full md:w-5/12 lg:w-2/5 p-5 md:p-8 space-y-6 bg-white dark:bg-slate-900 overflow-y-auto">
+              <div className="w-full md:w-5/12 lg:w-2/5 p-5 md:p-8 space-y-6 bg-white dark:bg-brand-surface-1 overflow-y-auto">
                   <div>
                     <div className="flex items-center justify-between mb-2 gap-2">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide border border-slate-200 dark:border-slate-700">
+                        <span className="bg-slate-100 dark:bg-brand-surface-2 text-slate-700 dark:text-slate-300 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide border border-slate-200 dark:border-brand-surface-3">
                           {product.seccion}
                         </span>
                         {product.codigo_referencia && (
-                          <span className="text-xs text-slate-500 dark:text-slate-400 font-mono flex items-center gap-1 bg-gray-50 dark:bg-slate-800 px-2 py-1 rounded border border-gray-100 dark:border-slate-700">
+                          <span className="text-xs text-slate-500 dark:text-slate-400 font-mono flex items-center gap-1 bg-gray-50 dark:bg-brand-surface-2 px-2 py-1 rounded border border-gray-100 dark:border-brand-surface-3">
                             <button
                               onClick={(e) => handleCopy(e, product.codigo_referencia!)}
-                              className="p-1 -ml-1 rounded hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
+                              className="p-1 -ml-1 rounded hover:bg-gray-200 dark:hover:bg-brand-surface-3 transition-colors"
                               title="Copiar código"
                             >
                               {copied ? <Check size={12} className="text-green-500" /> : <Copy size={12} />}
@@ -344,7 +341,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                       {/* Logo LV PARTS a color original */}
                       <div className="flex items-center gap-0.5 font-black text-[11px] md:text-sm tracking-tighter pointer-events-none select-none shrink-0">
                         <span className="text-slate-900 dark:text-white">LV</span>
-                        <span className="text-red-600 italic">PARTS</span>
+                        <span className="text-brand-orange italic">PARTS</span>
                       </div>
                     </div>
                     <h2 className="text-xl md:text-2xl font-black text-gray-900 dark:text-white leading-snug">
@@ -352,7 +349,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                     </h2>
                   </div>
 
-                  <div className="bg-gray-50 dark:bg-slate-800 p-4 rounded-xl border border-gray-100 dark:border-slate-700 flex items-center justify-between">
+                  <div className="bg-gray-50 dark:bg-brand-surface-2 p-4 rounded-xl border border-gray-100 dark:border-brand-surface-3 flex items-center justify-between">
                     <div>
                        <span className="text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase block">Precio</span>
                        <span className={`text-3xl font-black tracking-tight ${product.precio ? 'text-gray-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 italic text-xl'}`}>
@@ -401,7 +398,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                         </span>
                       )}
                       {(!product.precio || product.precio === 0) && (
-                        <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 text-xs font-bold border border-slate-200 dark:border-slate-600">
+                        <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-brand-surface-3/50 text-slate-600 dark:text-slate-300 text-xs font-bold border border-slate-200 dark:border-brand-border">
                           <Info size={14}/> Sin precio registrado
                         </span>
                       )}
@@ -414,7 +411,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                   </div>
 
                   {hasGallery ? (
-                    <div className="pt-4 border-t border-gray-100 dark:border-slate-700">
+                    <div className="pt-4 border-t border-gray-100 dark:border-brand-surface-3">
                       <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
                         Galería
                       </h3>
@@ -422,7 +419,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                          {galleryImages.map((item, idx) => (
                            <div 
                               key={idx} 
-                              className="w-16 h-16 shrink-0 bg-white dark:bg-slate-700 rounded border border-gray-100 dark:border-slate-600 overflow-hidden relative cursor-pointer"
+                              className="w-16 h-16 shrink-0 bg-white dark:bg-brand-surface-3 rounded border border-gray-100 dark:border-brand-border overflow-hidden relative cursor-pointer"
                               onClick={() => {
                                 if (item.type === 'video') {
                                   window.open(item.url, '_blank');
@@ -456,7 +453,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                       </div>
                     </div>
                   ) : relacionados.length > 0 && (
-                    <div className="pt-4 border-t border-gray-100 dark:border-slate-700">
+                    <div className="pt-4 border-t border-gray-100 dark:border-brand-surface-3">
                       <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
                         Relacionados
                       </h3>
@@ -464,10 +461,10 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                          {relacionados.slice(0, 2).map(rel => (
                            <div 
                               key={rel.id} 
-                              className="cursor-pointer group flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 border border-transparent hover:border-gray-200 dark:hover:border-slate-700 transition-all"
+                              className="cursor-pointer group flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-50 dark:hover:bg-brand-surface-2 border border-transparent hover:border-gray-200 dark:hover:border-brand-surface-3 transition-all"
                               onClick={() => onSelectRelated(rel)}
                            >
-                              <div className="w-10 h-10 bg-white dark:bg-slate-700 rounded border border-gray-100 dark:border-slate-600 shrink-0 overflow-hidden">
+                              <div className="w-10 h-10 bg-white dark:bg-brand-surface-3 rounded border border-gray-100 dark:border-brand-border shrink-0 overflow-hidden">
                                  <LazyImage 
                                     src={optimizarImg(rel.imagen)} 
                                     fallbackSrc={`/imagenes_repuestos/${rel.codigo_referencia}.webp`}
@@ -494,7 +491,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
             </div>
 
             {/* FOOTER DE ACCIONES (Siempre visible abajo) */}
-            <div className="p-3 bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-700 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-20 shrink-0 pb-safe md:p-5">
+            <div className="p-3 bg-white dark:bg-brand-surface-1 border-t border-gray-100 dark:border-brand-surface-3 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-20 shrink-0 pb-safe md:p-5">
               <div className="flex gap-3 max-w-5xl mx-auto w-full">
                 
                 <button 
@@ -507,7 +504,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
 
                 <button 
                   onClick={handleShareProduct}
-                  className="py-3.5 px-3.5 rounded-xl font-bold text-sm bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-800 dark:text-white border border-slate-200 dark:border-slate-700 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
+                  className="py-3.5 px-3.5 rounded-xl font-bold text-sm bg-slate-50 hover:bg-slate-100 dark:bg-brand-surface-2 dark:hover:bg-brand-surface-3 text-slate-800 dark:text-white border border-slate-200 dark:border-brand-surface-3 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
                   title="Compartir repuesto como imagen"
                 >
                   <Clipboard size={20} className="shrink-0" />
@@ -519,8 +516,8 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                   disabled={!product.stock}
                   className={`flex-1 py-3.5 px-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 min-w-0 ${
                     product.stock 
-                      ? 'bg-slate-900 dark:bg-slate-700 text-white hover:bg-slate-800 dark:hover:bg-slate-600 shadow-lg shadow-slate-900/20' 
-                      : 'bg-gray-100 dark:bg-slate-800 text-gray-400 dark:text-gray-600 cursor-not-allowed'
+                      ? 'bg-slate-900 dark:bg-brand-surface-3 text-white hover:bg-slate-800 dark:hover:bg-brand-border shadow-lg shadow-slate-900/20' 
+                      : 'bg-gray-100 dark:bg-brand-surface-2 text-gray-400 dark:text-gray-600 cursor-not-allowed'
                   }`}
                 >
                   <ShoppingCart size={20} className="shrink-0" />

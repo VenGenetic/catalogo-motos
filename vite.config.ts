@@ -9,7 +9,10 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
-          ui: ['lucide-react', 'framer-motion'],
+          icons: ['lucide-react'],
+          // Separado de "icons": framer-motion solo lo usa ProductDetailModal (lazy),
+          // así no viaja en el bundle inicial que sí necesita los íconos en cada página.
+          motion: ['framer-motion'],
         },
       },
     },

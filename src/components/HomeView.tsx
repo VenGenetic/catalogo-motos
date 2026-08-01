@@ -1,5 +1,6 @@
 import { MapPin, Clock, Phone } from 'lucide-react';
 import { HeroSection } from './HeroSection';
+import { FeaturedCategories } from './FeaturedCategories';
 import { Producto } from '../types';
 import { APP_CONFIG } from '../config/constants';
 
@@ -15,7 +16,7 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
     "@context": "https://schema.org",
     "@type": "AutoPartsStore",
     "name": "LV PARTS",
-    "image": `${window.location.origin}/hero-nueva.png`,
+    "image": `${window.location.origin}/preview.jpg`,
     "description": "Distribuidor autorizado de repuestos para motos Daytona, Tekken, IGM y más en Ecuador.",
     "telephone": APP_CONFIG.WHATSAPP_NUMBER,
     "address": {
@@ -34,16 +35,18 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
         </script>
 
       <HeroSection />
-      
+
+      <FeaturedCategories />
+
       {/* Sección de Ubicación y Mapa */}
-      <div className="py-16 bg-gray-50/50 dark:bg-slate-900/50 border-t border-gray-150 dark:border-slate-800">
+      <div className="py-16 bg-gray-50/50 dark:bg-brand-surface-1/50 border-t border-gray-150 dark:border-brand-surface-2">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
                
              {/* Lado izquierdo: Información y detalles */}
-             <div className="flex flex-col justify-between bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-6 md:p-8 shadow-sm">
+             <div className="flex flex-col justify-between bg-white dark:bg-brand-bg border border-gray-100 dark:border-brand-surface-2 rounded-3xl p-6 md:p-8 shadow-sm">
                <div>
-                 <span className="text-red-650 dark:text-red-500 text-xs font-black uppercase tracking-widest block mb-2">
+                 <span className="text-brand-orange text-xs font-black uppercase tracking-widest block mb-2">
                    Visítanos en Guayaquil
                  </span>
                  <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white mb-4">
@@ -55,7 +58,7 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
                  
                  <div className="space-y-4">
                    <div className="flex items-start gap-3">
-                     <div className="bg-red-50 dark:bg-red-950/20 p-2 rounded-xl text-red-650 dark:text-red-400 shrink-0">
+                     <div className="bg-brand-orange/10 p-2 rounded-xl text-brand-orange shrink-0">
                        <MapPin className="w-5 h-5" />
                      </div>
                      <div>
@@ -91,7 +94,7 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
                    href="https://maps.app.goo.gl/xj8vjxQYTpfZ7XhRA" 
                    target="_blank" 
                    rel="noopener noreferrer"
-                   className="inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-2xl shadow-lg shadow-red-100 dark:shadow-none hover:shadow-red-200 transition-all active:scale-[0.98]"
+                   className="inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 bg-brand-orange hover:bg-orange-600 text-white font-bold rounded-2xl shadow-lg shadow-brand-orange/20 dark:shadow-none transition-all active:scale-[0.98] primary-button-glow"
                  >
                    <MapPin className="w-5 h-5" />
                    <span>Ir a la ubicación</span>
@@ -100,7 +103,7 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
              </div>
              
              {/* Lado derecho: Google Maps Embed */}
-             <div className="rounded-3xl overflow-hidden border border-gray-100 dark:border-slate-800 min-h-[300px] md:min-h-full shadow-sm relative bg-gray-150 dark:bg-slate-800">
+             <div className="rounded-3xl overflow-hidden border border-gray-100 dark:border-brand-surface-2 min-h-[300px] md:min-h-full shadow-sm relative bg-gray-150 dark:bg-brand-surface-2">
                <iframe 
                  src="https://maps.google.com/maps?q=-2.2153801,-79.8986826&t=&z=16&ie=UTF8&iwloc=&output=embed"
                  className="absolute inset-0 w-full h-full border-0"
