@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface Props {
   src: string;
@@ -16,6 +16,7 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
   const [hasError, setHasError] = useState(false);
   const [currentSrc, setCurrentSrc] = useState(src);
   const [triedFallback, setTriedFallback] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     setCurrentSrc(src);
@@ -38,7 +39,10 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
   const isPlaceholder = hasError || currentSrc.includes('sin_imagen');
 
   const handleError = () => {
-    if (!triedFallback && fallbackSrc) {
+    // Si el fallback es la misma URL que ya falló (ej. ambas rutas se arman
+    // con el mismo SKU), reintentarla no cambia nada y se queda pegado: en
+    // ese caso pasamos directo al placeholder de "sin imagen".
+    if (!triedFallback && fallbackSrc && fallbackSrc !== currentSrc) {
       setTriedFallback(true);
       setCurrentSrc(fallbackSrc);
     } else {
@@ -46,6 +50,21 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
       setIsLoaded(true);
     }
   };
+
+  // Si el navegador ya tiene la imagen en caché (o el error ya ocurrió,
+  // ej. un 404), el evento "load"/"error" puede dispararse antes de que
+  // React alcance a enlazar los listeners, dejando el spinner pegado para
+  // siempre. Lo verificamos a mano en cuanto cambia la imagen a mostrar.
+  useEffect(() => {
+    const el = imgRef.current;
+    if (!el || !el.complete) return;
+    if (el.naturalWidth > 0) {
+      setIsLoaded(true);
+    } else {
+      handleError();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSrc]);
 
   return (
     <div
@@ -71,6 +90,7 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
         </div>
       ) : (
         <img
+          ref={imgRef}
           src={currentSrc}
           alt={alt || 'Producto'}
           loading="lazy"

@@ -16,9 +16,13 @@ export const optimizarImg = (url: string | null | undefined, size: number = 500)
     return url;
   }
 
-  // Optimize using Supabase Pro Image Transformations
-  if (url.includes('supabase.co') && !url.includes('?')) {
-    return `${url}?width=${size}&resize=contain`;
+  // Optimizar usando el endpoint de transformación de imágenes de Supabase.
+  // Importante: hay que reescribir a /render/image/public/ (no /object/public/);
+  // el endpoint /object/public/ ignora los parámetros de tamaño y sirve el
+  // archivo original completo, que puede pesar cientos de KB o varios MB.
+  if (url.includes('/storage/v1/object/public/') && !url.includes('?')) {
+    const renderUrl = url.replace('/storage/v1/object/public/', '/storage/v1/render/image/public/');
+    return `${renderUrl}?width=${size}&height=${size}&resize=contain&quality=75`;
   }
 
   return url;
