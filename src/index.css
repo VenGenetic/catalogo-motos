@@ -3,16 +3,36 @@
 @tailwind utilities;
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  color-scheme: light;
+  --ui-canvas: 245 247 250;
+  --ui-surface: 255 255 255;
+  --ui-muted: 238 242 246;
+  --ui-raised: 226 232 238;
+  --ui-border: 214 222 231;
+  --ui-ink: 11 23 36;
+  --ui-copy: 82 96 112;
+  --brand-orange-rgb: 255 86 38;
+}
+
+.dark {
+  color-scheme: dark;
+  --ui-canvas: 5 20 36;
+  --ui-surface: 13 28 45;
+  --ui-muted: 18 33 49;
+  --ui-raised: 28 43 60;
+  --ui-border: 39 54 71;
+  --ui-ink: 248 250 252;
+  --ui-copy: 174 183 194;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  @apply bg-gray-50 text-gray-900 dark:bg-brand-bg dark:text-slate-100 transition-colors duration-300;
+  @apply bg-ui-canvas text-ui-ink antialiased transition-colors duration-300;
   -webkit-tap-highlight-color: transparent; /* Quitar flash azul en tap */
 }
 
@@ -48,3 +68,39 @@ html {
 .primary-button-glow:hover {
   box-shadow: 0 0 25px rgba(255, 86, 38, 0.45);
 }
+
+@layer components {
+  .surface-card {
+    @apply border border-ui-border bg-ui-surface shadow-card;
+  }
+
+  .surface-card-interactive {
+    @apply surface-card transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-brand-orange/25 hover:shadow-card-hover;
+  }
+
+  .product-media-shell {
+    aspect-ratio: 500 / 259;
+    background:
+      radial-gradient(circle at 50% 42%, rgb(var(--ui-surface)) 0%, rgb(var(--ui-muted)) 100%);
+  }
+
+  .model-media-shell {
+    aspect-ratio: 1 / 1;
+    background:
+      radial-gradient(circle at 50% 46%, rgb(var(--ui-surface)) 0%, rgb(var(--ui-muted)) 100%);
+  }
+
+  .touch-target {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+:where(a, button, input, select, textarea, [role='button']):focus-visible {
+  outline: 3px solid rgba(var(--brand-orange-rgb), 0.36);
+  outline-offset: 3px;
+}
+
+.animation-delay-200 { animation-delay: 200ms; }
+.animation-delay-300 { animation-delay: 300ms; }
+.animation-delay-500 { animation-delay: 500ms; }

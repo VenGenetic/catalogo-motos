@@ -68,23 +68,23 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
 
   return (
     <div
-      className={`relative overflow-hidden bg-white dark:bg-brand-surface-2 ${className || ''}`}
+      className={`relative overflow-hidden bg-ui-surface ${className || ''}`}
       style={style}
       onClick={onClick}
     >
       {!isLoaded && !isPlaceholder && (
-        <div className="absolute inset-0 bg-gray-100 dark:bg-brand-surface-3 animate-pulse z-10 flex items-center justify-center">
-          <div className="w-8 h-8 border-2 border-gray-300 dark:border-brand-border border-t-gray-600 dark:border-t-slate-400 rounded-full animate-spin"></div>
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-ui-muted animate-pulse">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-ui-border border-t-brand-orange"></div>
         </div>
       )}
 
       {isPlaceholder ? (
-        <div className={`w-full h-full flex flex-col items-center justify-center bg-slate-50 dark:bg-brand-surface-1/50 p-3 text-center industrial-grid ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-200`}>
+        <div className={`industrial-grid flex h-full w-full flex-col items-center justify-center bg-ui-muted/70 p-3 text-center ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-200`}>
            <div className="flex items-center gap-0.5 font-black text-2xl tracking-tighter opacity-30 mb-2 select-none">
-             <span className="text-slate-900 dark:text-white">LV</span>
+             <span className="text-ui-ink">LV</span>
              <span className="text-brand-orange italic">PARTS</span>
            </div>
-           <span className="text-[10px] md:text-xs font-bold text-slate-500 dark:text-slate-400 line-clamp-3 leading-snug px-2">
+           <span className="line-clamp-3 px-2 text-[11px] font-bold leading-snug text-ui-copy md:text-xs">
              {alt || 'Fotografía en proceso'}
            </span>
         </div>

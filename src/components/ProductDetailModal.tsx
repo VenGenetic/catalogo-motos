@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info, ChevronLeft, ChevronRight, MoveHorizontal, ZoomIn, Copy, Clipboard } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Producto } from '../types';
@@ -6,6 +6,7 @@ import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
 import { useToast } from '../context/ToastContext';
 import { shareProductAsImage } from '../utils/shareHelper';
+import { trackLead } from '../utils/tracking';
 import { APP_CONFIG } from '../config/constants';
 import { ImageZoom } from './ImageZoom';
 import { LazyImage } from './LazyImage';
@@ -51,13 +52,13 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
   const hasPrev = currentIndex > 0;
   const hasNext = Boolean(currentList && currentIndex >= 0 && currentIndex < currentList.length - 1);
 
-  const navigateTo = (direction: 1 | -1) => {
+  const navigateTo = useCallback((direction: 1 | -1) => {
     if (!currentList) return;
     const nextIdx = currentIndex + direction;
     if (nextIdx >= 0 && nextIdx < currentList.length) {
       onSelectRelated(currentList[nextIdx]);
     }
-  };
+  }, [currentIndex, currentList, onSelectRelated]);
 
   // Teclado (ESC y Flechas)
   useEffect(() => {
@@ -68,7 +69,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [onClose, hasPrev, hasNext, currentIndex]);
+  }, [onClose, hasPrev, hasNext, navigateTo]);
 
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
@@ -112,12 +113,9 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
   }, [currentIndex, currentList, hasNext, hasPrev]);
 
   // Tutorial Interactivo Primera Vez
-  const [showTutorial, setShowTutorial] = useState(false);
-  useEffect(() => {
-    if (product && !localStorage.getItem('LVPARTS_TUTORIAL_SEEN')) {
-      setShowTutorial(true);
-    }
-  }, [product]);
+  const [showTutorial, setShowTutorial] = useState(
+    () => Boolean(product && !localStorage.getItem('LVPARTS_TUTORIAL_SEEN'))
+  );
 
   const dismissTutorial = () => {
     localStorage.setItem('LVPARTS_TUTORIAL_SEEN', 'true');
@@ -151,6 +149,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
   if (!product) return null;
 
   const handleDirectQuote = () => {
+    trackLead(product);
     const message = `Hola LV PARTS, vi este repuesto en la web: ${product.nombre} (Ref: ${product.codigo_referencia || 'S/N'}). ¿Me ayudan con más info?`;
     const url = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
@@ -174,13 +173,13 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
   return (
     <AnimatePresence>
       {/* Z-100 para asegurar que esté ENCIMA de todo */}
-      <div className="fixed inset-0 z-[100] flex items-center justify-center">
+      <div className="fixed inset-0 z-modal flex items-center justify-center">
         
         <title>{`${product.nombre} | LV PARTS`}</title>
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
 
         {/* Overlay oscuro */}
-        <div className="absolute inset-0 bg-black/90 backdrop-blur-sm" onClick={onClose} />
+        <div className="absolute inset-0 bg-brand-bg/88 backdrop-blur-sm" onClick={onClose} />
 
         {/* MODAL PRINCIPAL */}
         <motion.div 
@@ -190,7 +189,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
           transition={{ type: "spring", duration: 0.4 }}
           // CLAVE MÓVIL: w-full h-full (ocupa toda la pantalla)
           // CLAVE DESKTOP: Ancho máximo más generoso para mostrar bien la imagen 1024x535
-          className="relative w-full h-full md:h-auto md:max-h-[95vh] md:max-w-6xl lg:max-w-7xl bg-white dark:bg-brand-surface-1 md:rounded-2xl shadow-2xl flex flex-col overflow-hidden overscroll-x-none touch-pan-y"
+          className="relative flex h-full w-full flex-col overflow-hidden overscroll-x-none bg-ui-surface shadow-2xl touch-pan-y md:h-auto md:max-h-[95vh] md:max-w-6xl md:rounded-[1.5rem] md:border md:border-ui-border lg:max-w-7xl"
           onClick={(e) => e.stopPropagation()} 
           onTouchStart={isMobile ? onTouchStart : undefined}
           onTouchMove={isMobile ? onTouchMove : undefined}
@@ -204,13 +203,13 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                    initial={{ opacity: 0 }} 
                    animate={{ opacity: 1 }} 
                    exit={{ opacity: 0 }} 
-                   className="absolute inset-0 z-[110] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 md:p-8"
+                   className="absolute inset-0 z-toast flex items-center justify-center bg-brand-bg/82 p-4 backdrop-blur-sm md:p-8"
                  >
                    <motion.div
                      initial={{ scale: 0.9, y: 20 }}
                      animate={{ scale: 1, y: 0 }}
                      exit={{ scale: 0.9, y: 20 }}
-                     className="bg-white dark:bg-brand-surface-1 border border-slate-200 dark:border-brand-surface-3 w-full max-w-sm flex flex-col shadow-2xl"
+                     className="flex w-full max-w-sm flex-col overflow-hidden rounded-[1.5rem] border border-ui-border bg-ui-surface shadow-2xl"
                    >
                      {/* Encabezado Industrial */}
                      <div className="bg-slate-900 dark:bg-black text-white p-4 text-center text-sm font-black uppercase tracking-widest border-b border-slate-200 dark:border-brand-surface-3">
@@ -219,7 +218,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                      
                      <div className="p-6 md:p-8 flex flex-col gap-6">
                         <div className="flex gap-4 items-center">
-                           <div className="w-12 h-12 bg-gray-50 dark:bg-brand-surface-2 flex items-center justify-center shrink-0 border border-gray-200 dark:border-brand-surface-3">
+                           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-ui-border bg-ui-muted">
                              <MoveHorizontal size={24} strokeWidth={2.5} className="text-brand-orange" />
                            </div>
                            <div>
@@ -229,7 +228,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                         </div>
 
                         <div className="flex gap-4 items-center">
-                           <div className="w-12 h-12 bg-gray-50 dark:bg-brand-surface-2 flex items-center justify-center shrink-0 border border-gray-200 dark:border-brand-surface-3">
+                           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-ui-border bg-ui-muted">
                              <ZoomIn size={24} strokeWidth={2.5} className="text-brand-orange" />
                            </div>
                            <div>
@@ -239,7 +238,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                         </div>
 
                         <div className="flex gap-4 items-center">
-                           <div className="w-12 h-12 bg-gray-50 dark:bg-brand-surface-2 flex items-center justify-center shrink-0 border border-gray-200 dark:border-brand-surface-3">
+                           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-ui-border bg-ui-muted">
                              <ShoppingCart size={24} strokeWidth={2.5} className="text-brand-orange" />
                            </div>
                            <div>
@@ -251,7 +250,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
 
                      <button 
                        onClick={dismissTutorial}
-                       className="bg-brand-orange text-white font-black uppercase text-sm md:text-base tracking-[0.1em] p-4 hover:bg-slate-900 active:bg-black transition-colors m-4 mt-0 border-2 border-transparent hover:border-slate-800"
+                       className="m-4 mt-0 rounded-xl border-2 border-transparent bg-brand-orange-action p-4 text-sm font-black uppercase tracking-[0.1em] text-white transition-colors hover:bg-brand-orange active:bg-brand-bg md:text-base"
                      >
                        ¡Entendido!
                      </button>
@@ -265,7 +264,8 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
             <div className="absolute top-0 right-0 p-3 z-30 pt-[calc(0.75rem+env(safe-area-inset-top))]">
               <button 
                 onClick={onClose}
-                className="p-2 bg-white/90 dark:bg-brand-surface-2/90 hover:bg-white dark:hover:bg-brand-surface-3 rounded-full text-slate-800 dark:text-white shadow-sm backdrop-blur-md active:scale-90 transition-transform"
+                className="touch-target flex items-center justify-center rounded-xl border border-ui-border bg-ui-surface/90 text-ui-ink shadow-sm backdrop-blur-md transition-transform hover:bg-ui-muted active:scale-90"
+                aria-label="Cerrar detalle del producto"
               >
                 <X size={24} />
               </button>
@@ -275,7 +275,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
             <div className="flex-1 overflow-y-auto flex flex-col md:flex-row pb-safe overscroll-x-none touch-pan-y">
               
               {/* COLUMNA 1: IMAGEN - Mayor en desktop para mejor visualización */}
-              <div className="w-full md:w-7/12 lg:w-3/5 bg-gray-50 dark:bg-brand-surface-2 relative border-b md:border-b-0 md:border-r border-gray-100 dark:border-brand-surface-3 shrink-0">
+              <div className="relative w-full shrink-0 border-b border-ui-border bg-ui-muted md:w-7/12 md:border-b-0 md:border-r lg:w-3/5">
                  
                  {/* Controles de Navegación Desktop */}
                  {hasPrev && (
@@ -296,7 +296,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                  )}
 
                  {/* Aspect Ratio 1024/535 en móvil, Full Height en Desktop */}
-                 <div className="w-full aspect-[1024/535] md:aspect-auto md:h-full relative group bg-white dark:bg-brand-surface-1">
+                 <div className="product-media-shell group relative w-full md:aspect-auto md:h-full">
                    <ImageZoom 
                      src={optimizarImg(product.imagen, 1024)} 
                      fallbackSrc={`/imagenes_repuestos/${product.codigo_referencia}.webp`}
@@ -317,7 +317,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
               </div>
 
               {/* COLUMNA 2: INFO */}
-              <div className="w-full md:w-5/12 lg:w-2/5 p-5 md:p-8 space-y-6 bg-white dark:bg-brand-surface-1 overflow-y-auto">
+              <div className="w-full space-y-6 overflow-y-auto bg-ui-surface p-5 md:w-5/12 md:p-8 lg:w-2/5">
                   <div>
                     <div className="flex items-center justify-between mb-2 gap-2">
                       <div className="flex flex-wrap items-center gap-2">
@@ -349,7 +349,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                     </h2>
                   </div>
 
-                  <div className="bg-gray-50 dark:bg-brand-surface-2 p-4 rounded-xl border border-gray-100 dark:border-brand-surface-3 flex items-center justify-between">
+                  <div className="flex items-center justify-between rounded-xl border border-ui-border bg-ui-muted p-4">
                     <div>
                        <span className="text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase block">Precio</span>
                        <span className={`text-3xl font-black tracking-tight ${product.precio ? 'text-gray-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 italic text-xl'}`}>
@@ -491,7 +491,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
             </div>
 
             {/* FOOTER DE ACCIONES (Siempre visible abajo) */}
-            <div className="p-3 bg-white dark:bg-brand-surface-1 border-t border-gray-100 dark:border-brand-surface-3 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-20 shrink-0 pb-safe md:p-5">
+            <div className="z-20 shrink-0 border-t border-ui-border bg-ui-surface p-3 pb-safe shadow-[0_-6px_24px_rgba(5,20,36,0.08)] md:p-5">
               <div className="flex gap-3 max-w-5xl mx-auto w-full">
                 
                 <button 

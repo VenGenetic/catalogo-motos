@@ -121,22 +121,22 @@ export const SearchBar = ({
 
   return (
     <div className="relative group w-full">
-      <div className={`relative flex items-center transition-all duration-300 rounded-2xl border ${
+      <div className={`relative flex items-center rounded-2xl border transition-all duration-300 ${
           isFocused 
-            ? 'bg-white dark:bg-brand-surface-1 border-slate-400 dark:border-slate-500 shadow-[0_4px_20px_rgba(0,0,0,0.05)] ring-4 ring-slate-500/10' 
-            : 'bg-white dark:bg-brand-surface-1 border-gray-200 dark:border-brand-surface-3 shadow-sm hover:border-gray-300 dark:hover:border-brand-border'
+            ? 'border-brand-orange/70 bg-ui-surface shadow-lifted ring-4 ring-brand-orange/10'
+            : 'border-ui-border bg-ui-surface shadow-sm hover:border-brand-orange/30'
         }`}>
         
         {/* Icono Lupa */}
-        <div className="pl-4 text-gray-400">
-           <Search className={`w-5 h-5 transition-colors ${isFocused ? 'text-slate-700 dark:text-slate-300' : ''}`} strokeWidth={2.5} />
+        <div className="pl-4 text-ui-copy">
+           <Search className={`h-5 w-5 transition-colors ${isFocused ? 'text-brand-orange' : ''}`} strokeWidth={2.5} />
         </div>
 
         <input
           ref={inputRef}
           type="text"
           placeholder={placeholder || (filtroModelo ? `Buscar en ${filtroModelo}...` : "Escriba el modelo y el repuesto que necesita")}
-          className="w-full px-3 py-3.5 bg-transparent text-slate-800 dark:text-white text-base placeholder:text-gray-400 outline-none rounded-2xl"
+          className="w-full rounded-2xl bg-transparent px-3 py-3.5 text-base text-ui-ink outline-none placeholder:text-ui-copy/70"
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
           onFocus={() => setIsFocused(true)}
@@ -148,23 +148,25 @@ export const SearchBar = ({
           {busqueda && (
             <button
               onClick={() => { setBusqueda(''); inputRef.current?.focus(); }}
-              className="p-2 text-gray-300 hover:text-slate-500 dark:hover:text-slate-300 rounded-full hover:bg-gray-100 dark:hover:bg-brand-surface-2 transition-all"
+              className="touch-target flex items-center justify-center rounded-xl text-ui-copy/70 transition-all hover:bg-ui-muted hover:text-ui-ink"
+              aria-label="Limpiar búsqueda"
             >
               <X className="w-5 h-5" strokeWidth={2.5} />
             </button>
           )}
 
           {/* Divisor vertical suave */}
-          <div className="h-6 w-px bg-gray-200 dark:bg-brand-surface-3 mx-1"></div>
+          <div className="mx-1 h-6 w-px bg-ui-border"></div>
 
           {hasSpeechSupport && (
             <button
               onClick={handleVoiceSearch}
-              className={`p-2.5 rounded-xl transition-all active:scale-95 ${
+              className={`touch-target flex items-center justify-center rounded-xl transition-all active:scale-95 ${
                 isListening
                   ? 'bg-red-500 text-white shadow-lg shadow-red-500/30 animate-pulse'
-                  : 'text-slate-400 hover:text-brand-orange hover:bg-brand-orange/10 dark:hover:bg-brand-surface-2'
+                  : 'text-ui-copy hover:bg-brand-orange/10 hover:text-brand-orange'
               }`}
+              aria-label={isListening ? 'Detener búsqueda por voz' : 'Buscar por voz'}
             >
               {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
             </button>
@@ -174,12 +176,12 @@ export const SearchBar = ({
 
       {/* PANEL DE SUGERENCIAS */}
       {showSuggestions && (
-        <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white dark:bg-brand-surface-1 border border-gray-100 dark:border-brand-surface-2 rounded-2xl shadow-2xl shadow-slate-200/50 dark:shadow-none z-50 overflow-hidden animate-fade-in-up origin-top">
+        <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-dropdown origin-top overflow-hidden rounded-2xl border border-ui-border bg-ui-surface shadow-lifted animate-fade-in-up">
           
           {/* Si NO hay búsqueda: Mostrar Populares */}
           {!busqueda ? (
             <div className="p-4">
-              <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
+              <div className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-ui-copy">
                 <TrendingUp className="w-3 h-3" />
                 Lo más buscado
               </div>
@@ -188,7 +190,7 @@ export const SearchBar = ({
                   <button
                     key={term}
                     onClick={() => handleSuggestionClick(term)}
-                    className="px-4 py-2 bg-gray-50 dark:bg-brand-surface-2 hover:bg-slate-800 dark:hover:bg-brand-surface-3 hover:text-white dark:hover:text-white text-slate-600 dark:text-gray-300 text-sm font-medium rounded-xl transition-all active:scale-95 border border-transparent hover:border-slate-800 dark:hover:border-brand-surface-3 hover:shadow-lg hover:shadow-slate-800/20"
+                    className="min-h-[40px] rounded-xl border border-ui-border bg-ui-muted px-4 py-2 text-sm font-medium text-ui-ink transition-all hover:border-brand-orange/25 hover:bg-brand-orange/10 hover:text-brand-orange active:scale-95"
                   >
                     {term}
                   </button>
@@ -198,7 +200,7 @@ export const SearchBar = ({
           ) : (
             /* Si HAY búsqueda: Mostrar Resultados */
             <div className="py-2">
-              <div className="px-4 py-2 text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider flex justify-between">
+              <div className="flex justify-between px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-ui-copy">
                 <span>Coincidencias</span>
                 <span className="text-brand-orange">{sugerencias.length} resultados</span>
               </div>
@@ -209,12 +211,12 @@ export const SearchBar = ({
                   <button
                     key={index}
                     onClick={() => handleSuggestionClick(sugerencia)}
-                    className="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-brand-surface-2 flex items-center gap-3 group transition-colors border-l-2 border-transparent hover:border-brand-orange"
+                    className="group flex w-full min-h-[48px] items-center gap-3 border-l-2 border-transparent px-4 py-3 text-left transition-colors hover:border-brand-orange hover:bg-ui-muted"
                   >
                     <div className={`p-1.5 rounded-lg ${isCode ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'bg-gray-100 dark:bg-brand-surface-2 text-gray-400 group-hover:bg-white dark:group-hover:bg-slate-700 group-hover:text-brand-orange group-hover:shadow-sm'}`}>
                        {isCode ? <History className="w-4 h-4"/> : <Search className="w-4 h-4" />}
                     </div>
-                    <span className={`flex-1 text-sm ${isCode ? 'font-mono text-blue-700 dark:text-blue-450 font-bold' : 'text-slate-700 dark:text-gray-300 font-medium'}`}>
+                    <span className={`flex-1 text-sm ${isCode ? 'font-mono font-bold text-blue-700 dark:text-blue-400' : 'font-medium text-ui-ink'}`}>
                       {sugerencia.replace(/"/g, '')}
                     </span>
                     <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-brand-orange opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0" />

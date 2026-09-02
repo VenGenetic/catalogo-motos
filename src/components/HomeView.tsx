@@ -39,20 +39,20 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
       <FeaturedCategories />
 
       {/* Sección de Ubicación y Mapa */}
-      <div className="py-16 bg-gray-50/50 dark:bg-brand-surface-1/50 border-t border-gray-150 dark:border-brand-surface-2">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="border-t border-ui-border bg-ui-muted/45 py-14 md:py-16">
+        <div className="mx-auto max-w-7xl px-4 md:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
                
              {/* Lado izquierdo: Información y detalles */}
-             <div className="flex flex-col justify-between bg-white dark:bg-brand-bg border border-gray-100 dark:border-brand-surface-2 rounded-3xl p-6 md:p-8 shadow-sm">
+             <div className="surface-card flex flex-col justify-between rounded-[1.5rem] p-6 md:p-8">
                <div>
                  <span className="text-brand-orange text-xs font-black uppercase tracking-widest block mb-2">
                    Visítanos en Guayaquil
                  </span>
-                 <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white mb-4">
+                 <h3 className="mb-4 text-xl font-black text-ui-ink md:text-2xl">
                    Love Daytona - LV PARTS
                  </h3>
-                 <p className="text-gray-500 dark:text-gray-400 text-sm mb-6 leading-relaxed">
+                 <p className="mb-6 text-sm leading-relaxed text-ui-copy">
                    Ven a nuestro local físico para recibir asesoría personalizada y encontrar todos los repuestos y accesorios que necesitas para tu motocicleta Daytona.
                  </p>
                  
@@ -62,28 +62,28 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
                        <MapPin className="w-5 h-5" />
                      </div>
                      <div>
-                       <h4 className="font-bold text-slate-800 dark:text-slate-200 text-sm">Dirección</h4>
-                       <p className="text-xs text-gray-500 dark:text-gray-400">Love Daytona, Guayaquil, Ecuador</p>
+                       <h4 className="text-sm font-bold text-ui-ink">Dirección</h4>
+                       <p className="text-xs text-ui-copy">Love Daytona, Guayaquil, Ecuador</p>
                      </div>
                    </div>
                    
                    <div className="flex items-start gap-3">
-                     <div className="bg-orange-50 dark:bg-orange-950/20 p-2 rounded-xl text-orange-600 dark:text-orange-400 shrink-0">
+                     <div className="shrink-0 rounded-xl bg-brand-orange/10 p-2 text-brand-orange">
                        <Clock className="w-5 h-5" />
                      </div>
                      <div>
-                       <h4 className="font-bold text-slate-800 dark:text-slate-200 text-sm">Horario de Atención</h4>
-                       <p className="text-xs text-gray-500 dark:text-gray-400">Lunes a Sábado: 9:00 AM - 6:00 PM</p>
+                       <h4 className="text-sm font-bold text-ui-ink">Horario de Atención</h4>
+                       <p className="text-xs text-ui-copy">Lunes a Sábado: 9:00 AM - 6:00 PM</p>
                      </div>
                    </div>
 
                    <div className="flex items-start gap-3">
-                     <div className="bg-green-50 dark:bg-green-950/20 p-2 rounded-xl text-green-600 dark:text-green-400 shrink-0">
+                     <div className="shrink-0 rounded-xl bg-[#25D366]/10 p-2 text-[#168b4c] dark:text-[#54e38b]">
                        <Phone className="w-5 h-5" />
                      </div>
                      <div>
-                       <h4 className="font-bold text-slate-800 dark:text-slate-200 text-sm">Teléfono / WhatsApp</h4>
-                       <p className="text-xs text-gray-500 dark:text-gray-400 font-mono font-bold">+593 99 327 9707</p>
+                       <h4 className="text-sm font-bold text-ui-ink">Teléfono / WhatsApp</h4>
+                       <p className="font-mono text-xs font-bold text-ui-copy">+593 99 327 9707</p>
                      </div>
                    </div>
                  </div>
@@ -94,7 +94,7 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
                    href="https://maps.app.goo.gl/xj8vjxQYTpfZ7XhRA" 
                    target="_blank" 
                    rel="noopener noreferrer"
-                   className="inline-flex items-center justify-center gap-2 w-full px-6 py-3.5 bg-brand-orange hover:bg-orange-600 text-white font-bold rounded-2xl shadow-lg shadow-brand-orange/20 dark:shadow-none transition-all active:scale-[0.98] primary-button-glow"
+                   className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-brand-orange-action px-6 py-3.5 font-bold text-white shadow-lg shadow-brand-orange/15 transition-all hover:bg-brand-orange active:scale-[0.98] primary-button-glow"
                  >
                    <MapPin className="w-5 h-5" />
                    <span>Ir a la ubicación</span>
@@ -103,7 +103,7 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
              </div>
              
              {/* Lado derecho: Google Maps Embed */}
-             <div className="rounded-3xl overflow-hidden border border-gray-100 dark:border-brand-surface-2 min-h-[300px] md:min-h-full shadow-sm relative bg-gray-150 dark:bg-brand-surface-2">
+             <div className="surface-card relative min-h-[320px] overflow-hidden rounded-[1.5rem] md:min-h-full">
                <iframe 
                  src="https://maps.google.com/maps?q=-2.2153801,-79.8986826&t=&z=16&ie=UTF8&iwloc=&output=embed"
                  className="absolute inset-0 w-full h-full border-0"
@@ -116,7 +116,7 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
              
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

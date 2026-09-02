@@ -30,7 +30,7 @@ export const ScrollToTopButton = () => {
       // CAMBIOS DE POSICIÓN:
       // Móvil: 'bottom-24 left-4' (Izquierda, arriba del menú)
       // PC: 'md:bottom-8 md:left-8' (Izquierda, abajo) -> Lo pongo a la izquierda también en PC para no ensuciar el WhatsApp
-      className={`fixed bottom-24 left-4 md:bottom-8 md:left-8 z-40 p-3 rounded-full bg-[#1a202c]/80 text-white shadow-lg backdrop-blur-sm hover:bg-brand-orange transition-all duration-300 transform border border-white/10 ${
+      className={`fixed bottom-[calc(5.75rem+env(safe-area-inset-bottom))] left-3 z-floating flex h-12 w-12 items-center justify-center rounded-2xl border border-ui-border bg-ui-surface/92 text-ui-ink shadow-lg backdrop-blur-sm transition-all duration-300 hover:border-brand-orange/25 hover:bg-brand-orange hover:text-brand-bg md:bottom-8 md:left-8 ${
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'
       }`}
       aria-label="Volver arriba"

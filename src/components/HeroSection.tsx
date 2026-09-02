@@ -2,35 +2,37 @@
 import { Link } from 'react-router-dom';
 import { ChevronRight, ShieldCheck, Truck, Users, MessageCircle } from 'lucide-react'; 
 import { APP_CONFIG } from '../config/constants';
+import { trackContact } from '../utils/tracking';
 
 export const HeroSection = () => {
-  
+
   const handleWhatsappClick = () => {
+    trackContact('hero');
     const mensaje = "Hola LV PARTS, quisiera cotizar unos repuestos.";
     const url = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, '_blank');
   };
 
   return (
-    <div className="relative bg-brand-bg overflow-hidden font-sans min-h-[90vh] flex items-center justify-center py-20">
+    <section className="relative flex min-h-[calc(100svh-6rem)] items-center justify-center overflow-hidden bg-brand-bg py-16 font-sans md:min-h-[calc(100vh-7rem)] md:py-20">
       
       {/* Fondo con Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
           src="/hero-perchas.webp"
           alt="Perchas de Repuestos Daytona" 
-          className="w-full h-full object-cover object-center opacity-40 grayscale brightness-75"
+          className="h-full w-full object-cover object-[center_38%] opacity-45 grayscale brightness-[0.68]"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-bg via-brand-bg/60 to-brand-bg z-10"></div>
+        <div className="absolute inset-0 z-10 bg-gradient-to-b from-brand-bg/95 via-brand-bg/55 to-brand-bg"></div>
         <div className="absolute inset-0 industrial-grid z-10 opacity-40"></div>
       </div>
 
-      <div className="relative z-20 w-full max-w-7xl px-4 md:px-8 text-center flex flex-col items-center">
+      <div className="relative z-20 flex w-full max-w-7xl flex-col items-center px-4 text-center md:px-8">
         
         {/* Etiqueta de Especialistas */}
-        <div className="mb-6 inline-flex items-center gap-2 bg-brand-orange/10 border border-brand-orange/20 px-4 py-1.5 rounded-full animate-fade-in-up">
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-orange/25 bg-brand-orange/10 px-4 py-2 animate-fade-in-up">
           <span className="w-2 h-2 rounded-full bg-brand-orange animate-pulse"></span>
-          <span className="font-geist text-[10px] font-bold text-brand-orange tracking-widest uppercase">
+          <span className="font-geist text-[11px] font-bold uppercase tracking-[0.18em] text-brand-orange">
             Especialistas en Alto Rendimiento
           </span>
         </div>
@@ -38,25 +40,25 @@ export const HeroSection = () => {
         {/* Título y Fondo con Outline */}
         <div className="relative group w-full mb-8">
           {/* Texto Outline Gigante de Fondo */}
-          <h1 className="absolute -top-8 md:-top-20 left-1/2 -translate-x-1/2 w-full font-anton text-[56px] md:text-[160px] lg:text-[200px] hero-text-stroke opacity-10 select-none pointer-events-none uppercase leading-none tracking-widest text-center">
+          <h1 className="pointer-events-none absolute -top-10 left-1/2 w-full -translate-x-1/2 select-none text-center font-anton text-[72px] uppercase leading-none tracking-widest opacity-10 hero-text-stroke md:-top-20 md:text-[160px] lg:text-[200px]">
             ORIGINAL
           </h1>
           {/* Título Principal */}
-          <h2 className="relative z-10 font-anton text-[40px] md:text-[80px] lg:text-[110px] text-white leading-none tracking-tight transition-transform duration-700 hover:scale-[1.01] uppercase">
+          <h2 className="relative z-10 font-anton text-[46px] uppercase leading-[0.92] tracking-tight text-white min-[390px]:text-[52px] md:text-[80px] lg:text-[110px]">
             REPUESTOS <br />
             <span className="text-brand-orange">ORIGINALES</span>
           </h2>
         </div>
 
-        <p className="max-w-2xl mx-auto font-hanken text-base md:text-xl text-gray-400 mb-12 leading-relaxed animate-fade-in-up delay-200">
+        <p className="mx-auto mb-10 max-w-2xl font-hanken text-base leading-relaxed text-slate-300 animate-fade-in-up animation-delay-200 md:mb-12 md:text-xl">
           Especialistas en la marca Daytona. Recibe asesoría técnica personalizada y envíos seguros a todo el Ecuador.
         </p>
 
         {/* Botones de Acción */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full max-w-md md:max-w-xl mx-auto mb-16 animate-fade-in-up delay-300">
+        <div className="mx-auto mb-14 flex w-full max-w-md flex-col items-center justify-center gap-4 animate-fade-in-up animation-delay-300 sm:flex-row md:mb-16 md:max-w-xl md:gap-6">
           <Link 
             to="/catalogo" 
-            className="group relative w-full sm:w-auto px-10 py-4 bg-brand-orange text-white font-geist text-sm font-bold uppercase tracking-widest rounded-xl transition-all duration-300 active:scale-95 primary-button-glow flex items-center justify-center gap-2"
+            className="group relative flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-brand-orange-action px-10 py-4 font-geist text-sm font-bold uppercase tracking-widest text-white transition-all duration-300 hover:bg-brand-orange active:scale-95 primary-button-glow sm:w-auto"
           >
             <span>Ver Catálogo</span>
             <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -64,7 +66,7 @@ export const HeroSection = () => {
           
           <button 
             onClick={handleWhatsappClick}
-            className="w-full sm:w-auto px-10 py-4 border-2 border-[#25D366] text-[#25D366] hover:bg-[#25D366]/10 font-geist text-sm font-bold uppercase tracking-widest rounded-xl transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 shrink-0"
+            className="flex min-h-[52px] w-full shrink-0 items-center justify-center gap-2 rounded-xl border-2 border-[#25D366] px-10 py-4 font-geist text-sm font-bold uppercase tracking-widest text-[#25D366] transition-all duration-300 hover:bg-[#25D366]/10 active:scale-95 sm:w-auto"
           >
             <MessageCircle className="w-5 h-5 fill-current" />
             <span>WhatsApp</span>
@@ -72,9 +74,9 @@ export const HeroSection = () => {
         </div>
 
         {/* Insignias de Confianza */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-white/10 w-full max-w-4xl mx-auto animate-fade-in-up delay-500 text-left">
+        <div className="mx-auto grid w-full max-w-4xl grid-cols-1 gap-4 border-t border-white/10 pt-8 text-left animate-fade-in-up animation-delay-500 sm:grid-cols-3 sm:gap-6">
           <div className="flex items-center gap-3 group">
-            <div className="bg-brand-surface-2 p-2.5 rounded-xl text-brand-orange group-hover:text-white group-hover:bg-brand-orange transition-colors">
+            <div className="rounded-xl border border-white/5 bg-brand-surface-2 p-2.5 text-brand-orange transition-colors group-hover:border-brand-orange/30 group-hover:bg-brand-orange group-hover:text-brand-bg">
               <ShieldCheck size={24} />
             </div>
             <div>
@@ -84,7 +86,7 @@ export const HeroSection = () => {
           </div>
           
           <div className="flex items-center gap-3 group">
-            <div className="bg-brand-surface-2 p-2.5 rounded-xl text-brand-orange group-hover:text-white group-hover:bg-brand-orange transition-colors">
+            <div className="rounded-xl border border-white/5 bg-brand-surface-2 p-2.5 text-brand-orange transition-colors group-hover:border-brand-orange/30 group-hover:bg-brand-orange group-hover:text-brand-bg">
               <Truck size={24} />
             </div>
             <div>
@@ -94,7 +96,7 @@ export const HeroSection = () => {
           </div>
           
           <div className="flex items-center gap-3 group">
-            <div className="bg-brand-surface-2 p-2.5 rounded-xl text-brand-orange group-hover:text-white group-hover:bg-brand-orange transition-colors">
+            <div className="rounded-xl border border-white/5 bg-brand-surface-2 p-2.5 text-brand-orange transition-colors group-hover:border-brand-orange/30 group-hover:bg-brand-orange group-hover:text-brand-bg">
               <Users size={24} />
             </div>
             <div>
@@ -112,6 +114,6 @@ export const HeroSection = () => {
         <div className="w-[1px] h-10 bg-gradient-to-b from-brand-orange to-transparent animate-pulse"></div>
       </div>
 
-    </div>
+    </section>
   );
 };

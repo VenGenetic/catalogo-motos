@@ -3,13 +3,13 @@ import { Facebook, Instagram } from 'lucide-react';
 
 export const Footer = () => {
   return (
-    <footer className="w-full bg-[#010f1f] dark:bg-brand-bg border-t border-gray-150 dark:border-brand-border text-gray-500 dark:text-gray-400 font-sans pb-32 md:pb-12 transition-colors">
+    <footer className="w-full border-t border-brand-border bg-brand-bg pb-32 font-sans text-slate-400 transition-colors md:pb-12">
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 flex flex-col md:flex-row justify-between items-center gap-6">
         
         {/* Lado izquierdo: Marca, Redes y Copyright */}
         <div className="flex flex-col items-center md:items-start text-center md:text-left">
           <div className="flex items-center gap-4 mb-3">
-            <div className="font-anton text-2xl tracking-widest text-slate-800 dark:text-white uppercase">
+            <div className="font-anton text-2xl uppercase tracking-widest text-white">
               LV <span className="text-brand-orange">PARTS</span>
             </div>
             
@@ -22,7 +22,7 @@ export const Footer = () => {
                 title="Facebook"
                 className="text-gray-400 hover:text-brand-orange transition-colors"
               >
-                <Facebook className="w-4.5 h-4.5" />
+                <Facebook className="h-[18px] w-[18px]" />
               </a>
               <a 
                 href="https://www.instagram.com/love_daytona_oficial/" 
@@ -31,12 +31,12 @@ export const Footer = () => {
                 title="Instagram"
                 className="text-gray-400 hover:text-brand-orange transition-colors"
               >
-                <Instagram className="w-4.5 h-4.5" />
+                <Instagram className="h-[18px] w-[18px]" />
               </a>
             </div>
           </div>
           
-          <p className="font-geist text-[10px] uppercase tracking-widest text-slate-400 dark:text-gray-500">
+          <p className="font-geist text-[11px] uppercase tracking-[0.14em] text-slate-400">
             &copy; {new Date().getFullYear()} LV PARTS - REPUESTOS ORIGINALES DAYTONA. TODOS LOS DERECHOS RESERVADOS.
           </p>
         </div>

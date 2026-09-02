@@ -15,7 +15,7 @@ const limpiarPrecio = (valor: unknown): number => {
 
 
 
-const CACHE_KEY = 'cached_products_v10';
+const CACHE_KEY = 'cached_products_v11';
 const CACHE_TIME_KEY = 'cached_products_time';
 const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
 const FRESH_CACHE_TIME = 1000 * 60 * 30; // 30 Minutos (Evita sobreconsumo de ancho de banda en Vercel)
@@ -82,47 +82,82 @@ export const useProducts = () => {
 
         const mapaProductos = new Map<string, Producto>();
 
+        // El ERP no tiene UNIQUE sobre 'sku' y su borrado es lógico
+        // (update is_active=false), así que la fila descartada sigue viviendo
+        // en la tabla junto a la buena. Como acá agrupamos por SKU, hay que
+        // decidir cuál de las dos gana.
+        const normalizarOrigenes = (lista: string[]): string[] => {
+          const set = new Set(lista);
+          if (set.has('En Stock') || set.has('Guayaquil')) return ['En Stock'];
+          if (set.has('bajo pedido')) return ['bajo pedido'];
+          return [];
+        };
+
+        const tieneImagen = (p: Producto) => !!p.imagen && !p.imagen.includes('sin_imagen');
+
+        // Puntaje de "calidad" de una fila. Se elige por esto y NO por orden de
+        // llegada: antes ganaba la última página en llegar, que solía ser la
+        // fila inactiva, y el producto bueno desaparecía tras el badge INACTIVO.
+        const puntajeFila = (p: Producto): number => {
+          let score = 0;
+          if (p.is_active !== false) score += 1000;
+          if (!p.is_discontinued) score += 500;
+          if (p.stock) score += 250;
+          if (p.precio > 0) score += 50;
+          if (tieneImagen(p)) score += 25;
+          return score;
+        };
+
         const agregarProducto = (producto: Producto) => {
           const clave = (producto.codigo_referencia || producto.id || '').toUpperCase();
           const existente = mapaProductos.get(clave);
 
-          if (existente) {
-            // Combinar orígenes respetando si está vacío
-            const todosOrigenes = new Set([...(existente.origenes || []), ...(producto.origenes || [])]);
-            let origenes: string[] = [];
-            if (todosOrigenes.has('En Stock') || todosOrigenes.has('Guayaquil')) {
-              origenes = ['En Stock'];
-            } else if (todosOrigenes.has('bajo pedido')) {
-              origenes = ['bajo pedido'];
-            }
-
-            const imagenElegida = existente.imagen?.includes('sin_imagen') && producto.imagen
-              ? producto.imagen
-              : existente.imagen;
-
-            mapaProductos.set(clave, {
-              ...existente,
-              ...producto,
-              imagen: imagenElegida || producto.imagen,
-              origenes,
-              textoBusqueda: limpiarTexto(`${producto.nombre} ${producto.codigo_referencia || ''} ${producto.categoria || ''} ${producto.seccion || ''} ${origenes.join(' ')}`)
-            });
-          } else {
-            // Para productos nuevos, respetar la lista de orígenes calculada
-            let origenes: string[] = [];
-            const prodOrigenes = producto.origenes || [];
-            if (prodOrigenes.includes('En Stock') || prodOrigenes.includes('Guayaquil')) {
-              origenes = ['En Stock'];
-            } else if (prodOrigenes.includes('bajo pedido')) {
-              origenes = ['bajo pedido'];
-            }
-
+          if (!existente) {
+            const origenes = normalizarOrigenes(producto.origenes || []);
             mapaProductos.set(clave, {
               ...producto,
               origenes,
+              stock: origenes.length > 0,
               textoBusqueda: limpiarTexto(`${producto.nombre} ${producto.codigo_referencia || ''} ${producto.categoria || ''} ${producto.seccion || ''} ${origenes.join(' ')}`)
             });
+            return;
           }
+
+          const puntajeNuevo = puntajeFila(producto);
+          const puntajeExistente = puntajeFila(existente);
+
+          let ganador: Producto;
+          let perdedor: Producto;
+          if (puntajeNuevo !== puntajeExistente) {
+            ganador = puntajeNuevo > puntajeExistente ? producto : existente;
+            perdedor = puntajeNuevo > puntajeExistente ? existente : producto;
+          } else {
+            // Empate: gana el id más alto (la fila más nueva del ERP). Es un
+            // desempate estable, así el resultado no depende del orden en que
+            // respondan las páginas que se piden en paralelo.
+            const nuevoEsMasNuevo = (parseInt(producto.id) || 0) > (parseInt(existente.id) || 0);
+            ganador = nuevoEsMasNuevo ? producto : existente;
+            perdedor = nuevoEsMasNuevo ? existente : producto;
+          }
+
+          // Solo las filas activas aportan origen (las inactivas llegan con la
+          // lista vacía), así que 'stock' y 'origenes' quedan siempre
+          // coherentes entre sí: nunca más un AGOTADO con badge "En Stock".
+          const origenes = normalizarOrigenes([...(ganador.origenes || []), ...(perdedor.origenes || [])]);
+          const hayStock = origenes.length > 0;
+
+          mapaProductos.set(clave, {
+            ...ganador,
+            origenes,
+            stock: hayStock,
+            cantidad_disponible: hayStock
+              ? (Math.max(ganador.cantidad_disponible || 0, perdedor.cantidad_disponible || 0) || undefined)
+              : undefined,
+            // Si a la fila ganadora le falta foto, rescatamos la de la otra.
+            imagen: tieneImagen(ganador) ? ganador.imagen : (tieneImagen(perdedor) ? perdedor.imagen : ganador.imagen),
+            gallery: ganador.gallery?.length ? ganador.gallery : (perdedor.gallery || []),
+            textoBusqueda: limpiarTexto(`${ganador.nombre} ${ganador.codigo_referencia || ''} ${ganador.categoria || ''} ${ganador.seccion || ''} ${origenes.join(' ')}`)
+          });
         };
 
         let rawProducts: any[] = [];
@@ -134,9 +169,14 @@ export const useProducts = () => {
 
           // Primera página: pedimos el conteo total en la misma consulta para saber
           // cuántas páginas faltan y traerlas todas EN PARALELO (en vez de una por una).
+          // El .order('id') es obligatorio: sin ORDER BY explícito Postgres no
+          // garantiza un orden estable entre consultas, y como las páginas se
+          // piden en paralelo con .range() una fila puede repetirse en dos
+          // páginas y otra no salir en ninguna.
           const { data: firstPage, error: firstError, count } = await supabase
             .from('products')
             .select(selectCols, { count: 'exact' })
+            .order('id', { ascending: true })
             .range(0, pageSize - 1);
 
           if (firstError) throw firstError;
@@ -151,6 +191,7 @@ export const useProducts = () => {
                 supabase
                   .from('products')
                   .select(selectCols)
+                  .order('id', { ascending: true })
                   .range(page * pageSize, (page + 1) * pageSize - 1)
               );
             }

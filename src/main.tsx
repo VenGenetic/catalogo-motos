@@ -8,6 +8,9 @@ import { CartProvider } from './context/CartContext'
 import { ThemeProvider } from './context/ThemeContext'
 import { ToastProvider } from './context/ToastContext'
 import { ScrollToTop } from './components/ScrollToTop'
+import { initMetaPixel } from './utils/tracking'
+
+initMetaPixel()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

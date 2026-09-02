@@ -39,6 +39,8 @@ export const ImageZoom = ({ src, alt, className, fallbackSrc }: ImageZoomProps) 
 
   // Reiniciar estado de error si la imagen origen cambia (ej. al deslizar productos)
   useEffect(() => {
+    // Reset intencional al cambiar la fuente externa de la imagen.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCurrentSrc(src);
     setHasError(false);
     setTriedFallback(false);
@@ -47,6 +49,8 @@ export const ImageZoom = ({ src, alt, className, fallbackSrc }: ImageZoomProps) 
   // Reset zoom state on modal close or image source change
   useEffect(() => {
     if (!isModalOpen) {
+      // El cierre del portal define un nuevo estado base para el siguiente zoom.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setScale(1);
       setPosition({ x: 0, y: 0 });
       setIsAnimating(false);

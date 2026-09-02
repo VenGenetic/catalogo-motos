@@ -1,5 +1,6 @@
 import { MessageCircle } from 'lucide-react';
 import { APP_CONFIG } from '../config/constants';
+import { trackContact } from '../utils/tracking';
 import { useState, useEffect } from 'react';
 
 interface WhatsAppButtonProps {
@@ -18,6 +19,7 @@ export const WhatsAppButton = ({ hideWhenModalOpen = false }: WhatsAppButtonProp
   }, []);
 
   const handleClick = () => {
+    trackContact('boton_flotante');
     window.open(`https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}`, '_blank');
   };
 
@@ -30,23 +32,19 @@ export const WhatsAppButton = ({ hideWhenModalOpen = false }: WhatsAppButtonProp
       // CAMBIOS CLAVE AQUÍ:
       // 1. 'bottom-24' en móvil (para subirlo arriba del menú) y 'md:bottom-6' en PC.
       // 2. 'z-[70]' para asegurarnos que esté ENCIMA de todo (modales, menús, etc).
-      className={`fixed bottom-24 right-4 md:bottom-6 md:right-6 z-[70] flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 px-4 rounded-full shadow-xl hover:shadow-green-500/30 transition-all duration-500 transform group ${
+      className={`group fixed bottom-[calc(5.75rem+env(safe-area-inset-bottom))] right-3 z-floating flex h-[52px] w-[52px] items-center justify-center gap-2 rounded-2xl bg-[#25D366] text-brand-bg shadow-xl transition-all duration-500 hover:bg-[#20bd5a] hover:shadow-green-500/25 md:bottom-6 md:right-6 md:w-auto md:rounded-full md:px-4 ${
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
       }`}
       aria-label="Contactar por WhatsApp"
     >
-      <MessageCircle className="w-6 h-6 fill-current animate-bounce-slow" />
+      <MessageCircle className="h-6 w-6 fill-current" />
       
       {/* Texto: mostrar 'Whatsapp' en pantallas medianas+ y al hover en desktop */}
-      <span className="font-bold text-sm pr-1 hidden group-hover:inline-block md:inline-block">
+      <span className="hidden pr-1 text-sm font-bold md:inline-block">
         Whatsapp
       </span>
       
       {/* Punto de notificación */}
-      <span className="absolute -top-1 -right-1 flex h-3 w-3">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-orange opacity-75"></span>
-        <span className="relative inline-flex rounded-full h-3 w-3 bg-brand-orange"></span>
-      </span>
     </button>
   );
 };

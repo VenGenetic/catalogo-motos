@@ -2,6 +2,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Producto, ItemCarrito } from '../types';
 import { APP_CONFIG } from '../config/constants';
+import { trackAddToCart, trackInitiateCheckout } from '../utils/tracking';
 
 interface CartContextType {
   cart: ItemCarrito[];
@@ -43,6 +44,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   }, [toastMsg]);
 
   const addToCart = (product: Producto) => {
+    trackAddToCart(product);
+
     // BLINDAJE: Verificamos que 'navigator' y 'vibrate' existan antes de llamar
     if (typeof navigator !== 'undefined' && 'vibrate' in navigator && typeof navigator.vibrate === 'function') {
       try { navigator.vibrate(50); } catch { /* Ignorar error de vibración */ }
@@ -85,6 +88,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   // --- FUNCIÓN ACTUALIZADA CON FORMATO VERTICAL ---
   const sendOrderToWhatsapp = () => {
+    trackInitiateCheckout(cart, cartTotal);
+
     let msg = "Hola LV PARTS, mi pedido:\n\n";
     
     cart.forEach(i => {

@@ -2,7 +2,7 @@ import { Truck, CreditCard, Phone } from 'lucide-react';
 
 export const TopBanner = () => {
   return (
-    <div className="bg-brand-orange text-white text-[10px] md:text-xs font-bold py-2 px-4 relative z-[60]">
+    <div className="relative z-floating bg-brand-orange px-4 py-2 font-geist text-[11px] font-bold text-brand-bg md:text-xs">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         
         {/* Mensaje Móvil (Cambia automáticamente o muestra el más importante) */}

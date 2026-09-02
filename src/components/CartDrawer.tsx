@@ -5,7 +5,8 @@ import { useSearchParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
 import { LazyImage } from './LazyImage';
-import { APP_CONFIG } from '../config/constants'; 
+import { trackInitiateCheckout } from '../utils/tracking';
+import { APP_CONFIG } from '../config/constants';
 
 export const CartDrawer = () => {
   const { 
@@ -94,6 +95,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
   };
 
   const handleCheckout = () => {
+    trackInitiateCheckout(cart, cartTotal);
     const mensaje = generarMensajeWhatsApp(0); // Sin envío por defecto
     const url = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, '_blank');
@@ -122,18 +124,18 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex justify-end">
+    <div className="fixed inset-0 z-modal flex justify-end">
       {/* Overlay Oscuro */}
       <div 
-        className="absolute inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm transition-opacity" 
+        className="absolute inset-0 bg-brand-bg/72 backdrop-blur-sm transition-opacity"
         onClick={closeCart}
       />
 
       {/* Panel Deslizante (Ancho completo en móvil) */}
-      <div className="relative w-full md:max-w-[480px] bg-white dark:bg-brand-surface-1 h-[100dvh] shadow-2xl flex flex-col animate-slide-in-right">
+      <div className="relative flex h-[100dvh] w-full flex-col border-l border-ui-border bg-ui-surface shadow-2xl animate-slide-in-right md:max-w-[480px]">
         
         {/* --- HEADER --- */}
-        <div className="px-5 py-4 border-b dark:border-brand-border flex justify-between items-center bg-white dark:bg-brand-surface-1 z-10 sticky top-0">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-ui-border bg-ui-surface px-5 py-4">
           <div>
             <h2 className="text-xl font-extrabold text-gray-900 dark:text-white flex items-center gap-2">
               Tu Pedido
@@ -151,7 +153,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
         </div>
 
         {/* --- CONTENIDO SCROLLABLE --- */}
-        <div className="flex-1 overflow-y-auto bg-gray-50/50 dark:bg-brand-bg/50">
+        <div className="flex-1 overflow-y-auto bg-ui-muted/45">
           {cart.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-[70%] text-gray-400 gap-6 p-8">
               <div className="bg-white dark:bg-brand-surface-2 p-8 rounded-full shadow-sm border border-gray-100 dark:border-brand-surface-3">
@@ -176,7 +178,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
                 {cart.map(item => {
                   const subtotal = (Number(item.precio) || 0) * (item.cantidad || item.cant || 0);
                   return (
-                    <div key={item.id} className="flex gap-4 p-3 bg-white dark:bg-brand-surface-2 border border-gray-100 dark:border-brand-surface-3 rounded-2xl shadow-sm">
+                    <div key={item.id} className="flex gap-4 rounded-2xl border border-ui-border bg-ui-surface p-3 shadow-sm">
                       {/* Imagen Clickable */}
                       <div 
                         className="cursor-pointer relative group shrink-0 w-16 h-16 sm:w-20 sm:h-20"
@@ -242,7 +244,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
               </div>
 
               {/* FORMULARIO DE CLIENTE */}
-              <div className="bg-white dark:bg-brand-surface-2 p-5 rounded-2xl border border-gray-100 dark:border-brand-surface-3 shadow-sm space-y-4">
+              <div className="space-y-4 rounded-2xl border border-ui-border bg-ui-surface p-5 shadow-sm">
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-2">
                   <User size={16} className="text-slate-400" /> 
                   Datos para la Nota (Opcional)
@@ -288,7 +290,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
         </div>
 
         {/* --- FOOTER FLOTANTE (STICKY) --- */}
-        <div className="p-4 border-t dark:border-brand-border bg-white dark:bg-brand-surface-1 shadow-[0_-4px_30px_rgba(0,0,0,0.08)] z-20 pb-safe mt-auto">
+        <div className="z-20 mt-auto border-t border-ui-border bg-ui-surface p-4 pb-safe shadow-[0_-6px_28px_rgba(5,20,36,0.1)]">
           <div className="flex justify-between items-end mb-4 px-1">
              <div className="space-y-0.5">
                 <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Total a Pagar</p>

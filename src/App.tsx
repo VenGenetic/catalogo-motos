@@ -1,8 +1,9 @@
-import { useState, useMemo, useEffect, Suspense, lazy, useCallback } from 'react';
+import { useState, useMemo, useEffect, useRef, Suspense, lazy, useCallback } from 'react';
 import { Routes, Route, useSearchParams, Link, useLocation, useNavigate, matchPath } from 'react-router-dom';
 import { WifiOff } from 'lucide-react';
 import './App.css';
 import { limpiarTexto } from './utils/helpers';
+import { trackPageView, trackViewContent } from './utils/tracking';
 import { Navbar } from './components/Navbar';
 import { TopBanner } from './components/TopBanner';
 import { HomeView } from './components/HomeView';
@@ -24,13 +25,13 @@ import { useDebounce } from './hooks/useDebounce';
 import { useCart } from './context/CartContext';
 
 const PageLoader = () => (
-  <div className="flex h-[60vh] w-full items-center justify-center">
+  <div className="flex h-[60vh] w-full items-center justify-center bg-ui-canvas">
     <div className="flex flex-col items-center gap-4">
       <div className="relative">
         <div className="animate-spin rounded-full h-12 w-12 border-4 border-brand-orange/20 border-t-brand-orange"></div>
         <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-brand-orange/60 animate-spin animation-delay-300"></div>
       </div>
-      <p className="text-gray-500 font-medium animate-pulse">Cargando catálogo...</p>
+      <p className="font-medium text-ui-copy animate-pulse">Cargando catálogo...</p>
     </div>
   </div>
 );
@@ -46,6 +47,22 @@ export default function App() {
   const selectedProduct = useMemo(() =>
     prodId ? productos.find(p => p.id === prodId) || null : null
     , [productos, prodId]);
+
+  // Píxel de Meta: PageView en cada cambio de ruta del SPA.
+  // El primer PageView lo dispara initMetaPixel(), por eso se omite el montaje inicial.
+  const isFirstRoute = useRef(true);
+  useEffect(() => {
+    if (isFirstRoute.current) {
+      isFirstRoute.current = false;
+      return;
+    }
+    trackPageView();
+  }, [location.pathname]);
+
+  // Píxel de Meta: ViewContent al abrir la ficha de un producto.
+  useEffect(() => {
+    if (selectedProduct) trackViewContent(selectedProduct);
+  }, [selectedProduct]);
 
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const navigate = useNavigate();
@@ -378,15 +395,15 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-gray-50">
+      <div className="flex h-screen w-full items-center justify-center bg-ui-canvas">
         <div className="flex flex-col items-center gap-6">
           <div className="relative">
             <div className="animate-spin rounded-full h-16 w-16 border-4 border-brand-orange/20 border-t-brand-orange"></div>
             <div className="absolute inset-2 rounded-full border-4 border-transparent border-t-brand-orange/60 animate-spin animation-delay-300"></div>
           </div>
           <div className="text-center">
-            <p className="text-gray-600 font-bold text-lg animate-pulse">Cargando catálogo</p>
-            <p className="text-gray-400 text-sm mt-1">Preparando repuestos...</p>
+            <p className="text-lg font-bold text-ui-ink animate-pulse">Cargando catálogo</p>
+            <p className="mt-1 text-sm text-ui-copy">Preparando repuestos...</p>
           </div>
         </div>
       </div>
@@ -394,7 +411,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-800 flex flex-col">
+    <div className="flex min-h-screen flex-col bg-ui-canvas font-sans text-ui-ink">
       {!isOnline && (
         <div className="md:hidden bg-red-600 text-white text-center py-2 px-4 flex items-center justify-center gap-2 text-sm font-medium">
           <WifiOff size={16} />
@@ -453,15 +470,15 @@ export default function App() {
                   alt="Error 404 - Página no encontrada"
                   className="max-w-xs md:max-w-md w-full mb-6 object-contain"
                 />
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+                <h1 className="mb-2 text-2xl font-bold text-ui-ink md:text-3xl">
                   ¡Ups! Página no encontrada
                 </h1>
-                <p className="text-gray-600 mb-6">
+                <p className="mb-6 text-ui-copy">
                   Lo sentimos, la página que buscas no existe.
                 </p>
                 <Link
                   to="/"
-                  className="bg-brand-orange text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors shadow-md"
+                  className="rounded-xl bg-brand-orange-action px-8 py-3 font-semibold text-white shadow-md transition-colors hover:bg-brand-orange"
                 >
                   Volver al Inicio
                 </Link>
@@ -488,7 +505,7 @@ export default function App() {
         </Suspense>
       )}
       {/* Botón Flotante: Visible en todas las pantallas excepto al abrir un producto (ya tiene su propio botón) */}
-      <WhatsAppButton hideWhenModalOpen={!!selectedProduct} />
+      <WhatsAppButton hideWhenModalOpen={!!selectedProduct || isCartOpen} />
       <ScrollToTopButton />
       <BottomNav />
       <Footer />
