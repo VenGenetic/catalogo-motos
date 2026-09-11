@@ -5,7 +5,17 @@ export const limpiarTexto = (texto: string) => {
   return String(texto).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 };
 
-export const optimizarImg = (url: string | null | undefined, size: number = 500) => {
+/**
+ * Devuelve la imagen original sin pasar por Storage Image Transformations.
+ *
+ * El catálogo ya guarda las fotos optimizadas en WebP. Transformar cada
+ * origen en Supabase no aporta un ahorro material y sí factura una imagen
+ * transformada distinta por producto durante cada ciclo.
+ *
+ * `size` se conserva en la firma porque documenta el tamaño de presentación
+ * en los consumidores y evita romper las llamadas existentes.
+ */
+export const optimizarImg = (url: string | null | undefined, _size: number = 500) => {
   // 1. BLINDAJE: Si no es string válida, devolvemos placeholder
   if (!url || typeof url !== 'string' || url.trim() === '' || url === 'No imagen') {
     return '/sin_imagen.webp';
@@ -14,15 +24,6 @@ export const optimizarImg = (url: string | null | undefined, size: number = 500)
   // 2. NUEVO: Si es una ruta local (empieza con /), devolver tal cual
   if (url.startsWith('/')) {
     return url;
-  }
-
-  // Optimizar usando el endpoint de transformación de imágenes de Supabase.
-  // Importante: hay que reescribir a /render/image/public/ (no /object/public/);
-  // el endpoint /object/public/ ignora los parámetros de tamaño y sirve el
-  // archivo original completo, que puede pesar cientos de KB o varios MB.
-  if (url.includes('/storage/v1/object/public/') && !url.includes('?')) {
-    const renderUrl = url.replace('/storage/v1/object/public/', '/storage/v1/render/image/public/');
-    return `${renderUrl}?width=${size}&height=${size}&resize=contain&quality=75`;
   }
 
   return url;
