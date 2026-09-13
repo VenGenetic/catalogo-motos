@@ -10,6 +10,7 @@ import { trackLead } from '../utils/tracking';
 import { APP_CONFIG } from '../config/constants';
 import { ImageZoom } from './ImageZoom';
 import { LazyImage } from './LazyImage';
+import { buildWhatsAppUrl } from '../utils/attribution';
 
 interface Props {
   product: Producto | null;
@@ -151,7 +152,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
   const handleDirectQuote = () => {
     trackLead(product);
     const message = `Hola LV PARTS, vi este repuesto en la web: ${product.nombre} (Ref: ${product.codigo_referencia || 'S/N'}). ¿Me ayudan con más info?`;
-    const url = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    const url = buildWhatsAppUrl(APP_CONFIG.WHATSAPP_NUMBER, message);
     window.open(url, '_blank');
   };
 

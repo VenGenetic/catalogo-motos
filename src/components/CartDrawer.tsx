@@ -7,6 +7,7 @@ import { optimizarImg } from '../utils/helpers';
 import { LazyImage } from './LazyImage';
 import { trackInitiateCheckout } from '../utils/tracking';
 import { APP_CONFIG } from '../config/constants';
+import { buildWhatsAppUrl } from '../utils/attribution';
 
 export const CartDrawer = () => {
   const { 
@@ -97,7 +98,7 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
   const handleCheckout = () => {
     trackInitiateCheckout(cart, cartTotal);
     const mensaje = generarMensajeWhatsApp(0); // Sin envío por defecto
-    const url = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
+    const url = buildWhatsAppUrl(APP_CONFIG.WHATSAPP_NUMBER, mensaje);
     window.open(url, '_blank');
   };
 

@@ -1,6 +1,7 @@
 import { Phone, Users, Clock, MapPin } from 'lucide-react';
 import { APP_CONFIG } from '../config/constants';
 import { trackContact } from '../utils/tracking';
+import { buildWhatsAppUrl } from '../utils/attribution';
 
 const ContactView = () => (
   <div className="min-h-screen bg-ui-canvas px-4 pb-28 pt-8 font-sans text-ui-ink transition-colors md:py-12">
@@ -18,7 +19,7 @@ const ContactView = () => (
         </p>
 
         <a
-          href={`https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}`}
+          href={buildWhatsAppUrl(APP_CONFIG.WHATSAPP_NUMBER)}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => trackContact('pagina_contacto')}

@@ -9,7 +9,11 @@ import { ThemeProvider } from './context/ThemeContext'
 import { ToastProvider } from './context/ToastContext'
 import { ScrollToTop } from './components/ScrollToTop'
 import { initMetaPixel } from './utils/tracking'
+import { initAttribution } from './utils/attribution'
 
+// Antes de renderizar: los identificadores del anuncio viven en la query de la
+// primera carga y se pierden en cuanto el cliente navega.
+initAttribution()
 initMetaPixel()
 
 createRoot(document.getElementById('root')!).render(

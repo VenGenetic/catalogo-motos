@@ -2,6 +2,7 @@ import { MessageCircle } from 'lucide-react';
 import { APP_CONFIG } from '../config/constants';
 import { trackContact } from '../utils/tracking';
 import { useState, useEffect } from 'react';
+import { buildWhatsAppUrl } from '../utils/attribution';
 
 interface WhatsAppButtonProps {
   hideWhenModalOpen?: boolean;
@@ -20,7 +21,7 @@ export const WhatsAppButton = ({ hideWhenModalOpen = false }: WhatsAppButtonProp
 
   const handleClick = () => {
     trackContact('boton_flotante');
-    window.open(`https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}`, '_blank');
+    window.open(buildWhatsAppUrl(APP_CONFIG.WHATSAPP_NUMBER), '_blank');
   };
 
   // Ocultar si se especifica y el modal está abierto

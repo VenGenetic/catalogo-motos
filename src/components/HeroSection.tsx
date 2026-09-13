@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import { ChevronRight, ShieldCheck, Truck, Users, MessageCircle } from 'lucide-react'; 
 import { APP_CONFIG } from '../config/constants';
 import { trackContact } from '../utils/tracking';
+import { buildWhatsAppUrl } from '../utils/attribution';
 
 export const HeroSection = () => {
 
   const handleWhatsappClick = () => {
     trackContact('hero');
     const mensaje = "Hola LV PARTS, quisiera cotizar unos repuestos.";
-    const url = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
+    const url = buildWhatsAppUrl(APP_CONFIG.WHATSAPP_NUMBER, mensaje);
     window.open(url, '_blank');
   };
 

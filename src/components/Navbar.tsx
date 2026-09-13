@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext';
 import { useTheme } from '../context/ThemeContext';
 import { APP_CONFIG } from '../config/constants';
 import { trackContact } from '../utils/tracking';
+import { buildWhatsAppUrl } from '../utils/attribution';
 
 export const Navbar = () => {
   const { cartCount, openCart } = useCart();
@@ -15,7 +16,7 @@ export const Navbar = () => {
   const handleWhatsappClick = () => {
     trackContact('navbar_cotizar');
     const mensaje = "Hola LV PARTS, quisiera cotizar unos repuestos.";
-    const url = `https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
+    const url = buildWhatsAppUrl(APP_CONFIG.WHATSAPP_NUMBER, mensaje);
     window.open(url, '_blank');
   };
 

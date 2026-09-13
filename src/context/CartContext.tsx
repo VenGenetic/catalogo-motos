@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { Producto, ItemCarrito } from '../types';
 import { APP_CONFIG } from '../config/constants';
 import { trackAddToCart, trackInitiateCheckout } from '../utils/tracking';
+import { buildWhatsAppUrl } from '../utils/attribution';
 
 interface CartContextType {
   cart: ItemCarrito[];
@@ -109,7 +110,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     });
 
     msg += `\nTotal: $${cartTotal.toFixed(2)}`;
-    window.open(`https://wa.me/${APP_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+    window.open(buildWhatsAppUrl(APP_CONFIG.WHATSAPP_NUMBER, msg), '_blank');
   };
 
   return (
