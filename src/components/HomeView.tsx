@@ -17,7 +17,7 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
     "@type": "AutoPartsStore",
     "name": "LV PARTS",
     "image": `${window.location.origin}/preview.jpg`,
-    "description": "Distribuidor autorizado de repuestos para motos Daytona, Tekken, IGM y más en Ecuador.",
+    "description": "Distribuidor autorizado de repuestos originales para motos Daytona en Ecuador. Stock en Guayaquil y envíos a todo el país.",
     "telephone": APP_CONFIG.WHATSAPP_NUMBER,
     "address": {
       "@type": "PostalAddress",
@@ -28,8 +28,8 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
     "priceRange": "$$"
   };  return (
     <div className="animate-fade-in">
-        <title>LV PARTS | Repuestos Daytona y Multimarca Ecuador</title>
-        <meta name="description" content="Catálogo digital de repuestos originales y homologados. Encuentra piezas para motor, frenos y chasis de Daytona, Tekken e IGM." />
+        <title>LV PARTS | Repuestos originales Daytona en Ecuador</title>
+        <meta name="description" content="Catálogo de repuestos originales para motos Daytona: Wing Evo, Tekken, GP1, Wolf, Shark y más. Precios actualizados, stock en Guayaquil y envíos a todo Ecuador." />
         <script type="application/ld+json">
           {JSON.stringify(businessSchema)}
         </script>

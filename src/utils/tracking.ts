@@ -20,8 +20,25 @@ declare global {
   interface Window {
     fbq?: FbqFn;
     _fbq?: FbqFn;
+    gtag?: (...args: unknown[]) => void;
   }
 }
+
+// Conversión "Clic a WhatsApp (web lvparts.ec)" de Google Ads (categoría
+// Contacto, recuento "Una"). La etiqueta base AW-17951827004 se carga en
+// index.html; esto sólo marca el momento en que el cliente salta a WhatsApp.
+// Sin este evento Google nunca sabía qué búsqueda terminó en una cotización:
+// la cuenta sólo medía "Cómo llegar" y clics de la ficha de Maps.
+const GOOGLE_ADS_WHATSAPP = 'AW-17951827004/IifHCO6Bl4QdELzIjPBC';
+
+const trackGoogleWhatsApp = (value?: number) => {
+  if (typeof window === 'undefined' || !window.gtag) return;
+  window.gtag('event', 'conversion', {
+    send_to: GOOGLE_ADS_WHATSAPP,
+    value: value && value > 0 ? value : 1,
+    currency: CURRENCY,
+  });
+};
 
 let initialized = false;
 
@@ -94,7 +111,8 @@ export const trackAddToCart = (product: Producto) =>
  * Es la señal más fuerte de intención de compra del sitio: úsala como
  * evento de optimización en las campañas de Meta.
  */
-export const trackInitiateCheckout = (cart: ItemCarrito[], total: number) =>
+export const trackInitiateCheckout = (cart: ItemCarrito[], total: number) => {
+  trackGoogleWhatsApp(Number(total));
   track('InitiateCheckout', {
     content_ids: cart.map((i) => i.codigo_referencia || i.id),
     content_type: 'product',
@@ -102,9 +120,11 @@ export const trackInitiateCheckout = (cart: ItemCarrito[], total: number) =>
     value: Number(total) || 0,
     currency: CURRENCY,
   });
+};
 
 /** Cotización por WhatsApp de un producto concreto. */
-export const trackLead = (product: Producto) =>
+export const trackLead = (product: Producto) => {
+  trackGoogleWhatsApp(Number(product.precio));
   track('Lead', {
     content_ids: [product.codigo_referencia || product.id],
     content_name: product.nombre,
@@ -112,9 +132,13 @@ export const trackLead = (product: Producto) =>
     value: Number(product.precio) || 0,
     currency: CURRENCY,
   });
+};
 
 /**
  * Clic genérico a WhatsApp (navbar, hero, botón flotante, página de contacto).
  * `source` permite distinguir de dónde salió en el Administrador de eventos.
  */
-export const trackContact = (source: string) => track('Contact', { source });
+export const trackContact = (source: string) => {
+  trackGoogleWhatsApp();
+  track('Contact', { source });
+};
