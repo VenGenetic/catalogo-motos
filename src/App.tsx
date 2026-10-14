@@ -8,6 +8,7 @@ import { Navbar } from './components/Navbar';
 import { TopBanner } from './components/TopBanner';
 import { HomeView } from './components/HomeView';
 import { WhatsAppButton } from './components/WhatsAppButton';
+import { ProductDetailBoundary, ProductDetailLoader } from './components/ProductDetailBoundary';
 
 // Carga Diferida (Lazy Loading)
 const CatalogView = lazy(() => import('./components/CatalogView').then(module => ({ default: module.CatalogView })));
@@ -489,15 +490,17 @@ export default function App() {
       </main>
 
       {selectedProduct && (
-        <Suspense fallback={null}>
-          <ProductDetailModal
-            product={selectedProduct}
-            allProducts={productos}
-            currentList={filteredProducts}
-            onClose={handleCloseModal}
-            onSelectRelated={handleProductClick}
-          />
-        </Suspense>
+        <ProductDetailBoundary key={selectedProduct.id} onClose={handleCloseModal}>
+          <Suspense fallback={<ProductDetailLoader />}>
+            <ProductDetailModal
+              product={selectedProduct}
+              allProducts={productos}
+              currentList={filteredProducts}
+              onClose={handleCloseModal}
+              onSelectRelated={handleProductClick}
+            />
+          </Suspense>
+        </ProductDetailBoundary>
       )}
       {isCartOpen && (
         <Suspense fallback={null}>
