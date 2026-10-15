@@ -30,10 +30,9 @@ export const WhatsAppButton = ({ hideWhenModalOpen = false }: WhatsAppButtonProp
   return (
     <button
       onClick={handleClick}
-      // CAMBIOS CLAVE AQUÍ:
-      // 1. 'bottom-24' en móvil (para subirlo arriba del menú) y 'md:bottom-6' en PC.
-      // 2. 'z-[70]' para asegurarnos que esté ENCIMA de todo (modales, menús, etc).
-      className={`group fixed bottom-[calc(5.75rem+env(safe-area-inset-bottom))] right-3 z-floating flex h-[52px] w-[52px] items-center justify-center gap-2 rounded-2xl bg-[#25D366] text-brand-bg shadow-xl transition-all duration-500 hover:bg-[#20bd5a] hover:shadow-green-500/25 md:bottom-6 md:right-6 md:w-auto md:rounded-full md:px-4 ${
+      // Solo en PC ('hidden md:flex'): en móvil el contacto va por la barra inferior.
+      // 'z-floating' para que quede encima del contenido.
+      className={`group fixed bottom-6 right-6 z-floating hidden h-[52px] items-center justify-center gap-2 rounded-full bg-[#25D366] px-4 text-brand-bg shadow-xl transition-all duration-500 hover:bg-[#20bd5a] hover:shadow-green-500/25 md:flex ${
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
       }`}
       aria-label="Contactar por WhatsApp"

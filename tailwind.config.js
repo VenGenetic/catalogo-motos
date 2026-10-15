@@ -8,13 +8,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        'brand-orange': '#ff5626',
-        'brand-orange-action': '#d63b0d',
-        'brand-bg': '#051424',
-        'brand-surface-1': '#0d1c2d',
-        'brand-surface-2': '#122131',
-        'brand-surface-3': '#1c2b3c',
-        'brand-border': '#273647',
+        'brand-orange': '#f15b27',
+        'brand-orange-action': '#cf3f10',
+        'brand-bg': '#181818',
+        'brand-surface-1': '#202020',
+        'brand-surface-2': '#292929',
+        'brand-surface-3': '#333333',
+        'brand-border': '#454545',
         'ui-canvas': 'rgb(var(--ui-canvas) / <alpha-value>)',
         'ui-surface': 'rgb(var(--ui-surface) / <alpha-value>)',
         'ui-muted': 'rgb(var(--ui-muted) / <alpha-value>)',
@@ -30,9 +30,18 @@ export default {
         sans: ['Hanken Grotesk', 'sans-serif'],
       },
       boxShadow: {
-        card: '0 8px 24px rgba(5, 20, 36, 0.055)',
-        'card-hover': '0 18px 42px rgba(5, 20, 36, 0.11)',
-        lifted: '0 14px 34px rgba(5, 20, 36, 0.12)',
+        card: '0 1px 2px rgba(0, 0, 0, 0.05)',
+        'card-hover': '0 8px 22px rgba(0, 0, 0, 0.12)',
+        lifted: '0 12px 30px rgba(0, 0, 0, 0.16)',
+      },
+      // Valores fuera de la escala por defecto que usan los fondos /58, /72, /82, /88 y /92;
+      // sin esto Tailwind no genera la clase y el fondo queda transparente.
+      opacity: {
+        58: '0.58',
+        72: '0.72',
+        82: '0.82',
+        88: '0.88',
+        92: '0.92',
       },
       zIndex: {
         sticky: '30',

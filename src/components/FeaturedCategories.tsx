@@ -20,23 +20,24 @@ export const FeaturedCategories = () => {
   };
 
   return (
-    <section className="border-t border-ui-border bg-ui-canvas py-14 md:py-16">
-      <div className="mx-auto max-w-7xl px-4 md:px-8">
-        <h2 className="mb-8 text-center text-2xl font-extrabold text-ui-ink md:text-3xl">
-          Busca por Categoría
-        </h2>
+    <section className="bg-ui-canvas pb-12 pt-4 md:pb-16">
+      <div className="mx-auto max-w-[1440px] px-3 sm:px-5 lg:px-8">
+        <div className="catalog-rule mb-6 pt-4">
+          <span className="section-kicker">Taller rápido</span>
+          <h2 className="mt-3 text-2xl font-black uppercase tracking-tight text-ui-ink md:text-3xl">Compra por sistema</h2>
+        </div>
 
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
+        <div className="grid grid-cols-2 gap-px border border-ui-border bg-ui-border sm:grid-cols-4 lg:grid-cols-8">
           {CATEGORIAS.slice(0, 8).map((cat) => (
             <button
               key={cat.id}
               onClick={() => handleClick(cat.nombre)}
-              className="surface-card-interactive group flex min-h-[150px] cursor-pointer flex-col items-center justify-center rounded-[1.25rem] p-4 md:min-h-[170px] md:p-6"
+              className="group flex min-h-[140px] cursor-pointer flex-col items-center justify-center bg-ui-surface p-4 transition-colors hover:bg-ui-muted md:min-h-[160px]"
             >
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-ui-border bg-ui-muted text-ui-copy shadow-sm transition-colors group-hover:border-brand-orange/25 group-hover:bg-brand-orange/10 group-hover:text-brand-orange">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center border-2 border-ui-ink text-ui-ink transition-colors group-hover:border-brand-orange group-hover:bg-brand-orange group-hover:text-white">
                 {getIcon(cat.nombre)}
               </div>
-              <h3 className="text-center text-sm font-bold leading-snug text-ui-ink transition-colors group-hover:text-brand-orange">
+              <h3 className="text-center text-xs font-black uppercase leading-snug tracking-wide text-ui-ink transition-colors group-hover:text-brand-orange">
                 {cat.nombre}
               </h3>
             </button>

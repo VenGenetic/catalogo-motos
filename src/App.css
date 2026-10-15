@@ -3,7 +3,10 @@
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.fade-in { animation: fadeIn 0.4s ease-out forwards; }
+/* `backwards` y no `forwards`: si el transform final se queda puesto, <main> pasa a ser
+   la referencia de todo lo `fixed` de adentro y el selector de moto del catálogo en móvil
+   se abre al fondo de la página, fuera de la pantalla. */
+.fade-in { animation: fadeIn 0.4s ease-out backwards; }
 
 @keyframes slideInRight {
   from { transform: translateX(100%); opacity: 0; }

@@ -1,63 +1,36 @@
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram } from 'lucide-react';
+import { Facebook, Instagram, MapPin, MessageCircle, Phone } from 'lucide-react';
 
-export const Footer = () => {
-  return (
-    <footer className="w-full border-t border-brand-border bg-brand-bg pb-32 font-sans text-slate-400 transition-colors md:pb-12">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 flex flex-col md:flex-row justify-between items-center gap-6">
-        
-        {/* Lado izquierdo: Marca, Redes y Copyright */}
-        <div className="flex flex-col items-center md:items-start text-center md:text-left">
-          <div className="flex items-center gap-4 mb-3">
-            <div className="font-anton text-2xl uppercase tracking-widest text-white">
-              LV <span className="text-brand-orange">PARTS</span>
-            </div>
-            
-            {/* Redes Sociales */}
-            <div className="flex gap-3">
-              <a 
-                href="https://www.facebook.com/profile.php?id=61583611217559" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                title="Facebook"
-                className="text-gray-400 hover:text-brand-orange transition-colors"
-              >
-                <Facebook className="h-[18px] w-[18px]" />
-              </a>
-              <a 
-                href="https://www.instagram.com/love_daytona_oficial/" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                title="Instagram"
-                className="text-gray-400 hover:text-brand-orange transition-colors"
-              >
-                <Instagram className="h-[18px] w-[18px]" />
-              </a>
-            </div>
-          </div>
-          
-          <p className="font-geist text-[11px] uppercase tracking-[0.14em] text-slate-400">
-            &copy; {new Date().getFullYear()} LV PARTS - REPUESTOS ORIGINALES DAYTONA. TODOS LOS DERECHOS RESERVADOS.
-          </p>
-        </div>
-
-        {/* Lado derecho: Enlaces */}
-        <div className="flex flex-wrap justify-center gap-6 md:gap-8 font-geist text-[10px] font-bold uppercase tracking-widest">
-          <Link 
-            to="/contacto" 
-            className="text-slate-500 dark:text-gray-400 hover:text-brand-orange transition-colors"
-          >
-            Soporte
-          </Link>
-          <Link
-            to="/catalogo"
-            className="text-slate-500 dark:text-gray-400 hover:text-brand-orange transition-colors"
-          >
-            Distribuidores
-          </Link>
-        </div>
-
+export const Footer = () => (
+  <footer className="w-full bg-brand-bg pb-28 font-sans text-white md:pb-0">
+    <div className="border-b border-white/10 bg-[#202020]">
+      <div className="mx-auto grid max-w-[1440px] divide-y divide-white/10 px-3 sm:px-5 md:grid-cols-3 md:divide-x md:divide-y-0 lg:px-8">
+        <div className="flex items-center gap-3 py-5 md:px-5"><MessageCircle className="text-brand-orange" /><div><p className="text-xs font-black uppercase tracking-wide">Asesoría por WhatsApp</p><p className="text-xs text-white/55">Confirma compatibilidad antes de comprar</p></div></div>
+        <div className="flex items-center gap-3 py-5 md:px-5"><MapPin className="text-brand-orange" /><div><p className="text-xs font-black uppercase tracking-wide">Atención en Guayaquil</p><p className="text-xs text-white/55">Repuestos y soporte especializado</p></div></div>
+        <div className="flex items-center gap-3 py-5 md:px-5"><Phone className="text-brand-orange" /><div><p className="text-xs font-black uppercase tracking-wide">+593 99 327 9707</p><p className="text-xs text-white/55">Lunes a sábado, 9:00 a 18:00</p></div></div>
       </div>
-    </footer>
-  );
-};
+    </div>
+    <div className="mx-auto grid max-w-[1440px] gap-8 px-5 py-10 md:grid-cols-[1.5fr_1fr_1fr] lg:px-8">
+      <div>
+        <div className="flex items-center gap-3">
+          <span className="flex h-12 w-12 items-center justify-center bg-white p-1.5"><img src="/logo.svg" alt="" className="h-full w-full object-contain" /></span>
+          <div className="font-anton text-3xl uppercase tracking-wide">LV <span className="text-brand-orange">PARTS</span></div>
+        </div>
+        <p className="mt-4 max-w-md text-sm leading-relaxed text-white/60">Catálogo de repuestos originales para motos Daytona, con stock actualizado, asesoría y envíos a todo Ecuador.</p>
+        <div className="mt-5 flex gap-2">
+          <a href="https://www.facebook.com/profile.php?id=61583611217559" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="flex h-10 w-10 items-center justify-center border border-white/20 text-white/70 hover:border-brand-orange hover:text-brand-orange"><Facebook size={18} /></a>
+          <a href="https://www.instagram.com/love_daytona_oficial/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="flex h-10 w-10 items-center justify-center border border-white/20 text-white/70 hover:border-brand-orange hover:text-brand-orange"><Instagram size={18} /></a>
+        </div>
+      </div>
+      <div>
+        <h2 className="border-b border-white/15 pb-3 text-xs font-black uppercase tracking-[.14em]">Comprar</h2>
+        <nav className="mt-4 flex flex-col gap-3 text-sm text-white/65"><Link to="/catalogo?seccion=Todos" className="hover:text-brand-orange">Todos los repuestos</Link><Link to="/catalogo?seccion=Motor%20e%20Internos" className="hover:text-brand-orange">Motor</Link><Link to="/catalogo?seccion=Sistema%20El%C3%A9ctrico" className="hover:text-brand-orange">Sistema eléctrico</Link></nav>
+      </div>
+      <div>
+        <h2 className="border-b border-white/15 pb-3 text-xs font-black uppercase tracking-[.14em]">Ayuda</h2>
+        <nav className="mt-4 flex flex-col gap-3 text-sm text-white/65"><Link to="/contacto" className="hover:text-brand-orange">Contacto</Link><Link to="/catalogo" className="hover:text-brand-orange">Buscar por modelo</Link><a href="https://maps.app.goo.gl/xj8vjxQYTpfZ7XhRA" target="_blank" rel="noopener noreferrer" className="hover:text-brand-orange">Cómo llegar</a></nav>
+      </div>
+    </div>
+    <div className="border-t border-white/10 px-5 py-4 text-center font-geist text-[10px] uppercase tracking-[.12em] text-white/45">© {new Date().getFullYear()} LV PARTS · Repuestos originales Daytona</div>
+  </footer>
+);
