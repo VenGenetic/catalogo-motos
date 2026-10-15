@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useRef, memo } from 'react';
 import { ArrowLeft, Search, ShoppingBag, Copy, Check, X, Clipboard, SlidersHorizontal, ChevronRight } from 'lucide-react';
 import { optimizarImg } from '../utils/helpers';
-import { APP_CONFIG, MODELOS } from '../config/constants';
+import { APP_CONFIG, MODELOS_CATALOGO, nombreDeModelo } from '../config/constants';
 import { Producto } from '../types';
 import { LazyImage } from './LazyImage';
 import { SearchBar } from './SearchBar';
@@ -44,9 +44,9 @@ export const CatalogView = memo(({
   };
 
   const modelosFiltrados = useMemo(() => {
-    if (!busquedaModelo.trim()) return MODELOS;
+    if (!busquedaModelo.trim()) return MODELOS_CATALOGO;
     const term = busquedaModelo.toLowerCase();
-    return MODELOS.filter(m => m.toLowerCase().includes(term));
+    return MODELOS_CATALOGO.filter(m => m.nombre.toLowerCase().includes(term));
   }, [busquedaModelo]);
 
   // Resetear página cuando cambian los filtros
@@ -70,9 +70,11 @@ export const CatalogView = memo(({
     return productos.slice(0, pagina * APP_CONFIG.ITEMS_PER_PAGE);
   }, [productos, pagina]);
 
-  const handleSelectModelFromLayout = (modeloName: string) => {
-    const term = modeloName.split(' ')[0];
-    setFiltroModelo(term);
+  // Nombre visible de la moto elegida (en la dirección va su id: /catalogo/wolf-250).
+  const nombreModelo = nombreDeModelo(filtroModelo);
+
+  const handleSelectModelFromLayout = (modeloId: string) => {
+    setFiltroModelo(modeloId);
     setBusqueda('');
     setFiltroSeccion('Todos');
     setShowModelSheet(false);
@@ -141,19 +143,18 @@ export const CatalogView = memo(({
           </p>
         ) : (
           modelosFiltrados.map((modelo) => {
-            const term = modelo.split(' ')[0];
-            const isSelected = filtroModelo.toLowerCase() === term.toLowerCase();
+            const isSelected = filtroModelo === modelo.id;
             return (
               <button
-                key={modelo}
-                onClick={() => handleSelectModelFromLayout(modelo)}
+                key={modelo.id}
+                onClick={() => handleSelectModelFromLayout(modelo.id)}
                 className={`w-full text-left py-2.5 px-3 rounded-xl text-sm transition-all flex items-center justify-between ${
                   isSelected
                     ? 'text-brand-orange bg-brand-orange/10 font-extrabold shadow-sm border-l-4 border-brand-orange pl-2'
                     : 'border-l-4 border-transparent pl-3 text-ui-ink hover:bg-ui-muted hover:text-brand-orange'
                 }`}
               >
-                <span className="truncate pr-2">{modelo}</span>
+                <span className="truncate pr-2">{modelo.nombre}</span>
                 {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-brand-orange shrink-0"></span>}
               </button>
             );
@@ -186,7 +187,7 @@ export const CatalogView = memo(({
                 busqueda={busqueda}
                 setBusqueda={setBusqueda}
                 productos={productos}
-                filtroModelo={filtroModelo}
+                filtroModelo={nombreModelo}
               />
             </div>
           </div>
@@ -196,7 +197,7 @@ export const CatalogView = memo(({
                 <span className="hidden md:inline">Viendo:</span>
                 {filtroModelo ? (
                     <span className="font-extrabold text-brand-orange bg-brand-orange/10 px-2 py-1 rounded-md border border-brand-orange/20 flex items-center gap-1.5 shadow-sm">
-                      <span>{filtroModelo}</span>
+                      <span>{nombreModelo}</span>
                       <button
                         onClick={() => setFiltroModelo('')}
                         className="hover:bg-brand-orange/20 p-0.5 rounded-full transition-colors active:scale-90 flex items-center justify-center"
@@ -237,7 +238,7 @@ export const CatalogView = memo(({
           >
             <span className="flex items-center gap-2 truncate text-sm font-bold text-ui-ink">
               <SlidersHorizontal className="w-4 h-4 text-brand-orange shrink-0" />
-              <span className="truncate">{filtroModelo ? `Modelo: ${filtroModelo}` : 'Buscar por modelo de moto'}</span>
+              <span className="truncate">{filtroModelo ? `Modelo: ${nombreModelo}` : 'Buscar por modelo de moto'}</span>
             </span>
             <ChevronRight className="w-4 h-4 text-gray-400 shrink-0" />
           </button>
@@ -259,8 +260,8 @@ export const CatalogView = memo(({
                         {/* Contenedor de la Imagen con zoom */}
                         <div className="model-media-shell group relative flex w-full shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-ui-border p-3 shadow-inner md:aspect-[4/3] md:w-72">
                           <ImageZoom 
-                            src={getMotoImage(filtroModelo)} 
-                            alt={filtroModelo}
+                            src={getMotoImage(nombreModelo)} 
+                            alt={nombreModelo}
                             className="w-full h-full"
                           />
                         </div>
@@ -271,7 +272,7 @@ export const CatalogView = memo(({
                             Modelo Daytona
                           </span>
                           <h2 className="mb-2 mt-3 font-anton text-3xl uppercase tracking-wider text-ui-ink md:text-4xl">
-                            {filtroModelo}
+                            {nombreModelo}
                           </h2>
                           <p className="max-w-xl font-hanken text-xs uppercase leading-relaxed tracking-wide text-ui-copy md:text-sm">
                             Catálogo completo de repuestos originales Daytona disponibles en inventario. Toca la imagen para ampliar los detalles técnicos del modelo.

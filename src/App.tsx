@@ -22,6 +22,8 @@ import { Footer } from './components/Footer';
 import { Producto } from './types';
 import { useProducts } from './hooks/useProducts';
 import { useDebounce } from './hooks/useDebounce';
+import { piezasDeModelo, modeloPorId } from './utils/despiece';
+import { nombreDeModelo } from './config/constants';
 import { useCart } from './context/CartContext';
 
 const PageLoader = () => (
@@ -260,6 +262,12 @@ export default function App() {
     return false;
   }, []);
 
+  // Las piezas de la moto elegida (null si la dirección no es una moto del despiece).
+  const piezasModelo = useMemo(() => {
+    if (!filtroModelo || !modeloPorId(filtroModelo)) return null;
+    return piezasDeModelo(productos.map(p => ({ id: p.id, sku: p.codigo_referencia ?? null, name: p.nombre })), filtroModelo);
+  }, [productos, filtroModelo]);
+
   const filteredProducts = useMemo(() => {
 
     const calcularRelevancia = (
@@ -368,7 +376,11 @@ export default function App() {
     let resultado = productos
       .filter((p) => {
         if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
-        if (filtroModelo && !p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
+        if (filtroModelo) {
+          // Moto del despiece: sólo lo que le sirve. Dirección vieja (/catalogo/Wolf): como antes.
+          if (piezasModelo) { if (!piezasModelo.has(p.id)) return false; }
+          else if (!p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
+        }
         return true;
       })
       .map((p) => ({
@@ -380,10 +392,13 @@ export default function App() {
       resultado = resultado
         .filter((p) => p.relevancia > 2) // Filtro mínimo
         .sort((a, b) => b.relevancia - a.relevancia);
+    } else if (piezasModelo) {
+      // Sin búsqueda, primero las piezas propias de la moto y después las que comparte.
+      resultado = [...resultado].sort((a, b) => (piezasModelo.get(a.id) === 'propia' ? 0 : 1) - (piezasModelo.get(b.id) === 'propia' ? 0 : 1));
     }
 
     return resultado;
-  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo, expandirTerminos, isFuzzyMatch]);
+  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo, piezasModelo, expandirTerminos, isFuzzyMatch]);
 
   const handleProductClick = useCallback((p: Producto) => {
     setSearchParams((prev: URLSearchParams) => { prev.set('prod', p.id); return prev; });
@@ -448,7 +463,7 @@ export default function App() {
             } />
             <Route path="/catalogo/:modelo" element={
               <>
-                <title>{filtroModelo ? `Repuestos ${filtroModelo}` : 'Catálogo'} | LV PARTS</title>
+                <title>{filtroModelo ? `Repuestos Daytona ${nombreDeModelo(filtroModelo)}` : 'Catálogo'} | LV PARTS</title>
                 <CatalogView
                   productos={filteredProducts}
                   filtroModelo={filtroModelo}
