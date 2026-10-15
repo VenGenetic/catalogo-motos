@@ -165,8 +165,12 @@ export default function App() {
   // Después se quita de la dirección: los botones de sección solo cambian el estado, y si el
   // parámetro se quedara, al escribir una búsqueda volvería a imponer la sección vieja y un
   // segundo clic al mismo enlace no haría nada.
+  // Fuera del catálogo vuelve a "Todos" (como el modelo): si no, al regresar por "Compra por
+  // modelo", el buscador o "Ver catálogo" se vería solo la sección elegida antes.
   useEffect(() => {
-    if (location.pathname.startsWith('/catalogo')) {
+    if (!location.pathname.startsWith('/catalogo')) {
+      setFiltroSeccion('Todos');
+    } else {
       const params = new URLSearchParams(location.search);
       const seccion = params.get('seccion');
       if (seccion) {
