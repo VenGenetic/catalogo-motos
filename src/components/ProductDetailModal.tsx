@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info, ChevronLeft, ChevronRight, MoveHorizontal, ZoomIn, Copy, Clipboard } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Producto } from '../types';
 import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
@@ -19,6 +18,18 @@ interface Props {
   onClose: () => void;
   onSelectRelated: (p: Producto) => void;
 }
+
+const TUTORIAL_STORAGE_KEY = 'LVPARTS_TUTORIAL_SEEN';
+
+const hasSeenTutorial = () => {
+  try {
+    return window.localStorage.getItem(TUTORIAL_STORAGE_KEY) === 'true';
+  } catch {
+    // Safari can block storage in private browsing or with strict privacy
+    // settings. Product details must still be able to open.
+    return true;
+  }
+};
 
 export const ProductDetailModal = ({ product, allProducts, currentList, onClose, onSelectRelated }: Props) => {
   const { addToCart } = useCart();
@@ -115,11 +126,15 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
 
   // Tutorial Interactivo Primera Vez
   const [showTutorial, setShowTutorial] = useState(
-    () => Boolean(product && !localStorage.getItem('LVPARTS_TUTORIAL_SEEN'))
+    () => Boolean(product && !hasSeenTutorial())
   );
 
   const dismissTutorial = () => {
-    localStorage.setItem('LVPARTS_TUTORIAL_SEEN', 'true');
+    try {
+      window.localStorage.setItem(TUTORIAL_STORAGE_KEY, 'true');
+    } catch {
+      // Closing the tutorial must not depend on persistent storage.
+    }
     setShowTutorial(false);
   };
 
@@ -172,25 +187,26 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
   };
 
   return (
-    <AnimatePresence>
+    <>
       {/* Z-100 para asegurar que esté ENCIMA de todo */}
-      <div className="fixed inset-0 z-modal flex items-center justify-center">
+      <div
+        className="viewport-fill product-modal-layer fixed inset-0 z-modal flex items-center justify-center"
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Detalle de ${product.nombre}`}
+      >
         
         <title>{`${product.nombre} | LV PARTS`}</title>
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
 
         {/* Overlay oscuro */}
-        <div className="absolute inset-0 bg-brand-bg/88 backdrop-blur-sm" onClick={onClose} />
+        <div className="viewport-fill absolute inset-0 bg-brand-bg/88 backdrop-blur-sm" onClick={onClose} />
 
         {/* MODAL PRINCIPAL */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95, y: 20 }} 
-          animate={{ opacity: 1, scale: 1, y: 0 }} 
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          transition={{ type: "spring", duration: 0.4 }}
+        <div
           // CLAVE MÓVIL: w-full h-full (ocupa toda la pantalla)
           // CLAVE DESKTOP: Ancho máximo más generoso para mostrar bien la imagen 1024x535
-          className="relative flex h-full w-full flex-col overflow-hidden overscroll-x-none bg-ui-surface shadow-2xl touch-pan-y md:h-auto md:max-h-[95vh] md:max-w-6xl md:rounded-[1.5rem] md:border md:border-ui-border lg:max-w-7xl"
+          className="product-modal-panel relative flex h-full w-full flex-col overflow-hidden overscroll-x-none bg-ui-surface shadow-2xl touch-pan-y animate-scale-up md:h-auto md:max-h-[95vh] md:max-w-6xl md:rounded-[1.5rem] md:border md:border-ui-border lg:max-w-7xl"
           onClick={(e) => e.stopPropagation()} 
           onTouchStart={isMobile ? onTouchStart : undefined}
           onTouchMove={isMobile ? onTouchMove : undefined}
@@ -198,19 +214,12 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
         >
             
             {/* ====== TUTORIAL OVERLAY (ÚNICA VEZ) ====== */}
-            <AnimatePresence>
               {showTutorial && (
-                <motion.div 
-                   initial={{ opacity: 0 }} 
-                   animate={{ opacity: 1 }} 
-                   exit={{ opacity: 0 }} 
-                   className="absolute inset-0 z-toast flex items-center justify-center bg-brand-bg/82 p-4 backdrop-blur-sm md:p-8"
+                <div
+                   className="viewport-fill absolute inset-0 z-toast flex items-center justify-center bg-brand-bg/82 p-4 backdrop-blur-sm animate-fade-in md:p-8"
                  >
-                   <motion.div
-                     initial={{ scale: 0.9, y: 20 }}
-                     animate={{ scale: 1, y: 0 }}
-                     exit={{ scale: 0.9, y: 20 }}
-                     className="flex w-full max-w-sm flex-col overflow-hidden rounded-[1.5rem] border border-ui-border bg-ui-surface shadow-2xl"
+                   <div
+                     className="flex w-full max-w-sm flex-col overflow-hidden rounded-[1.5rem] border border-ui-border bg-ui-surface shadow-2xl animate-scale-up"
                    >
                      {/* Encabezado Industrial */}
                      <div className="bg-slate-900 dark:bg-black text-white p-4 text-center text-sm font-black uppercase tracking-widest border-b border-slate-200 dark:border-brand-surface-3">
@@ -255,10 +264,9 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                      >
                        ¡Entendido!
                      </button>
-                   </motion.div>
-                </motion.div>
+                   </div>
+                </div>
               )}
-            </AnimatePresence>
             {/* ====== FIN TUTORIAL ====== */}
             
             {/* Botón Cerrar: Ajustado para respetar el Notch/Safe Region en móviles */}
@@ -530,8 +538,8 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
               </div>
             </div>
 
-        </motion.div>
+        </div>
       </div>
-    </AnimatePresence>
+    </>
   );
 };
