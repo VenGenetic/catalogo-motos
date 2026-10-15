@@ -1,6 +1,7 @@
 import { MapPin, Clock, Phone } from 'lucide-react';
 import { HeroSection } from './HeroSection';
 import { FeaturedCategories } from './FeaturedCategories';
+import { ModelExplorer } from './ModelExplorer';
 import { Producto } from '../types';
 import { APP_CONFIG } from '../config/constants';
 
@@ -36,20 +37,26 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
 
       <HeroSection />
 
+      <ModelExplorer />
+
       <FeaturedCategories />
 
       {/* Sección de Ubicación y Mapa */}
-      <section className="border-t border-ui-border bg-ui-muted/45 py-14 md:py-16">
-        <div className="mx-auto max-w-7xl px-4 md:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+      <section className="border-t border-ui-border bg-ui-surface py-10 md:py-14">
+        <div className="mx-auto max-w-[1440px] px-3 sm:px-5 lg:px-8">
+          <div className="catalog-rule mb-6 pt-4">
+            <span className="section-kicker">Atención y despacho</span>
+            <h2 className="mt-3 text-2xl font-black uppercase tracking-tight text-ui-ink md:text-3xl">Estamos en Guayaquil</h2>
+          </div>
+          <div className="grid grid-cols-1 items-stretch border border-ui-border bg-ui-border gap-px md:grid-cols-2">
                
              {/* Lado izquierdo: Información y detalles */}
-             <div className="surface-card flex flex-col justify-between rounded-[1.5rem] p-6 md:p-8">
+             <div className="flex flex-col justify-between bg-ui-surface p-6 md:p-9">
                <div>
-                 <span className="text-brand-orange text-xs font-black uppercase tracking-widest block mb-2">
-                   Visítanos en Guayaquil
+                 <span className="section-kicker mb-3">
+                   Punto de atención
                  </span>
-                 <h3 className="mb-4 text-xl font-black text-ui-ink md:text-2xl">
+                 <h3 className="mb-4 text-2xl font-black uppercase text-ui-ink md:text-3xl">
                    Love Daytona - LV PARTS
                  </h3>
                  <p className="mb-6 text-sm leading-relaxed text-ui-copy">
@@ -58,7 +65,7 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
                  
                  <div className="space-y-4">
                    <div className="flex items-start gap-3">
-                     <div className="bg-brand-orange/10 p-2 rounded-xl text-brand-orange shrink-0">
+                     <div className="shrink-0 bg-brand-orange/10 p-2 text-brand-orange">
                        <MapPin className="w-5 h-5" />
                      </div>
                      <div>
@@ -68,7 +75,7 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
                    </div>
                    
                    <div className="flex items-start gap-3">
-                     <div className="shrink-0 rounded-xl bg-brand-orange/10 p-2 text-brand-orange">
+                     <div className="shrink-0 bg-brand-orange/10 p-2 text-brand-orange">
                        <Clock className="w-5 h-5" />
                      </div>
                      <div>
@@ -78,7 +85,7 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
                    </div>
 
                    <div className="flex items-start gap-3">
-                     <div className="shrink-0 rounded-xl bg-[#25D366]/10 p-2 text-[#168b4c] dark:text-[#54e38b]">
+                     <div className="shrink-0 bg-[#25D366]/10 p-2 text-[#168b4c] dark:text-[#54e38b]">
                        <Phone className="w-5 h-5" />
                      </div>
                      <div>
@@ -94,7 +101,7 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
                    href="https://maps.app.goo.gl/xj8vjxQYTpfZ7XhRA" 
                    target="_blank" 
                    rel="noopener noreferrer"
-                   className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-brand-orange-action px-6 py-3.5 font-bold text-white shadow-lg shadow-brand-orange/15 transition-all hover:bg-brand-orange active:scale-[0.98] primary-button-glow"
+                   className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 bg-brand-orange-action px-6 py-3.5 font-geist text-xs font-black uppercase tracking-wider text-white transition-all hover:bg-brand-orange active:scale-[0.98] primary-button-glow"
                  >
                    <MapPin className="w-5 h-5" />
                    <span>Ir a la ubicación</span>
@@ -103,7 +110,7 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
              </div>
              
              {/* Lado derecho: Google Maps Embed */}
-             <div className="surface-card relative min-h-[320px] overflow-hidden rounded-[1.5rem] md:min-h-full">
+             <div className="relative min-h-[340px] overflow-hidden bg-ui-surface md:min-h-full">
                <iframe 
                  src="https://maps.google.com/maps?q=-2.2153801,-79.8986826&t=&z=16&ie=UTF8&iwloc=&output=embed"
                  className="absolute inset-0 w-full h-full border-0"

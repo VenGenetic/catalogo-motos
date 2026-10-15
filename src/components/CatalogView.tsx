@@ -1,11 +1,13 @@
 import { useState, useMemo, useEffect, useRef, memo } from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowLeft, Search, ShoppingBag, Copy, Check, X, Clipboard, SlidersHorizontal, ChevronRight } from 'lucide-react';
 import { optimizarImg } from '../utils/helpers';
-import { APP_CONFIG, MODELOS_CATALOGO, nombreDeModelo } from '../config/constants';
+import { APP_CONFIG, MODELOS_CATALOGO, ORDEN_SECCIONES, nombreDeModelo } from '../config/constants';
+import { modeloPorId } from '../utils/despiece';
 import { Producto } from '../types';
 import { LazyImage } from './LazyImage';
 import { SearchBar } from './SearchBar';
-import { getMotoImage } from '../config/motoImages';
+import { getMotoImageById } from '../config/motoImages';
 import { useCart } from '../context/CartContext';
 import { ImageZoom } from './ImageZoom';
 import { useToast } from '../context/ToastContext';
@@ -72,6 +74,8 @@ export const CatalogView = memo(({
 
   // Nombre visible de la moto elegida (en la dirección va su id: /catalogo/wolf-250).
   const nombreModelo = nombreDeModelo(filtroModelo);
+  const avisoModelo = modeloPorId(filtroModelo)?.aviso;
+  const imagenModelo = getMotoImageById(filtroModelo);
 
   const handleSelectModelFromLayout = (modeloId: string) => {
     setFiltroModelo(modeloId);
@@ -110,13 +114,13 @@ export const CatalogView = memo(({
           placeholder="Buscar modelo..."
           value={busquedaModelo}
           onChange={(e) => setBusquedaModelo(e.target.value)}
-          className="w-full rounded-xl border border-ui-border bg-ui-muted py-2.5 pl-8 pr-8 text-sm text-ui-ink outline-none transition-colors placeholder:text-ui-copy/70 focus:border-brand-orange"
+          className="w-full border border-ui-border bg-ui-muted py-2.5 pl-8 pr-8 text-sm text-ui-ink outline-none transition-colors placeholder:text-ui-copy/70 focus:border-brand-orange"
         />
         <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
         {busquedaModelo && (
           <button
             onClick={() => setBusquedaModelo('')}
-            className="absolute right-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-ui-copy hover:bg-brand-orange/10 hover:text-brand-orange"
+            className="absolute right-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center text-ui-copy hover:bg-brand-orange/10 hover:text-brand-orange"
             aria-label="Limpiar búsqueda de modelo"
           >
             <X className="w-3.5 h-3.5" />
@@ -127,10 +131,10 @@ export const CatalogView = memo(({
       <nav className="flex flex-col space-y-1">
         <button
           onClick={handleClearAllFilters}
-          className={`w-full text-left py-2.5 px-3 rounded-xl text-sm font-bold transition-all flex items-center justify-between ${
+          className={`flex w-full items-center justify-between border-l-4 px-3 py-2.5 text-left text-sm font-bold transition-all ${
             !filtroModelo
-              ? 'text-brand-orange bg-brand-orange/10 font-extrabold shadow-sm'
-              : 'text-ui-ink hover:bg-ui-muted hover:text-brand-orange'
+              ? 'border-brand-orange bg-brand-orange/10 font-extrabold text-brand-orange'
+              : 'border-transparent text-ui-ink hover:bg-ui-muted hover:text-brand-orange'
           }`}
         >
           <span>Ver Todos los Modelos</span>
@@ -148,7 +152,7 @@ export const CatalogView = memo(({
               <button
                 key={modelo.id}
                 onClick={() => handleSelectModelFromLayout(modelo.id)}
-                className={`w-full text-left py-2.5 px-3 rounded-xl text-sm transition-all flex items-center justify-between ${
+                className={`flex w-full items-center justify-between border-l-4 px-3 py-2.5 text-left text-sm transition-all ${
                   isSelected
                     ? 'text-brand-orange bg-brand-orange/10 font-extrabold shadow-sm border-l-4 border-brand-orange pl-2'
                     : 'border-l-4 border-transparent pl-3 text-ui-ink hover:bg-ui-muted hover:text-brand-orange'
@@ -166,16 +170,23 @@ export const CatalogView = memo(({
 
   // MODO CATÁLOGO CON SIDEBAR DE MODELOS
   return (
-    <div ref={containerRef} className="min-h-screen scroll-mt-20 bg-ui-canvas px-2 pb-32 pt-2 font-sans text-ui-ink min-[380px]:px-3 md:px-8 md:pt-4">
-      <div className="max-w-7xl mx-auto">
+    <div ref={containerRef} className="min-h-screen scroll-mt-20 bg-ui-canvas px-2 pb-32 pt-4 font-sans text-ui-ink min-[380px]:px-3 sm:px-5 lg:px-8 lg:pt-6">
+      <div className="mx-auto max-w-[1440px]">
+        <div className="mb-4 hidden lg:block">
+          <p className="mb-2 text-xs font-bold text-ui-copy"><Link to="/" className="hover:text-brand-orange">Inicio</Link> <span className="px-2">/</span> Catálogo</p>
+          <div className="catalog-rule flex items-end justify-between gap-4 pt-4">
+            <div><span className="section-kicker">Catálogo Daytona</span><h1 className="mt-2 text-3xl font-black uppercase tracking-tight text-ui-ink">Repuestos originales</h1></div>
+            <p className="text-sm font-semibold text-ui-copy">Busca por pieza, sistema o modelo de moto</p>
+          </div>
+        </div>
         
         {/* BARRA SUPERIOR STICKY */}
-        <div className="sticky top-16 z-sticky border-b border-ui-border/70 bg-ui-canvas/95 px-1 pb-2 pt-2 backdrop-blur-md transition-all md:top-20 md:border-none md:px-0">
+        <div className="sticky top-[74px] z-sticky border-b border-ui-border bg-ui-canvas/95 px-1 pb-3 pt-2 backdrop-blur-md transition-all lg:top-[122px] lg:px-0">
           <div className="flex gap-2 mb-3 items-center">
             {(filtroModelo || busqueda) && (
               <button 
                 onClick={handleClearAllFilters}
-                className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-2xl border border-ui-border bg-ui-surface text-ui-ink shadow-sm transition-all hover:border-brand-orange/25 hover:bg-ui-muted active:scale-95"
+                className="flex h-[52px] w-[52px] shrink-0 items-center justify-center border border-ui-border bg-ui-surface text-ui-ink shadow-sm transition-all hover:border-brand-orange hover:bg-ui-muted active:scale-95"
                 aria-label="Limpiar filtros y volver"
               >
                 <ArrowLeft className="w-6 h-6" />
@@ -196,7 +207,7 @@ export const CatalogView = memo(({
              <div className="flex items-center gap-2">
                 <span className="hidden md:inline">Viendo:</span>
                 {filtroModelo ? (
-                    <span className="font-extrabold text-brand-orange bg-brand-orange/10 px-2 py-1 rounded-md border border-brand-orange/20 flex items-center gap-1.5 shadow-sm">
+                    <span className="flex items-center gap-1.5 border border-brand-orange/20 bg-brand-orange/10 px-2 py-1 font-extrabold text-brand-orange shadow-sm">
                       <span>{nombreModelo}</span>
                       <button
                         onClick={() => setFiltroModelo('')}
@@ -207,12 +218,12 @@ export const CatalogView = memo(({
                       </button>
                     </span>
                 ) : (
-                    <span className="rounded-md border border-ui-border bg-ui-surface px-2 py-1 font-bold text-ui-ink shadow-sm">
+                    <span className="border border-ui-border bg-ui-surface px-2 py-1 font-bold text-ui-ink shadow-sm">
                       Todos los modelos
                     </span>
                 )}
                 {filtroSeccion !== 'Todos' && (
-                    <span className="font-extrabold text-brand-orange bg-brand-orange/10 px-2 py-1 rounded-md border border-brand-orange/20 flex items-center gap-1.5 shadow-sm">
+                    <span className="flex items-center gap-1.5 border border-brand-orange/20 bg-brand-orange/10 px-2 py-1 font-extrabold text-brand-orange shadow-sm">
                       <span>{filtroSeccion}</span>
                       <button
                         onClick={() => setFiltroSeccion('Todos')}
@@ -234,21 +245,30 @@ export const CatalogView = memo(({
           {/* Selector de modelo — visible solo en móvil, ya que el sidebar queda oculto ahí */}
           <button
             onClick={() => setShowModelSheet(true)}
-            className="flex min-h-[48px] w-full items-center justify-between gap-2 rounded-2xl border border-ui-border bg-ui-surface px-4 py-3 shadow-sm transition-all active:scale-[0.98] md:hidden"
+            className="flex min-h-[48px] w-full items-center justify-between gap-2 border border-ui-border bg-ui-surface px-4 py-3 shadow-sm transition-all active:scale-[0.98] lg:hidden"
           >
             <span className="flex items-center gap-2 truncate text-sm font-bold text-ui-ink">
               <SlidersHorizontal className="w-4 h-4 text-brand-orange shrink-0" />
-              <span className="truncate">{filtroModelo ? `Modelo: ${nombreModelo}` : 'Buscar por modelo de moto'}</span>
+              <span className="truncate">{filtroModelo ? `Tu moto: ${nombreModelo}` : 'Elegir mi moto'}</span>
             </span>
             <ChevronRight className="w-4 h-4 text-gray-400 shrink-0" />
           </button>
+          <div className="-mx-1 mt-3 flex gap-2 overflow-x-auto px-1 pb-1 lg:hidden" aria-label="Filtrar por sistema">
+            {ORDEN_SECCIONES.map(seccion => (
+              <button key={seccion} type="button" onClick={() => setFiltroSeccion(seccion)} aria-pressed={filtroSeccion === seccion} className={`min-h-[40px] shrink-0 border px-3 text-xs font-bold transition-colors ${filtroSeccion === seccion ? 'border-brand-orange-action bg-brand-orange-action text-white' : 'border-ui-border bg-ui-surface text-ui-ink'}`}>
+                {seccion}
+              </button>
+            ))}
+          </div>
         </div>
 
+        {avisoModelo && <p className="mt-3 border-l-4 border-amber-500 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-950 dark:bg-amber-950 dark:text-amber-100"><strong>Confirma la versión de tu moto.</strong> {avisoModelo}</p>}
+
         {/* CONTENEDOR DE DOS COLUMNAS */}
-        <div className="mt-4 flex flex-col items-start gap-5 md:flex-row md:gap-6">
+        <div className="mt-4 flex flex-col items-start gap-4 md:flex-row">
           
           {/* COLUMNA PRINCIPAL (LISTADO) */}
-          <div className="flex-1 w-full">
+          <div className="w-full min-w-0 flex-1">
             
             {
               /* CASO B: SE BUSCA O FILTRA -> Mostrar listado de repuestos */
@@ -256,19 +276,19 @@ export const CatalogView = memo(({
                 {visibles.length > 0 ? (
                   <>
                     {filtroModelo && (
-                      <div className="surface-card mb-6 flex flex-col items-center gap-5 rounded-[1.5rem] p-4 md:flex-row md:gap-6 md:p-6">
+                      <div className="surface-card mb-5 hidden flex-col items-center gap-5 p-4 md:flex md:flex-row md:gap-6 md:p-5">
                         {/* Contenedor de la Imagen con zoom */}
-                        <div className="model-media-shell group relative flex w-full shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-ui-border p-3 shadow-inner md:aspect-[4/3] md:w-72">
+                        {imagenModelo && <div className="model-media-shell group relative flex w-full shrink-0 items-center justify-center overflow-hidden border border-ui-border p-3 shadow-inner md:aspect-[4/3] md:w-64">
                           <ImageZoom 
-                            src={getMotoImage(nombreModelo)} 
+                            src={imagenModelo}
                             alt={nombreModelo}
                             className="w-full h-full"
                           />
-                        </div>
+                        </div>}
 
                         {/* Detalles del modelo */}
                         <div className="flex-1 text-center md:text-left">
-                          <span className="rounded-full border border-brand-orange/20 bg-brand-orange/10 px-3 py-1 font-geist text-[11px] font-bold uppercase tracking-widest text-brand-orange">
+                          <span className="border border-brand-orange/20 bg-brand-orange/10 px-3 py-1 font-geist text-[10px] font-black uppercase tracking-widest text-brand-orange">
                             Modelo Daytona
                           </span>
                           <h2 className="mb-2 mt-3 font-anton text-3xl uppercase tracking-wider text-ui-ink md:text-4xl">
@@ -280,11 +300,11 @@ export const CatalogView = memo(({
                         </div>
                       </div>
                     )}
-                    <div className="grid grid-cols-1 gap-3 px-0 min-[380px]:grid-cols-2 md:gap-5 lg:grid-cols-3 xl:grid-cols-4">
+                    <div className="grid grid-cols-1 gap-px border border-ui-border bg-ui-border px-0 min-[480px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                       {visibles.map((product: Producto) => (
                         <div
                           key={product.id}
-                          className="surface-card-interactive group relative flex h-full flex-col overflow-hidden rounded-[1.25rem] active:scale-[0.985] [contain-intrinsic-size:300px] [content-visibility:auto] md:rounded-[1.4rem]"
+                          className="group relative flex h-full flex-col overflow-hidden bg-ui-surface transition-shadow hover:z-10 hover:shadow-card-hover active:scale-[0.995] [contain-intrinsic-size:340px] [content-visibility:auto]"
                           onClick={() => onProductClick(product)}
                         >
                           <div className="product-media-shell relative w-full overflow-hidden border-b border-ui-border p-2">
@@ -292,7 +312,7 @@ export const CatalogView = memo(({
                               src={optimizarImg(product.imagen)} 
                               fallbackSrc={`/imagenes_repuestos/${product.codigo_referencia}.webp`}
                               alt={product.nombre}
-                              className="h-full w-full rounded-[0.9rem] transition-transform duration-500 group-hover:scale-[1.035]"
+                              className="h-full w-full transition-transform duration-300 group-hover:scale-[1.035]"
                               cropBottom={false}
                               imageFit="contain"
                             />
@@ -306,17 +326,17 @@ export const CatalogView = memo(({
                             {/* Badges de estado del producto */}
                             <div className="absolute top-2 left-2 flex flex-col gap-1">
                               {product.is_discontinued && (
-                                <span className="inline-flex items-center rounded-md bg-red-700/95 px-2 py-1 text-[10px] font-bold text-white shadow-sm backdrop-blur-sm">
+                                <span className="inline-flex items-center bg-red-700/95 px-2 py-1 text-[10px] font-bold text-white shadow-sm backdrop-blur-sm">
                                   DESCONTINUADO
                                 </span>
                               )}
                               {product.is_active === false && !product.is_discontinued && (
-                                <span className="inline-flex items-center rounded-md bg-brand-orange-action/95 px-2 py-1 text-[10px] font-bold text-white shadow-sm backdrop-blur-sm">
+                                <span className="inline-flex items-center bg-brand-orange-action/95 px-2 py-1 text-[10px] font-bold text-white shadow-sm backdrop-blur-sm">
                                   INACTIVO
                                 </span>
                               )}
                               {(!product.precio || product.precio === 0) && (
-                                <span className="inline-flex items-center rounded-md bg-brand-bg/85 px-2 py-1 text-[10px] font-bold text-white shadow-sm backdrop-blur-sm">
+                                <span className="inline-flex items-center bg-brand-bg/85 px-2 py-1 text-[10px] font-bold text-white shadow-sm backdrop-blur-sm">
                                   SIN PRECIO
                                 </span>
                               )}
@@ -325,7 +345,7 @@ export const CatalogView = memo(({
 
                           <div className="relative z-10 flex flex-grow flex-col p-3 md:p-4">
                             <div className="mb-1.5">
-                              <span className="inline-block rounded-md border border-ui-border bg-ui-muted px-2 py-1 font-geist text-[10px] font-bold uppercase tracking-wide text-ui-copy">
+                              <span className="inline-block border-l-2 border-brand-orange pl-2 font-geist text-[9px] font-black uppercase tracking-[.12em] text-ui-copy">
                                 {product.seccion}
                               </span>
                             </div>
@@ -335,7 +355,7 @@ export const CatalogView = memo(({
                                 {product.origenes.map((origen) => (
                                   <span
                                     key={origen}
-                                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                                    className={`inline-flex items-center gap-1 border px-2 py-0.5 text-[10px] font-bold ${
                                       origen.toLowerCase().includes('stock')
                                         ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-100 dark:border-green-800'
                                         : 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-100 dark:border-amber-800'
@@ -348,7 +368,7 @@ export const CatalogView = memo(({
                             ) : null}
                             
                             <h3
-                              className="mb-1.5 min-h-[48px] line-clamp-3 text-xs font-semibold leading-snug text-ui-ink transition-colors group-hover:text-brand-orange md:min-h-[58px] md:text-sm"
+                              className="mb-1.5 min-h-[48px] line-clamp-3 text-xs font-bold leading-snug text-ui-ink transition-colors group-hover:text-brand-orange md:min-h-[58px] md:text-sm"
                               title={product.nombre}
                             >
                               {product.nombre}
@@ -358,12 +378,12 @@ export const CatalogView = memo(({
                               <div className="mb-2 flex items-center">
                                 <button
                                   onClick={(e) => handleCopySku(e, product.codigo_referencia!, product.id)}
-                                  className="mr-1.5 flex h-8 w-8 items-center justify-center rounded-lg text-ui-copy transition-colors hover:bg-ui-muted hover:text-brand-orange"
+                                  className="mr-1.5 flex h-8 w-8 items-center justify-center text-ui-copy transition-colors hover:bg-ui-muted hover:text-brand-orange"
                                   title="Copiar código de referencia"
                                 >
                                   {copiedId === product.id ? <Check size={12} className="text-green-500" /> : <Copy size={12} />}
                                 </button>
-                                <span className="truncate rounded border border-ui-border bg-ui-muted px-1.5 py-1 font-mono text-[10px] text-ui-copy">
+                                <span className="truncate border border-ui-border bg-ui-muted px-1.5 py-1 font-mono text-[10px] text-ui-copy">
                                   Ref: {product.codigo_referencia}
                                 </span>
                               </div>
@@ -377,7 +397,7 @@ export const CatalogView = memo(({
                               <div className="flex items-center justify-end gap-1.5">
                                 <button
                                   onClick={(e) => handleShare(e, product)}
-                                  className="touch-target flex items-center justify-center rounded-xl border border-ui-border bg-ui-muted text-ui-copy shadow-sm transition-all hover:border-brand-orange/25 hover:bg-brand-orange/10 hover:text-brand-orange active:scale-95"
+                                  className="touch-target flex items-center justify-center border border-ui-border bg-ui-muted text-ui-copy shadow-sm transition-all hover:border-brand-orange hover:bg-brand-orange/10 hover:text-brand-orange active:scale-95"
                                   title="Compartir repuesto"
                                   aria-label={`Compartir ${product.nombre}`}
                                 >
@@ -387,7 +407,7 @@ export const CatalogView = memo(({
                                 <button
                                   onClick={(e) => handleQuickAdd(e, product)}
                                   disabled={!product.stock}
-                                  className={`touch-target flex items-center justify-center rounded-xl shadow-sm transition-all duration-300 active:scale-95 ${
+                                  className={`touch-target flex items-center justify-center gap-2 px-3 text-xs font-black uppercase tracking-wide shadow-sm transition-all duration-200 active:scale-95 ${
                                     product.stock 
                                       ? 'bg-brand-bg text-white hover:bg-brand-orange-action primary-button-glow'
                                       : 'cursor-not-allowed bg-ui-muted text-ui-copy/45'
@@ -395,6 +415,7 @@ export const CatalogView = memo(({
                                   aria-label={product.stock ? `Agregar ${product.nombre} al pedido` : `${product.nombre} agotado`}
                                 >
                                   <ShoppingBag size={16} strokeWidth={2.5} />
+                                  <span className="min-[480px]:hidden">{product.stock ? 'Agregar' : 'Agotado'}</span>
                                 </button>
                               </div>
                             </div>
@@ -407,7 +428,7 @@ export const CatalogView = memo(({
                       <div className="mt-8 md:mt-12 text-center px-4 mb-6 md:mb-8">
                         <button 
                           onClick={() => setPagina(p => p + 1)} 
-                          className="mx-auto flex min-h-[48px] w-full max-w-sm items-center justify-center gap-2 rounded-xl border border-ui-border bg-ui-surface px-6 py-3 text-sm font-bold text-ui-ink shadow-sm transition-all hover:border-brand-orange/30 hover:text-brand-orange hover:shadow-md active:scale-95 md:px-10"
+                          className="mx-auto flex min-h-[48px] w-full max-w-sm items-center justify-center gap-2 border border-ui-ink bg-ui-surface px-6 py-3 text-sm font-black uppercase tracking-wide text-ui-ink shadow-sm transition-all hover:border-brand-orange hover:text-brand-orange hover:shadow-md active:scale-95 md:px-10"
                         >
                           <span>Cargar más repuestos</span>
                           <span className="text-xs opacity-60">({productos.length - visibles.length} restantes)</span>
@@ -417,7 +438,7 @@ export const CatalogView = memo(({
                   </>
                 ) : (
                   <div className="flex flex-col items-center justify-center px-4 py-24 text-center">
-                    <div className="mb-6 rounded-2xl border border-ui-border bg-ui-muted p-6">
+                    <div className="mb-6 border border-ui-border bg-ui-muted p-6">
                       <Search className="h-10 w-10 text-ui-copy/55" />
                     </div>
                     <h3 className="mb-2 text-xl font-bold text-ui-ink">
@@ -443,10 +464,14 @@ export const CatalogView = memo(({
 
           </div>
 
-          {/* COLUMNA DERECHA (SIDEBAR DE MODELOS) - Oculto en móviles */}
-          <aside className="surface-card sticky top-[148px] hidden max-h-[calc(100vh-176px)] w-72 shrink-0 overflow-y-auto rounded-[1.25rem] p-5 md:block">
-            <h2 className="mb-3 border-b border-ui-border pb-2 font-geist text-[11px] font-black uppercase tracking-[0.16em] text-ui-copy">
-              Modelos Daytona
+           {/* FILTROS DEL CATÁLOGO */}
+          <aside className="surface-card sticky top-[256px] order-first hidden max-h-[calc(100vh-276px)] w-64 shrink-0 overflow-y-auto p-4 lg:block">
+            <h2 className="mb-3 border-b-2 border-ui-ink pb-2 font-geist text-[11px] font-black uppercase tracking-[0.16em] text-ui-ink">Filtrar por sistema</h2>
+            <nav className="mb-6 space-y-1" aria-label="Filtrar por sistema">
+              {ORDEN_SECCIONES.map(seccion => <button key={seccion} type="button" onClick={() => setFiltroSeccion(seccion)} aria-pressed={filtroSeccion === seccion} className={`w-full border-l-4 px-3 py-2 text-left text-sm transition-colors ${filtroSeccion === seccion ? 'border-brand-orange bg-brand-orange/10 font-extrabold text-brand-orange' : 'border-transparent text-ui-ink hover:bg-ui-muted'}`}>{seccion}</button>)}
+            </nav>
+            <h2 className="mb-3 border-b-2 border-ui-ink pb-2 font-geist text-[11px] font-black uppercase tracking-[0.16em] text-ui-ink">
+              Tu Daytona
             </h2>
             {renderModelPicker()}
           </aside>
@@ -457,12 +482,12 @@ export const CatalogView = memo(({
 
       {/* BOTTOM SHEET DE MODELOS - Solo móvil */}
       {showModelSheet && (
-        <div className="fixed inset-0 z-modal flex items-end md:hidden">
+        <div className="fixed inset-0 z-modal flex items-end lg:hidden">
           <div
             className="absolute inset-0 bg-brand-bg/72 backdrop-blur-sm animate-fade-in"
             onClick={() => setShowModelSheet(false)}
           />
-          <div className="relative flex max-h-[82dvh] w-full flex-col rounded-t-[1.75rem] border border-ui-border bg-ui-surface shadow-2xl animate-slide-up">
+          <div className="relative flex max-h-[82dvh] w-full flex-col border border-ui-border bg-ui-surface shadow-2xl animate-slide-up">
             <div className="flex shrink-0 items-center justify-between border-b border-ui-border p-4">
               <h2 className="font-geist text-[11px] font-black uppercase tracking-[0.16em] text-ui-copy">
                 Modelos Daytona

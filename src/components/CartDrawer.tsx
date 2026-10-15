@@ -37,6 +37,7 @@ export const CartDrawer = () => {
   const [isShippingModalOpen, setIsShippingModalOpen] = useState(false);
   const [hasShipping, setHasShipping] = useState(false);
   const [shippingCost, setShippingCost] = useState('');
+  const tienePreciosPendientes = cart.some(item => !(Number(item.precio) > 0));
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
@@ -49,7 +50,7 @@ export const CartDrawer = () => {
   const generarMensajeWhatsApp = (costoEnvio: number) => {
     const itemsList = cart.map(item => {
       const ref = item.codigo_referencia ? ` (Ref: ${item.codigo_referencia})` : '';
-      return `▪️ *${item.cantidad}x* ${item.nombre}${ref} ($${(item.cantidad * (Number(item.precio) || 0)).toFixed(2)})`;
+      return `▪️ *${item.cantidad}x* ${item.nombre}${ref} (${Number(item.precio) > 0 ? `$${(item.cantidad * Number(item.precio)).toFixed(2)}` : 'precio por confirmar'})`;
     }).join('\n');
 
     const totalFinal = costoEnvio > 0 ? cartTotal + costoEnvio : cartTotal;
@@ -59,21 +60,22 @@ export const CartDrawer = () => {
 ${itemsList}
 ${costoEnvio > 0 ? `▪️ *Envío / Transporte:* $${costoEnvio.toFixed(2)}` : ''}
 
-💰 *TOTAL A PAGAR: $${totalFinal.toFixed(2)}*
+💰 *${tienePreciosPendientes ? 'SUBTOTAL CON PRECIOS DISPONIBLES' : 'TOTAL DE PIEZAS'}: $${totalFinal.toFixed(2)}*
+${tienePreciosPendientes ? 'Hay piezas con precio por confirmar. Por favor, envíenme la cotización final.\n' : ''}
 
 📋 *Datos de Envío:*
 👤 Nombre: ${formData.nombre.trim() || 'No especificado'}
 📍 Ciudad/Dirección: ${formData.ciudad.trim() || 'No especificado'}
 💳 Pago: ${formData.metodoPago}
 
-¿Me confirman para transferir?`;
+¿Me confirman disponibilidad y valor final?`;
   };
 
   const generarTextoProforma = (costoEnvio: number) => {
     const date = new Date().toLocaleDateString('es-EC', { year: 'numeric', month: 'long', day: 'numeric' });
     const itemsList = cart.map(item => {
       const ref = item.codigo_referencia ? ` (Ref: ${item.codigo_referencia})` : '';
-      return `Cant: ${item.cantidad} | ${item.nombre}${ref} | $${(item.cantidad * (Number(item.precio) || 0)).toFixed(2)}`;
+      return `Cant: ${item.cantidad} | ${item.nombre}${ref} | ${Number(item.precio) > 0 ? `$${(item.cantidad * Number(item.precio)).toFixed(2)}` : 'Precio por confirmar'}`;
     }).join('\n');
 
     const totalFinal = costoEnvio > 0 ? cartTotal + costoEnvio : cartTotal;
@@ -89,7 +91,8 @@ ${itemsList}
 --------------------------------
 SUBTOTAL: $${cartTotal.toFixed(2)}
 ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
-*TOTAL:    $${totalFinal.toFixed(2)}*
+*${tienePreciosPendientes ? 'TOTAL PARCIAL' : 'TOTAL'}:    $${totalFinal.toFixed(2)}*
+${tienePreciosPendientes ? 'Piezas pendientes de cotización incluidas en el pedido.' : ''}
 
 💳 Método Sugerido: ${formData.metodoPago}
 ⚠️ *Precios sujetos a disponibilidad.*`;
@@ -294,7 +297,8 @@ ${costoEnvio > 0 ? `ENVÍO:    $${costoEnvio.toFixed(2)}` : ''}
         <div className="z-20 mt-auto border-t border-ui-border bg-ui-surface p-4 pb-safe shadow-[0_-6px_28px_rgba(5,20,36,0.1)]">
           <div className="flex justify-between items-end mb-4 px-1">
              <div className="space-y-0.5">
-                <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Total a Pagar</p>
+                <p className="text-xs font-bold text-ui-copy uppercase tracking-wider">{tienePreciosPendientes ? 'Subtotal conocido' : 'Total de piezas'}</p>
+                {tienePreciosPendientes && <p className="mt-1 max-w-44 text-xs leading-tight text-ui-copy">Hay piezas con precio por confirmar.</p>}
              </div>
              <div className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                ${cartTotal.toFixed(2)}

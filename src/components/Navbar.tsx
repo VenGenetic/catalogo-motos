@@ -1,135 +1,94 @@
-import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, Sun, Moon, MessageCircle } from 'lucide-react';
+import { FormEvent, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ChevronDown, CircleHelp, Menu, MessageCircle, Moon, Search, ShoppingCart, Sun, Wrench } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useTheme } from '../context/ThemeContext';
-import { APP_CONFIG } from '../config/constants';
+import { APP_CONFIG, ORDEN_SECCIONES } from '../config/constants';
 import { trackContact } from '../utils/tracking';
 import { buildWhatsAppUrl } from '../utils/attribution';
 
 export const Navbar = () => {
   const { cartCount, openCart } = useCart();
   const { theme, toggleTheme } = useTheme();
-  const location = useLocation();
+  const navigate = useNavigate();
+  const [query, setQuery] = useState('');
 
-  const isActive = (path: string) => location.pathname === path;
+  const search = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const value = query.trim();
+    navigate(value ? `/catalogo?q=${encodeURIComponent(value)}` : '/catalogo');
+  };
 
   const handleWhatsappClick = () => {
     trackContact('navbar_cotizar');
-    const mensaje = "Hola LV PARTS, quisiera cotizar unos repuestos.";
-    const url = buildWhatsAppUrl(APP_CONFIG.WHATSAPP_NUMBER, mensaje);
-    window.open(url, '_blank');
+    window.open(buildWhatsAppUrl(APP_CONFIG.WHATSAPP_NUMBER, 'Hola LV PARTS, quisiera cotizar unos repuestos.'), '_blank');
   };
 
   return (
-    <nav className="sticky top-0 z-nav flex h-16 items-center border-b border-ui-border bg-ui-surface/95 px-3 text-ui-ink shadow-sm backdrop-blur-md transition-colors sm:px-4 md:h-20 md:px-8">
-      <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
-          
-          {/* Logo */}
-          <Link to="/" className="group flex items-center gap-1.5 sm:gap-2" aria-label="LV PARTS - Inicio">
-            <div className="p-1 overflow-hidden shrink-0">
-              <img 
-                src="/logo.svg" 
-                alt="LV PARTS Logo" 
-                className="h-9 w-9 object-contain transition-transform duration-300 group-hover:scale-105 md:h-11 md:w-11"
-              />
-            </div>
-            <div className="hidden items-center gap-1 font-anton text-xl tracking-widest text-ui-ink min-[360px]:flex md:text-2xl">
-              <span>LV</span>
-              <span className="text-brand-orange italic">PARTS</span>
-            </div>
+    <header className="sticky top-0 z-nav bg-brand-bg text-white shadow-[0_2px_8px_rgba(0,0,0,.28)]">
+      <div className="mx-auto flex h-[74px] max-w-[1440px] items-center gap-3 px-3 sm:px-5 lg:h-[78px] lg:gap-7 lg:px-8">
+        <Link to="/" className="group flex shrink-0 items-center gap-2" aria-label="LV PARTS - Inicio">
+          <span className="flex h-11 w-11 items-center justify-center bg-white p-1.5 lg:h-12 lg:w-12">
+            <img src="/logo.svg" alt="" className="h-full w-full object-contain transition-transform group-hover:scale-105" />
+          </span>
+          <span className="hidden font-anton text-[1.7rem] uppercase leading-none tracking-wide min-[390px]:block lg:text-[2rem]">
+            LV <span className="text-brand-orange">PARTS</span>
+          </span>
+        </Link>
+
+        <Link to="/catalogo" className="hidden min-h-11 shrink-0 items-center gap-2 border-l border-white/15 pl-5 text-sm font-bold text-white lg:flex">
+          <Wrench size={18} className="text-brand-orange" />
+          Mi moto
+          <ChevronDown size={15} className="text-white/60" />
+        </Link>
+
+        <form onSubmit={search} className="relative min-w-0 flex-1">
+          <label htmlFor="site-search" className="sr-only">Buscar repuestos</label>
+          <input
+            id="site-search"
+            value={query}
+            onChange={event => setQuery(event.target.value)}
+            placeholder="Buscar repuesto o código..."
+            className="h-12 w-full border border-white/20 bg-white px-4 pr-14 text-base font-medium text-[#1c1c1c] outline-none placeholder:text-[#858585] focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/25"
+          />
+          <button type="submit" aria-label="Buscar" className="absolute right-0 top-0 flex h-12 w-12 items-center justify-center bg-brand-orange text-white transition-colors hover:bg-brand-orange-action">
+            <Search size={21} strokeWidth={2.4} />
+          </button>
+        </form>
+
+        <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+          <Link to="/contacto" className="hidden min-h-11 items-center gap-2 px-2 text-xs font-bold text-white/90 hover:text-brand-orange xl:flex">
+            <CircleHelp size={20} />
+            <span>Ayuda</span>
           </Link>
-
-          {/* Menú Desktop — enlaces con estilo Geist y Hanken */}
-          <div className="hidden md:flex items-center gap-8 text-xs font-bold tracking-widest uppercase font-geist">
-            <Link 
-              to="/" 
-              className={`hover:text-brand-orange transition-colors py-2 border-b-2 relative ${
-                isActive('/') 
-                  ? 'text-brand-orange border-brand-orange' 
-                  : 'text-slate-500 dark:text-gray-400 border-transparent'
-              }`}
-            >
-              Inicio
-            </Link>
-            <Link 
-              to="/catalogo" 
-              className={`hover:text-brand-orange transition-colors py-2 border-b-2 relative ${
-                isActive('/catalogo') || location.pathname.startsWith('/catalogo/')
-                  ? 'text-brand-orange border-brand-orange' 
-                  : 'text-slate-500 dark:text-gray-400 border-transparent'
-              }`}
-            >
-              Catálogo
-            </Link>
-            <Link 
-              to="/contacto" 
-              className={`hover:text-brand-orange transition-colors py-2 border-b-2 relative ${
-                isActive('/contacto') 
-                  ? 'text-brand-orange border-brand-orange' 
-                  : 'text-slate-500 dark:text-gray-400 border-transparent'
-              }`}
-            >
-              Contacto
-            </Link>
-          </div>
-
-          {/* Acciones Derecha */}
-          <div className="flex items-center gap-1.5 sm:gap-3 md:gap-6">
-            
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="touch-target flex items-center justify-center rounded-xl text-ui-copy transition-colors hover:bg-ui-muted hover:text-brand-orange"
-              aria-label={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'}
-            >
-              {theme === 'dark' ? (
-                <Sun className="w-5 h-5" />
-              ) : (
-                <Moon className="w-5 h-5" />
-              )}
-            </button>
-
-            {/* Carrito Full-Text (Desktop) */}
-            <button 
-              onClick={openCart} 
-              className="hidden items-center gap-2 font-geist text-xs font-bold uppercase tracking-widest text-brand-orange transition-colors hover:text-brand-orange/80 active:scale-95 lg:flex"
-            >
-              <ShoppingBag className="h-[18px] w-[18px]" />
-              <span>Ver Repuestos</span>
-              {cartCount > 0 && (
-                <span className="bg-brand-orange text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full">
-                  {cartCount}
-                </span>
-              )}
-            </button>
-
-            {/* Carrito Icon (Mobile/Tablet) */}
-            <button 
-              onClick={openCart} 
-              className="touch-target relative flex items-center justify-center rounded-xl text-ui-copy transition-colors hover:bg-ui-muted hover:text-brand-orange active:scale-95 lg:hidden"
-              aria-label="Abrir carrito de repuestos"
-            >
-              <ShoppingBag className="h-[22px] w-[22px]" />
-              {cartCount > 0 && (
-                <span className="absolute right-0.5 top-0.5 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-brand-orange text-[10px] font-bold text-brand-bg shadow-sm">
-                  {cartCount}
-                </span>
-              )}
-            </button>
-
-            {/* Botón WhatsApp Cotizar */}
-            <button 
-              onClick={handleWhatsappClick}
-              className="touch-target flex shrink-0 items-center gap-2 rounded-xl bg-[#25D366] px-3 font-geist text-[11px] font-bold uppercase tracking-wider text-brand-bg shadow-md transition-all duration-300 hover:bg-[#20ba5a] active:scale-95 sm:px-4 md:text-xs"
-              aria-label="Cotizar por WhatsApp"
-            >
-              <MessageCircle className="w-4 h-4 md:w-5 md:h-5 fill-current" />
-              <span className="hidden sm:inline">Cotizar</span>
-            </button>
-
-          </div>
-
+          <button onClick={toggleTheme} className="hidden h-11 w-11 items-center justify-center text-white/80 hover:bg-white/10 hover:text-brand-orange sm:flex" aria-label={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'}>
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          <button onClick={openCart} className="relative flex h-12 min-w-12 items-center justify-center gap-2 px-2 text-white hover:bg-white/10" aria-label="Abrir pedido">
+            <ShoppingCart size={23} />
+            <span className="hidden text-xs font-bold lg:inline">Pedido</span>
+            {cartCount > 0 && <span className="absolute right-0 top-0 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-orange px-1 text-[10px] font-black text-white">{cartCount}</span>}
+          </button>
+        </div>
       </div>
-    </nav>
+
+      <nav className="hidden border-t border-white/10 bg-[#202020] lg:block" aria-label="Categorías principales">
+        <div className="mx-auto flex h-11 max-w-[1440px] items-center px-8">
+          <Link to="/catalogo?seccion=Todos" className="flex h-full items-center gap-2 border-r border-white/10 pr-5 text-xs font-extrabold uppercase tracking-wide text-white hover:text-brand-orange">
+            <Menu size={17} /> Todos los repuestos
+          </Link>
+          <div className="flex h-full min-w-0 flex-1 items-center overflow-hidden">
+            {ORDEN_SECCIONES.filter(section => section !== 'Todos').slice(0, 7).map(section => (
+              <Link key={section} to={`/catalogo?seccion=${encodeURIComponent(section)}`} className="flex h-full shrink-0 items-center px-4 text-xs font-bold text-white/85 transition-colors hover:bg-white/5 hover:text-brand-orange">
+                {section}
+              </Link>
+            ))}
+          </div>
+          <button onClick={handleWhatsappClick} className="flex h-full shrink-0 items-center gap-2 border-l border-white/10 pl-5 text-xs font-extrabold uppercase tracking-wide text-[#5bea8d] hover:text-white">
+            <MessageCircle size={17} /> Cotizar por WhatsApp
+          </button>
+        </div>
+      </nav>
+    </header>
   );
 };

@@ -7,25 +7,25 @@
   line-height: 1.5;
   font-weight: 400;
   color-scheme: light;
-  --ui-canvas: 245 247 250;
+  --ui-canvas: 244 244 244;
   --ui-surface: 255 255 255;
-  --ui-muted: 238 242 246;
-  --ui-raised: 226 232 238;
-  --ui-border: 214 222 231;
-  --ui-ink: 11 23 36;
-  --ui-copy: 82 96 112;
-  --brand-orange-rgb: 255 86 38;
+  --ui-muted: 247 247 247;
+  --ui-raised: 233 233 233;
+  --ui-border: 215 215 215;
+  --ui-ink: 26 26 26;
+  --ui-copy: 92 92 92;
+  --brand-orange-rgb: 241 91 39;
 }
 
 .dark {
   color-scheme: dark;
-  --ui-canvas: 5 20 36;
-  --ui-surface: 13 28 45;
-  --ui-muted: 18 33 49;
-  --ui-raised: 28 43 60;
-  --ui-border: 39 54 71;
+  --ui-canvas: 18 18 18;
+  --ui-surface: 27 27 27;
+  --ui-muted: 34 34 34;
+  --ui-raised: 45 45 45;
+  --ui-border: 58 58 58;
   --ui-ink: 248 250 252;
-  --ui-copy: 174 183 194;
+  --ui-copy: 184 184 184;
 }
 
 body {
@@ -34,6 +34,10 @@ body {
   min-height: 100vh;
   @apply bg-ui-canvas text-ui-ink antialiased transition-colors duration-300;
   -webkit-tap-highlight-color: transparent; /* Quitar flash azul en tap */
+}
+
+::selection {
+  background: rgba(var(--brand-orange-rgb), 0.24);
 }
 
 html {
@@ -75,11 +79,11 @@ html {
   }
 
   .surface-card-interactive {
-    @apply surface-card transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-brand-orange/25 hover:shadow-card-hover;
+    @apply surface-card transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-0.5 hover:border-brand-orange/60 hover:shadow-card-hover;
   }
 
   .product-media-shell {
-    aspect-ratio: 500 / 259;
+    aspect-ratio: 1 / 1;
     background:
       radial-gradient(circle at 50% 42%, rgb(var(--ui-surface)) 0%, rgb(var(--ui-muted)) 100%);
   }
@@ -94,6 +98,29 @@ html {
     min-width: 44px;
     min-height: 44px;
   }
+}
+
+.section-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: rgb(var(--ui-ink));
+  font-family: 'Geist', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.section-kicker::before {
+  width: 0.28rem;
+  height: 1.15rem;
+  background: rgb(var(--brand-orange-rgb));
+  content: '';
+}
+
+.catalog-rule {
+  border-top: 3px solid rgb(var(--ui-ink));
 }
 
 :where(a, button, input, select, textarea, [role='button']):focus-visible {

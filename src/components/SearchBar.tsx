@@ -121,7 +121,7 @@ export const SearchBar = ({
 
   return (
     <div className="relative group w-full">
-      <div className={`relative flex items-center rounded-2xl border transition-all duration-300 ${
+      <div className={`relative flex items-center border transition-all duration-200 ${
           isFocused 
             ? 'border-brand-orange/70 bg-ui-surface shadow-lifted ring-4 ring-brand-orange/10'
             : 'border-ui-border bg-ui-surface shadow-sm hover:border-brand-orange/30'
@@ -136,7 +136,7 @@ export const SearchBar = ({
           ref={inputRef}
           type="text"
           placeholder={placeholder || (filtroModelo ? `Buscar en ${filtroModelo}...` : "Escriba el modelo y el repuesto que necesita")}
-          className="w-full rounded-2xl bg-transparent px-3 py-3.5 text-base text-ui-ink outline-none placeholder:text-ui-copy/70"
+          className="w-full bg-transparent px-3 py-3.5 text-base font-medium text-ui-ink outline-none placeholder:text-ui-copy/70"
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
           onFocus={() => setIsFocused(true)}
@@ -148,7 +148,7 @@ export const SearchBar = ({
           {busqueda && (
             <button
               onClick={() => { setBusqueda(''); inputRef.current?.focus(); }}
-              className="touch-target flex items-center justify-center rounded-xl text-ui-copy/70 transition-all hover:bg-ui-muted hover:text-ui-ink"
+              className="touch-target flex items-center justify-center text-ui-copy/70 transition-all hover:bg-ui-muted hover:text-ui-ink"
               aria-label="Limpiar búsqueda"
             >
               <X className="w-5 h-5" strokeWidth={2.5} />
@@ -161,7 +161,7 @@ export const SearchBar = ({
           {hasSpeechSupport && (
             <button
               onClick={handleVoiceSearch}
-              className={`touch-target flex items-center justify-center rounded-xl transition-all active:scale-95 ${
+              className={`touch-target flex items-center justify-center transition-all active:scale-95 ${
                 isListening
                   ? 'bg-red-500 text-white shadow-lg shadow-red-500/30 animate-pulse'
                   : 'text-ui-copy hover:bg-brand-orange/10 hover:text-brand-orange'
@@ -176,7 +176,7 @@ export const SearchBar = ({
 
       {/* PANEL DE SUGERENCIAS */}
       {showSuggestions && (
-        <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-dropdown origin-top overflow-hidden rounded-2xl border border-ui-border bg-ui-surface shadow-lifted animate-fade-in-up">
+        <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-dropdown origin-top overflow-hidden border border-ui-border bg-ui-surface shadow-lifted animate-fade-in-up">
           
           {/* Si NO hay búsqueda: Mostrar Populares */}
           {!busqueda ? (
@@ -190,7 +190,7 @@ export const SearchBar = ({
                   <button
                     key={term}
                     onClick={() => handleSuggestionClick(term)}
-                    className="min-h-[40px] rounded-xl border border-ui-border bg-ui-muted px-4 py-2 text-sm font-medium text-ui-ink transition-all hover:border-brand-orange/25 hover:bg-brand-orange/10 hover:text-brand-orange active:scale-95"
+                    className="min-h-[40px] border border-ui-border bg-ui-muted px-4 py-2 text-sm font-bold text-ui-ink transition-all hover:border-brand-orange hover:bg-brand-orange/10 hover:text-brand-orange active:scale-95"
                   >
                     {term}
                   </button>

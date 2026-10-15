@@ -1,5 +1,33 @@
 // src/config/motoImages.ts
 
+const imageByModelId: Record<string, string> = {
+  'workforce-150': 'workforce-150-cc.webp', 'delta-150': 'delta-150-cc.webp',
+  'crucero-150': 'crucero-150-cc.webp', 'crucero-200': 'crucero-200-cc.webp',
+  'spitfire-150': 'spitfire-150-cc.webp', 'spitfire-250': 'spitfire-250-cc.webp',
+  'cx7-125': 'cx7-pro-125.webp', 'tanq-125': 'tank-125-cc.webp',
+  'bit-125': 'bit-125cc.webp', 'dynamic-pro-150': 'dynamic-pro-150-cc.webp',
+  's1-150': 's1-150-cc.webp', 's1-adventure-180': 's1-adventure-180-cc.webp',
+  's1-crossover-180': 's1-180-crossover.webp', 'agility-x-180': 'agility-x-180cc.webp',
+  'wing-evo-2': 'wing-evo-2-200-cc.webp', 'gtr-200': 'gtr-200-cc.webp',
+  'gtr-roadster-200': 'gtr-roadster-200cc.webp', 'predator-200': 'predator-200-cc.webp',
+  'crossfire-250': 'crossfire-250-cc.webp', 'wolf-250': 'wolf-250-cc.webp',
+  'wolf-evolution-250': 'wolf-evolution-250-cc.webp', 'gp1-250': 'gp1-250-cc.webp',
+  'gp1-r-250': 'gp1-r-250cc.webp', 'xpower-250': 'xpower-250-cc.webp',
+  'feroce-250': 'feroce-250cc.webp', 'super-wolf-300': 'super-wolf-300-cc.webp',
+  'montana-150': 'montana-150cc.webp', 'shark-1-200': 'shark-1-200-cc.webp',
+  'shark-2-200': 'shark-2-200-cc.webp', 'shark-3-200': 'shark-3-200cc.webp',
+  'force-ds-200': 'force-ds-200cc.webp', 'tekken-evo-250': 'tekken-evo-250-cc.webp',
+  'arctic-250': 'arctic-250-cc.webp', 'adventure-300': 'adventure-300-cc.webp',
+  'adventure-300r': 'adventure-300r-cc.webp', 'everest-300': 'everest-off-road-300-cc.webp',
+  'tekken-discovery-300': 'tekken-discovery-300-cc.webp', 'xpedition-300': 'xpedition-300-cc.webp',
+  'eagle-150': 'eagle-3-150-cc.webp', 'eagle-5-150': 'eagle-5-150-cc.webp',
+  'eagle-z-200': 'eagle-z-200-cc.webp', 'cafe-racer-170': 'cafe-racer-170-cc.webp',
+  'commander-200': 'commander-200-cc.webp', 'scrambler-250': 'scrambler-revolution-250-cc.webp',
+  'scrambler-max-300': 'scrambler-max-300-cc.webp', 'hunter-200': 'hunter-4-200-cc.webp',
+};
+
+export const getMotoImageById = (id: string): string | null => imageByModelId[id] ? `/modelos/${imageByModelId[id]}` : null;
+
 export const getMotoImage = (modelName: string) => {
   const name = modelName.trim().toLowerCase();
 

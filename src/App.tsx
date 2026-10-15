@@ -160,17 +160,24 @@ export default function App() {
     return params.get('seccion') || 'Todos';
   });
 
-  // Leer la sección desde la URL cuando se llega desde un enlace externo (ej. categorías del home)
+  // Leer la sección desde la URL cuando se llega desde un enlace (categorías del home, menú, pie).
+  // Después se quita de la dirección: los botones de sección solo cambian el estado, y si el
+  // parámetro se quedara, al escribir una búsqueda volvería a imponer la sección vieja y un
+  // segundo clic al mismo enlace no haría nada.
   useEffect(() => {
     if (location.pathname.startsWith('/catalogo')) {
       const params = new URLSearchParams(location.search);
       const seccion = params.get('seccion');
-      if (seccion && seccion !== filtroSeccion) {
+      if (seccion) {
         setFiltroSeccion(seccion);
+        setSearchParams((prev) => {
+          const newParams = new URLSearchParams(prev);
+          newParams.delete('seccion');
+          return newParams;
+        }, { replace: true });
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.search, location.pathname]);
+  }, [location.search, location.pathname, setSearchParams]);
 
   // Debounce de la búsqueda
   const busquedaDebounced = useDebounce(busqueda, 250);

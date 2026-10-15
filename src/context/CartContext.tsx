@@ -85,7 +85,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const cartCount = cart.reduce((acc, item) => acc + (item.cantidad || item.cant || 0), 0);
-  const cartTotal = cart.reduce((acc, item) => acc + item.precio * (item.cantidad || item.cant || 0), 0);
+  const cartTotal = cart.reduce((acc, item) => acc + (Number(item.precio) || 0) * (item.cantidad || item.cant || 0), 0);
 
   // --- FUNCIÓN ACTUALIZADA CON FORMATO VERTICAL ---
   const sendOrderToWhatsapp = () => {
@@ -95,7 +95,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     
     cart.forEach(i => {
       const cantidad = i.cantidad || i.cant || 0;
-      const precioUnitario = Number(i.precio).toFixed(2);
+      const precioUnitario = Number(i.precio) > 0 ? `$${Number(i.precio).toFixed(2)}` : 'Precio por confirmar';
       
       // Línea 1: Cantidad y Nombre (Usamos ▪ como viñeta principal)
       msg += `▪ ${cantidad}x ${i.nombre}\n`;
@@ -106,10 +106,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       }
       
       // Línea 3: Precio
-      msg += `• $${precioUnitario}\n`;
+      msg += `• ${precioUnitario}\n`;
     });
 
-    msg += `\nTotal: $${cartTotal.toFixed(2)}`;
+    msg += `\n${cart.some(i => !(Number(i.precio) > 0)) ? 'Subtotal de piezas con precio' : 'Total de piezas'}: $${cartTotal.toFixed(2)}`;
     window.open(buildWhatsAppUrl(APP_CONFIG.WHATSAPP_NUMBER, msg), '_blank');
   };
 
