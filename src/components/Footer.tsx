@@ -24,11 +24,11 @@ export const Footer = () => (
       </div>
       <div>
         <h2 className="border-b border-white/15 pb-3 text-xs font-black uppercase tracking-[.14em]">Comprar</h2>
-        <nav className="mt-4 flex flex-col gap-3 text-sm text-white/65"><Link to="/catalogo?seccion=Todos" className="hover:text-brand-orange">Todos los repuestos</Link><Link to="/catalogo?seccion=Motor" className="hover:text-brand-orange">Motor</Link><Link to="/catalogo?seccion=Frenos" className="hover:text-brand-orange">Frenos</Link><Link to="/catalogo?seccion=Sistema%20el%C3%A9ctrico" className="hover:text-brand-orange">Sistema eléctrico</Link></nav>
+        <nav className="mt-2 flex flex-col text-sm text-white/65"><Link to="/catalogo?seccion=Todos" className="flex min-h-[44px] items-center hover:text-brand-orange">Todos los repuestos</Link><Link to="/catalogo?seccion=Motor" className="flex min-h-[44px] items-center hover:text-brand-orange">Motor</Link><Link to="/catalogo?seccion=Frenos" className="flex min-h-[44px] items-center hover:text-brand-orange">Frenos</Link><Link to="/catalogo?seccion=Sistema%20el%C3%A9ctrico" className="flex min-h-[44px] items-center hover:text-brand-orange">Sistema eléctrico</Link></nav>
       </div>
       <div>
         <h2 className="border-b border-white/15 pb-3 text-xs font-black uppercase tracking-[.14em]">Ayuda</h2>
-        <nav className="mt-4 flex flex-col gap-3 text-sm text-white/65"><Link to="/contacto" className="hover:text-brand-orange">Contacto</Link><Link to="/catalogo" className="hover:text-brand-orange">Repuestos por moto</Link><a href="https://maps.app.goo.gl/xj8vjxQYTpfZ7XhRA" target="_blank" rel="noopener noreferrer" className="hover:text-brand-orange">Cómo llegar</a></nav>
+        <nav className="mt-2 flex flex-col text-sm text-white/65"><Link to="/contacto" className="flex min-h-[44px] items-center hover:text-brand-orange">Contacto</Link><Link to="/catalogo" className="flex min-h-[44px] items-center hover:text-brand-orange">Repuestos por moto</Link><a href="https://maps.app.goo.gl/xj8vjxQYTpfZ7XhRA" target="_blank" rel="noopener noreferrer" className="flex min-h-[44px] items-center hover:text-brand-orange">Cómo llegar</a></nav>
       </div>
     </div>
     <div className="border-t border-white/10 px-5 py-4 text-center font-geist text-[10px] uppercase tracking-[.12em] text-white/45">© {new Date().getFullYear()} LV PARTS · Repuestos originales Daytona</div>

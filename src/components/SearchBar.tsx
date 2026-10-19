@@ -48,6 +48,9 @@ export const SearchBar = ({ busqueda, setBusqueda, productos, placeholder }: Sea
   const inputRef = useRef<HTMLInputElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null);
+  // Al salir del buscador el panel espera un instante (para que un toque en una sugerencia
+  // alcance a llegar); si se vuelve a entrar antes, esa espera ya no debe cerrarlo.
+  const cierreRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   // Palabras y códigos de los productos que empiezan con lo escrito.
   const sugerencias = useMemo(() => {
@@ -121,8 +124,8 @@ export const SearchBar = ({ busqueda, setBusqueda, productos, placeholder }: Sea
           className="h-full min-w-0 flex-1 bg-transparent px-2.5 text-base font-medium text-[#1a1a1a] outline-none placeholder:text-[#777] [&::-webkit-search-cancel-button]:hidden"
           value={busqueda}
           onChange={e => setBusqueda(e.target.value)}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setTimeout(() => setIsFocused(false), 150)}
+          onFocus={() => { clearTimeout(cierreRef.current); setIsFocused(true); }}
+          onBlur={() => { cierreRef.current = setTimeout(() => setIsFocused(false), 150); }}
         />
         {busqueda && (
           <button

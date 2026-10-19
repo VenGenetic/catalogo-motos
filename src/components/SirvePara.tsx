@@ -51,14 +51,15 @@ export function SirveParaLinea({ compatibles, modeloActual, despiece }: {
     );
   }
 
-  const nombres = compatibles.map(c => nombreCorto(nombreDeModelo(c.modelo.id, despiece)));
-  const resto = nombres.length - 2;
+  // La primera moto y cuántas más: en una tarjeta angosta dos nombres se cortaban a la mitad
+  // ("Wolf 200 · Adventure …") y el "+N" quedaba escondido.
+  const resto = compatibles.length - 1;
   return (
-    <span className="flex h-[18px] items-center gap-1 text-xs text-ui-copy">
+    <span className="flex h-[18px] items-center gap-1 text-xs text-ui-copy" title={compatibles.map(c => nombreDeModelo(c.modelo.id, despiece)).join(', ')}>
       <Bike size={14} className="shrink-0 text-brand-orange" aria-hidden="true" />
       <span className="sr-only">Sirve para </span>
-      <span className="min-w-0 truncate font-semibold text-ui-ink">{nombres.slice(0, 2).join(' · ')}</span>
-      {resto > 0 && <span className="shrink-0 font-semibold">+{resto}</span>}
+      <span className="min-w-0 truncate font-semibold text-ui-ink">{nombreCorto(nombreDeModelo(compatibles[0].modelo.id, despiece))}</span>
+      {resto > 0 && <span className="shrink-0 font-semibold">y {resto} más</span>}
     </span>
   );
 }

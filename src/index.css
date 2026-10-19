@@ -36,8 +36,11 @@ body {
   -webkit-tap-highlight-color: transparent; /* Quitar flash azul en tap */
 }
 
+/* `rgb(r g b / alfa)`: la variable trae los números separados por espacios. Con
+   `rgba(var(...), 0.24)` el color queda inválido y el navegador pinta la selección
+   transparente: no se veía el texto marcado (en el buscador ni en ninguna parte). */
 ::selection {
-  background: rgba(var(--brand-orange-rgb), 0.24);
+  background: rgb(var(--brand-orange-rgb) / 0.35);
 }
 
 html {
@@ -123,8 +126,10 @@ html {
   border-top: 3px solid rgb(var(--ui-ink));
 }
 
-:where(a, button, input, select, textarea, [role='button']):focus-visible {
-  outline: 3px solid rgba(var(--brand-orange-rgb), 0.36);
+/* Los campos de texto tienen su propio borde naranja al enfocarse: con este contorno además
+   se veían dos marcos, uno dentro del otro. */
+:where(a, button, summary, [role='button']):focus-visible {
+  outline: 3px solid rgb(var(--brand-orange-rgb) / 0.55);
   outline-offset: 3px;
 }
 

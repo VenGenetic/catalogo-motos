@@ -96,7 +96,7 @@ export const HomeView = ({ productos }: HomeViewProps) => {
                      </div>
                      <div>
                        <h4 className="text-sm font-bold text-ui-ink">Teléfono / WhatsApp</h4>
-                       <p className="font-mono text-xs font-bold text-ui-copy">+593 99 327 9707</p>
+                       <p className="text-xs font-bold tabular-nums text-ui-copy">+593 99 327 9707</p>
                      </div>
                    </div>
                  </div>

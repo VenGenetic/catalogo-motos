@@ -15,6 +15,16 @@ export const limpiarTexto = (texto: string) => {
  * `size` se conserva en la firma porque documenta el tamaño de presentación
  * en los consumidores y evita romper las llamadas existentes.
  */
+/**
+ * ¿La foto es el aviso gris de "sin imagen" en lugar de la foto del repuesto?
+ * Es un mismo archivo repetido: en Supabase mide 512×398 (uno de cada cinco
+ * productos) y su copia en public/imagenes_repuestos, 500×388 (1.173
+ * archivos). Ninguna foto real tiene esas medidas (revisado contra 334 fotos
+ * de Supabase y las 5.684 locales). Se cambia por /sin_imagen.webp.
+ */
+export const esFotoGenerica = (img: HTMLImageElement) =>
+  (img.naturalWidth === 512 && img.naturalHeight === 398) || (img.naturalWidth === 500 && img.naturalHeight === 388);
+
 export const optimizarImg = (url: string | null | undefined, _size: number = 500) => {
   // 1. BLINDAJE: Si no es string válida, devolvemos placeholder
   if (!url || typeof url !== 'string' || url.trim() === '' || url === 'No imagen') {

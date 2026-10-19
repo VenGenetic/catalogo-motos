@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { X, ZoomIn } from 'lucide-react';
+import { esFotoGenerica } from '../utils/helpers';
 
 interface ImageZoomProps {
   src: string;
@@ -246,6 +247,7 @@ export const ImageZoom = ({ src, alt, className, fallbackSrc }: ImageZoomProps) 
           className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
           draggable={false}
+          onLoad={e => { if (!hasError && esFotoGenerica(e.currentTarget)) handleError(); }}
           onError={handleError}
         />
 

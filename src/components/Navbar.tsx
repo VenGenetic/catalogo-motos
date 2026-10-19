@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Bike, ChevronDown, CircleHelp, Menu, MessageCircle, Moon, ShoppingCart, Sun } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -25,6 +26,24 @@ interface Props {
   filtroModelo: string;
 }
 
+const consulta = '(max-width: 639px)';
+
+function useAngosto() {
+  const [angosto, setAngosto] = useState(() => window.matchMedia(consulta).matches);
+  useEffect(() => {
+    const medio = window.matchMedia(consulta);
+    const cambiar = () => setAngosto(medio.matches);
+    // Safari 13 sólo tiene addListener.
+    if (medio.addEventListener) medio.addEventListener('change', cambiar);
+    else medio.addListener(cambiar);
+    return () => {
+      if (medio.removeEventListener) medio.removeEventListener('change', cambiar);
+      else medio.removeListener(cambiar);
+    };
+  }, []);
+  return angosto;
+}
+
 export const Navbar = ({ busqueda, buscar, productos, filtroModelo }: Props) => {
   const { cartCount, openCart } = useCart();
   const { theme, toggleTheme } = useTheme();
@@ -32,7 +51,11 @@ export const Navbar = ({ busqueda, buscar, productos, filtroModelo }: Props) => 
   const { despiece } = useDespiece();
 
   const moto = filtroModelo || miMoto;
-  const placeholder = filtroModelo ? `Buscar en ${nombreCorto(nombreDeModelo(filtroModelo, despiece))}…` : 'Buscar repuesto o código…';
+  // En el celular el buscador deja poco espacio: el texto de ayuda corto, para que no se corte a media palabra.
+  const angosto = useAngosto();
+  const placeholder = filtroModelo
+    ? (angosto ? 'Buscar en esta moto' : `Buscar en ${nombreCorto(nombreDeModelo(filtroModelo, despiece))}…`)
+    : (angosto ? 'Buscar repuesto' : 'Buscar repuesto o código…');
 
   const cotizar = () => {
     trackContact('navbar_cotizar');
@@ -77,9 +100,11 @@ export const Navbar = ({ busqueda, buscar, productos, filtroModelo }: Props) => 
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
           <button onClick={openCart} className="relative flex h-11 min-w-11 items-center justify-center gap-2 rounded-lg px-2 text-white hover:bg-white/10" aria-label={`Abrir pedido${cartCount ? ` (${cartCount})` : ''}`}>
-            <ShoppingCart size={24} aria-hidden="true" />
+            <span className="relative">
+              <ShoppingCart size={24} aria-hidden="true" />
+              {cartCount > 0 && <span className="absolute -right-2.5 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-orange px-1 text-[11px] font-black text-white">{cartCount}</span>}
+            </span>
             <span className="hidden text-sm font-bold lg:inline">Pedido</span>
-            {cartCount > 0 && <span className="absolute right-0 top-0 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-orange px-1 text-[11px] font-black text-white">{cartCount}</span>}
           </button>
         </div>
       </div>
@@ -90,8 +115,9 @@ export const Navbar = ({ busqueda, buscar, productos, filtroModelo }: Props) => 
             <Menu size={17} aria-hidden="true" /> Todos los repuestos
           </Link>
           <div className="flex h-full min-w-0 flex-1 items-center overflow-hidden">
-            {ORDEN_SECCIONES.filter(s => s !== 'Todos').slice(0, 8).map(s => (
-              <Link key={s} to={`/catalogo${moto && filtroModelo ? `/${filtroModelo}` : ''}?seccion=${encodeURIComponent(s)}`} className="flex h-full shrink-0 items-center px-3.5 text-[13px] font-bold text-white/85 transition-colors hover:bg-white/5 hover:text-brand-orange xl:px-4">
+            {/* Los que caben enteros según el ancho: cortado a la mitad ("Rued") se veía roto. */}
+            {ORDEN_SECCIONES.filter(s => s !== 'Todos').slice(0, 8).map((s, i) => (
+              <Link key={s} to={`/catalogo${moto && filtroModelo ? `/${filtroModelo}` : ''}?seccion=${encodeURIComponent(s)}`} className={`h-full shrink-0 items-center px-3.5 text-[13px] font-bold text-white/85 transition-colors hover:bg-white/5 hover:text-brand-orange xl:px-4 ${i < 5 ? 'flex' : i < 7 ? 'hidden xl:flex' : 'hidden 2xl:flex'}`}>
                 {s}
               </Link>
             ))}
