@@ -115,15 +115,15 @@ export function SirveParaFicha({ compatibles, miMoto, despiece, onElegir, onPreg
       {compatibles.length > 0 ? (
         <>
           <ul className="mt-3 flex flex-wrap gap-2" aria-label="Motos compatibles">
-            {ordenados.map(c => {
+            {ordenados.map((c, i) => {
               const imagen = getMotoImageById(c.modelo.id);
               const esLaMia = c.modelo.id === miMoto;
               return (
-                <li key={c.modelo.id} className="max-w-full">
+                <li key={c.modelo.id} className="stagger max-w-full animate-rise" style={{ '--i': Math.min(i, 8) } as React.CSSProperties}>
                   <button
                     type="button"
                     onClick={() => onElegir(c.modelo.id)}
-                    className={`flex min-h-[44px] max-w-full items-center gap-2 rounded-full border py-1 pl-1.5 pr-3 text-left text-sm font-bold transition-colors ${
+                    className={`press flex min-h-[44px] max-w-full items-center gap-2 rounded-full border py-1 pl-1.5 pr-3 text-left text-sm font-bold ${
                       esLaMia
                         ? 'border-green-600 bg-green-50 text-green-900 dark:bg-green-950/50 dark:text-green-200'
                         : 'border-ui-border bg-ui-surface text-ui-ink hover:border-brand-orange hover:text-brand-orange'

@@ -160,7 +160,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
     <button
       type="button"
       onClick={() => navigateTo(direccion)}
-      className={`absolute top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-ui-border bg-ui-surface/95 text-ui-ink shadow-lg transition-colors hover:border-ui-ink md:flex ${direccion === -1 ? 'left-3' : 'right-3'}`}
+      className={`absolute top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-ui-border bg-ui-surface/95 text-ui-ink shadow-lg transition-[border-color,background-color] duration-200 hover:border-ui-ink hover:bg-ui-surface md:flex ${direccion === -1 ? 'left-3' : 'right-3'}`}
       aria-label={direccion === -1 ? 'Repuesto anterior' : 'Repuesto siguiente'}
     >
       {direccion === -1 ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
@@ -300,7 +300,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                       key={rel.id}
                       type="button"
                       onClick={() => onSelectRelated(rel)}
-                      className="flex w-40 shrink-0 flex-col overflow-hidden rounded-xl border border-ui-border bg-ui-surface text-left hover:border-ui-ink"
+                      className="press flex w-40 shrink-0 flex-col overflow-hidden rounded-xl border border-ui-border bg-ui-surface text-left hover:border-ui-ink"
                     >
                       <span className="block aspect-[1024/531] w-full border-b border-ui-border bg-white">
                         <LazyImage src={optimizarImg(rel.imagen)} fallbackSrc={`/imagenes_repuestos/${rel.codigo_referencia}.webp`} alt={rel.nombre} className="h-full w-full !bg-white" imageFit="contain" />
@@ -322,7 +322,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
               <button
                 type="button"
                 onClick={() => preguntarPorRepuesto(product, motoCorta)}
-                className="flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-3 text-base font-bold text-brand-bg transition-colors hover:bg-[#20bd5a] active:scale-[0.98]"
+                className="press flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-3 text-base font-bold text-brand-bg hover:bg-[#20bd5a]"
               >
                 <MessageCircle size={20} className="shrink-0" aria-hidden="true" />
                 Preguntar
@@ -331,13 +331,13 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
                 type="button"
                 onClick={() => addToCart(product)}
                 disabled={!product.stock}
-                className={`flex min-h-[52px] flex-[1.4] items-center justify-center gap-2 rounded-xl px-3 text-base font-bold transition-colors active:scale-[0.98] ${
+                className={`press flex min-h-[52px] flex-[1.4] items-center justify-center gap-2 rounded-xl px-3 text-base font-bold ${
                   product.stock
                     ? 'bg-brand-orange-action text-white hover:bg-brand-orange'
                     : 'cursor-not-allowed bg-ui-muted text-ui-copy'
                 }`}
               >
-                {enPedido > 0 ? <Check size={20} strokeWidth={3} className="shrink-0" aria-hidden="true" /> : <ShoppingCart size={20} className="shrink-0" aria-hidden="true" />}
+                {enPedido > 0 ? <Check key={enPedido} size={20} strokeWidth={3} className="shrink-0 animate-check-in" aria-hidden="true" /> : <ShoppingCart size={20} className="shrink-0" aria-hidden="true" />}
                 {!product.stock ? 'Agotado' : enPedido > 0 ? `Agregar otro (${enPedido})` : 'Agregar al pedido'}
               </button>
             </div>

@@ -10,6 +10,7 @@ import { trackContact } from '../utils/tracking';
 import { buildWhatsAppUrl } from '../utils/attribution';
 import { Producto } from '../types';
 import { SearchBar } from './SearchBar';
+import { useScrolled } from '../hooks/useScrolled';
 import { nombreCorto } from './SirvePara';
 
 /*
@@ -49,6 +50,7 @@ export const Navbar = ({ busqueda, buscar, productos, filtroModelo }: Props) => 
   const { theme, toggleTheme } = useTheme();
   const { abrirSelector, miMoto } = useMoto();
   const { despiece } = useDespiece();
+  const bajado = useScrolled();
 
   const moto = filtroModelo || miMoto;
   // En el celular el buscador deja poco espacio: el texto de ayuda corto, para que no se corte a media palabra.
@@ -63,11 +65,11 @@ export const Navbar = ({ busqueda, buscar, productos, filtroModelo }: Props) => 
   };
 
   return (
-    <header className="sticky top-0 z-nav bg-brand-bg text-white shadow-[0_2px_8px_rgba(0,0,0,.28)]">
+    <header className={`sticky top-0 z-nav bg-brand-bg text-white transition-shadow duration-300 ${bajado ? 'shadow-[0_4px_18px_rgba(0,0,0,.35)]' : 'shadow-none'}`}>
       <div className="mx-auto flex h-14 max-w-[1440px] items-center gap-2 px-2 sm:gap-3 sm:px-5 lg:h-[72px] lg:gap-6 lg:px-8">
         <Link to="/" className="group flex shrink-0 items-center gap-2" aria-label="LV PARTS - Inicio">
           <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-white p-1 lg:h-12 lg:w-12">
-            <img src="/logo.svg" alt="" className="h-full w-full object-contain" />
+            <img src="/logo.svg" alt="" className="h-full w-full object-contain transition-transform duration-300 ease-out group-hover:rotate-[-6deg] group-hover:scale-105" />
           </span>
           <span className="hidden font-anton text-[1.7rem] uppercase leading-none tracking-wide md:block lg:text-[2rem]">
             LV <span className="text-brand-orange">PARTS</span>
@@ -78,7 +80,7 @@ export const Navbar = ({ busqueda, buscar, productos, filtroModelo }: Props) => 
           type="button"
           onClick={abrirSelector}
           aria-haspopup="dialog"
-          className="hidden min-h-12 max-w-[15rem] shrink-0 items-center gap-2 rounded-lg border border-white/15 px-3 text-left text-sm font-bold text-white transition-colors hover:border-brand-orange lg:flex"
+          className="press hidden min-h-12 max-w-[15rem] shrink-0 items-center gap-2 rounded-lg border border-white/15 px-3 text-left text-sm font-bold text-white hover:border-brand-orange lg:flex"
         >
           <Bike size={20} className="shrink-0 text-brand-orange" aria-hidden="true" />
           <span className="min-w-0">
@@ -97,12 +99,14 @@ export const Navbar = ({ busqueda, buscar, productos, filtroModelo }: Props) => 
             <CircleHelp size={20} aria-hidden="true" /> Ayuda
           </Link>
           <button onClick={toggleTheme} className="hidden h-11 w-11 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 hover:text-brand-orange md:flex" aria-label={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'}>
-            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            {/* La `key` es el tema: el ícono nuevo entra girando. */}
+            <span key={theme} className="flex animate-spin-in">{theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}</span>
           </button>
           <button onClick={openCart} className="relative flex h-11 min-w-11 items-center justify-center gap-2 rounded-lg px-2 text-white hover:bg-white/10" aria-label={`Abrir pedido${cartCount ? ` (${cartCount})` : ''}`}>
             <span className="relative">
               <ShoppingCart size={24} aria-hidden="true" />
-              {cartCount > 0 && <span className="absolute -right-2.5 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-orange px-1 text-[11px] font-black text-white">{cartCount}</span>}
+              {/* La `key` es la cantidad: el contador salta cada vez que cambia. */}
+              {cartCount > 0 && <span key={cartCount} className="absolute -right-2.5 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-orange px-1 text-[11px] font-black text-white animate-pop">{cartCount}</span>}
             </span>
             <span className="hidden text-sm font-bold lg:inline">Pedido</span>
           </button>

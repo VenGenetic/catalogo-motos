@@ -29,6 +29,8 @@ interface Props {
   onOpen: (p: Producto) => void;
   onAdd: (p: Producto) => void;
   onAsk: (p: Producto) => void;
+  /** Posición en la grilla: las tarjetas entran una tras otra (se repite cada 8). */
+  indice?: number;
 }
 
 export const precioTexto = (precio: number) => precio ? `$${Number(precio).toFixed(2)}` : 'Consultar precio';
@@ -48,12 +50,15 @@ export const EstadoStock = ({ product, grande = false }: { product: Producto; gr
   );
 };
 
-export const ProductCard = memo(({ product, despiece, modeloActual, enPedido, onOpen, onAdd, onAsk }: Props) => {
+export const ProductCard = memo(({ product, despiece, modeloActual, enPedido, onOpen, onAdd, onAsk, indice = 0 }: Props) => {
   const compatibles = useCompatibles(product, despiece);
   const agotado = !product.stock;
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-ui-border bg-ui-surface shadow-card transition-[border-color,box-shadow] duration-200 hover:border-ui-copy/40 hover:shadow-card-hover [contain-intrinsic-size:320px] [content-visibility:auto]">
+    <article
+      className="group lift stagger flex h-full flex-col overflow-hidden rounded-xl border border-ui-border bg-ui-surface shadow-card animate-rise hover:border-ui-copy/40 [contain-intrinsic-size:320px] [content-visibility:auto]"
+      style={{ '--i': indice % 8 } as React.CSSProperties}
+    >
       <button
         type="button"
         onClick={() => onOpen(product)}
@@ -97,7 +102,7 @@ export const ProductCard = memo(({ product, despiece, modeloActual, enPedido, on
           <button
             type="button"
             onClick={() => onAsk(product)}
-            className="flex h-10 w-full items-center justify-center gap-1.5 rounded-lg border border-ui-border bg-ui-surface text-sm font-bold text-ui-ink transition-colors hover:border-green-600 hover:text-green-700 active:scale-[0.98]"
+            className="press flex h-10 w-full items-center justify-center gap-1.5 rounded-lg border border-ui-border bg-ui-surface text-sm font-bold text-ui-ink hover:border-green-600 hover:text-green-700"
           >
             <MessageCircle size={17} aria-hidden="true" />
             Preguntar
@@ -106,7 +111,7 @@ export const ProductCard = memo(({ product, despiece, modeloActual, enPedido, on
           <button
             type="button"
             onClick={() => onAdd(product)}
-            className={`flex h-10 w-full items-center justify-center gap-1.5 rounded-lg text-sm font-bold transition-colors active:scale-[0.98] ${
+            className={`press flex h-10 w-full items-center justify-center gap-1.5 rounded-lg text-sm font-bold ${
               enPedido > 0
                 ? 'border border-green-600 bg-green-50 text-green-800 hover:bg-green-100 dark:bg-green-950/40 dark:text-green-300'
                 : 'bg-brand-bg text-white hover:bg-brand-orange-action dark:bg-white dark:text-brand-bg dark:hover:bg-brand-orange dark:hover:text-white'
@@ -114,7 +119,8 @@ export const ProductCard = memo(({ product, despiece, modeloActual, enPedido, on
             aria-label={enPedido > 0 ? `Agregar otra unidad de ${product.nombre} (ya tienes ${enPedido})` : `Agregar ${product.nombre} al pedido`}
           >
             {enPedido > 0
-              ? <><Check size={17} strokeWidth={3} aria-hidden="true" /> En pedido · {enPedido}</>
+              // La `key` cambia con cada unidad: el visto se vuelve a dibujar en cada toque.
+              ? <><Check key={enPedido} size={17} strokeWidth={3} className="animate-check-in" aria-hidden="true" /> En pedido · {enPedido}</>
               : <><ShoppingCart size={17} aria-hidden="true" /> Agregar</>}
           </button>
         )}
