@@ -266,6 +266,7 @@ export const ImageZoom = ({ src, alt, className, fallbackSrc }: ImageZoomProps) 
           {/* Botón cerrar */}
           <button
             onClick={closeModal}
+            aria-label="Cerrar foto"
             className="absolute top-4 right-4 z-10 bg-white/10 backdrop-blur-md text-white p-3 rounded-full hover:bg-white/20 transition-all duration-200"
           >
             <X size={24} />

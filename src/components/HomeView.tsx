@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { MapPin, Clock, Phone } from 'lucide-react';
 import { HeroSection } from './HeroSection';
 import { FeaturedCategories } from './FeaturedCategories';
@@ -9,8 +10,13 @@ interface HomeViewProps {
   productos: Producto[];
 }
 
-// CORRECCIÓN: Renombramos 'productos' a '_productos' para silenciar el error de variable no usada
-export const HomeView = ({ productos: _ }: HomeViewProps) => {
+export const HomeView = ({ productos }: HomeViewProps) => {
+  // Cuántos repuestos activos hay de cada sistema, para "¿Qué parte buscas?".
+  const conteo = useMemo(() => {
+    const porSistema = new Map<string, number>();
+    for (const p of productos) if (p.is_active !== false) porSistema.set(p.seccion || 'Otros', (porSistema.get(p.seccion || 'Otros') ?? 0) + 1);
+    return porSistema;
+  }, [productos]);
   
   // DATOS DEL NEGOCIO LOCAL (Schema.org)
   const businessSchema = {
@@ -39,16 +45,16 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
 
       <ModelExplorer />
 
-      <FeaturedCategories />
+      <FeaturedCategories conteo={conteo} />
 
       {/* Sección de Ubicación y Mapa */}
       <section className="border-t border-ui-border bg-ui-surface py-10 md:py-14">
         <div className="mx-auto max-w-[1440px] px-3 sm:px-5 lg:px-8">
-          <div className="catalog-rule mb-6 pt-4">
+          <div className="mb-5">
             <span className="section-kicker">Atención y despacho</span>
-            <h2 className="mt-3 text-2xl font-black uppercase tracking-tight text-ui-ink md:text-3xl">Estamos en Guayaquil</h2>
+            <h2 className="mt-2 text-2xl font-black text-ui-ink md:text-3xl">Estamos en Guayaquil</h2>
           </div>
-          <div className="grid grid-cols-1 items-stretch border border-ui-border bg-ui-border gap-px md:grid-cols-2">
+          <div className="grid grid-cols-1 items-stretch gap-px overflow-hidden rounded-xl border border-ui-border bg-ui-border md:grid-cols-2">
                
              {/* Lado izquierdo: Información y detalles */}
              <div className="flex flex-col justify-between bg-ui-surface p-6 md:p-9">
@@ -101,7 +107,7 @@ export const HomeView = ({ productos: _ }: HomeViewProps) => {
                    href="https://maps.app.goo.gl/xj8vjxQYTpfZ7XhRA" 
                    target="_blank" 
                    rel="noopener noreferrer"
-                   className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 bg-brand-orange-action px-6 py-3.5 font-geist text-xs font-black uppercase tracking-wider text-white transition-all hover:bg-brand-orange active:scale-[0.98] primary-button-glow"
+                   className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-brand-orange-action px-6 py-3.5 text-sm font-black text-white transition-colors hover:bg-brand-orange active:scale-[0.98]"
                  >
                    <MapPin className="w-5 h-5" />
                    <span>Ir a la ubicación</span>

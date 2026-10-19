@@ -1,17 +1,24 @@
 /*
-  Qué moto lleva cada repuesto: las reglas del despiece por modelo.
+  Despiece por modelo: a qué motos sirve cada repuesto.
 
-  COPIA de Sistema_ERP/apartamentos/bodega/despiece.ts (sin la clasificación
-  por sistema: el catálogo usa sus propias secciones). Las reglas se revisaron
-  pieza por pieza contra el catálogo real; si cambias una aquí, cambia la
-  otra igual, o el ERP y la web le dirán al cliente cosas distintas.
+  COPIA de Sistema_ERP/apartamentos/bodega/despiece.ts: de SEGMENTOS a
+  SIN_COMPARTIDAS y `modelosCompatiblesDe`, sin cambiar una letra. Si cambias
+  una regla aquí, cambia la otra igual, o el ERP y la web le dirán al cliente
+  cosas distintas. El sistema de cada pieza está en utils/sistemas.ts.
 
   El código de la importadora es el modelo más la posición de la pieza
   (CB250GP1-019 es el asiento de la GP1 250). Una pieza es de una moto si su
   código es de ella (propia) o si su nombre dice que también le sirve
   (compartida). Los nombres que no dicen la versión no se asignan, salvo las
   excepciones escritas en el modelo (`aSecas`).
+
+  Las reglas usan lookbehind (`(?<!SUPER\s*)`), que Safari sólo entiende desde
+  iOS 16.4. Por eso este archivo no se importa directo: se carga aparte con
+  utils/cargarDespiece.ts y, si el navegador no puede, el catálogo sigue
+  funcionando sin el filtro por moto.
 */
+
+import { normalizar } from './sistemas';
 
 export const SEGMENTOS = [
   'Deportivas', 'Doble propósito', 'Enduro', 'Clásicas', 'Utilitarias', 'Caballito', 'Scooters', 'Cuadrón', 'Otros modelos',
@@ -59,9 +66,12 @@ export interface ProductoDespiece {
   name: string;
 }
 
-
-/** Mayúsculas y sin tildes: los nombres vienen escritos de las dos formas. */
-export const normalizar = (texto: string) => texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase();
+export interface CompatibilidadDespiece {
+  modelo: ModeloDespiece;
+  /** Posición en la lista del modelo. Sólo existe cuando la pieza es propia. */
+  posicion: number | null;
+  origen: 'propia' | 'compartida';
+}
 
 /**
  * "CB250GP1-068G" → prefijo CB250GP1, posición 68, variante G (color, lado, año).
@@ -321,14 +331,30 @@ export const modelosDelMotor = (n: string, prefijo = '') =>
 /** Líneas eléctricas y artículos de tienda: sus nombres comparten palabras con motos ("B-E AGILITY"). */
 const SIN_COMPARTIDAS = new Set(['RBE', 'RME', 'RKX', 'MDY', 'MFP', 'REDAY', 'CED', 'POP']);
 
-type Origen = 'propia' | 'compartida';
+// --- Armado ----------------------------------------------------------------
 
-/** Las motos de un producto, con la misma lógica que armarDespieces del ERP. */
-function asignar(producto: ProductoDespiece, dueño: Map<string, ModeloDespiece[]>): [ModeloDespiece, Origen][] {
+const DUENOS_POR_PREFIJO = new Map<string, ModeloDespiece[]>();
+for (const modelo of MODELOS_DESPIECE) {
+  for (const prefijo of modelo.prefijos) {
+    DUENOS_POR_PREFIJO.set(prefijo, [...(DUENOS_POR_PREFIJO.get(prefijo) ?? []), modelo]);
+  }
+}
+
+const ORDEN_MODELOS = new Map(MODELOS_DESPIECE.map((modelo, indice) => [modelo.id, indice]));
+
+/**
+ * Devuelve todas las motos a las que sirve un producto usando exactamente las
+ * mismas reglas del despiece: código propio, menciones en el nombre y
+ * separación estricta entre versiones de una misma familia.
+ */
+export function modelosCompatiblesDe(producto: ProductoDespiece): CompatibilidadDespiece[] {
   const n = nombreParaMotos(producto.name || '');
+  // "¡Nuevo!", "Free delivery charges": no son repuestos. Ojo con los nombres
+  // cortos de verdad ("STOP S1 150 2025"): por eso se nombran, no se mide el largo.
   if (/^[^A-Z]*NUEVO[^A-Z]*$/.test(n) || /^FREE\s*DELIVERY/.test(n)) return [];
+
   const codigo = leerCodigo(producto.sku);
-  const propios = (codigo && dueño.get(codigo.prefijo)) || [];
+  const propios = (codigo && DUENOS_POR_PREFIJO.get(codigo.prefijo)) || [];
   const compartible = !SIN_COMPARTIDAS.has(codigo?.prefijo ?? '');
   let nombrados = compartible ? MODELOS_DESPIECE.filter(m => nombra(m, n, codigo?.prefijo)) : [];
   // Sin moto en el nombre ni dueño por código: las del motor que nombra ("CARTER IZQ FE250 4V").
@@ -336,50 +362,54 @@ function asignar(producto: ProductoDespiece, dueño: Map<string, ModeloDespiece[
     const delMotor = modelosDelMotor(n, codigo?.prefijo);
     nombrados = MODELOS_DESPIECE.filter(m => delMotor.includes(m.id));
   }
-  const out: [ModeloDespiece, Origen][] = [];
-  const dueños: ModeloDespiece[] = [];
+  const compatibles: CompatibilidadDespiece[] = [];
+  const duenos: ModeloDespiece[] = [];
+
   for (const modelo of propios) {
     if (nombrados.length && !nombrados.includes(modelo) && !modelo.propio?.test(n)) continue;
-    dueños.push(modelo);
-    out.push([modelo, 'propia']);
+    duenos.push(modelo);
+    compatibles.push({ modelo, posicion: codigo!.numero, origen: 'propia' });
   }
   for (const modelo of nombrados) {
     if (propios.includes(modelo)) continue;
-    const deOtraVersion = modelo.familia && dueños.some(d => d.familia === modelo.familia);
+    // "LLANTA ML 110-90-17 TEKKEN" con código de la Evo no es de la Tekken 250.
+    const deOtraVersion = modelo.familia && duenos.some(d => d.familia === modelo.familia);
     if (deOtraVersion && modelo.explicito && !modelo.explicito.test(n)) continue;
-    out.push([modelo, 'compartida']);
+    compatibles.push({ modelo, posicion: null, origen: 'compartida' });
   }
-  return out;
-}
 
-let indice: Map<string, ModeloDespiece[]> | null = null;
-const dueñoPorPrefijo = () => {
-  if (!indice) {
-    indice = new Map();
-    for (const m of MODELOS_DESPIECE) for (const p of m.prefijos) indice.set(p, [...(indice.get(p) ?? []), m]);
-  }
-  return indice;
-};
+  return compatibles.sort((a, b) =>
+    (ORDEN_MODELOS.get(a.modelo.id) ?? Number.MAX_SAFE_INTEGER)
+    - (ORDEN_MODELOS.get(b.modelo.id) ?? Number.MAX_SAFE_INTEGER)
+  );
+}
 
 export const modeloPorId = (id: string) => MODELOS_DESPIECE.find(m => m.id === id);
 
+/** Una pieza en el despiece de una moto. */
+export interface PiezaDeModelo {
+  origen: 'propia' | 'compartida';
+  /** Posición en la lista de la moto (el número del código). Sólo en las propias. */
+  posicion: number | null;
+}
+
 /**
- * Las piezas de una sola moto (id del producto -> propia o compartida).
- * Sólo se analiza a fondo lo que puede ser de ella, para no recorrer las 80
- * motos con cada uno de los ~6.400 productos en el celular del cliente.
+ * Las piezas de una sola moto (id del producto → propia o compartida y su
+ * posición), con la misma regla que `modelosCompatiblesDe`. Sólo se analiza a
+ * fondo lo que puede ser de ella, para no recorrer las 80 motos con cada uno
+ * de los ~6.500 productos en el celular del cliente.
  */
-export function piezasDeModelo(productos: ProductoDespiece[], id: string): Map<string | number, Origen> {
+export function piezasDeModelo(productos: ProductoDespiece[], id: string): Map<string | number, PiezaDeModelo> {
   const modelo = modeloPorId(id);
-  const out = new Map<string | number, Origen>();
+  const out = new Map<string | number, PiezaDeModelo>();
   if (!modelo) return out;
-  const dueño = dueñoPorPrefijo();
   for (const p of productos) {
     const prefijo = leerCodigo(p.sku)?.prefijo;
     const n = nombreParaMotos(p.name || '');
     const candidato = (prefijo && modelo.prefijos.includes(prefijo)) || nombra(modelo, n, prefijo) || modelosDelMotor(n, prefijo).includes(modelo.id);
     if (!candidato) continue;
-    const suya = asignar(p, dueño).find(([m]) => m.id === modelo.id);
-    if (suya) out.set(p.id, suya[1]);
+    const suya = modelosCompatiblesDe(p).find(c => c.modelo.id === modelo.id);
+    if (suya) out.set(p.id, { origen: suya.origen, posicion: suya.posicion });
   }
   return out;
 }

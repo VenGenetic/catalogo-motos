@@ -23,7 +23,7 @@ const imageByModelId: Record<string, string> = {
   'eagle-150': 'eagle-3-150-cc.webp', 'eagle-5-150': 'eagle-5-150-cc.webp',
   'eagle-z-200': 'eagle-z-200-cc.webp', 'cafe-racer-170': 'cafe-racer-170-cc.webp',
   'commander-200': 'commander-200-cc.webp', 'scrambler-250': 'scrambler-revolution-250-cc.webp',
-  'scrambler-max-300': 'scrambler-max-300-cc.webp', 'hunter-200': 'hunter-4-200-cc.webp',
+  'scrambler-max-300': 'scrambler-max-300-cc.webp', 'hunter-200': 'hunter-4-200-cc.webp', 'scorpion-200-250': 'scorpion-250-cc.webp',
 };
 
 export const getMotoImageById = (id: string): string | null => imageByModelId[id] ? `/modelos/${imageByModelId[id]}` : null;
