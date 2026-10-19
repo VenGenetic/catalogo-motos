@@ -80,7 +80,7 @@ export const HeroSection = () => {
                 <Link to="/catalogo" className="press flex min-h-[48px] items-center justify-center gap-2 rounded-xl border border-white/40 bg-black/25 px-4 text-sm font-bold text-white backdrop-blur-sm hover:border-white">
                   Ver todo el catálogo
                 </Link>
-                <button type="button" onClick={cotizar} className="press flex min-h-[48px] items-center justify-center gap-2 rounded-xl border border-[#25D366]/60 bg-black/25 px-4 text-sm font-bold text-[#7df0a6] backdrop-blur-sm hover:border-[#25D366]">
+                <button type="button" onClick={cotizar} className="press flex min-h-[48px] items-center justify-center gap-2 rounded-xl border border-wa/60 bg-black/25 px-4 text-sm font-bold text-wa-light backdrop-blur-sm hover:border-wa">
                   <MessageCircle size={18} aria-hidden="true" /> Asesor
                 </button>
               </div>

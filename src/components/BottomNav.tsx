@@ -45,7 +45,7 @@ export const BottomNav = () => {
         <span className="relative">
           <ShoppingCart className={icono(false)} aria-hidden="true" />
           {cartCount > 0 && (
-            <span key={cartCount} className="absolute -right-2.5 -top-2 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-brand-orange px-1 text-[10px] font-black text-white animate-pop">
+            <span key={cartCount} className="absolute -right-2.5 -top-2 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-brand-orange-action px-1 text-[10px] font-black text-white animate-pop">
               {cartCount}
             </span>
           )}

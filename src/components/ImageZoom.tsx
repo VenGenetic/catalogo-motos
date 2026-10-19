@@ -254,7 +254,7 @@ export const ImageZoom = ({ src, alt, className, fallbackSrc }: ImageZoomProps) 
         {/* Overlay con icono de zoom */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
           <div className="bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg">
-            <ZoomIn size={20} className="text-gray-700" />
+            <ZoomIn size={20} className="text-brand-bg" />
           </div>
         </div>
       </div>
@@ -304,7 +304,7 @@ export const ImageZoom = ({ src, alt, className, fallbackSrc }: ImageZoomProps) 
               <X size={14} />
               Toca fuera para cerrar
             </span>
-            <span className="text-[10px] text-gray-300">
+            <span className="text-[10px] text-white/70">
               Pellizca con dos dedos para ampliar
             </span>
           </div>

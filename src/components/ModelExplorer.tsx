@@ -69,7 +69,7 @@ export const ModelExplorer = () => {
                   </span>
                   <span className="flex flex-1 items-center justify-between gap-2 border-t border-ui-border px-3 py-2.5">
                     <span className="text-sm font-bold leading-tight text-ui-ink">{moto.nombre}</span>
-                    <ArrowRight size={16} className="shrink-0 text-ui-copy transition-[color,transform] duration-200 group-hover:translate-x-0.5 group-hover:text-brand-orange" aria-hidden="true" />
+                    <ArrowRight size={16} className="shrink-0 text-ui-copy transition-[color,transform] duration-200 group-hover:translate-x-0.5 group-hover:text-brand-orange-action dark:group-hover:text-brand-orange" aria-hidden="true" />
                   </span>
                 </Link>
               </li>

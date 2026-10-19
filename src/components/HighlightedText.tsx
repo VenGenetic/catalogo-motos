@@ -36,7 +36,7 @@ export const HighlightedText = memo(({ text, highlight }: HighlightedTextProps) 
 
   const content = parts.map((part, i) =>
     matchedTerms.has(part.toLowerCase()) ? (
-      <span key={i} className="rounded-sm bg-yellow-200 px-0.5 text-slate-900 shadow-sm">
+      <span key={i} className="rounded-sm bg-brand-orange/25 px-0.5 text-ui-ink">
         {part}
       </span>
     ) : (

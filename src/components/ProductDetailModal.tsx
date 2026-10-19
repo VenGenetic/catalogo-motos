@@ -322,7 +322,7 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
               <button
                 type="button"
                 onClick={() => preguntarPorRepuesto(product, motoCorta)}
-                className="press flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-3 text-base font-bold text-brand-bg hover:bg-[#20bd5a]"
+                className="press flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-xl bg-wa px-3 text-base font-bold text-brand-bg hover:bg-wa-hover"
               >
                 <MessageCircle size={20} className="shrink-0" aria-hidden="true" />
                 Preguntar

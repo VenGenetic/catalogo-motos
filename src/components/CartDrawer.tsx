@@ -1,6 +1,6 @@
 // src/components/CartDrawer.tsx
 import { useState } from 'react';
-import { X, Minus, Plus, MessageCircle, User, ArrowRight, Check, FileText, Trash2, MapPin, Truck, Eye } from 'lucide-react';
+import { X, Minus, Plus, MessageCircle, User, ArrowRight, Check, FileText, Trash2, MapPin, Truck, Eye, ShoppingCart } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { optimizarImg } from '../utils/helpers';
@@ -9,12 +9,21 @@ import { trackInitiateCheckout } from '../utils/tracking';
 import { APP_CONFIG } from '../config/constants';
 import { buildWhatsAppUrl } from '../utils/attribution';
 
+/*
+  El pedido: un panel que entra por la derecha (en el celular, a pantalla
+  completa). Arriba la lista de repuestos, abajo fijos el total, "Copiar" la
+  proforma y "Pedir" por WhatsApp. Usa los mismos colores y botones que el
+  resto del sitio (tokens ui-* y brand-*), en claro y en oscuro.
+*/
+
+const campo = 'w-full rounded-xl border border-ui-border bg-ui-muted px-4 py-3.5 text-base text-ui-ink outline-none transition-[border-color,background-color,box-shadow] duration-200 placeholder:text-ui-copy focus:border-brand-orange focus:bg-ui-surface focus:ring-4 focus:ring-brand-orange/15';
+
 export const CartDrawer = () => {
-  const { 
-    isOpen, 
-    closeCart, 
-    cart, 
-    updateQuantity, 
+  const {
+    isOpen,
+    closeCart,
+    cart,
+    updateQuantity,
     cartTotal
   } = useCart();
 
@@ -32,7 +41,7 @@ export const CartDrawer = () => {
   });
 
   const [copied, setCopied] = useState(false);
-  
+
   // Estado para el modal de envío
   const [isShippingModalOpen, setIsShippingModalOpen] = useState(false);
   const [hasShipping, setHasShipping] = useState(false);
@@ -114,7 +123,7 @@ ${tienePreciosPendientes ? 'Piezas pendientes de cotización incluidas en el ped
   const handleConfirmCopy = async () => {
     const finalShippingCost = hasShipping ? (parseFloat(shippingCost) || 0) : 0;
     const texto = generarTextoProforma(finalShippingCost);
-    
+
     try {
       await navigator.clipboard.writeText(texto);
       setCopied(true);
@@ -129,119 +138,118 @@ ${tienePreciosPendientes ? 'Piezas pendientes de cotización incluidas en el ped
 
   return (
     <div className="fixed inset-0 z-modal flex justify-end">
-      {/* Overlay Oscuro */}
-      <div 
-        className="absolute inset-0 bg-brand-bg/72 backdrop-blur-sm transition-opacity"
+      {/* Fondo oscuro */}
+      <div
+        className="absolute inset-0 bg-brand-bg/72 backdrop-blur-sm animate-fade-in"
         onClick={closeCart}
       />
 
-      {/* Panel Deslizante (Ancho completo en móvil) */}
+      {/* Panel (ancho completo en el celular) */}
       <div className="relative flex h-[100dvh] w-full flex-col border-l border-ui-border bg-ui-surface shadow-2xl animate-slide-in-right md:max-w-[480px]">
-        
-        {/* --- HEADER --- */}
+
+        {/* --- CABECERA --- */}
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-ui-border bg-ui-surface px-5 py-4">
-          <div>
-            <h2 className="text-xl font-extrabold text-gray-900 dark:text-white flex items-center gap-2">
-              Tu Pedido
-              <span className="bg-slate-100 dark:bg-brand-surface-2 text-slate-600 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full border border-slate-200 dark:border-brand-surface-3">
-                {cart.length} {cart.length === 1 ? 'repuesto' : 'repuestos'}
-              </span>
-            </h2>
-          </div>
-          <button 
+          <h2 className="flex items-center gap-2 text-xl font-black text-ui-ink">
+            Tu pedido
+            <span className="rounded-full border border-ui-border bg-ui-muted px-2 py-0.5 text-xs font-bold tabular-nums text-ui-copy">
+              {cart.length} {cart.length === 1 ? 'repuesto' : 'repuestos'}
+            </span>
+          </h2>
+          <button
             onClick={closeCart}
             aria-label="Cerrar pedido"
-            className="p-2 -mr-2 text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-brand-surface-2 rounded-full transition-all active:scale-90"
+            className="press -mr-2 flex h-11 w-11 items-center justify-center rounded-full text-ui-copy hover:bg-ui-muted hover:text-ui-ink"
           >
-            <X className="w-7 h-7"/>
+            <X className="h-7 w-7"/>
           </button>
         </div>
 
-        {/* --- CONTENIDO SCROLLABLE --- */}
+        {/* --- CONTENIDO --- */}
         <div className="flex-1 overflow-y-auto bg-ui-muted/45">
           {cart.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-[70%] text-gray-400 gap-6 p-8">
-              <div className="bg-white dark:bg-brand-surface-2 p-8 rounded-full shadow-sm border border-gray-100 dark:border-brand-surface-3">
-                <MessageCircle className="w-16 h-16 text-gray-300 dark:text-gray-600" />
+            <div className="flex h-[70%] flex-col items-center justify-center gap-6 p-8 text-center animate-rise">
+              <div className="flex h-28 w-28 items-center justify-center rounded-full border border-ui-border bg-ui-surface shadow-card">
+                <ShoppingCart className="h-12 w-12 text-ui-copy/50" strokeWidth={1.5} aria-hidden="true" />
               </div>
-              <div className="text-center space-y-2">
-                <p className="font-bold text-lg text-slate-700 dark:text-gray-300">Tu pedido está vacío</p>
-                <p className="text-sm">Agrega repuestos para armar tu pedido.</p>
+              <div className="space-y-1">
+                <p className="text-lg font-black text-ui-ink">Tu pedido está vacío</p>
+                <p className="text-sm text-ui-copy">Agrega repuestos del catálogo para armarlo.</p>
               </div>
-              <button 
-                onClick={closeCart} 
-                className="px-8 py-3 bg-slate-900 dark:bg-brand-surface-2 text-white font-bold rounded-xl shadow-lg shadow-slate-200 dark:shadow-none active:scale-95 transition-transform"
+              <button
+                onClick={closeCart}
+                className="press flex min-h-[48px] items-center justify-center rounded-xl bg-brand-bg px-8 font-bold text-white shadow-md hover:bg-brand-orange-action dark:bg-white dark:text-brand-bg dark:hover:bg-brand-orange dark:hover:text-white"
               >
-                Volver al Catálogo
+                Volver al catálogo
               </button>
             </div>
           ) : (
-            <div className="p-4 space-y-6 pb-32">
-              
-              {/* LISTA DE ITEMS */}
+            <div className="space-y-6 p-4 pb-32">
+
+              {/* LISTA DE REPUESTOS */}
               <div className="space-y-3">
-                {cart.map(item => {
+                {cart.map((item, i) => {
                   const subtotal = (Number(item.precio) || 0) * (item.cantidad || item.cant || 0);
                   return (
-                    <div key={item.id} className="flex gap-4 rounded-2xl border border-ui-border bg-ui-surface p-3 shadow-sm">
-                      {/* Imagen Clickable */}
-                      <div 
-                        className="cursor-pointer relative group shrink-0 self-start w-24 aspect-[1024/531] sm:w-28"
+                    <div key={item.id} className="stagger flex gap-4 rounded-2xl border border-ui-border bg-ui-surface p-3 shadow-card animate-rise" style={{ '--i': i } as React.CSSProperties}>
+                      {/* Foto (abre la ficha) */}
+                      <button
+                        type="button"
+                        className="group relative aspect-[1024/531] w-24 shrink-0 self-start overflow-hidden rounded-lg sm:w-28"
                         onClick={() => handleOpenProduct(item.id)}
+                        aria-label={`Ver ${item.nombre}`}
                       >
                         {/* Apaisada como las fotos: se ve la pieza entera, no recortada. */}
-                        <LazyImage 
-                          src={optimizarImg(item.imagen)} 
+                        <LazyImage
+                          src={optimizarImg(item.imagen)}
                           fallbackSrc={`/imagenes_repuestos/${item.codigo_referencia}.webp`}
                           alt={item.nombre}
                           imageFit="contain"
-                          className="w-full h-full rounded-lg !bg-white border border-ui-border" 
+                          className="h-full w-full rounded-lg border border-ui-border !bg-white"
                         />
-                        <div className="absolute inset-0 bg-black/40 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                           <Eye className="text-white w-5 h-5 shadow-sm" strokeWidth={2.5} /> 
-                        </div>
-                      </div>
-                      
-                      <div className="flex-1 flex flex-col justify-between">
-                        <div className="flex justify-between items-start gap-2">
-                          {/* Título Clickable */}
-                          <h4 
+                        <span className="absolute inset-0 flex items-center justify-center rounded-lg bg-brand-bg/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                           <Eye className="h-5 w-5 text-white" strokeWidth={2.5} aria-hidden="true" />
+                        </span>
+                      </button>
+
+                      <div className="flex min-w-0 flex-1 flex-col justify-between">
+                        <div className="flex items-start justify-between gap-2">
+                          <button
+                            type="button"
                             onClick={() => handleOpenProduct(item.id)}
-                            className="text-xs sm:text-sm font-bold text-slate-800 dark:text-gray-200 leading-tight line-clamp-2 cursor-pointer hover:text-brand-orange transition-colors"
-                            title="Ver detalles del repuesto"
+                            className="line-clamp-2 text-left text-xs font-bold leading-tight text-ui-ink transition-colors hover:text-brand-orange-action dark:hover:text-brand-orange sm:text-sm"
                           >
                             {item.nombre}
-                          </h4>
-                          <button 
+                          </button>
+                          <button
                              onClick={() => updateQuantity(item.id, -1000)} // Eliminar
                              aria-label={`Quitar ${item.nombre} del pedido`}
-                             className="-mr-2 -mt-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-gray-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/40"
+                             className="-mr-2 -mt-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-ui-copy transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/40 dark:hover:text-red-400"
                           >
                              <Trash2 size={16} />
                           </button>
                         </div>
-                        
-                        <div className="flex items-end justify-between mt-2">
-                          <div className="font-extrabold text-slate-900 dark:text-white">
+
+                        <div className="mt-2 flex items-end justify-between">
+                          <div className="font-black tabular-nums text-ui-ink">
                             ${subtotal.toFixed(2)}
                           </div>
 
-                          {/* Controles de Cantidad (Touch Friendly) */}
-                          <div className="flex items-center gap-3 bg-gray-50 dark:bg-brand-surface-1/50 rounded-lg p-1 border border-gray-200 dark:border-brand-surface-3">
-                            <button 
-                              onClick={() => updateQuantity(item.id, -1)} 
+                          {/* Cantidad */}
+                          <div className="flex items-center gap-2 rounded-lg border border-ui-border bg-ui-muted p-1">
+                            <button
+                              onClick={() => updateQuantity(item.id, -1)}
                               aria-label="Quitar una unidad"
-                              className="w-9 h-9 bg-white dark:bg-brand-surface-2 hover:bg-gray-100 dark:hover:bg-brand-surface-3 rounded-md flex items-center justify-center shadow-sm border border-gray-200 dark:border-brand-border text-slate-700 dark:text-white active:scale-90 transition-transform"
+                              className="press flex h-9 w-9 items-center justify-center rounded-md border border-ui-border bg-ui-surface text-ui-ink hover:bg-ui-raised"
                             >
                               <Minus size={16} strokeWidth={3}/>
                             </button>
-                            <span className="text-sm font-bold w-6 text-center text-slate-900 dark:text-white">
+                            <span key={item.cantidad} className="w-6 text-center text-sm font-black tabular-nums text-ui-ink animate-pop">
                               {item.cantidad || item.cant || 0}
                             </span>
-                            <button 
-                              onClick={() => updateQuantity(item.id, 1)} 
+                            <button
+                              onClick={() => updateQuantity(item.id, 1)}
                               aria-label="Agregar una unidad"
-                              className="w-9 h-9 bg-slate-900 dark:bg-brand-surface-3 hover:dark:bg-brand-border text-white rounded-md flex items-center justify-center shadow-md active:scale-90 transition-transform"
+                              className="press flex h-9 w-9 items-center justify-center rounded-md bg-brand-bg text-white shadow-sm hover:bg-brand-orange-action dark:bg-white dark:text-brand-bg dark:hover:bg-brand-orange dark:hover:text-white"
                             >
                               <Plus size={16} strokeWidth={3}/>
                             </button>
@@ -253,169 +261,178 @@ ${tienePreciosPendientes ? 'Piezas pendientes de cotización incluidas en el ped
                 })}
               </div>
 
-              {/* FORMULARIO DE CLIENTE */}
-              <div className="space-y-4 rounded-2xl border border-ui-border bg-ui-surface p-5 shadow-sm">
-                <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-2">
-                  <User size={16} className="text-slate-400" /> 
-                  Datos para la Nota (Opcional)
+              {/* DATOS DEL CLIENTE */}
+              <div className="stagger space-y-4 rounded-2xl border border-ui-border bg-ui-surface p-5 shadow-card animate-rise" style={{ '--i': Math.min(cart.length, 6) } as React.CSSProperties}>
+                <h3 className="mb-2 flex items-center gap-2 text-sm font-black text-ui-ink">
+                  <User size={16} className="text-brand-orange-action dark:text-brand-orange" aria-hidden="true" />
+                  Datos para la nota (opcional)
                 </h3>
-                
-                <input 
-                  type="text" 
-                  name="nombre" 
-                  placeholder="Tu Nombre o Cliente" 
-                  value={formData.nombre} 
-                  onChange={handleInputChange} 
-                  className="w-full px-4 py-3.5 bg-gray-50 dark:bg-brand-surface-1 border border-gray-200 dark:border-brand-border rounded-xl text-base focus:bg-white dark:focus:bg-slate-800 dark:text-white focus:border-brand-orange focus:ring-4 focus:ring-brand-orange/10 outline-none transition-all placeholder:text-gray-400"
-                />
-                
-                <div className="relative">
-                   <MapPin className="absolute left-4 top-4 text-gray-400 w-5 h-5" />
-                   <input 
-                    type="text" 
-                    name="ciudad" 
-                    placeholder="Ciudad / Dirección" 
-                    value={formData.ciudad} 
-                    onChange={handleInputChange} 
-                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-brand-surface-1 border border-gray-200 dark:border-brand-border rounded-xl text-base focus:bg-white dark:focus:bg-slate-800 dark:text-white focus:border-brand-orange focus:ring-4 focus:ring-brand-orange/10 outline-none transition-all placeholder:text-gray-400"
-                  />
-                </div>
 
-                <div className="relative">
-                  <select 
-                    name="metodoPago" 
-                    value={formData.metodoPago} 
-                    onChange={handleInputChange} 
-                    className="w-full px-4 py-3.5 bg-gray-50 dark:bg-brand-surface-1 border border-gray-200 dark:border-brand-border rounded-xl text-base focus:bg-white dark:focus:bg-slate-800 dark:text-white focus:border-brand-orange outline-none appearance-none text-slate-700 dark:text-white font-medium pr-10"
+                <label className="block">
+                  <span className="sr-only">Tu nombre</span>
+                  <input
+                    type="text"
+                    name="nombre"
+                    placeholder="Tu nombre o el del cliente"
+                    value={formData.nombre}
+                    onChange={handleInputChange}
+                    className={campo}
+                  />
+                </label>
+
+                <label className="relative block">
+                  <span className="sr-only">Ciudad o dirección</span>
+                  <MapPin className="pointer-events-none absolute left-4 top-4 h-5 w-5 text-ui-copy" aria-hidden="true" />
+                  <input
+                    type="text"
+                    name="ciudad"
+                    placeholder="Ciudad / Dirección"
+                    value={formData.ciudad}
+                    onChange={handleInputChange}
+                    className={`${campo} pl-12`}
+                  />
+                </label>
+
+                <label className="relative block">
+                  <span className="sr-only">Forma de pago</span>
+                  <select
+                    name="metodoPago"
+                    value={formData.metodoPago}
+                    onChange={handleInputChange}
+                    className={`${campo} appearance-none pr-10 font-semibold`}
                   >
-                    <option value="Transferencia Bancaria">Transferencia Bancaria</option>
-                    <option value="Depósito">Depósito en Agente</option>
-                    <option value="Efectivo en Local">Efectivo en Local</option>
+                    <option value="Transferencia Bancaria">Transferencia bancaria</option>
+                    <option value="Depósito">Depósito en agente</option>
+                    <option value="Efectivo en Local">Efectivo en el local</option>
                   </select>
-                  <ArrowRight size={18} className="absolute right-4 top-4 text-gray-400 rotate-90 pointer-events-none" />
-                </div>
+                  <ArrowRight size={18} className="pointer-events-none absolute right-4 top-4 rotate-90 text-ui-copy" aria-hidden="true" />
+                </label>
               </div>
             </div>
           )}
         </div>
 
-        {/* --- FOOTER FLOTANTE (STICKY) --- */}
+        {/* --- PIE FIJO --- */}
         <div className="z-20 mt-auto border-t border-ui-border bg-ui-surface p-4 pb-safe shadow-[0_-6px_28px_rgba(5,20,36,0.1)]">
-          <div className="flex justify-between items-end mb-4 px-1">
+          <div className="mb-4 flex items-end justify-between px-1">
              <div className="space-y-0.5">
-                <p className="text-xs font-bold text-ui-copy uppercase tracking-wider">{tienePreciosPendientes ? 'Subtotal conocido' : 'Total de piezas'}</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-ui-copy">{tienePreciosPendientes ? 'Subtotal conocido' : 'Total de piezas'}</p>
                 {tienePreciosPendientes && <p className="mt-1 max-w-44 text-xs leading-tight text-ui-copy">Hay piezas con precio por confirmar.</p>}
              </div>
-             <div className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+             {/* La `key` es el total: el número salta cuando cambia. */}
+             <div key={cartTotal} className="text-3xl font-black tabular-nums tracking-tight text-ui-ink animate-pop">
                ${cartTotal.toFixed(2)}
              </div>
           </div>
-          
-          <div className="grid grid-cols-[1fr_2fr] gap-3 h-14">
+
+          <div className="grid h-14 grid-cols-[1fr_2fr] gap-3">
             <button
                onClick={handleCopyClick}
                disabled={cart.length === 0}
-               className={`rounded-xl flex flex-col justify-center items-center border transition-all active:scale-95 ${
-                 copied 
-                   ? 'bg-slate-800 dark:bg-brand-surface-3 text-white border-slate-800 dark:border-brand-surface-3' 
-                   : 'bg-white dark:bg-brand-surface-2 text-slate-600 dark:text-gray-300 border-gray-200 dark:border-brand-surface-3 hover:bg-gray-50 dark:hover:bg-brand-surface-3'
+               className={`press flex flex-col items-center justify-center rounded-xl border disabled:cursor-not-allowed disabled:opacity-50 ${
+                 copied
+                   ? 'border-brand-bg bg-brand-bg text-white dark:border-white dark:bg-white dark:text-brand-bg'
+                   : 'border-ui-border bg-ui-surface text-ui-ink hover:bg-ui-muted'
                }`}
             >
-               {copied ? <Check size={20} className="mb-0.5" /> : <FileText size={20} className="mb-0.5" />}
+               {copied ? <Check key="listo" size={20} className="mb-0.5 animate-check-in" /> : <FileText size={20} className="mb-0.5" />}
                <span className="text-[10px] font-bold uppercase">{copied ? '¡Listo!' : 'Copiar'}</span>
             </button>
 
-            <button 
-              onClick={handleCheckout} 
+            <button
+              onClick={handleCheckout}
               disabled={cart.length === 0}
-              className={`rounded-xl flex items-center justify-center gap-2 font-bold text-lg shadow-lg shadow-green-500/20 transition-all active:scale-[0.98] ${
-                cart.length === 0 
-                  ? 'bg-gray-100 dark:bg-brand-surface-2 text-gray-400 dark:text-gray-600 cursor-not-allowed' 
-                  : 'bg-[#25D366] text-white hover:brightness-105'
+              className={`press flex items-center justify-center gap-2 rounded-xl text-lg font-bold ${
+                cart.length === 0
+                  ? 'cursor-not-allowed bg-ui-muted text-ui-copy'
+                  : 'bg-wa text-brand-bg shadow-lg shadow-wa/20 hover:bg-wa-hover'
               }`}
             >
-              <MessageCircle size={24} className="fill-current" />
+              <MessageCircle size={24} className="fill-current" aria-hidden="true" />
               <span>Pedir</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* --- MODAL DE ENVÍO (Beautiful Mobile First) --- */}
+      {/* --- ENVÍO EN LA PROFORMA --- */}
       {isShippingModalOpen && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
-          <div 
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in"
+          <div
+            className="absolute inset-0 bg-brand-bg/60 backdrop-blur-sm animate-fade-in"
             onClick={() => setIsShippingModalOpen(false)}
           />
-          
-          <div className="bg-white dark:bg-brand-surface-1 w-full max-w-sm rounded-[2rem] shadow-2xl p-6 relative z-10 animate-scale-up border border-gray-100 dark:border-brand-surface-3">
-            <button 
+
+          <div className="relative z-10 w-full max-w-sm rounded-[2rem] border border-ui-border bg-ui-surface p-6 shadow-2xl animate-scale-up">
+            <button
               onClick={() => setIsShippingModalOpen(false)}
-              className="absolute top-4 right-4 p-2 bg-gray-50 dark:bg-brand-surface-2 text-gray-400 dark:text-gray-300 rounded-full hover:bg-gray-100 dark:hover:bg-brand-surface-3 hover:text-slate-900 dark:hover:text-white transition-all"
+              aria-label="Cerrar"
+              className="press absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-ui-muted text-ui-copy hover:text-ui-ink"
             >
               <X size={20} />
             </button>
-            
-            <div className="flex flex-col items-center mb-6">
-              <div className="w-14 h-14 bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mb-3 shadow-sm">
-                <Truck size={28} />
+
+            <div className="mb-6 flex flex-col items-center">
+              <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-orange/10 text-brand-orange-action dark:text-brand-orange">
+                <Truck size={28} aria-hidden="true" />
               </div>
-              <h3 className="text-xl font-extrabold text-slate-900 dark:text-white text-center">
-                Opciones de Envío
+              <h3 className="text-center text-xl font-black text-ui-ink">
+                ¿Incluir el envío?
               </h3>
-              <p className="text-gray-500 dark:text-gray-400 text-center text-sm mt-1">
-                Personaliza tu proforma antes de copiar
+              <p className="mt-1 text-center text-sm text-ui-copy">
+                Se suma a la proforma antes de copiarla.
               </p>
             </div>
 
-            <div className="space-y-6">
-              {/* Switch Bonito */}
-              <div 
+            <div className="space-y-5">
+              <button
+                type="button"
                 onClick={() => setHasShipping(!hasShipping)}
-                className={`flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all active:scale-[0.98] ${
-                  hasShipping 
-                    ? 'border-blue-500 dark:border-blue-600 bg-blue-50/50 dark:bg-blue-900/30' 
-                    : 'border-gray-100 dark:border-brand-surface-3 bg-gray-50 dark:bg-brand-surface-2'
+                aria-pressed={hasShipping}
+                className={`press flex w-full items-center justify-between rounded-2xl border-2 p-4 text-left ${
+                  hasShipping
+                    ? 'border-brand-orange bg-brand-orange/5'
+                    : 'border-ui-border bg-ui-muted hover:border-ui-copy/40'
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${
-                    hasShipping ? 'bg-blue-500 border-blue-500' : 'border-gray-300 dark:border-brand-border bg-white dark:bg-brand-surface-3'
+                <span className="flex items-center gap-3">
+                  <span className={`flex h-5 w-5 items-center justify-center rounded-full border transition-colors duration-200 ${
+                    hasShipping ? 'border-brand-orange-action bg-brand-orange-action' : 'border-ui-copy/50 bg-ui-surface'
                   }`}>
-                    {hasShipping && <Check size={12} className="text-white" strokeWidth={3} />}
-                  </div>
-                  <span className={`font-bold ${hasShipping ? 'text-blue-700 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'}`}>
-                    ¿Incluir costo de envío?
+                    {hasShipping && <Check size={12} className="text-white animate-check-in" strokeWidth={3} aria-hidden="true" />}
                   </span>
-                </div>
-              </div>
+                  <span className={`font-bold ${hasShipping ? 'text-brand-orange-action dark:text-brand-orange' : 'text-ui-ink'}`}>
+                    Agregar costo de envío
+                  </span>
+                </span>
+              </button>
 
-              {/* Input Condicional con Animación */}
-              <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
+              {/* El campo aparece al activar el envío */}
+              <div className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${
                 hasShipping ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0'
               }`}>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">$</span>
+                <label className="relative block">
+                  <span className="sr-only">Costo del envío en dólares</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-ui-copy" aria-hidden="true">$</span>
                   <input
                     type="number"
+                    inputMode="decimal"
                     placeholder="0.00"
                     value={shippingCost}
                     onChange={(e) => setShippingCost(e.target.value)}
-                    className="w-full pl-8 pr-4 py-4 bg-white dark:bg-brand-surface-2 border-2 border-blue-100 dark:border-blue-900 rounded-xl text-xl font-bold text-slate-800 dark:text-white placeholder:text-gray-300 dark:placeholder:text-gray-600 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all"
+                    className={`${campo} bg-ui-surface py-4 pl-8 pr-14 text-xl font-black tabular-nums`}
                     autoFocus={hasShipping}
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400 uppercase">USD</span>
-                </div>
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold uppercase text-ui-copy" aria-hidden="true">USD</span>
+                </label>
               </div>
 
-              {/* Botón de Acción Principal */}
               <button
                 onClick={handleConfirmCopy}
-                className="w-full py-4 bg-slate-900 dark:bg-brand-surface-3 text-white font-bold rounded-xl shadow-lg shadow-slate-200 dark:shadow-none active:scale-95 transition-all text-lg flex items-center justify-center gap-2 hover:bg-slate-800 dark:hover:bg-brand-border"
+                className="press flex min-h-[56px] w-full items-center justify-center gap-2 rounded-xl bg-brand-bg text-lg font-bold text-white shadow-lg hover:bg-brand-orange-action dark:bg-white dark:text-brand-bg dark:hover:bg-brand-orange dark:hover:text-white"
               >
-                <FileText size={20} />
-                Copiar Proforma
+                <FileText size={20} aria-hidden="true" />
+                Copiar proforma
               </button>
             </div>
           </div>

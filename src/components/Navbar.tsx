@@ -106,14 +106,14 @@ export const Navbar = ({ busqueda, buscar, productos, filtroModelo }: Props) => 
             <span className="relative">
               <ShoppingCart size={24} aria-hidden="true" />
               {/* La `key` es la cantidad: el contador salta cada vez que cambia. */}
-              {cartCount > 0 && <span key={cartCount} className="absolute -right-2.5 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-orange px-1 text-[11px] font-black text-white animate-pop">{cartCount}</span>}
+              {cartCount > 0 && <span key={cartCount} className="absolute -right-2.5 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-orange-action px-1 text-[11px] font-black text-white animate-pop">{cartCount}</span>}
             </span>
             <span className="hidden text-sm font-bold lg:inline">Pedido</span>
           </button>
         </div>
       </div>
 
-      <nav className="hidden h-11 border-t border-white/10 bg-[#202020] lg:block" aria-label="Sistemas">
+      <nav className="hidden h-11 border-t border-white/10 bg-brand-surface-1 lg:block" aria-label="Sistemas">
         <div className="mx-auto flex h-full max-w-[1440px] items-center px-8">
           <Link to="/catalogo?seccion=Todos" className="flex h-full shrink-0 items-center gap-2 border-r border-white/10 pr-5 text-xs font-extrabold uppercase tracking-wide text-white hover:text-brand-orange">
             <Menu size={17} aria-hidden="true" /> Todos los repuestos
@@ -126,7 +126,7 @@ export const Navbar = ({ busqueda, buscar, productos, filtroModelo }: Props) => 
               </Link>
             ))}
           </div>
-          <button onClick={cotizar} className="flex h-full shrink-0 items-center gap-2 border-l border-white/10 pl-5 text-xs font-extrabold uppercase tracking-wide text-[#5bea8d] hover:text-white">
+          <button onClick={cotizar} className="flex h-full shrink-0 items-center gap-2 border-l border-white/10 pl-5 text-xs font-extrabold uppercase tracking-wide text-wa-light hover:text-white">
             <MessageCircle size={17} aria-hidden="true" /> Cotizar por WhatsApp
           </button>
         </div>

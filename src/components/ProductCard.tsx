@@ -81,7 +81,7 @@ export const ProductCard = memo(({ product, despiece, modeloActual, enPedido, on
         </span>
 
         <span className="flex flex-1 flex-col gap-1.5 p-2.5 sm:p-3">
-          <span className="line-clamp-3 min-h-[3.9em] text-[13px] font-semibold leading-[1.3] text-ui-ink transition-colors group-hover:text-brand-orange sm:text-sm">
+          <span className="line-clamp-3 min-h-[3.9em] text-[13px] font-semibold leading-[1.3] text-ui-ink transition-colors group-hover:text-brand-orange-action dark:group-hover:text-brand-orange sm:text-sm">
             {product.nombre}
           </span>
           {product.codigo_referencia && (

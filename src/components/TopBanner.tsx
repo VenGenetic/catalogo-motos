@@ -2,7 +2,7 @@ import { BadgeCheck, Truck, Phone } from 'lucide-react';
 
 export const TopBanner = () => {
   return (
-    <div className="relative z-floating bg-brand-orange px-4 py-1.5 font-geist text-[10px] font-extrabold uppercase tracking-wide text-white md:text-[11px]">
+    <div className="relative z-floating bg-brand-orange-action px-4 py-1.5 font-geist text-[10px] font-extrabold uppercase tracking-wide text-white md:text-[11px]">
       <div className="mx-auto flex max-w-[1440px] items-center justify-between">
         
         {/* Mensaje Móvil (Cambia automáticamente o muestra el más importante) */}
