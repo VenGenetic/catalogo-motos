@@ -52,7 +52,44 @@ export default {
         modal: '90',
         toast: '100',
       },
+      transitionTimingFunction: {
+        // Salida rápida que frena suave: lo que usan todas las entradas del sitio.
+        out: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        // Un pelo de rebote: para lo que "aparece" (el contador del pedido, el visto).
+        spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+      },
       keyframes: {
+        // Entrada de tarjetas y secciones: sube 10 px mientras aparece.
+        rise: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        // La moto de la portada entra rodando desde la derecha.
+        'drive-in': {
+          '0%': { opacity: '0', transform: 'translateX(48px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        // El contador del pedido salta cuando cambia.
+        pop: {
+          '0%': { transform: 'scale(0.6)' },
+          '60%': { transform: 'scale(1.22)' },
+          '100%': { transform: 'scale(1)' },
+        },
+        // El visto de "En pedido" se dibuja.
+        'check-in': {
+          '0%': { opacity: '0', transform: 'scale(0.4) rotate(-25deg)' },
+          '100%': { opacity: '1', transform: 'scale(1) rotate(0deg)' },
+        },
+        // El ícono de tema gira al cambiar.
+        'spin-in': {
+          '0%': { opacity: '0', transform: 'rotate(-90deg) scale(0.6)' },
+          '100%': { opacity: '1', transform: 'rotate(0deg) scale(1)' },
+        },
+        // La rayita del menú de abajo crece bajo la pestaña activa.
+        'grow-x': {
+          '0%': { transform: 'scaleX(0)' },
+          '100%': { transform: 'scaleX(1)' },
+        },
         'fade-in-up': {
           '0%': { opacity: '0', transform: 'translateY(14px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
@@ -63,6 +100,15 @@ export default {
         },
       },
       animation: {
+        // `backwards`, no `both`: al terminar, el elemento vuelve a sus estilos normales
+        // y el hover (que también usa transform) funciona; con `both` el final de la
+        // animación se quedaba pisando el transform del hover.
+        rise: 'rise 420ms cubic-bezier(0.16, 1, 0.3, 1) backwards',
+        'drive-in': 'drive-in 700ms cubic-bezier(0.16, 1, 0.3, 1) backwards',
+        pop: 'pop 380ms cubic-bezier(0.34, 1.56, 0.64, 1)',
+        'check-in': 'check-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) backwards',
+        'spin-in': 'spin-in 320ms cubic-bezier(0.16, 1, 0.3, 1) backwards',
+        'grow-x': 'grow-x 260ms cubic-bezier(0.16, 1, 0.3, 1) backwards',
         'fade-in-up': 'fade-in-up 520ms cubic-bezier(0.16, 1, 0.3, 1) both',
         'scale-up': 'scale-up 240ms cubic-bezier(0.16, 1, 0.3, 1) both',
       },

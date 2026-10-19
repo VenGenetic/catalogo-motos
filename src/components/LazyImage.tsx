@@ -97,8 +97,9 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
           decoding="async"
           onLoad={e => (esFotoGenerica(e.currentTarget) ? handleError() : setIsLoaded(true))}
           onError={handleError}
-          className={`w-full h-full ${fitClass} ${cropClasses} object-center transition-opacity duration-200 ease-out ${
-            isLoaded ? 'opacity-100' : 'opacity-0'
+          // La foto aparece asentándose: un 3 % más grande que se acomoda al cargar.
+          className={`w-full h-full ${fitClass} ${cropClasses} object-center transition-[opacity,transform] duration-300 ease-out ${
+            isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-[1.03]'
           }`}
           // Optimizar para móviles
           style={{

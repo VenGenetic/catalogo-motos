@@ -122,7 +122,7 @@ const Dialogo = () => {
                   type="button"
                   onClick={() => setPestana(p)}
                   aria-pressed={pestana === p}
-                  className={`min-h-[40px] shrink-0 rounded-full border px-4 text-sm font-bold transition-colors ${
+                  className={`press min-h-[40px] shrink-0 rounded-full border px-4 text-sm font-bold ${
                     pestana === p ? 'border-brand-bg bg-brand-bg text-white dark:border-white dark:bg-white dark:text-brand-bg' : 'border-ui-border bg-ui-surface text-ui-ink hover:border-ui-ink'
                   }`}
                 >
@@ -151,17 +151,18 @@ const Dialogo = () => {
           ) : grupos.map(grupo => (
             <section key={grupo.titulo} className="mb-5 last:mb-2" aria-label={grupo.titulo}>
               <h3 className="mb-2 px-1 font-geist text-xs font-black uppercase tracking-[.14em] text-ui-copy">{grupo.titulo}</h3>
-              <ul className="grid grid-cols-2 gap-2 min-[560px]:grid-cols-3 md:grid-cols-4">
-                {grupo.motos.map(moto => {
+              {/* La `key` cambia con la pestaña o la búsqueda: las motos entran una tras otra. */}
+              <ul key={`${pestana}|${busqueda}`} className="grid grid-cols-2 gap-2 min-[560px]:grid-cols-3 md:grid-cols-4">
+                {grupo.motos.map((moto, i) => {
                   const imagen = getMotoImageById(moto.id);
                   const elegida = moto.id === actual;
                   return (
-                    <li key={moto.id}>
+                    <li key={moto.id} className="stagger animate-rise" style={{ '--i': Math.min(i, 11) } as React.CSSProperties}>
                       <button
                         type="button"
                         onClick={() => elegirMoto(moto.id)}
                         aria-current={elegida ? 'true' : undefined}
-                        className={`group relative flex h-full w-full flex-col overflow-hidden rounded-xl border bg-ui-surface text-left transition-colors active:scale-[0.98] ${
+                        className={`group press relative flex h-full w-full flex-col overflow-hidden rounded-xl border bg-ui-surface text-left ${
                           elegida ? 'border-brand-orange ring-2 ring-brand-orange/30' : 'border-ui-border hover:border-ui-ink'
                         }`}
                       >
@@ -172,7 +173,7 @@ const Dialogo = () => {
                         </span>
                         <span className="flex min-h-[52px] flex-1 items-center gap-1.5 border-t border-ui-border px-2.5 py-2 text-sm font-bold leading-tight text-ui-ink">
                           <span className="min-w-0 flex-1">{moto.nombre}</span>
-                          {elegida && <Check size={18} strokeWidth={3} className="shrink-0 text-brand-orange" aria-label="Tu moto" />}
+                          {elegida && <Check size={18} strokeWidth={3} className="shrink-0 text-brand-orange animate-check-in" aria-label="Tu moto" />}
                         </span>
                       </button>
                     </li>

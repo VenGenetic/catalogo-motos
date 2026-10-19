@@ -101,6 +101,38 @@ html {
     min-width: 44px;
     min-height: 44px;
   }
+
+  /* Entrada escalonada: cada elemento espera `--i` × 45 ms. Se usa con animate-rise.
+     `!important` porque animate-rise es una utilidad (pesa más que esta capa) y su
+     `animation` abreviada devolvía la espera a cero. */
+  .stagger {
+    animation-delay: calc(var(--i, 0) * 45ms) !important;
+  }
+
+  /* Botón que se hunde un poco al tocarlo, con el regreso suave. */
+  .press {
+    @apply transition-[background-color,border-color,color,transform,box-shadow] duration-200 active:scale-[0.97];
+  }
+
+  /* Tarjeta que se levanta un poco al pasar el cursor. */
+  .lift {
+    @apply transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-card-hover;
+  }
+
+  /* Esqueleto de carga con un brillo que lo recorre (sólo mientras se carga). */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: rgb(var(--ui-muted));
+  }
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgb(var(--ui-surface) / 0.75), transparent);
+    animation: shimmer 1.4s ease-in-out infinite;
+  }
 }
 
 .section-kicker {
@@ -120,6 +152,20 @@ html {
   height: 1.15rem;
   background: rgb(var(--brand-orange-rgb));
   content: '';
+  transform-origin: bottom;
+  animation: grow-y 480ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+@keyframes grow-y {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+/* Aquí y no en tailwind.config: Tailwind sólo escribe un @keyframes cuando se usa
+   su clase animate-*, y el esqueleto lo llama desde CSS. */
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
 }
 
 .catalog-rule {

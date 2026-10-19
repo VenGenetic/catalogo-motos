@@ -8,6 +8,7 @@ import { useMoto } from '../context/MotoContext';
 import { Producto } from '../types';
 import type { Despiece } from '../utils/cargarDespiece';
 import { pedirAyuda, preguntarPorRepuesto } from '../utils/consultas';
+import { useScrolled } from '../hooks/useScrolled';
 import { IconoSistema } from './IconoSistema';
 import { ProductCard } from './ProductCard';
 import { nombreCorto } from './SirvePara';
@@ -56,6 +57,7 @@ export const CatalogView = memo(({
   const resultadosRef = useRef<HTMLDivElement>(null);
   const { cart, addToCart } = useCart();
   const { abrirSelector, quitarMoto } = useMoto();
+  const bajado = useScrolled(24);
 
   const nombreModelo = filtroModelo ? nombreDeModelo(filtroModelo, despiece) : '';
   const modelo = filtroModelo ? despiece?.modeloPorId(filtroModelo) : undefined;
@@ -90,7 +92,7 @@ export const CatalogView = memo(({
       type="button"
       onClick={abrirSelector}
       aria-haspopup="dialog"
-      className={`flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-full border px-3.5 text-sm font-bold transition-colors ${
+      className={`press flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-full border px-3.5 text-sm font-bold ${
         filtroModelo ? 'border-brand-orange bg-brand-orange text-white' : 'border-brand-orange bg-ui-surface text-brand-orange-action dark:text-brand-orange'
       }`}
     >
@@ -108,7 +110,7 @@ export const CatalogView = memo(({
         type="button"
         onClick={e => { setFiltroSeccion(s); e.currentTarget.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' }); }}
         aria-pressed={activa}
-        className={`flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-full border px-3.5 text-sm font-bold transition-colors ${
+        className={`press flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-full border px-3.5 text-sm font-bold ${
           activa ? 'border-brand-bg bg-brand-bg text-white dark:border-white dark:bg-white dark:text-brand-bg' : 'border-ui-border bg-ui-surface text-ui-ink hover:border-ui-ink'
         }`}
       >
@@ -119,11 +121,12 @@ export const CatalogView = memo(({
   };
 
   const cabeceraMoto = filtroModelo && (
-    <section aria-label={`Despiece de la ${nombreModelo}`} className="overflow-hidden rounded-xl border border-ui-border bg-ui-surface shadow-card">
+    <section aria-label={`Despiece de la ${nombreModelo}`} className="overflow-hidden rounded-xl border border-ui-border bg-ui-surface shadow-card animate-rise">
       <div className="flex items-center gap-3 p-3 md:gap-5 md:p-5">
         <div className="model-media-shell flex aspect-[4/3] w-24 shrink-0 items-center justify-center overflow-hidden rounded-lg p-1 md:w-44">
           {imagenModelo
-            ? <img src={imagenModelo} alt={nombreModelo} className="h-full w-full object-contain" />
+            // La `key` es la moto: al cambiar de moto, la nueva entra rodando.
+            ? <img key={filtroModelo} src={imagenModelo} alt={nombreModelo} className="h-full w-full object-contain animate-drive-in" />
             : <Bike size={36} strokeWidth={1.5} className="text-ui-copy/50" aria-hidden="true" />}
         </div>
         <div className="min-w-0 flex-1">
@@ -180,7 +183,7 @@ export const CatalogView = memo(({
     return (
       <Fragment key={product.id}>
         {titulo && (
-          <h2 className="col-span-full mt-3 flex items-center gap-2 border-b-2 border-ui-ink pb-2 pt-1 text-base font-black text-ui-ink first:mt-0">
+          <h2 className="col-span-full mt-3 flex items-center gap-2 border-b-2 border-ui-ink pb-2 pt-1 text-base font-black text-ui-ink animate-rise first:mt-0">
             <IconoSistema sistema={sistema} className="text-brand-orange" />
             {sistema}
             <span className="text-sm font-bold text-ui-copy">{(conteoSistemas.get(sistema) ?? 0).toLocaleString('es-EC')}</span>
@@ -194,6 +197,7 @@ export const CatalogView = memo(({
           onOpen={onProductClick}
           onAdd={addToCart}
           onAsk={preguntar}
+          indice={i}
         />
       </Fragment>
     );
@@ -202,7 +206,7 @@ export const CatalogView = memo(({
   return (
     <div className="bg-ui-canvas pb-28 font-sans text-ui-ink md:pb-16">
       {/* CELULAR: moto + sistemas en una fila fija */}
-      <div className="sticky top-14 z-sticky border-b border-ui-border bg-ui-canvas/95 backdrop-blur-md lg:hidden">
+      <div className={`sticky top-14 z-sticky border-b bg-ui-canvas/95 backdrop-blur-md transition-[box-shadow,border-color] duration-300 lg:hidden ${bajado ? 'border-ui-border shadow-[0_6px_16px_-8px_rgba(0,0,0,.25)]' : 'border-transparent'}`}>
         <div className="scrollbar-hide flex items-center gap-2 overflow-x-auto px-3 py-2" role="group" aria-label="Filtrar por moto y sistema">
           {botonMoto}
           <span className="h-7 w-px shrink-0 bg-ui-border" aria-hidden="true" />
@@ -273,7 +277,8 @@ export const CatalogView = memo(({
 
           <div ref={resultadosRef} className="scroll-mt-[124px] lg:scroll-mt-[132px]">
             <div className="mb-3 flex min-h-[28px] flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ui-copy">
-              <span className="font-bold text-ui-ink">{cargandoMoto ? 'Buscando…' : repuestosTexto(productos.length)}</span>
+              {/* La `key` es la cantidad: al cambiar, el número entra de nuevo. */}
+              <span key={cargandoMoto ? 'buscando' : productos.length} className="font-bold text-ui-ink animate-rise">{cargandoMoto ? 'Buscando…' : repuestosTexto(productos.length)}</span>
               {busqueda && (
                 <span className="inline-flex items-center gap-1">
                   para <strong className="text-ui-ink">“{busqueda}”</strong>
@@ -295,12 +300,12 @@ export const CatalogView = memo(({
             {cargandoMoto ? (
               <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 xl:grid-cols-4" aria-hidden="true">
                 {Array.from({ length: 8 }, (_, i) => (
-                  <div key={i} className="overflow-hidden rounded-xl border border-ui-border bg-ui-surface">
-                    <div className="aspect-[1024/531] animate-pulse bg-ui-muted" />
+                  <div key={i} className="stagger overflow-hidden rounded-xl border border-ui-border bg-ui-surface animate-rise" style={{ '--i': i } as React.CSSProperties}>
+                    <div className="skeleton aspect-[1024/531]" />
                     <div className="space-y-2 p-3">
-                      <div className="h-3 animate-pulse rounded bg-ui-muted" />
-                      <div className="h-3 w-2/3 animate-pulse rounded bg-ui-muted" />
-                      <div className="h-5 w-1/3 animate-pulse rounded bg-ui-muted" />
+                      <div className="skeleton h-3 rounded" />
+                      <div className="skeleton h-3 w-2/3 rounded" />
+                      <div className="skeleton h-5 w-1/3 rounded" />
                     </div>
                   </div>
                 ))}
@@ -316,7 +321,7 @@ export const CatalogView = memo(({
                     <button
                       type="button"
                       onClick={() => setPagina(p => p + 1)}
-                      className="mx-auto flex min-h-[52px] w-full max-w-sm items-center justify-center gap-2 rounded-xl border-2 border-ui-ink bg-ui-surface px-6 text-sm font-black text-ui-ink transition-colors hover:border-brand-orange hover:text-brand-orange active:scale-[0.98]"
+                      className="press mx-auto flex min-h-[52px] w-full max-w-sm items-center justify-center gap-2 rounded-xl border-2 border-ui-ink bg-ui-surface px-6 text-sm font-black text-ui-ink hover:border-brand-orange hover:text-brand-orange"
                     >
                       Ver más repuestos
                       <span className="font-semibold text-ui-copy">({(productos.length - visibles.length).toLocaleString('es-EC')})</span>

@@ -42,7 +42,7 @@ export const ModelExplorer = () => {
               type="button"
               onClick={() => setPestana(p)}
               aria-pressed={pestana === p}
-              className={`min-h-[44px] shrink-0 rounded-full border px-4 text-sm font-bold transition-colors ${
+              className={`press min-h-[44px] shrink-0 rounded-full border px-4 text-sm font-bold ${
                 pestana === p ? 'border-brand-bg bg-brand-bg text-white dark:border-white dark:bg-white dark:text-brand-bg' : 'border-ui-border bg-ui-surface text-ui-ink hover:border-ui-ink'
               }`}
             >
@@ -51,15 +51,16 @@ export const ModelExplorer = () => {
           ))}
         </div>
 
-        <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
-          {motos.map(moto => {
+        {/* La `key` es la pestaña: al cambiar de tipo, las motos entran una tras otra. */}
+        <ul key={pestana} className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+          {motos.map((moto, i) => {
             const imagen = getMotoImageById(moto.id);
             return (
-              <li key={moto.id}>
+              <li key={moto.id} className="stagger animate-rise" style={{ '--i': i } as React.CSSProperties}>
                 <Link
                   to={`/catalogo/${moto.id}`}
                   onClick={() => recordarMoto(moto.id)}
-                  className="group flex h-full flex-col overflow-hidden rounded-xl border border-ui-border bg-ui-surface shadow-card transition-colors hover:border-ui-ink"
+                  className="group lift flex h-full flex-col overflow-hidden rounded-xl border border-ui-border bg-ui-surface shadow-card hover:border-ui-ink"
                 >
                   <span className="model-media-shell flex aspect-[4/3] items-center justify-center overflow-hidden p-2 sm:p-3">
                     {imagen
@@ -68,7 +69,7 @@ export const ModelExplorer = () => {
                   </span>
                   <span className="flex flex-1 items-center justify-between gap-2 border-t border-ui-border px-3 py-2.5">
                     <span className="text-sm font-bold leading-tight text-ui-ink">{moto.nombre}</span>
-                    <ArrowRight size={16} className="shrink-0 text-ui-copy transition-colors group-hover:text-brand-orange" aria-hidden="true" />
+                    <ArrowRight size={16} className="shrink-0 text-ui-copy transition-[color,transform] duration-200 group-hover:translate-x-0.5 group-hover:text-brand-orange" aria-hidden="true" />
                   </span>
                 </Link>
               </li>
@@ -76,7 +77,7 @@ export const ModelExplorer = () => {
           })}
         </ul>
 
-        <button type="button" onClick={abrirSelector} className="mt-4 flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl border-2 border-ui-ink bg-ui-surface text-sm font-black text-ui-ink sm:hidden">
+        <button type="button" onClick={abrirSelector} className="press mt-4 flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl border-2 border-ui-ink bg-ui-surface text-sm font-black text-ui-ink sm:hidden">
           <Bike size={18} aria-hidden="true" /> Ver todas las motos
         </button>
       </div>

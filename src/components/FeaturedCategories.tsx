@@ -15,13 +15,13 @@ export const FeaturedCategories = ({ conteo }: { conteo: Map<string, number> }) 
         </div>
 
         <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-5">
-          {sistemas.map(sistema => (
-            <li key={sistema}>
+          {sistemas.map((sistema, i) => (
+            <li key={sistema} className="stagger animate-rise" style={{ '--i': i } as React.CSSProperties}>
               <Link
                 to={`/catalogo?seccion=${encodeURIComponent(sistema)}`}
-                className="group flex h-full min-h-[72px] items-center gap-3 rounded-xl border border-ui-border bg-ui-surface p-3 shadow-card transition-colors hover:border-brand-orange"
+                className="group lift flex h-full min-h-[72px] items-center gap-3 rounded-xl border border-ui-border bg-ui-surface p-3 shadow-card hover:border-brand-orange"
               >
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand-orange/10 text-brand-orange-action transition-colors group-hover:bg-brand-orange group-hover:text-white dark:text-brand-orange">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand-orange/10 text-brand-orange-action transition-[background-color,color,transform] duration-200 ease-out group-hover:scale-110 group-hover:bg-brand-orange group-hover:text-white dark:text-brand-orange">
                   <IconoSistema sistema={sistema} size={22} />
                 </span>
                 <span className="min-w-0">
