@@ -47,9 +47,10 @@ export interface ModeloDespiece {
   /**
    * El nombre sin cilindrada ("CRUCERO" a secas) también es de este modelo,
    * salvo que el código sea de otro motor: un árbol de levas `CG200-…` que
-   * dice "CRUCERO" es de la Crucero 200.
+   * dice "CRUCERO" es de la Crucero 200. O sólo si el código es de cierto
+   * modelo (`soloPrefijo`): "WOLF/MAVERICK" con código de la Maverick.
    */
-  aSecas?: { nombre: RegExp; salvoPrefijo: RegExp };
+  aSecas?: { nombre: RegExp; salvoPrefijo?: RegExp; soloPrefijo?: RegExp };
 }
 
 export interface ProductoDespiece {
@@ -139,7 +140,11 @@ export const MODELOS_DESPIECE: ModeloDespiece[] = [
     aviso: 'Tuvo motor de 2 válvulas (2019-2022) y luego el FE250 de 4 válvulas. Confirma el año antes de vender piezas de motor.' },
   { id: 'feroce-250', nombre: 'Feroce 250', segmento: 'Deportivas', prefijos: ['FE250FRC'], coincide: re(/\bFEROCE\b/) },
   { id: 'wolf-200', nombre: 'Wolf 200', segmento: 'Deportivas', prefijos: ['CB200WF'], coincide: re(/(?<!SUPER\s*)\bWOLF\s*-?\s*200|\bDY\s*-?\s*200\s*WOLF\b/), propio: /(?<!SUPER\s*)\bWOLF\b(?!\s*(EVO|-?\s*250))/ },
-  { id: 'wolf-250', nombre: 'Wolf 250', segmento: 'Deportivas', prefijos: ['CB250WF', 'BASWF250', 'KSELWF250'], coincide: re(/(?<!SUPER\s*)\bWOLF\s*-?\s*250|\bWF\s*250\b|\bDY\s*-?\s*250\s*WOLF\b/), propio: /(?<!SUPER\s*)\bWOLF\b(?!\s*(EVO|-?\s*200))/ },
+  // La importadora lista la Wolf 250 con la Maverick: "WOLF 250CC /MAVERICK" y "WOLF/MAVERICK 250CC/RANGER
+  // CFZ/CFY 250CC" (el 250 tras la lista es de las dos). Sin 250 ("APOYA MANOS WOLF/MAVERICK") sólo con
+  // código de la Maverick: una "WOLF" pegada a la Maverick en otro código podría ser la 200.
+  { id: 'wolf-250', nombre: 'Wolf 250', segmento: 'Deportivas', prefijos: ['CB250WF', 'BASWF250', 'KSELWF250'], coincide: re(/(?<!SUPER\s*)\bWOLF\s*-?\s*250|\bWF\s*250\b|\bDY\s*-?\s*250\s*WOLF\b|(?<!SUPER\s*)\bWOLF\s*\/\s*MAVERICK\s*-?\s*250/), propio: /(?<!SUPER\s*)\bWOLF\b(?!\s*(EVO|-?\s*200))/,
+    aSecas: { nombre: /(?<!SUPER\s*)\bWOLF\s*\/\s*MAVERICK\b|\bMAVERICK\s*\/\s*WOLF\b(?!\s*-?\s*(EVO|200))/, soloPrefijo: /^(INCOM)?CB250MVK$/ } },
   { id: 'wolf-evolution-250', nombre: 'Wolf Evolution 250', segmento: 'Deportivas', prefijos: ['FE250WFE', 'BASWE'], coincide: re(/\bWOLF\s*EVO/) },
   { id: 'super-wolf-300', nombre: 'Super Wolf 300', segmento: 'Deportivas', prefijos: ['CB300SW', 'BASSPW'], coincide: re(/\bSUPER\s*-?\s*W(OLF)?\b/) },
   { id: 'spitfire-250', nombre: 'Spitfire 250', segmento: 'Deportivas', prefijos: ['CGB250SPF', 'CB250SPF'],
@@ -284,9 +289,10 @@ const ERRATAS: [RegExp, string][] = [
 /** El nombre listo para buscarle motos: normalizado y sin las erratas conocidas. */
 export const nombreParaMotos = (nombre: string) => ERRATAS.reduce((n, [errata, bien]) => n.replace(errata, bien), normalizar(nombre));
 
-/** ¿El nombre dice que la pieza es de este modelo? `coincide`, o la mención a secas si el código no es de otro motor. */
+/** ¿El nombre dice que la pieza es de este modelo? `coincide`, o la mención a secas si el código la permite. */
 export const nombra = (modelo: ModeloDespiece, n: string, prefijo = '') =>
-  modelo.coincide(n) || Boolean(modelo.aSecas?.nombre.test(n) && !modelo.aSecas.salvoPrefijo.test(prefijo));
+  modelo.coincide(n) || Boolean(modelo.aSecas?.nombre.test(n) && !modelo.aSecas.salvoPrefijo?.test(prefijo)
+    && (modelo.aSecas.soloPrefijo?.test(prefijo) ?? true));
 
 /**
  * Piezas que sólo nombran el motor ("CIGÜEÑAL ... FE250 4V", código `FE250-…`)
