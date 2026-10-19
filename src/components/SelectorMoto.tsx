@@ -100,7 +100,7 @@ const Dialogo = () => {
               value={busqueda}
               onChange={e => setBusqueda(e.target.value)}
               placeholder="Escribe tu moto: Wolf, GP1, Crucero…"
-              className="h-12 w-full rounded-xl border border-ui-border bg-ui-muted pl-11 pr-11 text-base text-ui-ink outline-none placeholder:text-ui-copy/80 focus:border-brand-orange focus:bg-ui-surface"
+              className="h-12 w-full rounded-xl border border-ui-border bg-ui-muted pl-11 pr-11 text-base text-ui-ink outline-none placeholder:text-ui-copy focus:border-brand-orange focus:bg-ui-surface"
             />
             {busqueda && (
               <button
@@ -143,7 +143,7 @@ const Dialogo = () => {
                 href={buildWhatsAppUrl(APP_CONFIG.WHATSAPP_NUMBER, `Hola LV PARTS, busco repuestos para mi moto: ${busqueda}`)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#25D366] px-5 font-bold text-brand-bg"
+                className="mt-4 inline-flex min-h-12 items-center gap-2 rounded-xl bg-wa px-5 font-bold text-brand-bg"
               >
                 <MessageCircle size={20} aria-hidden="true" /> Preguntar por WhatsApp
               </a>
@@ -173,7 +173,7 @@ const Dialogo = () => {
                         </span>
                         <span className="flex min-h-[52px] flex-1 items-center gap-1.5 border-t border-ui-border px-2.5 py-2 text-sm font-bold leading-tight text-ui-ink">
                           <span className="min-w-0 flex-1">{moto.nombre}</span>
-                          {elegida && <Check size={18} strokeWidth={3} className="shrink-0 text-brand-orange animate-check-in" aria-label="Tu moto" />}
+                          {elegida && <Check size={18} strokeWidth={3} className="shrink-0 text-brand-orange-action dark:text-brand-orange animate-check-in" aria-label="Tu moto" />}
                         </span>
                       </button>
                     </li>

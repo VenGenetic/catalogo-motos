@@ -93,7 +93,7 @@ export const CatalogView = memo(({
       onClick={abrirSelector}
       aria-haspopup="dialog"
       className={`press flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-full border px-3.5 text-sm font-bold ${
-        filtroModelo ? 'border-brand-orange bg-brand-orange text-white' : 'border-brand-orange bg-ui-surface text-brand-orange-action dark:text-brand-orange'
+        filtroModelo ? 'border-brand-orange-action bg-brand-orange-action text-white' : 'border-brand-orange-action bg-ui-surface text-brand-orange-action dark:text-brand-orange'
       }`}
     >
       <Bike size={18} aria-hidden="true" />
@@ -169,7 +169,7 @@ export const CatalogView = memo(({
       <button
         type="button"
         onClick={() => pedirAyuda('catalogo_ayuda', motoCorta)}
-        className="mt-3 flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-[#25D366] px-4 text-sm font-bold text-brand-bg transition-colors hover:bg-[#20bd5a]"
+        className="mt-3 flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-wa px-4 text-sm font-bold text-brand-bg transition-colors hover:bg-wa-hover"
       >
         <MessageCircle size={18} aria-hidden="true" /> Escribir por WhatsApp
       </button>
@@ -184,7 +184,7 @@ export const CatalogView = memo(({
       <Fragment key={product.id}>
         {titulo && (
           <h2 className="col-span-full mt-3 flex items-center gap-2 border-b-2 border-ui-ink pb-2 pt-1 text-base font-black text-ui-ink animate-rise first:mt-0">
-            <IconoSistema sistema={sistema} className="text-brand-orange" />
+            <IconoSistema sistema={sistema} className="text-brand-orange-action dark:text-brand-orange" />
             {sistema}
             <span className="text-sm font-bold text-ui-copy">{(conteoSistemas.get(sistema) ?? 0).toLocaleString('es-EC')}</span>
           </h2>
@@ -268,7 +268,7 @@ export const CatalogView = memo(({
         <div className="min-w-0">
           {!filtroModelo && (
             <div className="mb-4 hidden lg:block">
-              <p className="mb-2 text-xs font-bold text-ui-copy"><Link to="/" className="hover:text-brand-orange">Inicio</Link> <span className="px-1.5">/</span> Catálogo</p>
+              <p className="mb-2 text-xs font-bold text-ui-copy"><Link to="/" className="hover:text-brand-orange-action dark:hover:text-brand-orange">Inicio</Link> <span className="px-1.5">/</span> Catálogo</p>
               <h1 className="font-anton text-4xl uppercase tracking-wide text-ui-ink">Catálogo de repuestos</h1>
             </div>
           )}
@@ -321,7 +321,7 @@ export const CatalogView = memo(({
                     <button
                       type="button"
                       onClick={() => setPagina(p => p + 1)}
-                      className="press mx-auto flex min-h-[52px] w-full max-w-sm items-center justify-center gap-2 rounded-xl border-2 border-ui-ink bg-ui-surface px-6 text-sm font-black text-ui-ink hover:border-brand-orange hover:text-brand-orange"
+                      className="press mx-auto flex min-h-[52px] w-full max-w-sm items-center justify-center gap-2 rounded-xl border-2 border-ui-ink bg-ui-surface px-6 text-sm font-black text-ui-ink hover:border-brand-orange hover:text-brand-orange-action dark:hover:text-brand-orange"
                     >
                       Ver más repuestos
                       <span className="font-semibold text-ui-copy">({(productos.length - visibles.length).toLocaleString('es-EC')})</span>
@@ -348,7 +348,7 @@ export const CatalogView = memo(({
                   {filtroSeccion !== 'Todos' && (
                     <button type="button" onClick={() => setFiltroSeccion('Todos')} className="min-h-[48px] rounded-xl border border-ui-border px-4 text-sm font-bold text-ui-ink">Ver todos los sistemas</button>
                   )}
-                  <button type="button" onClick={() => pedirAyuda('catalogo_sin_resultados', motoCorta)} className="flex min-h-[48px] items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 text-sm font-bold text-brand-bg">
+                  <button type="button" onClick={() => pedirAyuda('catalogo_sin_resultados', motoCorta)} className="flex min-h-[48px] items-center justify-center gap-2 rounded-xl bg-wa px-4 text-sm font-bold text-brand-bg">
                     <MessageCircle size={18} aria-hidden="true" /> Preguntar por WhatsApp
                   </button>
                 </div>

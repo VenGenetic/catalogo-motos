@@ -32,7 +32,7 @@ export class ProductDetailBoundary extends Component<BoundaryProps, BoundaryStat
         aria-labelledby="product-detail-error-title"
       >
         <div className="w-full max-w-sm rounded-2xl border border-ui-border bg-ui-surface p-6 text-center shadow-2xl">
-          <AlertCircle className="mx-auto mb-4 text-brand-orange" size={36} />
+          <AlertCircle className="mx-auto mb-4 text-brand-orange-action dark:text-brand-orange" size={36} />
           <h2 id="product-detail-error-title" className="text-lg font-black text-ui-ink">
             No pudimos abrir este repuesto
           </h2>

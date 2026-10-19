@@ -33,17 +33,25 @@ import { SelectorMoto } from './components/SelectorMoto';
 const rangoDisponible = (p: Producto) => (!p.stock ? 4 : p.origenes?.includes('bajo pedido') ? 2 : 0)
   + (p.imagen && !p.imagen.includes('sin_imagen') ? 0 : 1);
 
-const PageLoader = () => (
-  <div className="flex h-[60vh] w-full items-center justify-center bg-ui-canvas">
-    <div className="flex flex-col items-center gap-4">
-      <div className="relative">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-brand-orange/20 border-t-brand-orange"></div>
-        <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-brand-orange/60 animate-spin animation-delay-300"></div>
+/** El logo con un aro naranja que gira: la misma pantalla de espera en toda la app. */
+const Cargando = ({ alto, titulo, texto }: { alto: string; titulo: string; texto: string }) => (
+  <div className={`flex ${alto} w-full items-center justify-center bg-ui-canvas`}>
+    <div className="flex flex-col items-center gap-5 animate-rise">
+      <div className="relative flex h-20 w-20 items-center justify-center">
+        <div className="absolute inset-0 animate-spin rounded-full border-[3px] border-ui-border border-t-brand-orange" />
+        <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-white p-2 shadow-card">
+          <img src="/logo.svg" alt="" className="h-full w-full object-contain" />
+        </span>
       </div>
-      <p className="font-medium text-ui-copy animate-pulse">Cargando catálogo...</p>
+      <div className="text-center">
+        <p className="font-anton text-xl uppercase tracking-wide text-ui-ink">{titulo}</p>
+        <p className="mt-1 text-sm text-ui-copy">{texto}</p>
+      </div>
     </div>
   </div>
 );
+
+const PageLoader = () => <Cargando alto="h-[60vh]" titulo="Un momento" texto="Cargando la página…" />;
 
 export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -418,20 +426,7 @@ export default function App() {
   }, [setSearchParams]);
 
   if (loading) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-ui-canvas">
-        <div className="flex flex-col items-center gap-6">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-brand-orange/20 border-t-brand-orange"></div>
-            <div className="absolute inset-2 rounded-full border-4 border-transparent border-t-brand-orange/60 animate-spin animation-delay-300"></div>
-          </div>
-          <div className="text-center">
-            <p className="text-lg font-bold text-ui-ink animate-pulse">Cargando catálogo</p>
-            <p className="mt-1 text-sm text-ui-copy">Preparando repuestos...</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <Cargando alto="h-screen" titulo="Cargando catálogo" texto="Preparando los repuestos…" />;
   }
 
   return (
@@ -481,24 +476,26 @@ export default function App() {
 
             <Route path="/contacto" element={<><title>Contacto | LV PARTS</title><ContactView /></>} />
             <Route path="*" element={
-              <div className="flex flex-col items-center justify-center min-h-[60vh] p-4 text-center">
+              <div className="flex min-h-[60vh] flex-col items-center justify-center p-4 text-center animate-rise">
                 <img
                   src="/Error_404.webp"
                   alt="Error 404 - Página no encontrada"
-                  className="max-w-xs md:max-w-md w-full mb-6 object-contain"
+                  className="mb-6 w-full max-w-xs object-contain md:max-w-md"
                 />
-                <h1 className="mb-2 text-2xl font-bold text-ui-ink md:text-3xl">
-                  ¡Ups! Página no encontrada
+                <h1 className="mb-2 font-anton text-3xl uppercase tracking-wide text-ui-ink md:text-4xl">
+                  Esta página no existe
                 </h1>
-                <p className="mb-6 text-ui-copy">
-                  Lo sentimos, la página que buscas no existe.
+                <p className="mb-6 max-w-sm text-ui-copy">
+                  Puede que el enlace esté mal escrito o que el repuesto haya cambiado de lugar.
                 </p>
-                <Link
-                  to="/"
-                  className="rounded-xl bg-brand-orange-action px-8 py-3 font-semibold text-white shadow-md transition-colors hover:bg-brand-orange"
-                >
-                  Volver al Inicio
-                </Link>
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <Link to="/" className="press flex min-h-[48px] items-center justify-center rounded-xl bg-brand-orange-action px-8 font-bold text-white shadow-md hover:bg-brand-orange">
+                    Volver al inicio
+                  </Link>
+                  <Link to="/catalogo" className="press flex min-h-[48px] items-center justify-center rounded-xl border-2 border-ui-ink px-8 font-bold text-ui-ink hover:border-brand-orange hover:text-brand-orange-action dark:hover:text-brand-orange">
+                    Ver el catálogo
+                  </Link>
+                </div>
               </div>
             } />
           </Routes>

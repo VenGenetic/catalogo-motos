@@ -56,7 +56,7 @@ export function SirveParaLinea({ compatibles, modeloActual, despiece }: {
   const resto = compatibles.length - 1;
   return (
     <span className="flex h-[18px] items-center gap-1 text-xs text-ui-copy" title={compatibles.map(c => nombreDeModelo(c.modelo.id, despiece)).join(', ')}>
-      <Bike size={14} className="shrink-0 text-brand-orange" aria-hidden="true" />
+      <Bike size={14} className="shrink-0 text-brand-orange-action dark:text-brand-orange" aria-hidden="true" />
       <span className="sr-only">Sirve para </span>
       <span className="min-w-0 truncate font-semibold text-ui-ink">{nombreCorto(nombreDeModelo(compatibles[0].modelo.id, despiece))}</span>
       {resto > 0 && <span className="shrink-0 font-semibold">y {resto} más</span>}
@@ -89,7 +89,7 @@ export function SirveParaFicha({ compatibles, miMoto, despiece, onElegir, onPreg
   return (
     <section aria-labelledby="sirve-para-titulo" className="rounded-xl border border-ui-border bg-ui-muted/60 p-3.5">
       <h3 id="sirve-para-titulo" className="flex items-center gap-2 text-sm font-black text-ui-ink">
-        <Bike size={18} className="text-brand-orange" aria-hidden="true" />
+        <Bike size={18} className="text-brand-orange-action dark:text-brand-orange" aria-hidden="true" />
         Sirve para
         {compatibles.length > 0 && (
           <span className="rounded-full bg-ui-surface px-2 py-0.5 text-xs font-bold tabular-nums text-ui-copy">
@@ -126,7 +126,7 @@ export function SirveParaFicha({ compatibles, miMoto, despiece, onElegir, onPreg
                     className={`press flex min-h-[44px] max-w-full items-center gap-2 rounded-full border py-1 pl-1.5 pr-3 text-left text-sm font-bold ${
                       esLaMia
                         ? 'border-green-600 bg-green-50 text-green-900 dark:bg-green-950/50 dark:text-green-200'
-                        : 'border-ui-border bg-ui-surface text-ui-ink hover:border-brand-orange hover:text-brand-orange'
+                        : 'border-ui-border bg-ui-surface text-ui-ink hover:border-brand-orange hover:text-brand-orange-action dark:hover:text-brand-orange'
                     }`}
                   >
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-ui-muted">

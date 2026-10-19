@@ -15,6 +15,12 @@ export default {
         'brand-surface-2': '#292929',
         'brand-surface-3': '#333333',
         'brand-border': '#454545',
+        // WhatsApp: el verde de la marca para botones (con texto oscuro encima, 8.9:1),
+        // uno claro para texto sobre barras oscuras y uno profundo para texto sobre claro.
+        wa: '#25D366',
+        'wa-hover': '#20bd5a',
+        'wa-light': '#5bea8d',
+        'wa-deep': '#168b4c',
         'ui-canvas': 'rgb(var(--ui-canvas) / <alpha-value>)',
         'ui-surface': 'rgb(var(--ui-surface) / <alpha-value>)',
         'ui-muted': 'rgb(var(--ui-muted) / <alpha-value>)',

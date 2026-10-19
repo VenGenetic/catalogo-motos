@@ -3,7 +3,7 @@ import { Facebook, Instagram, MapPin, MessageCircle, Phone } from 'lucide-react'
 
 export const Footer = () => (
   <footer className="w-full bg-brand-bg pb-28 font-sans text-white md:pb-0">
-    <div className="border-b border-white/10 bg-[#202020]">
+    <div className="border-b border-white/10 bg-brand-surface-1">
       <div className="mx-auto grid max-w-[1440px] divide-y divide-white/10 px-3 sm:px-5 md:grid-cols-3 md:divide-x md:divide-y-0 lg:px-8">
         <div className="flex items-center gap-3 py-5 md:px-5"><MessageCircle className="text-brand-orange" /><div><p className="text-xs font-black uppercase tracking-wide">Asesoría por WhatsApp</p><p className="text-xs text-white/55">Confirma compatibilidad antes de comprar</p></div></div>
         <div className="flex items-center gap-3 py-5 md:px-5"><MapPin className="text-brand-orange" /><div><p className="text-xs font-black uppercase tracking-wide">Atención en Guayaquil</p><p className="text-xs text-white/55">Repuestos y soporte especializado</p></div></div>
@@ -31,6 +31,6 @@ export const Footer = () => (
         <nav className="mt-2 flex flex-col text-sm text-white/65"><Link to="/contacto" className="flex min-h-[44px] items-center hover:text-brand-orange">Contacto</Link><Link to="/catalogo" className="flex min-h-[44px] items-center hover:text-brand-orange">Repuestos por moto</Link><a href="https://maps.app.goo.gl/xj8vjxQYTpfZ7XhRA" target="_blank" rel="noopener noreferrer" className="flex min-h-[44px] items-center hover:text-brand-orange">Cómo llegar</a></nav>
       </div>
     </div>
-    <div className="border-t border-white/10 px-5 py-4 text-center font-geist text-[10px] uppercase tracking-[.12em] text-white/45">© {new Date().getFullYear()} LV PARTS · Repuestos originales Daytona</div>
+    <div className="border-t border-white/10 px-5 py-4 text-center font-geist text-[10px] uppercase tracking-[.12em] text-white/60">© {new Date().getFullYear()} LV PARTS · Repuestos originales Daytona</div>
   </footer>
 );

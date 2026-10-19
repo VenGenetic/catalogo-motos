@@ -121,7 +121,7 @@ export const SearchBar = ({ busqueda, setBusqueda, productos, placeholder }: Sea
           enterKeyHint="search"
           autoComplete="off"
           placeholder={placeholder}
-          className="h-full min-w-0 flex-1 bg-transparent px-2.5 text-base font-medium text-[#1a1a1a] outline-none placeholder:text-[#777] [&::-webkit-search-cancel-button]:hidden"
+          className="h-full min-w-0 flex-1 bg-transparent px-2.5 text-base font-medium text-[#1a1a1a] outline-none placeholder:text-[#6b6b6b] [&::-webkit-search-cancel-button]:hidden"
           value={busqueda}
           onChange={e => setBusqueda(e.target.value)}
           onFocus={() => { clearTimeout(cierreRef.current); setIsFocused(true); }}
@@ -163,7 +163,7 @@ export const SearchBar = ({ busqueda, setBusqueda, productos, placeholder }: Sea
                     type="button"
                     onMouseDown={e => e.preventDefault()}
                     onClick={() => elegir(term)}
-                    className="min-h-[40px] rounded-full border border-ui-border bg-ui-muted px-3.5 text-sm font-semibold text-ui-ink hover:border-brand-orange hover:text-brand-orange"
+                    className="min-h-[40px] rounded-full border border-ui-border bg-ui-muted px-3.5 text-sm font-semibold text-ui-ink hover:border-brand-orange hover:text-brand-orange-action dark:hover:text-brand-orange"
                   >
                     {term}
                   </button>

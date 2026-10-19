@@ -71,7 +71,7 @@ export const HomeView = ({ productos }: HomeViewProps) => {
                  
                  <div className="space-y-4">
                    <div className="flex items-start gap-3">
-                     <div className="shrink-0 bg-brand-orange/10 p-2 text-brand-orange">
+                     <div className="shrink-0 bg-brand-orange/10 p-2 text-brand-orange-action dark:text-brand-orange">
                        <MapPin className="w-5 h-5" />
                      </div>
                      <div>
@@ -81,7 +81,7 @@ export const HomeView = ({ productos }: HomeViewProps) => {
                    </div>
                    
                    <div className="flex items-start gap-3">
-                     <div className="shrink-0 bg-brand-orange/10 p-2 text-brand-orange">
+                     <div className="shrink-0 bg-brand-orange/10 p-2 text-brand-orange-action dark:text-brand-orange">
                        <Clock className="w-5 h-5" />
                      </div>
                      <div>
@@ -91,7 +91,7 @@ export const HomeView = ({ productos }: HomeViewProps) => {
                    </div>
 
                    <div className="flex items-start gap-3">
-                     <div className="shrink-0 bg-[#25D366]/10 p-2 text-[#168b4c] dark:text-[#54e38b]">
+                     <div className="shrink-0 bg-wa/10 p-2 text-wa-deep dark:text-wa-light">
                        <Phone className="w-5 h-5" />
                      </div>
                      <div>
