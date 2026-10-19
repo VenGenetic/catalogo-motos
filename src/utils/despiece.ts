@@ -65,10 +65,11 @@ export const normalizar = (texto: string) => texto.normalize('NFD').replace(/[̀
 
 /**
  * "CB250GP1-068G" → prefijo CB250GP1, posición 68, variante G (color, lado, año).
- * Se ignora la terminación de las copias ("CB200WF-070-A", "CB110CX79C-042.").
+ * Se ignora la terminación de las copias ("CB200WF-070-A", "CB110CX79C-042.") y
+ * el "INCOM-" de las piezas incompletas ("INCOM-CB250WF-010" es de la Wolf 250).
  */
 export function leerCodigo(sku: string | null | undefined): { prefijo: string; numero: number; variante: string } | null {
-  const m = (sku || '').trim().toUpperCase().replace(/(-[A-Z]{1,3}|\.)$/, '').match(/^([A-Z0-9]+?)-(\d{1,4})([A-Z]{0,4})$/);
+  const m = (sku || '').trim().toUpperCase().replace(/^INCOM-/, '').replace(/(-[A-Z]{1,3}|\.)$/, '').match(/^([A-Z0-9]+?)-(\d{1,4})([A-Z]{0,4})$/);
   return m ? { prefijo: m[1], numero: Number(m[2]), variante: m[3] } : null;
 }
 
@@ -127,6 +128,9 @@ const esS1Anterior = (n: string) => /\bS1\s*180\b/.test(n) && /\b20(1[5-9]|20)\b
 /** Motores CG200 y 170: "CRUCERO" o "CAFE RACER" a secas con este código no es la 150. */
 const MOTOR_200 = /^(CG|CGB|CBG)200|^(CG|CGB|CB)170/;
 
+/** El motor Loncin RE250 de 2 válvulas (Tekken 250, Scrambler 250, GP1 2017-2018). */
+const MOTOR_RE250 = /\bRE\s*-?\s*250\b|\bLONCIN\b|\b2V\b/;
+
 // --- Modelos ---------------------------------------------------------------
 
 export const MODELOS_DESPIECE: ModeloDespiece[] = [
@@ -161,7 +165,7 @@ export const MODELOS_DESPIECE: ModeloDespiece[] = [
   { id: 'wing-evo-2', nombre: 'Wing Evo 2 (200 / 202)', segmento: 'Deportivas', prefijos: ['CG200WEV2', 'CG200WEV2A', 'CG200WINGEV', 'CG200WINGBL', 'CG200WEVF', 'CG200WEVO', 'BASWEV2', 'KSELWEV2'], coincide: re(/\bWING\s*EVO\s*-?\s*(2|II|202)(?!\d)|\bWING\s*EVO\s*20(2[3-9])\b|\bWING\s*EVO\s*I\s*\/\s*II\b|\bWEV\s*2\b|\bWEVI\s*\/\s*II\b/), propio: /\bWING\s*EVO\b|\bWEV/ },
   { id: 'wing-150', nombre: 'Wing 150 (anterior)', segmento: 'Deportivas', prefijos: ['CG150WING'], coincide: re(/\bWING\b(?!\s*(EVO|200))/) },
   { id: 'cobra-370', nombre: 'Cobra 370', segmento: 'Deportivas', prefijos: [], coincide: re(/\bCOBRA\b/) },
-  { id: 'zr-290', nombre: 'ZR 290', segmento: 'Deportivas', prefijos: [], coincide: re(/\bZR\s*-?\s*290(?!\d)/) },
+  { id: 'zr-290', nombre: 'ZR 290', segmento: 'Deportivas', prefijos: ['CB290ZR'], coincide: re(/\bZR\s*-?\s*290(?!\d)/) },
 
   // Doble propósito
   {
@@ -169,13 +173,14 @@ export const MODELOS_DESPIECE: ModeloDespiece[] = [
     // "TEKKEN250" va pegado. "TEKKEN 4V" es la Evo (la 250 original es de 2 válvulas)
     // y "TEKKEN R" no se sabe cuál es: ninguna de las dos se le da a la 250.
     // La Axxo Tracker y la DK Nativa son gemelas de la Evo, y la 250 original no llegó a 2021.
+    // Salvo en el motor Loncin RE250 de 2 válvulas, que es el de la 250: "AXXO TRACKER/SCRAMBLER LONCIN RE 250CC".
     coincide: n => /\bTEKK(EN)?(?![A-Z])(?!\s*-?\s*(EVO|DISC|TRACK|R\b))/.test(n) && !/\b4V\b/.test(n)
-      && !/\b(NATIVA|TRACKER)\b/.test(n) && !/\b202[1-9]\b/.test(n),
+      && (!/\b(NATIVA|TRACKER)\b/.test(n) || MOTOR_RE250.test(n)) && !/\b202[1-9]\b/.test(n),
     documentos: [{ titulo: 'Despiece con fotos de la Tekken 250 (RVM Argentina, misma moto)', url: 'https://rvm.com.ar/wp-content/uploads/2019/07/manual-despiece-tekken-rvm.pdf' }],
     familia: 'tekken', explicito: /\b2V\b|\b201[5-9]\b|ANTIGU/,
     aviso: 'La importadora escribe "TEKKEN" a secas tanto para esta moto como para la Evo. Confirma con el cliente cuál tiene antes de vender.',
   },
-  { id: 'tekken-evo-250', nombre: 'Tekken Evo 250', segmento: 'Doble propósito', familia: 'tekken', prefijos: ['CB250TKN', 'BASTKN'], coincide: n => /\bTEKKEN\s*EVO|\bTEKKEN\b.*\b4V\b/.test(n) || (/\bTEKK(EN)?(?![A-Z])/.test(n) && /\b(NATIVA|TRACKER)\b/.test(n)), propio: /\bTEKK|\bTKN\b/ },
+  { id: 'tekken-evo-250', nombre: 'Tekken Evo 250', segmento: 'Doble propósito', familia: 'tekken', prefijos: ['CB250TKN', 'BASTKN'], coincide: n => /\bTEKKEN\s*EVO|\bTEKKEN\b.*\b4V\b/.test(n) || (/\bTEKK(EN)?(?![A-Z])/.test(n) && /\b(NATIVA|TRACKER)\b/.test(n) && !MOTOR_RE250.test(n)), propio: /\bTEKK|\bTKN\b/ },
   { id: 'tekken-discovery-300', nombre: 'Tekken Discovery 300', segmento: 'Doble propósito', familia: 'tekken', prefijos: ['YB300', 'YB300TKD'], coincide: re(/\bTEKKEN\s*DISC/) },
   // "CROSS" a secas sólo como elemento de una lista de motos ("ADV-R/CROSS/LONCIN"):
   // "LLANTA CROSS" es una llanta de taco y "RANGER CROSS" es otra moto.
@@ -195,10 +200,11 @@ export const MODELOS_DESPIECE: ModeloDespiece[] = [
   { id: 'montana-150', nombre: 'Montana 150', segmento: 'Doble propósito', prefijos: ['CB150'], coincide: re(/\bMONTANA\s*150/), propio: /\bMONTANA\b/ },
   { id: 'montana-200', nombre: 'Montana 200', segmento: 'Doble propósito', prefijos: ['CB200MT'], coincide: re(/\bMONTANA\s*200/) },
   { id: 'force-ds-200', nombre: 'Force DS 200', segmento: 'Doble propósito', prefijos: ['CB200FC'], coincide: re(/(?<!WORK\s*)\bFORCE\b/) },
-  { id: 'adventure-200', nombre: 'Adventure 200', segmento: 'Doble propósito', prefijos: ['CB200ADV'], coincide: re(/\bADV(E|ENTURE)?\s*-?\s*200/), propio: /\bADV/ },
-  { id: 'adventure-300', nombre: 'Adventure 300', segmento: 'Doble propósito', prefijos: ['TY300ADV'], coincide: re(/\bADV(ENTURE)?\s*300(?!\s*-?\s*R(?![A-Z]))/), propio: /\bADV/ },
+  // "TUNDRA ADV 300" es otra marca.
+  { id: 'adventure-200', nombre: 'Adventure 200', segmento: 'Doble propósito', prefijos: ['CB200ADV'], coincide: re(/(?<!TUNDRA\s*)\bADV(E|ENTURE)?\s*-?\s*200/), propio: /\bADV/ },
+  { id: 'adventure-300', nombre: 'Adventure 300', segmento: 'Doble propósito', prefijos: ['TY300ADV'], coincide: re(/(?<!TUNDRA\s*)\bADV(ENTURE)?\s*300(?!\s*-?\s*R(?![A-Z]))/), propio: /\bADV/ },
   // La lista de la importadora junta las dos: "ADVENTURE-R 250/300CC". "ADV250" es la R: no hubo otra Adventure 250.
-  { id: 'adventure-300r', nombre: 'Adventure R (250 / 300)', segmento: 'Doble propósito', prefijos: ['CB250ADV'], coincide: re(/\bADV(ENTURE)?\s*-\s*R(?![A-Z])|\bADV(ENTURE)?\s*300\s*-?\s*R(?![A-Z])|\bADV(ENTURE)?\s*-?\s*(R\s*-?\s*)?250(?!\d)/), propio: /\bADV/ },
+  { id: 'adventure-300r', nombre: 'Adventure R (250 / 300)', segmento: 'Doble propósito', prefijos: ['CB250ADV'], coincide: re(/(?<!TUNDRA\s*)\bADV(ENTURE)?(\s*-\s*R(?![A-Z])|\s*300\s*-?\s*R(?![A-Z])|\s*-?\s*(R\s*-?\s*)?250(?!\d))/), propio: /\bADV/ },
   { id: 'arctic-250', nombre: 'Arctic 250', segmento: 'Doble propósito', prefijos: ['FE250ART', 'CKDART'], coincide: re(/\bARC?TIC\b/) },
   { id: 'everest-300', nombre: 'Everest 300 (Dual Sport / Off Road)', segmento: 'Doble propósito', prefijos: ['PR300EVT'], coincide: re(/\bEVEREST\b/) },
   { id: 'xpedition-300', nombre: 'Xpedition 300', segmento: 'Doble propósito', prefijos: ['PR300XPD'], coincide: re(/\bXPEDITION\b/) },
@@ -212,9 +218,10 @@ export const MODELOS_DESPIECE: ModeloDespiece[] = [
   { id: 'scorpion-200-250', nombre: 'Scorpion 200 / 250', segmento: 'Enduro', prefijos: ['CB250SC', 'BASSCO', 'CB250SCSENG', 'CB250B'], coincide: re(/\bSCO(RP|PR)ION\b|\bSCO\b/) }, // "SCO" abreviada: "SHARK/SCO/TEKKEN"
 
   // Clásicas
-  { id: 'cafe-racer-170', nombre: 'Café Racer 170', segmento: 'Clásicas', prefijos: ['CB170', 'CB170CR', 'CGB170'], coincide: re(/\bCAFE\s*RACER\s*170|\bCGB\s*170\b/), propio: /\bCAFE\s*RACER\b(?!\s*1[57]0)/ },
-  { id: 'cafe-racer-150', nombre: 'Café Racer 150 (anterior)', segmento: 'Clásicas', prefijos: ['CG150CR'], coincide: re(/\bCAFE\s*RACER\s*150/), propio: /\bCAFE\s*RACER\b(?!\s*1[57]0)/,
-    aSecas: { nombre: /\bCAFE\s*RACER\b(?!\s*-?\s*1[57]0)/, salvoPrefijo: MOTOR_200 } },
+  // "DK CAFE RACER" es la de Dukare.
+  { id: 'cafe-racer-170', nombre: 'Café Racer 170', segmento: 'Clásicas', prefijos: ['CB170', 'CB170CR', 'CGB170'], coincide: re(/(?<!DK\s*)\bCAFE\s*RACER\s*170|\bCGB\s*170\b/), propio: /\bCAFE\s*RACER\b(?!\s*1[57]0)/ },
+  { id: 'cafe-racer-150', nombre: 'Café Racer 150 (anterior)', segmento: 'Clásicas', prefijos: ['CG150CR'], coincide: re(/(?<!DK\s*)\bCAFE\s*RACER\s*150/), propio: /\bCAFE\s*RACER\b(?!\s*1[57]0)/,
+    aSecas: { nombre: /(?<!DK\s*)\bCAFE\s*RACER\b(?!\s*-?\s*1[57]0)/, salvoPrefijo: MOTOR_200 } },
   { id: 'scrambler-250', nombre: 'Scrambler 250 / Revolution', segmento: 'Clásicas', prefijos: ['CB250SCB'], coincide: n => /\bSCRAMBLER\s*(CLASICA|REVOLUTION|250)/.test(n)
     // "SCB" es la 250 salvo en una lista de motor 300 ("SCB/ADV-R/SUPER WOLF 300CC") o "SCB MAX".
     || (/\bSCB\b(?!\s*MAX)/.test(n) && !(/\b300/.test(n) && !/250/.test(n)))
@@ -281,9 +288,11 @@ const ERRATAS: [RegExp, string][] = [
   [/\bCRUCER\b/g, 'CRUCERO'],
   [/\bEIVISA\b/g, 'EIVISSA'],
   [/\bARTICK\b/g, 'ARTIC'],
+  [/(?<!IGM\s*)\bWIN\s*(?=EVO)/g, 'WING '], // "WIN EVO 2"; la "IGM WIN" es otra moto
   // La moto pegada a la cilindrada: "EVEREST300", "TRACKER250", "WING150CC", "PR300XPEDITION".
   [/\b([A-Z]{3,})(?=\d{3}(?!\d))/g, '$1 '],
   [/(\d{3})(?=[A-Z]{4,})/g, '$1 '],
+  [/\bDY\s*-?\s*(?=\d{3})/g, 'DY '], // "DY250 SCRAMBLER": el 250 es la cilindrada
 ];
 
 /** El nombre listo para buscarle motos: normalizado y sin las erratas conocidas. */
