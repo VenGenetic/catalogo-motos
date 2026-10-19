@@ -144,12 +144,13 @@ ${tienePreciosPendientes ? 'Piezas pendientes de cotización incluidas en el ped
             <h2 className="text-xl font-extrabold text-gray-900 dark:text-white flex items-center gap-2">
               Tu Pedido
               <span className="bg-slate-100 dark:bg-brand-surface-2 text-slate-600 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full border border-slate-200 dark:border-brand-surface-3">
-                {cart.length} items
+                {cart.length} {cart.length === 1 ? 'repuesto' : 'repuestos'}
               </span>
             </h2>
           </div>
           <button 
             onClick={closeCart}
+            aria-label="Cerrar pedido"
             className="p-2 -mr-2 text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-brand-surface-2 rounded-full transition-all active:scale-90"
           >
             <X className="w-7 h-7"/>
@@ -164,7 +165,7 @@ ${tienePreciosPendientes ? 'Piezas pendientes de cotización incluidas en el ped
                 <MessageCircle className="w-16 h-16 text-gray-300 dark:text-gray-600" />
               </div>
               <div className="text-center space-y-2">
-                <p className="font-bold text-lg text-slate-700 dark:text-gray-300">Tu carrito está vacío</p>
+                <p className="font-bold text-lg text-slate-700 dark:text-gray-300">Tu pedido está vacío</p>
                 <p className="text-sm">Agrega repuestos para armar tu pedido.</p>
               </div>
               <button 
@@ -185,14 +186,16 @@ ${tienePreciosPendientes ? 'Piezas pendientes de cotización incluidas en el ped
                     <div key={item.id} className="flex gap-4 rounded-2xl border border-ui-border bg-ui-surface p-3 shadow-sm">
                       {/* Imagen Clickable */}
                       <div 
-                        className="cursor-pointer relative group shrink-0 w-16 h-16 sm:w-20 sm:h-20"
+                        className="cursor-pointer relative group shrink-0 self-start w-24 aspect-[1024/531] sm:w-28"
                         onClick={() => handleOpenProduct(item.id)}
                       >
+                        {/* Apaisada como las fotos: se ve la pieza entera, no recortada. */}
                         <LazyImage 
                           src={optimizarImg(item.imagen)} 
                           fallbackSrc={`/imagenes_repuestos/${item.codigo_referencia}.webp`}
                           alt={item.nombre}
-                          className="w-full h-full rounded-xl bg-gray-50 dark:bg-brand-surface-3 object-cover border border-gray-100 dark:border-brand-border transition-colors" 
+                          imageFit="contain"
+                          className="w-full h-full rounded-lg !bg-white border border-ui-border" 
                         />
                         <div className="absolute inset-0 bg-black/40 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                            <Eye className="text-white w-5 h-5 shadow-sm" strokeWidth={2.5} /> 
@@ -211,7 +214,8 @@ ${tienePreciosPendientes ? 'Piezas pendientes de cotización incluidas en el ped
                           </h4>
                           <button 
                              onClick={() => updateQuantity(item.id, -1000)} // Eliminar
-                             className="text-gray-300 hover:text-red-500 p-1 -mt-1 -mr-1 shrink-0"
+                             aria-label={`Quitar ${item.nombre} del pedido`}
+                             className="-mr-2 -mt-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-gray-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/40"
                           >
                              <Trash2 size={16} />
                           </button>
@@ -226,7 +230,8 @@ ${tienePreciosPendientes ? 'Piezas pendientes de cotización incluidas en el ped
                           <div className="flex items-center gap-3 bg-gray-50 dark:bg-brand-surface-1/50 rounded-lg p-1 border border-gray-200 dark:border-brand-surface-3">
                             <button 
                               onClick={() => updateQuantity(item.id, -1)} 
-                              className="w-8 h-8 bg-white dark:bg-brand-surface-2 hover:bg-gray-100 dark:hover:bg-brand-surface-3 rounded-md flex items-center justify-center shadow-sm border border-gray-200 dark:border-brand-border text-slate-700 dark:text-white active:scale-90 transition-transform"
+                              aria-label="Quitar una unidad"
+                              className="w-9 h-9 bg-white dark:bg-brand-surface-2 hover:bg-gray-100 dark:hover:bg-brand-surface-3 rounded-md flex items-center justify-center shadow-sm border border-gray-200 dark:border-brand-border text-slate-700 dark:text-white active:scale-90 transition-transform"
                             >
                               <Minus size={16} strokeWidth={3}/>
                             </button>
@@ -235,7 +240,8 @@ ${tienePreciosPendientes ? 'Piezas pendientes de cotización incluidas en el ped
                             </span>
                             <button 
                               onClick={() => updateQuantity(item.id, 1)} 
-                              className="w-8 h-8 bg-slate-900 dark:bg-brand-surface-3 hover:dark:bg-brand-border text-white rounded-md flex items-center justify-center shadow-md active:scale-90 transition-transform"
+                              aria-label="Agregar una unidad"
+                              className="w-9 h-9 bg-slate-900 dark:bg-brand-surface-3 hover:dark:bg-brand-border text-white rounded-md flex items-center justify-center shadow-md active:scale-90 transition-transform"
                             >
                               <Plus size={16} strokeWidth={3}/>
                             </button>

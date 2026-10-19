@@ -1,15 +1,29 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { X, ShoppingCart, Check, AlertCircle, MessageCircle, Tag, Info, ChevronLeft, ChevronRight, MoveHorizontal, ZoomIn, Copy, Clipboard } from 'lucide-react';
+import { ArrowRight, Check, ChevronLeft, ChevronRight, Copy, Info, MessageCircle, Share2, ShoppingCart, X } from 'lucide-react';
 import { Producto } from '../types';
 import { useCart } from '../context/CartContext';
-import { optimizarImg } from '../utils/helpers';
+import { useMoto } from '../context/MotoContext';
 import { useToast } from '../context/ToastContext';
+import { optimizarImg } from '../utils/helpers';
 import { shareProductAsImage } from '../utils/shareHelper';
-import { trackLead } from '../utils/tracking';
-import { APP_CONFIG } from '../config/constants';
+import { preguntarPorRepuesto } from '../utils/consultas';
+import { useDespiece, type Despiece } from '../utils/cargarDespiece';
+import type { PiezaDeModelo } from '../utils/despiece';
+import { nombreDeModelo } from '../config/constants';
 import { ImageZoom } from './ImageZoom';
 import { LazyImage } from './LazyImage';
-import { buildWhatsAppUrl } from '../utils/attribution';
+import { EstadoStock, precioTexto } from './ProductCard';
+import { SirveParaFicha, nombreCorto, useCompatibles } from './SirvePara';
+
+/*
+  Ficha del repuesto.
+
+  Celular: pantalla completa. Arriba la foto a todo el ancho (es apaisada, así
+  se ve grande), después precio, "Sirve para" y más piezas de la misma moto;
+  abajo, fijos, "Preguntar" y "Agregar". Se desliza a los lados para pasar al
+  repuesto anterior o siguiente de la lista.
+  Computadora: ventana de dos columnas, foto a la izquierda.
+*/
 
 interface Props {
   product: Producto | null;
@@ -17,48 +31,24 @@ interface Props {
   currentList?: Producto[];
   onClose: () => void;
   onSelectRelated: (p: Producto) => void;
+  despiece: Despiece | null;
+  /** La moto que el catálogo está mostrando. */
+  filtroModelo?: string;
+  /** Las piezas de esa moto, ya calculadas por el catálogo. */
+  piezasModelo?: Map<string | number, PiezaDeModelo> | null;
 }
 
-const TUTORIAL_STORAGE_KEY = 'LVPARTS_TUTORIAL_SEEN';
-
-const hasSeenTutorial = () => {
-  try {
-    return window.localStorage.getItem(TUTORIAL_STORAGE_KEY) === 'true';
-  } catch {
-    // Safari can block storage in private browsing or with strict privacy
-    // settings. Product details must still be able to open.
-    return true;
-  }
-};
-
-export const ProductDetailModal = ({ product, allProducts, currentList, onClose, onSelectRelated }: Props) => {
-  const { addToCart } = useCart();
-  const [copied, setCopied] = useState(false);
+export const ProductDetailModal = ({ product, allProducts, currentList, onClose, onSelectRelated, despiece, filtroModelo, piezasModelo }: Props) => {
+  const { addToCart, cart } = useCart();
+  const { miMoto, elegirMoto } = useMoto();
   const { showToast } = useToast();
+  const { noDisponible } = useDespiece();
+  const [copiado, setCopiado] = useState(false);
 
-  const handleShareProduct = async () => {
-    if (product) {
-      await shareProductAsImage(product, showToast);
-    }
-  };
+  const compatibles = useCompatibles(product ?? ({ id: '', nombre: '', precio: 0, categoria: '', imagen: '' } as Producto), despiece);
+  // La moto del cliente: la que está viendo o, si no eligió ninguna aquí, la última que eligió.
+  const motoCliente = filtroModelo || miMoto;
 
-  const handleCopy = (e: React.MouseEvent, text: string) => {
-    e.stopPropagation();
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  
-  // Detección de dispositivo para Habilitar/Deshabilitar el arrastre
-  // (Usamos 1024 para asegurar que tablets también tengan habilitado el swipe)
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 1024);
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 1024);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
   // Navegación (Siguiente / Anterior)
   const currentIndex = currentList?.findIndex(p => p.id === product?.id) ?? -1;
   const hasPrev = currentIndex > 0;
@@ -67,12 +57,10 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
   const navigateTo = useCallback((direction: 1 | -1) => {
     if (!currentList) return;
     const nextIdx = currentIndex + direction;
-    if (nextIdx >= 0 && nextIdx < currentList.length) {
-      onSelectRelated(currentList[nextIdx]);
-    }
+    if (nextIdx >= 0 && nextIdx < currentList.length) onSelectRelated(currentList[nextIdx]);
   }, [currentIndex, currentList, onSelectRelated]);
 
-  // Teclado (ESC y Flechas)
+  // Teclado (ESC y flechas)
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -83,92 +71,74 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
     return () => window.removeEventListener('keydown', handleKey);
   }, [onClose, hasPrev, hasNext, navigateTo]);
 
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-
-  const minSwipeDistance = 50;
-
+  // Deslizar a los lados (celular y tablet) para cambiar de repuesto.
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
   const onTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
+    // Las filas que se desplazan solas a los lados (más fotos, más repuestos) no cambian de repuesto.
+    if ((e.target as HTMLElement).closest('[data-sin-deslizar]')) { setTouchStart(null); return; }
+    setTouchStart({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY });
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStart) return;
+    const dx = touchStart.x - e.changedTouches[0].clientX;
+    const dy = touchStart.y - e.changedTouches[0].clientY;
+    setTouchStart(null);
+    // Sólo un gesto claramente horizontal: al bajar leyendo la ficha no se cambia de repuesto.
+    if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    if (dx > 0 && hasNext) navigateTo(1);
+    if (dx < 0 && hasPrev) navigateTo(-1);
   };
 
-  const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const onTouchEnd = () => {
-    if (touchStart === null || touchEnd === null) return;
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
-
-    if (isLeftSwipe && hasNext) {
-      navigateTo(1); // Deslizar Izquierda -> Siguiente
-    } else if (isRightSwipe && hasPrev) {
-      navigateTo(-1); // Deslizar Derecha -> Anterior
-    }
-  };
-
-  // Precarga Predictiva (Evita pantalla blanca al deslizar rápido)
+  // Precarga la foto del anterior y del siguiente: al deslizar rápido no se ve en blanco.
   useEffect(() => {
     if (!currentList) return;
-    
-    if (hasNext) {
-       const nextImg = new Image();
-       nextImg.src = optimizarImg(currentList[currentIndex + 1].imagen, 1024);
-    }
-    if (hasPrev) {
-       const prevImg = new Image();
-       prevImg.src = optimizarImg(currentList[currentIndex - 1].imagen, 1024);
-    }
+    if (hasNext) new Image().src = optimizarImg(currentList[currentIndex + 1].imagen, 1024);
+    if (hasPrev) new Image().src = optimizarImg(currentList[currentIndex - 1].imagen, 1024);
   }, [currentIndex, currentList, hasNext, hasPrev]);
 
-  // Tutorial Interactivo Primera Vez
-  const [showTutorial, setShowTutorial] = useState(
-    () => Boolean(product && !hasSeenTutorial())
-  );
-
-  const dismissTutorial = () => {
-    try {
-      window.localStorage.setItem(TUTORIAL_STORAGE_KEY, 'true');
-    } catch {
-      // Closing the tutorial must not depend on persistent storage.
-    }
-    setShowTutorial(false);
-  };
-
-  // Bloquear scroll del body
+  // Bloquear el scroll de la página de atrás.
   useEffect(() => {
-    if (product) document.body.style.overflow = 'hidden';
-    else document.body.style.overflow = 'unset';
-    return () => { document.body.style.overflow = 'unset'; };
-  }, [product]);
+    const anterior = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = anterior; };
+  }, []);
 
+  // La moto de la que se muestran "más repuestos": la del cliente si le sirve; si no, la dueña del código.
+  const motoRelacionada = useMemo(() => {
+    if (!compatibles?.length) return null;
+    if (motoCliente && compatibles.some(c => c.modelo.id === motoCliente)) return motoCliente;
+    return (compatibles.find(c => c.origen === 'propia') ?? compatibles[0]).modelo.id;
+  }, [compatibles, motoCliente]);
+
+  const piezasRelacionadas = useMemo(() => {
+    if (!despiece || !motoRelacionada) return null;
+    if (motoRelacionada === filtroModelo && piezasModelo) return piezasModelo;
+    return despiece.piezasDeModelo(allProducts.map(p => ({ id: p.id, sku: p.codigo_referencia ?? null, name: p.nombre })), motoRelacionada);
+  }, [despiece, motoRelacionada, filtroModelo, piezasModelo, allProducts]);
+
+  // Del mismo sistema primero (lo que se suele cambiar junto), con stock primero.
   const relacionados = useMemo(() => {
-    if (!product) return [];
-    const palabras = product.nombre.split(' ').filter(p => p.length > 3).slice(0, 2);
+    if (!product || !piezasRelacionadas) return [];
     return allProducts
-      .filter(p => 
-        p.id !== product.id && 
-        (p.seccion === product.seccion || palabras.some(w => p.nombre.includes(w)))
-      )
-      .slice(0, 4);
-  }, [product, allProducts]);
+      .filter(p => p.id !== product.id && piezasRelacionadas.has(p.id))
+      .sort((a, b) =>
+        Number(b.seccion === product.seccion) - Number(a.seccion === product.seccion)
+        || Number(Boolean(b.stock)) - Number(Boolean(a.stock)))
+      .slice(0, 10);
+  }, [product, piezasRelacionadas, allProducts]);
 
-  const galleryImages = useMemo(() => {
-    return product?.gallery || [];
-  }, [product]);
-
-  const hasGallery = galleryImages.length > 0;
+  const galleryImages = product?.gallery || [];
 
   if (!product) return null;
 
-  const handleDirectQuote = () => {
-    trackLead(product);
-    const message = `Hola LV PARTS, vi este repuesto en la web: ${product.nombre} (Ref: ${product.codigo_referencia || 'S/N'}). ¿Me ayudan con más info?`;
-    const url = buildWhatsAppUrl(APP_CONFIG.WHATSAPP_NUMBER, message);
-    window.open(url, '_blank');
+  const enPedido = cart.find(i => i.id === product.id)?.cantidad ?? 0;
+  const motoCorta = motoCliente ? nombreCorto(nombreDeModelo(motoCliente, despiece)) : undefined;
+
+  const copiarCodigo = () => {
+    if (!product.codigo_referencia) return;
+    navigator.clipboard?.writeText(product.codigo_referencia).catch(() => undefined);
+    setCopiado(true);
+    setTimeout(() => setCopiado(false), 2000);
   };
 
   const structuredData = {
@@ -186,360 +156,194 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
     }
   };
 
+  const flecha = (direccion: 1 | -1) => (
+    <button
+      type="button"
+      onClick={() => navigateTo(direccion)}
+      className={`absolute top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-ui-border bg-ui-surface/95 text-ui-ink shadow-lg transition-colors hover:border-ui-ink md:flex ${direccion === -1 ? 'left-3' : 'right-3'}`}
+      aria-label={direccion === -1 ? 'Repuesto anterior' : 'Repuesto siguiente'}
+    >
+      {direccion === -1 ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
+    </button>
+  );
+
   return (
-    <>
-      {/* Z-100 para asegurar que esté ENCIMA de todo */}
+    <div
+      className="viewport-fill product-modal-layer fixed inset-0 z-modal flex items-center justify-center md:p-6"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Detalle de ${product.nombre}`}
+    >
+      <title>{`${product.nombre} | LV PARTS`}</title>
+      <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+
+      <div className="viewport-fill absolute inset-0 bg-brand-bg/80 backdrop-blur-sm" onClick={onClose} />
+
       <div
-        className="viewport-fill product-modal-layer fixed inset-0 z-modal flex items-center justify-center"
-        role="dialog"
-        aria-modal="true"
-        aria-label={`Detalle de ${product.nombre}`}
+        className="product-modal-panel relative flex h-full w-full flex-col overflow-hidden bg-ui-surface shadow-2xl animate-scale-up md:grid md:h-[min(88vh,760px)] md:max-w-6xl md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] md:rounded-2xl"
+        onClick={e => e.stopPropagation()}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
       >
-        
-        <title>{`${product.nombre} | LV PARTS`}</title>
-        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+        {/* Barra de arriba (celular) */}
+        <div className="flex shrink-0 items-center justify-between border-b border-ui-border px-1.5 pb-1 pt-[calc(0.25rem+env(safe-area-inset-top))] md:hidden">
+          <button type="button" onClick={onClose} className="touch-target flex items-center justify-center rounded-full text-ui-ink active:bg-ui-muted" aria-label="Cerrar">
+            <X size={26} />
+          </button>
+          {currentList && currentIndex >= 0 && (
+            <span className="text-xs font-semibold tabular-nums text-ui-copy">{(currentIndex + 1).toLocaleString('es-EC')} de {currentList.length.toLocaleString('es-EC')}</span>
+          )}
+          <button type="button" onClick={() => shareProductAsImage(product, showToast)} className="touch-target flex items-center justify-center rounded-full text-ui-ink active:bg-ui-muted" aria-label="Compartir repuesto">
+            <Share2 size={22} />
+          </button>
+        </div>
 
-        {/* Overlay oscuro */}
-        <div className="viewport-fill absolute inset-0 bg-brand-bg/88 backdrop-blur-sm" onClick={onClose} />
+        {/* FOTO */}
+        <div className="relative shrink-0 border-b border-ui-border bg-white md:flex md:h-full md:flex-col md:border-b-0 md:border-r">
+          {hasPrev && flecha(-1)}
+          {hasNext && flecha(1)}
+          <div className="relative aspect-[1024/531] w-full overflow-hidden md:aspect-auto md:min-h-0 md:flex-1">
+            <ImageZoom
+              src={optimizarImg(product.imagen, 1024)}
+              fallbackSrc={`/imagenes_repuestos/${product.codigo_referencia}.webp`}
+              alt={product.nombre}
+              className="h-full w-full p-1 md:p-8"
+            />
+          </div>
+          <p className="hidden pb-4 text-center text-xs text-ui-copy md:block">Toca la foto para ampliarla · ← → para ver otro repuesto</p>
+        </div>
 
-        {/* MODAL PRINCIPAL */}
-        <div
-          // CLAVE MÓVIL: w-full h-full (ocupa toda la pantalla)
-          // CLAVE DESKTOP: Ancho máximo más generoso para mostrar bien la imagen 1024x535
-          className="product-modal-panel relative flex h-full w-full flex-col overflow-hidden overscroll-x-none bg-ui-surface shadow-2xl touch-pan-y animate-scale-up md:h-auto md:max-h-[95vh] md:max-w-6xl md:rounded-[1.5rem] md:border md:border-ui-border lg:max-w-7xl"
-          onClick={(e) => e.stopPropagation()} 
-          onTouchStart={isMobile ? onTouchStart : undefined}
-          onTouchMove={isMobile ? onTouchMove : undefined}
-          onTouchEnd={isMobile ? onTouchEnd : undefined}
-        >
-            
-            {/* ====== TUTORIAL OVERLAY (ÚNICA VEZ) ====== */}
-              {showTutorial && (
-                <div
-                   className="viewport-fill absolute inset-0 z-toast flex items-center justify-center bg-brand-bg/82 p-4 backdrop-blur-sm animate-fade-in md:p-8"
-                 >
-                   <div
-                     className="flex w-full max-w-sm flex-col overflow-hidden rounded-[1.5rem] border border-ui-border bg-ui-surface shadow-2xl animate-scale-up"
-                   >
-                     {/* Encabezado Industrial */}
-                     <div className="bg-slate-900 dark:bg-black text-white p-4 text-center text-sm font-black uppercase tracking-widest border-b border-slate-200 dark:border-brand-surface-3">
-                       Guía Rápida
-                     </div>
-                     
-                     <div className="p-6 md:p-8 flex flex-col gap-6">
-                        <div className="flex gap-4 items-center">
-                           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-ui-border bg-ui-muted">
-                             <MoveHorizontal size={24} strokeWidth={2.5} className="text-brand-orange" />
-                           </div>
-                           <div>
-                             <h4 className="font-bold text-xs md:text-sm text-slate-900 dark:text-white uppercase">Desliza para ver más</h4>
-                             <p className="text-[11px] md:text-xs text-slate-500 font-medium">Mueve a los lados para cambiar entre repuestos rápidamente.</p>
-                           </div>
-                        </div>
+        {/* INFORMACIÓN */}
+        <div className="flex min-h-0 flex-1 flex-col md:h-full">
+          <div className="hidden h-14 shrink-0 items-center justify-end gap-1 border-b border-ui-border px-3 md:flex">
+            <button type="button" onClick={() => shareProductAsImage(product, showToast)} className="flex h-10 items-center gap-2 rounded-lg px-3 text-sm font-bold text-ui-ink hover:bg-ui-muted">
+              <Share2 size={18} /> Compartir
+            </button>
+            <button type="button" onClick={onClose} className="touch-target flex items-center justify-center rounded-full text-ui-ink hover:bg-ui-muted" aria-label="Cerrar">
+              <X size={24} />
+            </button>
+          </div>
 
-                        <div className="flex gap-4 items-center">
-                           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-ui-border bg-ui-muted">
-                             <ZoomIn size={24} strokeWidth={2.5} className="text-brand-orange" />
-                           </div>
-                           <div>
-                             <h4 className="font-bold text-xs md:text-sm text-slate-900 dark:text-white uppercase">Toca para ampliar</h4>
-                             <p className="text-[11px] md:text-xs text-slate-500 font-medium">Pincha sobre la fotografía para inspeccionar el detalle técnico.</p>
-                           </div>
-                        </div>
+          <div className="flex-1 space-y-4 overflow-y-auto overscroll-contain p-4 md:p-6">
+            <div>
+              <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+                <EstadoStock product={product} grande />
+                {product.codigo_referencia && (
+                  <button type="button" onClick={copiarCodigo} className="inline-flex min-h-[32px] items-center gap-1.5 rounded-md border border-ui-border bg-ui-muted px-2 font-mono text-xs text-ui-copy hover:border-ui-ink" aria-label={`Copiar código ${product.codigo_referencia}`}>
+                    {copiado ? <Check size={13} className="text-green-600" /> : <Copy size={13} />}
+                    {product.codigo_referencia}
+                  </button>
+                )}
+              </div>
+              <h2 className="text-xl font-black leading-snug text-ui-ink md:text-2xl">{product.nombre}</h2>
+              <p className="mt-1 text-sm text-ui-copy">{product.seccion}</p>
+            </div>
 
-                        <div className="flex gap-4 items-center">
-                           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-ui-border bg-ui-muted">
-                             <ShoppingCart size={24} strokeWidth={2.5} className="text-brand-orange" />
-                           </div>
-                           <div>
-                             <h4 className="font-bold text-xs md:text-sm text-slate-900 dark:text-white uppercase">Arma tu pedido</h4>
-                             <p className="text-[11px] md:text-xs text-slate-500 font-medium">Verifica código de fábrica y pásalo a tu carrito o envíalo por Whatsapp.</p>
-                           </div>
-                        </div>
-                     </div>
+            <div className="flex items-end justify-between gap-3">
+              <span className={product.precio ? 'text-3xl font-black tracking-tight text-ui-ink' : 'text-xl font-bold text-ui-copy'}>
+                {precioTexto(product.precio)}
+              </span>
+              {product.is_discontinued && <span className="rounded-md bg-red-100 px-2 py-1 text-xs font-bold text-red-800 dark:bg-red-950 dark:text-red-200">Descontinuado</span>}
+            </div>
 
-                     <button 
-                       onClick={dismissTutorial}
-                       className="m-4 mt-0 rounded-xl border-2 border-transparent bg-brand-orange-action p-4 text-sm font-black uppercase tracking-[0.1em] text-white transition-colors hover:bg-brand-orange active:bg-brand-bg md:text-base"
-                     >
-                       ¡Entendido!
-                     </button>
-                   </div>
+            {/* Sin despiece (iPhone anterior a iOS 16.4) no se sabe: mejor no decir nada que adivinar. */}
+            {!noDisponible && <SirveParaFicha
+              compatibles={compatibles}
+              miMoto={motoCliente}
+              despiece={despiece}
+              onElegir={elegirMoto}
+              onPreguntar={() => preguntarPorRepuesto(product, motoCorta)}
+            />}
+
+            <p className="flex gap-2 text-xs leading-relaxed text-ui-copy">
+              <Info size={16} className="shrink-0" aria-hidden="true" />
+              Compara la foto y el código con tu pieza usada. Si tienes dudas, pregúntanos antes de comprar.
+            </p>
+
+            {galleryImages.length > 0 && (
+              <div>
+                <h3 className="mb-2 text-sm font-black text-ui-ink">Más fotos</h3>
+                <div data-sin-deslizar className="scrollbar-hide flex gap-2 overflow-x-auto">
+                  {galleryImages.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="relative h-20 w-36 shrink-0 cursor-pointer overflow-hidden rounded-lg border border-ui-border bg-white"
+                      onClick={() => { if (item.type === 'video') window.open(item.url, '_blank'); }}
+                    >
+                      {item.type === 'video' ? (
+                        <>
+                          <video src={item.url} className="h-full w-full object-cover" muted playsInline />
+                          <span className="absolute inset-0 flex items-center justify-center bg-black/30">
+                            <span className="ml-0.5 h-0 w-0 border-y-[7px] border-l-[11px] border-y-transparent border-l-white" />
+                          </span>
+                        </>
+                      ) : (
+                        <ImageZoom src={optimizarImg(item.url)} fallbackSrc={`/imagenes_repuestos/${product.codigo_referencia}.webp`} alt={`${product.nombre} - vista ${idx + 1}`} className="h-full w-full" />
+                      )}
+                    </div>
+                  ))}
                 </div>
-              )}
-            {/* ====== FIN TUTORIAL ====== */}
-            
-            {/* Botón Cerrar: Ajustado para respetar el Notch/Safe Region en móviles */}
-            <div className="absolute top-0 right-0 p-3 z-30 pt-[calc(0.75rem+env(safe-area-inset-top))]">
-              <button 
-                onClick={onClose}
-                className="touch-target flex items-center justify-center rounded-xl border border-ui-border bg-ui-surface/90 text-ui-ink shadow-sm backdrop-blur-md transition-transform hover:bg-ui-muted active:scale-90"
-                aria-label="Cerrar detalle del producto"
+              </div>
+            )}
+
+            {motoRelacionada && relacionados.length > 0 && (
+              <div>
+                <div className="mb-2 flex items-baseline justify-between gap-2">
+                  <h3 className="text-sm font-black text-ui-ink">Más repuestos de la {nombreCorto(nombreDeModelo(motoRelacionada, despiece))}</h3>
+                  <button type="button" onClick={() => elegirMoto(motoRelacionada)} className="inline-flex min-h-[40px] shrink-0 items-center gap-1 text-sm font-bold text-brand-orange-action hover:underline dark:text-brand-orange">
+                    Ver todos <ArrowRight size={15} aria-hidden="true" />
+                  </button>
+                </div>
+                <div data-sin-deslizar className="scrollbar-hide -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 md:-mx-6 md:px-6">
+                  {relacionados.map(rel => (
+                    <button
+                      key={rel.id}
+                      type="button"
+                      onClick={() => onSelectRelated(rel)}
+                      className="flex w-40 shrink-0 flex-col overflow-hidden rounded-xl border border-ui-border bg-ui-surface text-left hover:border-ui-ink"
+                    >
+                      <span className="block aspect-[1024/531] w-full border-b border-ui-border bg-white">
+                        <LazyImage src={optimizarImg(rel.imagen)} fallbackSrc={`/imagenes_repuestos/${rel.codigo_referencia}.webp`} alt={rel.nombre} className="h-full w-full !bg-white" imageFit="contain" />
+                      </span>
+                      <span className="flex flex-1 flex-col gap-1 p-2">
+                        <span className="line-clamp-2 text-xs font-semibold leading-snug text-ui-ink">{rel.nombre}</span>
+                        <span className="mt-auto text-sm font-black text-ui-ink">{precioTexto(rel.precio)}</span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* ACCIONES: siempre a la vista */}
+          <div className="shrink-0 border-t border-ui-border bg-ui-surface p-3 pb-safe md:p-4">
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => preguntarPorRepuesto(product, motoCorta)}
+                className="flex min-h-[52px] flex-1 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-3 text-base font-bold text-brand-bg transition-colors hover:bg-[#20bd5a] active:scale-[0.98]"
               >
-                <X size={24} />
+                <MessageCircle size={20} className="shrink-0" aria-hidden="true" />
+                Preguntar
+              </button>
+              <button
+                type="button"
+                onClick={() => addToCart(product)}
+                disabled={!product.stock}
+                className={`flex min-h-[52px] flex-[1.4] items-center justify-center gap-2 rounded-xl px-3 text-base font-bold transition-colors active:scale-[0.98] ${
+                  product.stock
+                    ? 'bg-brand-orange-action text-white hover:bg-brand-orange'
+                    : 'cursor-not-allowed bg-ui-muted text-ui-copy'
+                }`}
+              >
+                {enPedido > 0 ? <Check size={20} strokeWidth={3} className="shrink-0" aria-hidden="true" /> : <ShoppingCart size={20} className="shrink-0" aria-hidden="true" />}
+                {!product.stock ? 'Agotado' : enPedido > 0 ? `Agregar otro (${enPedido})` : 'Agregar al pedido'}
               </button>
             </div>
-
-            {/* ÁREA SCROLLABLE (Imagen + Info) */}
-            <div className="flex-1 overflow-y-auto flex flex-col md:flex-row pb-safe overscroll-x-none touch-pan-y">
-              
-              {/* COLUMNA 1: IMAGEN - Mayor en desktop para mejor visualización */}
-              <div className="relative w-full shrink-0 border-b border-ui-border bg-ui-muted md:w-7/12 md:border-b-0 md:border-r lg:w-3/5">
-                 
-                 {/* Controles de Navegación Desktop */}
-                 {hasPrev && (
-                    <button 
-                      onClick={(e) => { e.stopPropagation(); navigateTo(-1); }}
-                      className="hidden md:flex absolute top-1/2 left-3 -translate-y-1/2 z-20 w-11 h-11 bg-white/70 hover:bg-white backdrop-blur-sm rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.1)] items-center justify-center text-slate-800 transition-all hover:scale-110 active:scale-95"
-                    >
-                       <ChevronLeft size={28} strokeWidth={2.5} />
-                    </button>
-                 )}
-                 {hasNext && (
-                    <button 
-                      onClick={(e) => { e.stopPropagation(); navigateTo(1); }}
-                      className="hidden md:flex absolute top-1/2 right-3 -translate-y-1/2 z-20 w-11 h-11 bg-white/70 hover:bg-white backdrop-blur-sm rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.1)] items-center justify-center text-slate-800 transition-all hover:scale-110 active:scale-95"
-                    >
-                       <ChevronRight size={28} strokeWidth={2.5} />
-                    </button>
-                 )}
-
-                 {/* Aspect Ratio 1024/535 en móvil, Full Height en Desktop */}
-                 <div className="product-media-shell group relative w-full md:aspect-auto md:h-full">
-                   <ImageZoom 
-                     src={optimizarImg(product.imagen, 1024)} 
-                     fallbackSrc={`/imagenes_repuestos/${product.codigo_referencia}.webp`}
-                     alt={product.nombre}
-                     className="w-full h-full object-contain p-2 md:p-6" 
-                   />
-                   
-                   <div className="absolute top-4 left-4 pointer-events-none">
-                     {!product.stock ? (
-                       <span className="bg-red-600 text-white px-3 py-1 text-xs font-bold rounded shadow-md">AGOTADO</span>
-                     ) : (
-                       <span className="bg-green-600 text-white px-3 py-1 text-xs font-bold rounded shadow-md flex items-center gap-1">
-                          <Check size={12} strokeWidth={4} /> STOCK
-                       </span>
-                     )}
-                   </div>
-                 </div>
-              </div>
-
-              {/* COLUMNA 2: INFO */}
-              <div className="w-full space-y-6 overflow-y-auto bg-ui-surface p-5 md:w-5/12 md:p-8 lg:w-2/5">
-                  <div>
-                    <div className="flex items-center justify-between mb-2 gap-2">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="bg-slate-100 dark:bg-brand-surface-2 text-slate-700 dark:text-slate-300 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide border border-slate-200 dark:border-brand-surface-3">
-                          {product.seccion}
-                        </span>
-                        {product.codigo_referencia && (
-                          <span className="text-xs text-slate-500 dark:text-slate-400 font-mono flex items-center gap-1 bg-gray-50 dark:bg-brand-surface-2 px-2 py-1 rounded border border-gray-100 dark:border-brand-surface-3">
-                            <button
-                              onClick={(e) => handleCopy(e, product.codigo_referencia!)}
-                              className="p-1 -ml-1 rounded hover:bg-gray-200 dark:hover:bg-brand-surface-3 transition-colors"
-                              title="Copiar código"
-                            >
-                              {copied ? <Check size={12} className="text-green-500" /> : <Copy size={12} />}
-                            </button>
-                            <Tag size={12} /> {product.codigo_referencia}
-                          </span>
-                        )}
-                      </div>
-                      
-                      {/* Logo LV PARTS a color original */}
-                      <div className="flex items-center gap-0.5 font-black text-[11px] md:text-sm tracking-tighter pointer-events-none select-none shrink-0">
-                        <span className="text-slate-900 dark:text-white">LV</span>
-                        <span className="text-brand-orange italic">PARTS</span>
-                      </div>
-                    </div>
-                    <h2 className="text-xl md:text-2xl font-black text-gray-900 dark:text-white leading-snug">
-                      {product.nombre}
-                    </h2>
-                  </div>
-
-                  <div className="flex items-center justify-between rounded-xl border border-ui-border bg-ui-muted p-4">
-                    <div>
-                       <span className="text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase block">Precio</span>
-                       <span className={`text-3xl font-black tracking-tight ${product.precio ? 'text-gray-900 dark:text-white' : 'text-slate-400 dark:text-slate-500 italic text-xl'}`}>
-                         {product.precio ? `$${Number(product.precio).toFixed(2)}` : 'Sin precio'}
-                       </span>
-                    </div>
-                    <div className="text-right">
-                       <span className="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase block">Disponibilidad</span>
-                       {product.stock ? (
-                           <span className="text-sm font-bold text-green-600 dark:text-green-400">En Bodega</span>
-                       ) : (
-                           <span className="text-sm font-bold text-red-500 flex items-center gap-1">
-                             <AlertCircle size={14}/> Agotado
-                           </span>
-                       )}
-                       {product.stock && product.origenes?.length ? (
-                         <div className="mt-1 flex flex-wrap gap-1 justify-end">
-                           {product.origenes.map((origen) => (
-                             <span
-                               key={origen}
-                               className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border ${
-                                 origen.toLowerCase().includes('stock')
-                                   ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-100 dark:border-green-800'
-                                   : 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-100 dark:border-amber-800'
-                               }`}
-                             >
-                               {origen}
-                             </span>
-                           ))}
-                         </div>
-                       ) : null}
-                    </div>
-                  </div>
-
-                  {/* Badges de estado del producto */}
-                  {(product.is_discontinued || product.is_active === false || !product.precio) && (
-                    <div className="flex flex-wrap gap-2">
-                      {product.is_discontinued && (
-                        <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs font-bold border border-red-200 dark:border-red-800">
-                          <AlertCircle size={14}/> Descontinuado
-                        </span>
-                      )}
-                      {product.is_active === false && !product.is_discontinued && (
-                        <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 text-xs font-bold border border-orange-200 dark:border-orange-800">
-                          <AlertCircle size={14}/> Inactivo
-                        </span>
-                      )}
-                      {(!product.precio || product.precio === 0) && (
-                        <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-brand-surface-3/50 text-slate-600 dark:text-slate-300 text-xs font-bold border border-slate-200 dark:border-brand-border">
-                          <Info size={14}/> Sin precio registrado
-                        </span>
-                      )}
-                    </div>
-                  )}
-
-                  <div className="flex gap-3 p-3 bg-blue-50/50 dark:bg-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-900 text-xs text-blue-800 dark:text-blue-200 leading-relaxed">
-                     <Info size={16} className="shrink-0 mt-0.5" />
-                     <p>Verifica que la foto y código coincidan con tu repuesto usado.</p>
-                  </div>
-
-                  {hasGallery ? (
-                    <div className="pt-4 border-t border-gray-100 dark:border-brand-surface-3">
-                      <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
-                        Galería
-                      </h3>
-                      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
-                         {galleryImages.map((item, idx) => (
-                           <div 
-                              key={idx} 
-                              className="w-16 h-16 shrink-0 bg-white dark:bg-brand-surface-3 rounded border border-gray-100 dark:border-brand-border overflow-hidden relative cursor-pointer"
-                              onClick={() => {
-                                if (item.type === 'video') {
-                                  window.open(item.url, '_blank');
-                                }
-                              }}
-                           >
-                              {item.type === 'video' ? (
-                                <>
-                                  <video 
-                                    src={item.url} 
-                                    className="w-full h-full object-cover" 
-                                    muted 
-                                    playsInline 
-                                  />
-                                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                                    <div className="w-6 h-6 rounded-full bg-white/80 flex items-center justify-center">
-                                      <div className="w-0 h-0 border-t-4 border-b-4 border-l-[6px] border-t-transparent border-b-transparent border-l-black ml-0.5" />
-                                    </div>
-                                  </div>
-                                </>
-                              ) : (
-                                <ImageZoom 
-                                   src={optimizarImg(item.url)} 
-                                   fallbackSrc={`/imagenes_repuestos/${product.codigo_referencia}.webp`}
-                                   alt={`${product.nombre} - vista ${idx + 1}`}
-                                   className="w-full h-full object-contain"
-                                />
-                              )}
-                           </div>
-                         ))}
-                      </div>
-                    </div>
-                  ) : relacionados.length > 0 && (
-                    <div className="pt-4 border-t border-gray-100 dark:border-brand-surface-3">
-                      <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
-                        Relacionados
-                      </h3>
-                      <div className="grid grid-cols-2 gap-2">
-                         {relacionados.slice(0, 2).map(rel => (
-                           <div 
-                              key={rel.id} 
-                              className="cursor-pointer group flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-50 dark:hover:bg-brand-surface-2 border border-transparent hover:border-gray-200 dark:hover:border-brand-surface-3 transition-all"
-                              onClick={() => onSelectRelated(rel)}
-                           >
-                              <div className="w-10 h-10 bg-white dark:bg-brand-surface-3 rounded border border-gray-100 dark:border-brand-border shrink-0 overflow-hidden">
-                                 <LazyImage 
-                                    src={optimizarImg(rel.imagen)} 
-                                    fallbackSrc={`/imagenes_repuestos/${rel.codigo_referencia}.webp`}
-                                    alt={rel.nombre}
-                                    className="w-full h-full" 
-                                    imageFit="contain"
-                                    cropBottom={false}
-                                 />
-                              </div>
-                              <div className="min-w-0">
-                                <p className="text-[10px] font-bold text-slate-700 dark:text-slate-200 truncate">
-                                  {rel.nombre}
-                                </p>
-                                <p className="text-[10px] font-bold text-slate-900 dark:text-slate-100">
-                                  ${Number(rel.precio).toFixed(2)}
-                                </p>
-                              </div>
-                           </div>
-                         ))}
-                      </div>
-                    </div>
-                  )}
-              </div>
-            </div>
-
-            {/* FOOTER DE ACCIONES (Siempre visible abajo) */}
-            <div className="z-20 shrink-0 border-t border-ui-border bg-ui-surface p-3 pb-safe shadow-[0_-6px_24px_rgba(5,20,36,0.08)] md:p-5">
-              <div className="flex gap-3 max-w-5xl mx-auto w-full">
-                
-                <button 
-                  onClick={handleDirectQuote}
-                  className="flex-1 py-3.5 px-2 rounded-xl font-bold text-sm bg-green-500 text-white hover:bg-green-600 shadow-lg shadow-green-500/20 active:scale-95 transition-all flex items-center justify-center gap-2 min-w-0"
-                >
-                  <MessageCircle size={20} className="fill-current shrink-0" />
-                  <span className="truncate">Whatsapp</span>
-                </button>
-
-                <button 
-                  onClick={handleShareProduct}
-                  className="py-3.5 px-3.5 rounded-xl font-bold text-sm bg-slate-50 hover:bg-slate-100 dark:bg-brand-surface-2 dark:hover:bg-brand-surface-3 text-slate-800 dark:text-white border border-slate-200 dark:border-brand-surface-3 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
-                  title="Compartir repuesto como imagen"
-                >
-                  <Clipboard size={20} className="shrink-0" />
-                  <span className="hidden sm:inline">Compartir</span>
-                </button>
-
-                <button 
-                  onClick={() => addToCart(product)}
-                  disabled={!product.stock}
-                  className={`flex-1 py-3.5 px-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 min-w-0 ${
-                    product.stock 
-                      ? 'bg-slate-900 dark:bg-brand-surface-3 text-white hover:bg-slate-800 dark:hover:bg-brand-border shadow-lg shadow-slate-900/20' 
-                      : 'bg-gray-100 dark:bg-brand-surface-2 text-gray-400 dark:text-gray-600 cursor-not-allowed'
-                  }`}
-                >
-                  <ShoppingCart size={20} className="shrink-0" />
-                  <span className="truncate">
-                    {product.stock ? 'Agregar' : 'Sin Stock'}
-                  </span>
-                </button>
-
-              </div>
-            </div>
-
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

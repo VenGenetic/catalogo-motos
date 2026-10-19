@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { esFotoGenerica } from '../utils/helpers';
 
 interface Props {
   src: string;
@@ -58,7 +59,7 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
   useEffect(() => {
     const el = imgRef.current;
     if (!el || !el.complete) return;
-    if (el.naturalWidth > 0) {
+    if (el.naturalWidth > 0 && !esFotoGenerica(el)) {
       setIsLoaded(true);
     } else {
       handleError();
@@ -79,15 +80,14 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
       )}
 
       {isPlaceholder ? (
-        <div className={`industrial-grid flex h-full w-full flex-col items-center justify-center bg-ui-muted/70 p-3 text-center ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-200`}>
-           <div className="flex items-center gap-0.5 font-black text-2xl tracking-tighter opacity-30 mb-2 select-none">
-             <span className="text-ui-ink">LV</span>
-             <span className="text-brand-orange italic">PARTS</span>
-           </div>
-           <span className="line-clamp-3 px-2 text-[11px] font-bold leading-snug text-ui-copy md:text-xs">
-             {alt || 'Fotografía en proceso'}
-           </span>
-        </div>
+        // La misma imagen de "foto próximamente" que la ficha: misma medida que las fotos.
+        <img
+          src="/sin_imagen.webp"
+          alt={`${alt || 'Repuesto'}: foto próximamente`}
+          loading="lazy"
+          decoding="async"
+          className={`h-full w-full ${fitClass} object-center`}
+        />
       ) : (
         <img
           ref={imgRef}
@@ -95,7 +95,7 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
           alt={alt || 'Producto'}
           loading="lazy"
           decoding="async"
-          onLoad={() => setIsLoaded(true)}
+          onLoad={e => (esFotoGenerica(e.currentTarget) ? handleError() : setIsLoaded(true))}
           onError={handleError}
           className={`w-full h-full ${fitClass} ${cropClasses} object-center transition-opacity duration-200 ease-out ${
             isLoaded ? 'opacity-100' : 'opacity-0'

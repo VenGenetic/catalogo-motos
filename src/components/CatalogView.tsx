@@ -1,22 +1,41 @@
-import { useState, useMemo, useEffect, useRef, memo } from 'react';
+import { Fragment, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Search, ShoppingBag, Copy, Check, X, Clipboard, SlidersHorizontal, ChevronRight } from 'lucide-react';
-import { optimizarImg } from '../utils/helpers';
-import { APP_CONFIG, MODELOS_CATALOGO, ORDEN_SECCIONES, nombreDeModelo } from '../config/constants';
-import { modeloPorId } from '../utils/despiece';
-import { Producto } from '../types';
-import { LazyImage } from './LazyImage';
-import { SearchBar } from './SearchBar';
+import { Bike, ChevronDown, FileText, MessageCircle, RefreshCw, Search, TriangleAlert, X } from 'lucide-react';
+import { APP_CONFIG, AVISOS_CLIENTE, ORDEN_SECCIONES, nombreDeModelo } from '../config/constants';
 import { getMotoImageById } from '../config/motoImages';
 import { useCart } from '../context/CartContext';
-import { ImageZoom } from './ImageZoom';
-import { useToast } from '../context/ToastContext';
-import { shareProductAsImage } from '../utils/shareHelper';
+import { useMoto } from '../context/MotoContext';
+import { Producto } from '../types';
+import type { Despiece } from '../utils/cargarDespiece';
+import { pedirAyuda, preguntarPorRepuesto } from '../utils/consultas';
+import { IconoSistema } from './IconoSistema';
+import { ProductCard } from './ProductCard';
+import { nombreCorto } from './SirvePara';
+
+/*
+  El catálogo. Con una moto elegida (/catalogo/wolf-250) es su despiece: sólo
+  lo que le sirve, por sistema y en el orden de la lista de la importadora,
+  como el despiece del ERP.
+
+  Celular: una sola fila fija bajo la barra de arriba, con la moto y los
+  sistemas (con cuántas piezas tiene cada uno), y la grilla de dos columnas.
+  El buscador es el de la barra de arriba: uno solo para toda la página.
+  Computadora: la moto y los sistemas van en una columna a la izquierda.
+*/
 
 interface Props {
+  /** Lo que se muestra: moto, búsqueda y sistema ya aplicados. */
   productos: Producto[];
+  /** Repuestos por sistema con la moto y la búsqueda (sin el sistema). */
+  conteoSistemas: Map<string, number>;
+  totalSinSistema: number;
   filtroModelo: string;
-  setFiltroModelo: (m: string) => void;
+  /** Todas las piezas de la moto elegida, sin búsqueda ni sistema. */
+  piezasDeMoto: number | null;
+  cargandoMoto: boolean;
+  /** Mostrar el despiece agrupado por sistema (moto elegida, sin búsqueda, "Todos"). */
+  agrupar: boolean;
+  despiece: Despiece | null;
   busqueda: string;
   setBusqueda: (s: string) => void;
   filtroSeccion: string;
@@ -24,488 +43,317 @@ interface Props {
   onProductClick: (p: Producto) => void;
 }
 
-export const CatalogView = memo(({ 
-  productos,
-  filtroModelo, setFiltroModelo, 
+const repuestosTexto = (n: number) => `${n.toLocaleString('es-EC')} ${n === 1 ? 'repuesto' : 'repuestos'}`;
+
+export const CatalogView = memo(({
+  productos, conteoSistemas, totalSinSistema,
+  filtroModelo, piezasDeMoto, cargandoMoto, agrupar, despiece,
   busqueda, setBusqueda,
   filtroSeccion, setFiltroSeccion,
-  onProductClick
+  onProductClick,
 }: Props) => {
   const [pagina, setPagina] = useState(1);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [busquedaModelo, setBusquedaModelo] = useState('');
-  const [showModelSheet, setShowModelSheet] = useState(false);
-  
-  const { addToCart } = useCart();
-  const { showToast } = useToast();
+  const resultadosRef = useRef<HTMLDivElement>(null);
+  const { cart, addToCart } = useCart();
+  const { abrirSelector, quitarMoto } = useMoto();
 
-  const handleShare = async (e: React.MouseEvent, product: Producto) => {
-    e.stopPropagation();
-    await shareProductAsImage(product, showToast);
-  };
+  const nombreModelo = filtroModelo ? nombreDeModelo(filtroModelo, despiece) : '';
+  const modelo = filtroModelo ? despiece?.modeloPorId(filtroModelo) : undefined;
+  const aviso = filtroModelo ? (AVISOS_CLIENTE[filtroModelo] ?? modelo?.aviso) : undefined;
+  const imagenModelo = filtroModelo ? getMotoImageById(filtroModelo) : null;
 
-  const modelosFiltrados = useMemo(() => {
-    if (!busquedaModelo.trim()) return MODELOS_CATALOGO;
-    const term = busquedaModelo.toLowerCase();
-    return MODELOS_CATALOGO.filter(m => m.nombre.toLowerCase().includes(term));
-  }, [busquedaModelo]);
-
-  // Resetear página cuando cambian los filtros
-  const [prevFilters, setPrevFilters] = useState({ busqueda, filtroModelo, filtroSeccion });
-  if (
-    prevFilters.busqueda !== busqueda || 
-    prevFilters.filtroModelo !== filtroModelo || 
-    prevFilters.filtroSeccion !== filtroSeccion
-  ) {
-    setPrevFilters({ busqueda, filtroModelo, filtroSeccion });
+  // Con otros filtros se vuelve a la primera página.
+  const [filtrosPrevios, setFiltrosPrevios] = useState({ busqueda, filtroModelo, filtroSeccion });
+  if (filtrosPrevios.busqueda !== busqueda || filtrosPrevios.filtroModelo !== filtroModelo || filtrosPrevios.filtroSeccion !== filtroSeccion) {
+    setFiltrosPrevios({ busqueda, filtroModelo, filtroSeccion });
     setPagina(1);
   }
 
-  useEffect(() => { 
-    if (busqueda || filtroSeccion !== 'Todos') {
-      window.scrollTo({ top: 0, behavior: 'auto' });
-    }
+  // Si la lista cambia con la página bajada, se vuelve al comienzo de los resultados (no al de la página).
+  useEffect(() => {
+    const ancla = resultadosRef.current;
+    if (ancla && ancla.getBoundingClientRect().top < 0) ancla.scrollIntoView({ block: 'start' });
   }, [busqueda, filtroModelo, filtroSeccion]);
 
-  const visibles = useMemo(() => {
-    return productos.slice(0, pagina * APP_CONFIG.ITEMS_PER_PAGE);
-  }, [productos, pagina]);
+  const visibles = useMemo(() => productos.slice(0, pagina * APP_CONFIG.ITEMS_PER_PAGE), [productos, pagina]);
 
-  // Nombre visible de la moto elegida (en la dirección va su id: /catalogo/wolf-250).
-  const nombreModelo = nombreDeModelo(filtroModelo);
-  const avisoModelo = modeloPorId(filtroModelo)?.aviso;
-  const imagenModelo = getMotoImageById(filtroModelo);
+  const enPedido = useMemo(() => new Map(cart.map(item => [item.id, item.cantidad || item.cant || 0])), [cart]);
+  const motoCorta = nombreModelo ? nombreCorto(nombreModelo) : undefined;
+  const preguntar = useCallback((p: Producto) => preguntarPorRepuesto(p, motoCorta), [motoCorta]);
 
-  const handleSelectModelFromLayout = (modeloId: string) => {
-    setFiltroModelo(modeloId);
-    setBusqueda('');
-    setFiltroSeccion('Todos');
-    setShowModelSheet(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  // "Frenos 0" no aparece: sólo si es el sistema elegido (la búsqueda lo dejó vacío).
+  const sistemas = ORDEN_SECCIONES.filter(s => s === 'Todos' || s === filtroSeccion || (conteoSistemas.get(s) ?? 0) > 0);
+  const contar = (s: string) => s === 'Todos' ? totalSinSistema : (conteoSistemas.get(s) ?? 0);
 
-  const handleClearAllFilters = () => {
-    setFiltroModelo('');
-    setBusqueda('');
-    setFiltroSeccion('Todos');
-    setShowModelSheet(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleQuickAdd = (e: React.MouseEvent, product: Producto) => {
-    e.stopPropagation();
-    addToCart(product);
-  };
-
-  const handleCopySku = (e: React.MouseEvent, sku: string, id: string) => {
-    e.stopPropagation();
-    navigator.clipboard.writeText(sku);
-    setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 2000);
-  };
-
-  // Buscador + lista de modelos, compartida entre el sidebar de escritorio y el bottom-sheet móvil
-  const renderModelPicker = () => (
-    <>
-      <div className="relative mb-3">
-        <input
-          type="text"
-          placeholder="Buscar modelo..."
-          value={busquedaModelo}
-          onChange={(e) => setBusquedaModelo(e.target.value)}
-          className="w-full border border-ui-border bg-ui-muted py-2.5 pl-8 pr-8 text-sm text-ui-ink outline-none transition-colors placeholder:text-ui-copy/70 focus:border-brand-orange"
-        />
-        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
-        {busquedaModelo && (
-          <button
-            onClick={() => setBusquedaModelo('')}
-            className="absolute right-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center text-ui-copy hover:bg-brand-orange/10 hover:text-brand-orange"
-            aria-label="Limpiar búsqueda de modelo"
-          >
-            <X className="w-3.5 h-3.5" />
-          </button>
-        )}
-      </div>
-
-      <nav className="flex flex-col space-y-1">
-        <button
-          onClick={handleClearAllFilters}
-          className={`flex w-full items-center justify-between border-l-4 px-3 py-2.5 text-left text-sm font-bold transition-all ${
-            !filtroModelo
-              ? 'border-brand-orange bg-brand-orange/10 font-extrabold text-brand-orange'
-              : 'border-transparent text-ui-ink hover:bg-ui-muted hover:text-brand-orange'
-          }`}
-        >
-          <span>Ver Todos los Modelos</span>
-          {!filtroModelo && <span className="w-1.5 h-1.5 rounded-full bg-brand-orange"></span>}
-        </button>
-
-        {modelosFiltrados.length === 0 ? (
-          <p className="text-center text-xs text-gray-400 dark:text-gray-500 py-4">
-            No se encontraron modelos
-          </p>
-        ) : (
-          modelosFiltrados.map((modelo) => {
-            const isSelected = filtroModelo === modelo.id;
-            return (
-              <button
-                key={modelo.id}
-                onClick={() => handleSelectModelFromLayout(modelo.id)}
-                className={`flex w-full items-center justify-between border-l-4 px-3 py-2.5 text-left text-sm transition-all ${
-                  isSelected
-                    ? 'text-brand-orange bg-brand-orange/10 font-extrabold shadow-sm border-l-4 border-brand-orange pl-2'
-                    : 'border-l-4 border-transparent pl-3 text-ui-ink hover:bg-ui-muted hover:text-brand-orange'
-                }`}
-              >
-                <span className="truncate pr-2">{modelo.nombre}</span>
-                {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-brand-orange shrink-0"></span>}
-              </button>
-            );
-          })
-        )}
-      </nav>
-    </>
+  const botonMoto = (
+    <button
+      type="button"
+      onClick={abrirSelector}
+      aria-haspopup="dialog"
+      className={`flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-full border px-3.5 text-sm font-bold transition-colors ${
+        filtroModelo ? 'border-brand-orange bg-brand-orange text-white' : 'border-brand-orange bg-ui-surface text-brand-orange-action dark:text-brand-orange'
+      }`}
+    >
+      <Bike size={18} aria-hidden="true" />
+      <span className="max-w-[9.5rem] truncate">{filtroModelo ? motoCorta : 'Elegir mi moto'}</span>
+      <ChevronDown size={16} aria-hidden="true" />
+    </button>
   );
 
-  // MODO CATÁLOGO CON SIDEBAR DE MODELOS
+  const fichaSistema = (s: string) => {
+    const activa = filtroSeccion === s;
+    return (
+      <button
+        key={s}
+        type="button"
+        onClick={e => { setFiltroSeccion(s); e.currentTarget.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' }); }}
+        aria-pressed={activa}
+        className={`flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-full border px-3.5 text-sm font-bold transition-colors ${
+          activa ? 'border-brand-bg bg-brand-bg text-white dark:border-white dark:bg-white dark:text-brand-bg' : 'border-ui-border bg-ui-surface text-ui-ink hover:border-ui-ink'
+        }`}
+      >
+        {s === 'Todos' ? 'Todo' : s}
+        <span className={`tabular-nums ${activa ? 'opacity-75' : 'text-ui-copy'}`}>{contar(s).toLocaleString('es-EC')}</span>
+      </button>
+    );
+  };
+
+  const cabeceraMoto = filtroModelo && (
+    <section aria-label={`Despiece de la ${nombreModelo}`} className="overflow-hidden rounded-xl border border-ui-border bg-ui-surface shadow-card">
+      <div className="flex items-center gap-3 p-3 md:gap-5 md:p-5">
+        <div className="model-media-shell flex aspect-[4/3] w-24 shrink-0 items-center justify-center overflow-hidden rounded-lg p-1 md:w-44">
+          {imagenModelo
+            ? <img src={imagenModelo} alt={nombreModelo} className="h-full w-full object-contain" />
+            : <Bike size={36} strokeWidth={1.5} className="text-ui-copy/50" aria-hidden="true" />}
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="font-geist text-[11px] font-black uppercase tracking-[.14em] text-brand-orange-action dark:text-brand-orange">Repuestos para tu moto</p>
+          <h1 className="mt-0.5 font-anton text-[1.6rem] uppercase leading-none tracking-wide text-ui-ink md:text-4xl">{nombreModelo}</h1>
+          <p className="mt-1.5 text-sm text-ui-copy">
+            {cargandoMoto ? 'Buscando sus repuestos…'
+              : piezasDeMoto !== null ? `${repuestosTexto(piezasDeMoto)} en su despiece`
+              : 'Repuestos que la nombran'}
+          </p>
+        </div>
+      </div>
+      {aviso && (
+        <p role="note" className="mx-3 mb-3 flex gap-2 rounded-lg border-l-4 border-amber-500 bg-amber-50 px-3 py-2 text-sm leading-relaxed text-amber-950 dark:bg-amber-950/50 dark:text-amber-100 md:mx-5">
+          <TriangleAlert size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
+          <span><strong>Confirma la versión de tu moto.</strong> {aviso}</span>
+        </p>
+      )}
+      {modelo?.documentos?.map(doc => (
+        <a key={doc.url} href={doc.url} target="_blank" rel="noopener noreferrer" className="mx-3 mb-3 flex min-h-[44px] items-center gap-2 text-sm font-bold text-brand-orange-action hover:underline dark:text-brand-orange md:mx-5">
+          <FileText size={18} className="shrink-0" aria-hidden="true" />
+          Ver el despiece con dibujos (PDF)<span className="sr-only"> (abre en otra pestaña)</span>
+        </a>
+      ))}
+      <div className="grid grid-cols-2 border-t border-ui-border lg:hidden">
+        <button type="button" onClick={abrirSelector} className="flex min-h-[48px] items-center justify-center gap-2 text-sm font-bold text-ui-ink active:bg-ui-muted">
+          <RefreshCw size={16} aria-hidden="true" /> Cambiar moto
+        </button>
+        <button type="button" onClick={quitarMoto} className="flex min-h-[48px] items-center justify-center gap-2 border-l border-ui-border text-sm font-bold text-ui-ink active:bg-ui-muted">
+          <X size={16} aria-hidden="true" /> Ver todas las motos
+        </button>
+      </div>
+    </section>
+  );
+
+  const ayuda = (
+    <div className="rounded-xl border border-ui-border bg-ui-surface p-4">
+      <p className="font-bold text-ui-ink">¿No encuentras tu repuesto?</p>
+      <p className="mt-1 text-sm text-ui-copy">Mándanos una foto de la pieza por WhatsApp y te decimos cuál es.</p>
+      <button
+        type="button"
+        onClick={() => pedirAyuda('catalogo_ayuda', motoCorta)}
+        className="mt-3 flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-[#25D366] px-4 text-sm font-bold text-brand-bg transition-colors hover:bg-[#20bd5a]"
+      >
+        <MessageCircle size={18} aria-hidden="true" /> Escribir por WhatsApp
+      </button>
+    </div>
+  );
+
+  // La grilla, con el título de cada sistema cuando se ve el despiece completo de la moto.
+  const tarjetas = visibles.map((product, i) => {
+    const sistema = product.seccion || 'Otros';
+    const titulo = agrupar && (i === 0 || sistema !== (visibles[i - 1].seccion || 'Otros'));
+    return (
+      <Fragment key={product.id}>
+        {titulo && (
+          <h2 className="col-span-full mt-3 flex items-center gap-2 border-b-2 border-ui-ink pb-2 pt-1 text-base font-black text-ui-ink first:mt-0">
+            <IconoSistema sistema={sistema} className="text-brand-orange" />
+            {sistema}
+            <span className="text-sm font-bold text-ui-copy">{(conteoSistemas.get(sistema) ?? 0).toLocaleString('es-EC')}</span>
+          </h2>
+        )}
+        <ProductCard
+          product={product}
+          despiece={despiece}
+          modeloActual={filtroModelo || undefined}
+          enPedido={enPedido.get(product.id) ?? 0}
+          onOpen={onProductClick}
+          onAdd={addToCart}
+          onAsk={preguntar}
+        />
+      </Fragment>
+    );
+  });
+
   return (
-    <div ref={containerRef} className="min-h-screen scroll-mt-20 bg-ui-canvas px-2 pb-32 pt-4 font-sans text-ui-ink min-[380px]:px-3 sm:px-5 lg:px-8 lg:pt-6">
-      <div className="mx-auto max-w-[1440px]">
-        <div className="mb-4 hidden lg:block">
-          <p className="mb-2 text-xs font-bold text-ui-copy"><Link to="/" className="hover:text-brand-orange">Inicio</Link> <span className="px-2">/</span> Catálogo</p>
-          <div className="catalog-rule flex items-end justify-between gap-4 pt-4">
-            <div><span className="section-kicker">Catálogo Daytona</span><h1 className="mt-2 text-3xl font-black uppercase tracking-tight text-ui-ink">Repuestos originales</h1></div>
-            <p className="text-sm font-semibold text-ui-copy">Busca por pieza, sistema o modelo de moto</p>
-          </div>
+    <div className="bg-ui-canvas pb-28 font-sans text-ui-ink md:pb-16">
+      {/* CELULAR: moto + sistemas en una fila fija */}
+      <div className="sticky top-14 z-sticky border-b border-ui-border bg-ui-canvas/95 backdrop-blur-md lg:hidden">
+        <div className="scrollbar-hide flex items-center gap-2 overflow-x-auto px-3 py-2" role="group" aria-label="Filtrar por moto y sistema">
+          {botonMoto}
+          <span className="h-7 w-px shrink-0 bg-ui-border" aria-hidden="true" />
+          {sistemas.map(fichaSistema)}
         </div>
-        
-        {/* BARRA SUPERIOR STICKY */}
-        <div className="sticky top-[74px] z-sticky border-b border-ui-border bg-ui-canvas/95 px-1 pb-3 pt-2 backdrop-blur-md transition-all lg:top-[122px] lg:px-0">
-          <div className="flex gap-2 mb-3 items-center">
-            {(filtroModelo || busqueda) && (
-              <button 
-                onClick={handleClearAllFilters}
-                className="flex h-[52px] w-[52px] shrink-0 items-center justify-center border border-ui-border bg-ui-surface text-ui-ink shadow-sm transition-all hover:border-brand-orange hover:bg-ui-muted active:scale-95"
-                aria-label="Limpiar filtros y volver"
-              >
-                <ArrowLeft className="w-6 h-6" />
-              </button>
-            )}
-
-            <div className="relative z-dropdown flex-1">
-              <SearchBar
-                busqueda={busqueda}
-                setBusqueda={setBusqueda}
-                productos={productos}
-                filtroModelo={nombreModelo}
-              />
-            </div>
-          </div>
-          
-          <div className="mb-2 flex items-center justify-between px-1 text-xs text-ui-copy">
-             <div className="flex items-center gap-2">
-                <span className="hidden md:inline">Viendo:</span>
-                {filtroModelo ? (
-                    <span className="flex items-center gap-1.5 border border-brand-orange/20 bg-brand-orange/10 px-2 py-1 font-extrabold text-brand-orange shadow-sm">
-                      <span>{nombreModelo}</span>
-                      <button
-                        onClick={() => setFiltroModelo('')}
-                        className="hover:bg-brand-orange/20 p-0.5 rounded-full transition-colors active:scale-90 flex items-center justify-center"
-                        title="Quitar filtro"
-                      >
-                        <X className="w-3 h-3" strokeWidth={3} />
-                      </button>
-                    </span>
-                ) : (
-                    <span className="border border-ui-border bg-ui-surface px-2 py-1 font-bold text-ui-ink shadow-sm">
-                      Todos los modelos
-                    </span>
-                )}
-                {filtroSeccion !== 'Todos' && (
-                    <span className="flex items-center gap-1.5 border border-brand-orange/20 bg-brand-orange/10 px-2 py-1 font-extrabold text-brand-orange shadow-sm">
-                      <span>{filtroSeccion}</span>
-                      <button
-                        onClick={() => setFiltroSeccion('Todos')}
-                        className="hover:bg-brand-orange/20 p-0.5 rounded-full transition-colors active:scale-90 flex items-center justify-center"
-                        title="Quitar filtro de categoría"
-                      >
-                        <X className="w-3 h-3" strokeWidth={3} />
-                      </button>
-                    </span>
-                )}
-             </div>
-             <div className="flex items-center gap-2">
-                <span className="text-ui-copy/80">
-                  {`${visibles.length} de ${productos.length} repuestos`}
-                </span>
-             </div>
-          </div>
-
-          {/* Selector de modelo — visible solo en móvil, ya que el sidebar queda oculto ahí */}
-          <button
-            onClick={() => setShowModelSheet(true)}
-            className="flex min-h-[48px] w-full items-center justify-between gap-2 border border-ui-border bg-ui-surface px-4 py-3 shadow-sm transition-all active:scale-[0.98] lg:hidden"
-          >
-            <span className="flex items-center gap-2 truncate text-sm font-bold text-ui-ink">
-              <SlidersHorizontal className="w-4 h-4 text-brand-orange shrink-0" />
-              <span className="truncate">{filtroModelo ? `Tu moto: ${nombreModelo}` : 'Elegir mi moto'}</span>
-            </span>
-            <ChevronRight className="w-4 h-4 text-gray-400 shrink-0" />
-          </button>
-          <div className="-mx-1 mt-3 flex gap-2 overflow-x-auto px-1 pb-1 lg:hidden" aria-label="Filtrar por sistema">
-            {ORDEN_SECCIONES.map(seccion => (
-              <button key={seccion} type="button" onClick={() => setFiltroSeccion(seccion)} aria-pressed={filtroSeccion === seccion} className={`min-h-[40px] shrink-0 border px-3 text-xs font-bold transition-colors ${filtroSeccion === seccion ? 'border-brand-orange-action bg-brand-orange-action text-white' : 'border-ui-border bg-ui-surface text-ui-ink'}`}>
-                {seccion}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {avisoModelo && <p className="mt-3 border-l-4 border-amber-500 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-950 dark:bg-amber-950 dark:text-amber-100"><strong>Confirma la versión de tu moto.</strong> {avisoModelo}</p>}
-
-        {/* CONTENEDOR DE DOS COLUMNAS */}
-        <div className="mt-4 flex flex-col items-start gap-4 md:flex-row">
-          
-          {/* COLUMNA PRINCIPAL (LISTADO) */}
-          <div className="w-full min-w-0 flex-1">
-            
-            {
-              /* CASO B: SE BUSCA O FILTRA -> Mostrar listado de repuestos */
-              <div className="animate-fade-in">
-                {visibles.length > 0 ? (
-                  <>
-                    {filtroModelo && (
-                      <div className="surface-card mb-5 hidden flex-col items-center gap-5 p-4 md:flex md:flex-row md:gap-6 md:p-5">
-                        {/* Contenedor de la Imagen con zoom */}
-                        {imagenModelo && <div className="model-media-shell group relative flex w-full shrink-0 items-center justify-center overflow-hidden border border-ui-border p-3 shadow-inner md:aspect-[4/3] md:w-64">
-                          <ImageZoom 
-                            src={imagenModelo}
-                            alt={nombreModelo}
-                            className="w-full h-full"
-                          />
-                        </div>}
-
-                        {/* Detalles del modelo */}
-                        <div className="flex-1 text-center md:text-left">
-                          <span className="border border-brand-orange/20 bg-brand-orange/10 px-3 py-1 font-geist text-[10px] font-black uppercase tracking-widest text-brand-orange">
-                            Modelo Daytona
-                          </span>
-                          <h2 className="mb-2 mt-3 font-anton text-3xl uppercase tracking-wider text-ui-ink md:text-4xl">
-                            {nombreModelo}
-                          </h2>
-                          <p className="max-w-xl font-hanken text-xs uppercase leading-relaxed tracking-wide text-ui-copy md:text-sm">
-                            Catálogo completo de repuestos originales Daytona disponibles en inventario. Toca la imagen para ampliar los detalles técnicos del modelo.
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                    <div className="grid grid-cols-1 gap-px border border-ui-border bg-ui-border px-0 min-[480px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                      {visibles.map((product: Producto) => (
-                        <div
-                          key={product.id}
-                          className="group relative flex h-full flex-col overflow-hidden bg-ui-surface transition-shadow hover:z-10 hover:shadow-card-hover active:scale-[0.995] [contain-intrinsic-size:340px] [content-visibility:auto]"
-                          onClick={() => onProductClick(product)}
-                        >
-                          <div className="product-media-shell relative w-full overflow-hidden border-b border-ui-border p-2">
-                            <LazyImage 
-                              src={optimizarImg(product.imagen)} 
-                              fallbackSrc={`/imagenes_repuestos/${product.codigo_referencia}.webp`}
-                              alt={product.nombre}
-                              className="h-full w-full transition-transform duration-300 group-hover:scale-[1.035]"
-                              cropBottom={false}
-                              imageFit="contain"
-                            />
-                            
-                            {product.stock === false && (
-                              <div className="absolute bottom-0 left-0 right-0 bg-brand-bg/92 py-1.5 text-center font-geist text-[10px] font-bold tracking-wide text-white">
-                                AGOTADO
-                              </div>
-                            )}
-                            
-                            {/* Badges de estado del producto */}
-                            <div className="absolute top-2 left-2 flex flex-col gap-1">
-                              {product.is_discontinued && (
-                                <span className="inline-flex items-center bg-red-700/95 px-2 py-1 text-[10px] font-bold text-white shadow-sm backdrop-blur-sm">
-                                  DESCONTINUADO
-                                </span>
-                              )}
-                              {product.is_active === false && !product.is_discontinued && (
-                                <span className="inline-flex items-center bg-brand-orange-action/95 px-2 py-1 text-[10px] font-bold text-white shadow-sm backdrop-blur-sm">
-                                  INACTIVO
-                                </span>
-                              )}
-                              {(!product.precio || product.precio === 0) && (
-                                <span className="inline-flex items-center bg-brand-bg/85 px-2 py-1 text-[10px] font-bold text-white shadow-sm backdrop-blur-sm">
-                                  SIN PRECIO
-                                </span>
-                              )}
-                            </div>
-                          </div>
-
-                          <div className="relative z-10 flex flex-grow flex-col p-3 md:p-4">
-                            <div className="mb-1.5">
-                              <span className="inline-block border-l-2 border-brand-orange pl-2 font-geist text-[9px] font-black uppercase tracking-[.12em] text-ui-copy">
-                                {product.seccion}
-                              </span>
-                            </div>
-
-                            {product.stock && product.origenes?.length ? (
-                              <div className="mt-1 flex flex-wrap gap-1">
-                                {product.origenes.map((origen) => (
-                                  <span
-                                    key={origen}
-                                    className={`inline-flex items-center gap-1 border px-2 py-0.5 text-[10px] font-bold ${
-                                      origen.toLowerCase().includes('stock')
-                                        ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-100 dark:border-green-800'
-                                        : 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-100 dark:border-amber-800'
-                                    }`}
-                                  >
-                                    {origen}
-                                  </span>
-                                ))}
-                              </div>
-                            ) : null}
-                            
-                            <h3
-                              className="mb-1.5 min-h-[48px] line-clamp-3 text-xs font-bold leading-snug text-ui-ink transition-colors group-hover:text-brand-orange md:min-h-[58px] md:text-sm"
-                              title={product.nombre}
-                            >
-                              {product.nombre}
-                            </h3>
-                            
-                            {product.codigo_referencia && (
-                              <div className="mb-2 flex items-center">
-                                <button
-                                  onClick={(e) => handleCopySku(e, product.codigo_referencia!, product.id)}
-                                  className="mr-1.5 flex h-8 w-8 items-center justify-center text-ui-copy transition-colors hover:bg-ui-muted hover:text-brand-orange"
-                                  title="Copiar código de referencia"
-                                >
-                                  {copiedId === product.id ? <Check size={12} className="text-green-500" /> : <Copy size={12} />}
-                                </button>
-                                <span className="truncate border border-ui-border bg-ui-muted px-1.5 py-1 font-mono text-[10px] text-ui-copy">
-                                  Ref: {product.codigo_referencia}
-                                </span>
-                              </div>
-                            )}
-                            
-                            <div className="mt-auto flex flex-col gap-2 pt-2 min-[480px]:flex-row min-[480px]:items-center min-[480px]:justify-between">
-                              <span className={`text-lg font-extrabold tracking-tight md:text-xl ${product.precio ? 'text-ui-ink' : 'italic text-ui-copy'}`}>
-                                {product.precio ? `$${Number(product.precio).toFixed(2)}` : 'Sin precio'}
-                              </span>
-
-                              <div className="flex items-center justify-end gap-1.5">
-                                <button
-                                  onClick={(e) => handleShare(e, product)}
-                                  className="touch-target flex items-center justify-center border border-ui-border bg-ui-muted text-ui-copy shadow-sm transition-all hover:border-brand-orange hover:bg-brand-orange/10 hover:text-brand-orange active:scale-95"
-                                  title="Compartir repuesto"
-                                  aria-label={`Compartir ${product.nombre}`}
-                                >
-                                  <Clipboard size={16} strokeWidth={2.5} />
-                                </button>
-                                
-                                <button
-                                  onClick={(e) => handleQuickAdd(e, product)}
-                                  disabled={!product.stock}
-                                  className={`touch-target flex items-center justify-center gap-2 px-3 text-xs font-black uppercase tracking-wide shadow-sm transition-all duration-200 active:scale-95 ${
-                                    product.stock 
-                                      ? 'bg-brand-bg text-white hover:bg-brand-orange-action primary-button-glow'
-                                      : 'cursor-not-allowed bg-ui-muted text-ui-copy/45'
-                                  }`}
-                                  aria-label={product.stock ? `Agregar ${product.nombre} al pedido` : `${product.nombre} agotado`}
-                                >
-                                  <ShoppingBag size={16} strokeWidth={2.5} />
-                                  <span className="min-[480px]:hidden">{product.stock ? 'Agregar' : 'Agotado'}</span>
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    
-                    {visibles.length < productos.length && (
-                      <div className="mt-8 md:mt-12 text-center px-4 mb-6 md:mb-8">
-                        <button 
-                          onClick={() => setPagina(p => p + 1)} 
-                          className="mx-auto flex min-h-[48px] w-full max-w-sm items-center justify-center gap-2 border border-ui-ink bg-ui-surface px-6 py-3 text-sm font-black uppercase tracking-wide text-ui-ink shadow-sm transition-all hover:border-brand-orange hover:text-brand-orange hover:shadow-md active:scale-95 md:px-10"
-                        >
-                          <span>Cargar más repuestos</span>
-                          <span className="text-xs opacity-60">({productos.length - visibles.length} restantes)</span>
-                        </button>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <div className="flex flex-col items-center justify-center px-4 py-24 text-center">
-                    <div className="mb-6 border border-ui-border bg-ui-muted p-6">
-                      <Search className="h-10 w-10 text-ui-copy/55" />
-                    </div>
-                    <h3 className="mb-2 text-xl font-bold text-ui-ink">
-                      {busqueda ? "No encontramos repuestos" : "Sin resultados"}
-                    </h3>
-                    <p className="mx-auto mb-6 max-w-xs text-ui-copy">
-                      Intenta cambiar los términos de búsqueda o filtros.
-                    </p>
-                    <div className="flex gap-3">
-                      {busqueda && (
-                        <button 
-                          onClick={() => setBusqueda('')} 
-                          className="min-h-[44px] rounded-lg bg-ui-muted px-4 py-2 font-medium text-ui-ink transition-colors hover:bg-ui-raised"
-                        >
-                          Limpiar búsqueda
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-            }
-
-          </div>
-
-           {/* FILTROS DEL CATÁLOGO */}
-          <aside className="surface-card sticky top-[256px] order-first hidden max-h-[calc(100vh-276px)] w-64 shrink-0 overflow-y-auto p-4 lg:block">
-            <h2 className="mb-3 border-b-2 border-ui-ink pb-2 font-geist text-[11px] font-black uppercase tracking-[0.16em] text-ui-ink">Filtrar por sistema</h2>
-            <nav className="mb-6 space-y-1" aria-label="Filtrar por sistema">
-              {ORDEN_SECCIONES.map(seccion => <button key={seccion} type="button" onClick={() => setFiltroSeccion(seccion)} aria-pressed={filtroSeccion === seccion} className={`w-full border-l-4 px-3 py-2 text-left text-sm transition-colors ${filtroSeccion === seccion ? 'border-brand-orange bg-brand-orange/10 font-extrabold text-brand-orange' : 'border-transparent text-ui-ink hover:bg-ui-muted'}`}>{seccion}</button>)}
-            </nav>
-            <h2 className="mb-3 border-b-2 border-ui-ink pb-2 font-geist text-[11px] font-black uppercase tracking-[0.16em] text-ui-ink">
-              Tu Daytona
-            </h2>
-            {renderModelPicker()}
-          </aside>
-
-        </div>
-
       </div>
 
-      {/* BOTTOM SHEET DE MODELOS - Solo móvil */}
-      {showModelSheet && (
-        <div className="fixed inset-0 z-modal flex items-end lg:hidden">
-          <div
-            className="absolute inset-0 bg-brand-bg/72 backdrop-blur-sm animate-fade-in"
-            onClick={() => setShowModelSheet(false)}
-          />
-          <div className="relative flex max-h-[82dvh] w-full flex-col border border-ui-border bg-ui-surface shadow-2xl animate-slide-up">
-            <div className="flex shrink-0 items-center justify-between border-b border-ui-border p-4">
-              <h2 className="font-geist text-[11px] font-black uppercase tracking-[0.16em] text-ui-copy">
-                Modelos Daytona
-              </h2>
-              <button
-                onClick={() => setShowModelSheet(false)}
-                className="touch-target -mr-2 flex items-center justify-center rounded-xl text-ui-copy transition-all hover:bg-ui-muted hover:text-ui-ink active:scale-90"
-                aria-label="Cerrar selector de modelos"
-              >
-                <X className="w-5 h-5" />
-              </button>
+      <div className="mx-auto max-w-[1440px] px-3 pt-3 sm:px-5 lg:grid lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-7 lg:px-8 lg:pt-6">
+        {/* COMPUTADORA: columna de filtros */}
+        <aside className="hidden lg:block">
+          <div className="sticky top-[132px] flex max-h-[calc(100vh-148px)] flex-col gap-4 overflow-y-auto pb-4 scrollbar-hide">
+            <div className="rounded-xl border border-ui-border bg-ui-surface p-4 shadow-card">
+              <h2 className="mb-3 font-geist text-[11px] font-black uppercase tracking-[.14em] text-ui-copy">Tu moto</h2>
+              {filtroModelo ? (
+                <>
+                  <p className="font-black leading-tight text-ui-ink">{nombreModelo}</p>
+                  <div className="mt-3 flex gap-2">
+                    <button type="button" onClick={abrirSelector} className="flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-lg border border-ui-border text-sm font-bold hover:border-ui-ink">
+                      <RefreshCw size={15} aria-hidden="true" /> Cambiar
+                    </button>
+                    <button type="button" onClick={quitarMoto} className="flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-lg border border-ui-border text-sm font-bold hover:border-ui-ink">
+                      <X size={15} aria-hidden="true" /> Quitar
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <button type="button" onClick={abrirSelector} className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-brand-orange-action px-4 text-sm font-bold text-white transition-colors hover:bg-brand-orange">
+                  <Bike size={18} aria-hidden="true" /> Elegir mi moto
+                </button>
+              )}
             </div>
-            <div className="p-4 overflow-y-auto pb-safe">
-              {renderModelPicker()}
+
+            <nav className="rounded-xl border border-ui-border bg-ui-surface p-2 shadow-card" aria-label="Filtrar por sistema">
+              <h2 className="mb-1 px-2 pt-2 font-geist text-[11px] font-black uppercase tracking-[.14em] text-ui-copy">Sistema</h2>
+              {sistemas.map(s => {
+                const activa = filtroSeccion === s;
+                return (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setFiltroSeccion(s)}
+                    aria-pressed={activa}
+                    className={`flex min-h-[40px] w-full items-center gap-2.5 rounded-lg px-2.5 text-left text-sm transition-colors ${
+                      activa ? 'bg-brand-orange/10 font-black text-brand-orange-action dark:text-brand-orange' : 'font-semibold text-ui-ink hover:bg-ui-muted'
+                    }`}
+                  >
+                    <IconoSistema sistema={s} size={17} className={activa ? '' : 'text-ui-copy'} />
+                    <span className="flex-1">{s === 'Todos' ? 'Todos los sistemas' : s}</span>
+                    <span className="text-xs tabular-nums text-ui-copy">{contar(s).toLocaleString('es-EC')}</span>
+                  </button>
+                );
+              })}
+            </nav>
+
+            {ayuda}
+          </div>
+        </aside>
+
+        <div className="min-w-0">
+          {!filtroModelo && (
+            <div className="mb-4 hidden lg:block">
+              <p className="mb-2 text-xs font-bold text-ui-copy"><Link to="/" className="hover:text-brand-orange">Inicio</Link> <span className="px-1.5">/</span> Catálogo</p>
+              <h1 className="font-anton text-4xl uppercase tracking-wide text-ui-ink">Catálogo de repuestos</h1>
             </div>
+          )}
+
+          {cabeceraMoto && <div className="mb-3">{cabeceraMoto}</div>}
+
+          <div ref={resultadosRef} className="scroll-mt-[124px] lg:scroll-mt-[132px]">
+            <div className="mb-3 flex min-h-[28px] flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ui-copy">
+              <span className="font-bold text-ui-ink">{cargandoMoto ? 'Buscando…' : repuestosTexto(productos.length)}</span>
+              {busqueda && (
+                <span className="inline-flex items-center gap-1">
+                  para <strong className="text-ui-ink">“{busqueda}”</strong>
+                  <button type="button" onClick={() => setBusqueda('')} className="ml-0.5 flex h-8 w-8 items-center justify-center rounded-full hover:bg-ui-muted" aria-label="Quitar búsqueda">
+                    <X size={15} aria-hidden="true" />
+                  </button>
+                </span>
+              )}
+              {filtroSeccion !== 'Todos' && (
+                <span className="inline-flex items-center gap-1">
+                  en <strong className="text-ui-ink">{filtroSeccion}</strong>
+                  <button type="button" onClick={() => setFiltroSeccion('Todos')} className="ml-0.5 flex h-8 w-8 items-center justify-center rounded-full hover:bg-ui-muted" aria-label="Quitar sistema">
+                    <X size={15} aria-hidden="true" />
+                  </button>
+                </span>
+              )}
+            </div>
+
+            {cargandoMoto ? (
+              <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 xl:grid-cols-4" aria-hidden="true">
+                {Array.from({ length: 8 }, (_, i) => (
+                  <div key={i} className="overflow-hidden rounded-xl border border-ui-border bg-ui-surface">
+                    <div className="aspect-[1024/531] animate-pulse bg-ui-muted" />
+                    <div className="space-y-2 p-3">
+                      <div className="h-3 animate-pulse rounded bg-ui-muted" />
+                      <div className="h-3 w-2/3 animate-pulse rounded bg-ui-muted" />
+                      <div className="h-5 w-1/3 animate-pulse rounded bg-ui-muted" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : visibles.length > 0 ? (
+              <>
+                <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 xl:grid-cols-4">
+                  {tarjetas}
+                </div>
+
+                {visibles.length < productos.length && (
+                  <div className="mt-6 text-center">
+                    <button
+                      type="button"
+                      onClick={() => setPagina(p => p + 1)}
+                      className="mx-auto flex min-h-[52px] w-full max-w-sm items-center justify-center gap-2 rounded-xl border-2 border-ui-ink bg-ui-surface px-6 text-sm font-black text-ui-ink transition-colors hover:border-brand-orange hover:text-brand-orange active:scale-[0.98]"
+                    >
+                      Ver más repuestos
+                      <span className="font-semibold text-ui-copy">({(productos.length - visibles.length).toLocaleString('es-EC')})</span>
+                    </button>
+                  </div>
+                )}
+                <div className="mt-8 lg:hidden">{ayuda}</div>
+              </>
+            ) : (
+              <div className="flex flex-col items-center rounded-xl border border-dashed border-ui-border bg-ui-surface px-4 py-14 text-center">
+                <Search size={40} className="mb-4 text-ui-copy/50" aria-hidden="true" />
+                <h2 className="text-lg font-black text-ui-ink">
+                  {busqueda ? `No encontramos “${busqueda}”` : 'No hay repuestos aquí'}
+                  {filtroModelo ? ` para tu ${motoCorta}` : ''}
+                </h2>
+                <p className="mt-1 max-w-sm text-sm text-ui-copy">Prueba con otra palabra o pregúntanos: muchas piezas tienen otro nombre.</p>
+                <div className="mt-5 flex w-full max-w-sm flex-col gap-2">
+                  {filtroModelo && busqueda && (
+                    <button type="button" onClick={quitarMoto} className="min-h-[48px] rounded-xl border-2 border-ui-ink px-4 text-sm font-black text-ui-ink">Buscar en todas las motos</button>
+                  )}
+                  {busqueda && (
+                    <button type="button" onClick={() => setBusqueda('')} className="min-h-[48px] rounded-xl border border-ui-border px-4 text-sm font-bold text-ui-ink">Borrar la búsqueda</button>
+                  )}
+                  {filtroSeccion !== 'Todos' && (
+                    <button type="button" onClick={() => setFiltroSeccion('Todos')} className="min-h-[48px] rounded-xl border border-ui-border px-4 text-sm font-bold text-ui-ink">Ver todos los sistemas</button>
+                  )}
+                  <button type="button" onClick={() => pedirAyuda('catalogo_sin_resultados', motoCorta)} className="flex min-h-[48px] items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 text-sm font-bold text-brand-bg">
+                    <MessageCircle size={18} aria-hidden="true" /> Preguntar por WhatsApp
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 });
+
+CatalogView.displayName = 'CatalogView';

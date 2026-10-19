@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Producto } from '../types';
-import { detectarSeccion } from '../utils/categories';
+import { sistemaDe } from '../utils/sistemas';
 import { limpiarTexto } from '../utils/helpers';
 import { supabase } from '../config/supabase';
 
@@ -15,7 +15,8 @@ const limpiarPrecio = (valor: unknown): number => {
 
 
 
-const CACHE_KEY = 'cached_products_v11';
+// v12: las secciones pasaron a ser los sistemas del despiece (utils/sistemas.ts).
+const CACHE_KEY = 'cached_products_v12';
 const CACHE_TIME_KEY = 'cached_products_time';
 const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
 const FRESH_CACHE_TIME = 1000 * 60 * 30; // 30 Minutos (Evita sobreconsumo de ancho de banda en Vercel)
@@ -24,6 +25,11 @@ export const useProducts = () => {
   const [productos, setProductos] = useState<Producto[]>(() => {
     try {
       if (typeof window !== 'undefined') {
+        // La caché de una versión anterior ocupa casi la mitad del espacio del
+        // navegador: si se queda, la nueva no cabe y no se guarda.
+        for (const clave of Object.keys(localStorage)) {
+          if (clave.startsWith('cached_products_v') && clave !== CACHE_KEY) localStorage.removeItem(clave);
+        }
         const cachedData = localStorage.getItem(CACHE_KEY);
         const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
         if (cachedData && cachedTime) {
@@ -239,11 +245,8 @@ export const useProducts = () => {
               }
             }
 
-            const seccionCalc = detectarSeccion({
-              nombre: nameVal,
-              categoria: categoryVal,
-              codigo_referencia: skuVal
-            } as any);
+            // El sistema del despiece del ERP: la misma pieza en la misma sección que allá.
+            const seccionCalc = sistemaDe(nameVal);
 
             // Imagen desde la URL de Supabase storage o local fallback
             const imageVal = p.image_url || (skuVal ? `/imagenes_repuestos/${skuVal}.webp` : 'sin_imagen.jpg');

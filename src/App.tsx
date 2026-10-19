@@ -23,9 +23,15 @@ import { Footer } from './components/Footer';
 import { Producto } from './types';
 import { useProducts } from './hooks/useProducts';
 import { useDebounce } from './hooks/useDebounce';
-import { piezasDeModelo, modeloPorId } from './utils/despiece';
-import { nombreDeModelo } from './config/constants';
+import { nombreDeModelo, ORDEN_SECCIONES } from './config/constants';
 import { useCart } from './context/CartContext';
+import { useDespiece } from './utils/cargarDespiece';
+import { sistemaDeEnlace } from './utils/sistemas';
+import { SelectorMoto } from './components/SelectorMoto';
+
+/** En bodega antes que bajo pedido, y agotado al final; con foto antes que sin foto. */
+const rangoDisponible = (p: Producto) => (!p.stock ? 4 : p.origenes?.includes('bajo pedido') ? 2 : 0)
+  + (p.imagen && !p.imagen.includes('sin_imagen') ? 0 : 1);
 
 const PageLoader = () => (
   <div className="flex h-[60vh] w-full items-center justify-center bg-ui-canvas">
@@ -89,45 +95,17 @@ export default function App() {
     }
   }, [location.pathname, getModelFromUrl, filtroModelo]);
 
-  const handleSetFiltroModelo = useCallback((modelo: string) => {
-    if (modelo) navigate(`/catalogo/${encodeURIComponent(modelo)}`);
-    else navigate('/catalogo');
-  }, [navigate]);
+  // La búsqueda vive en la dirección (?q=): se puede compartir y "Atrás" la recuerda.
+  const [busqueda, setBusqueda] = useState<string>(() => new URLSearchParams(window.location.search).get('q') ?? '');
 
-  // Estado local para la búsqueda principal
-  const [busqueda, setBusqueda] = useState<string>(() => {
-    const params = new URLSearchParams(window.location.search);
-    const q = params.get('q');
-    if (q !== null) {
-      return q;
+  // El buscador está en la barra de arriba de todas las páginas: fuera del
+  // catálogo, la primera letra lleva al catálogo y ahí se sigue escribiendo.
+  const buscar = useCallback((texto: string) => {
+    setBusqueda(texto);
+    if (!location.pathname.startsWith('/catalogo') && texto.trim()) {
+      navigate(`/catalogo?q=${encodeURIComponent(texto)}`);
     }
-
-    try {
-      const saved = localStorage.getItem('last_catalog_query');
-      const savedTime = localStorage.getItem('last_catalog_query_time');
-      if (saved && savedTime) {
-        const ageMs = Date.now() - parseInt(savedTime, 10);
-        if (ageMs < 24 * 60 * 60 * 1000) {
-          return saved;
-        }
-      }
-    } catch (e) {
-      console.error('Error al leer búsqueda de localStorage', e);
-    }
-
-    return '';
-  });
-
-  // Guardar en localStorage cuando cambie la búsqueda
-  useEffect(() => {
-    if (busqueda.trim().length > 0) {
-      localStorage.setItem('last_catalog_query', busqueda);
-      localStorage.setItem('last_catalog_query_time', Date.now().toString());
-    } else {
-      localStorage.removeItem('last_catalog_query');
-      localStorage.removeItem('last_catalog_query_time');
-    }
-  }, [busqueda]);
+  }, [location.pathname, navigate]);
 
   // Sincronizar estado local de búsqueda hacia la URL de forma dinámica
   useEffect(() => {
@@ -156,10 +134,7 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search, location.pathname]);
 
-  const [filtroSeccion, setFiltroSeccion] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('seccion') || 'Todos';
-  });
+  const [filtroSeccion, setFiltroSeccion] = useState<string>(() => sistemaDeEnlace(new URLSearchParams(window.location.search).get('seccion')));
 
   // Leer la sección desde la URL cuando se llega desde un enlace (categorías del home, menú, pie).
   // Después se quita de la dirección: los botones de sección solo cambian el estado, y si el
@@ -174,7 +149,8 @@ export default function App() {
       const params = new URLSearchParams(location.search);
       const seccion = params.get('seccion');
       if (seccion) {
-        setFiltroSeccion(seccion);
+        // Los enlaces viejos (`Motor e Internos`) llevan al sistema que les corresponde (`Motor`).
+        setFiltroSeccion(sistemaDeEnlace(seccion));
         setSearchParams((prev) => {
           const newParams = new URLSearchParams(prev);
           newParams.delete('seccion');
@@ -250,7 +226,8 @@ export default function App() {
   // Función Custom ultra rápida de Fuzzy Matching para tolerar "dedos gordos" (1 error tipográfico)
   const isFuzzyMatch = useCallback((text: string, term: string): boolean => {
     if (text.includes(term)) return true;
-    if (term.length <= 3) return false;
+    // Palabras cortas no: "aro" no es "faro" mal escrito.
+    if (term.length < 5) return false;
     const words = text.split(/[\s-]+/);
     for (const w of words) {
       if (Math.abs(w.length - term.length) <= 1) {
@@ -274,13 +251,20 @@ export default function App() {
     return false;
   }, []);
 
+  // El despiece se carga aparte (ver utils/cargarDespiece.ts).
+  const { despiece, noDisponible } = useDespiece();
+  const proyeccion = useMemo(() => productos.map(p => ({ id: p.id, sku: p.codigo_referencia ?? null, name: p.nombre })), [productos]);
+
   // Las piezas de la moto elegida (null si la dirección no es una moto del despiece).
   const piezasModelo = useMemo(() => {
-    if (!filtroModelo || !modeloPorId(filtroModelo)) return null;
-    return piezasDeModelo(productos.map(p => ({ id: p.id, sku: p.codigo_referencia ?? null, name: p.nombre })), filtroModelo);
-  }, [productos, filtroModelo]);
+    if (!filtroModelo || !despiece?.modeloPorId(filtroModelo)) return null;
+    return despiece.piezasDeModelo(proyeccion, filtroModelo);
+  }, [despiece, proyeccion, filtroModelo]);
+  // Mientras llega el despiece no se sabe qué le sirve a la moto: se espera en vez de mostrar todo.
+  const cargandoMoto = Boolean(filtroModelo) && !despiece && !noDisponible;
+  const hayBusqueda = limpiarTexto(busquedaDebounced).trim().length > 0;
 
-  const filteredProducts = useMemo(() => {
+  const { filteredProducts, conteoSistemas, totalSinSistema } = useMemo(() => {
 
     const calcularRelevancia = (
       producto: Producto,
@@ -323,7 +307,7 @@ export default function App() {
 
           if (codigo === expLower) { termScore += 200; matchedInExp = true; }
           else if (codigo.includes(expLower)) { termScore += 100; matchedInExp = true; }
-          else if (isFuzzyMatch(codigo, expLower)) { termScore += 80; matchedInExp = true; }
+          else if (isOriginal && isFuzzyMatch(codigo, expLower)) { termScore += 80; matchedInExp = true; }
 
           // Boost para coincidencia exacta de palabra completa en el nombre
           const wordRegex = new RegExp(`\\b${expLower}\\b`, 'i');
@@ -336,7 +320,7 @@ export default function App() {
           }
           else if (nombre.startsWith(expLower)) { termScore += 50; matchedInExp = true; }
           else if (nombre.includes(expLower)) { termScore += 30; matchedInExp = true; }
-          else if (isFuzzyMatch(nombre, expLower)) { termScore += 20; matchedInExp = true; }
+          else if (isOriginal && isFuzzyMatch(nombre, expLower)) { termScore += 20; matchedInExp = true; }
 
           if (categoria.includes(expLower)) { termScore += 15; matchedInExp = true; }
 
@@ -372,45 +356,58 @@ export default function App() {
       return puntuacion;
     };
 
-    // Extraemos todos los términos de la búsqueda no vacía
-    const terminos = limpiarTexto(busquedaDebounced)
-      .split(' ')
-      .filter(t => t.length > 0);
-
-    // Precalculamos la expansión de sinónimos UNA sola vez por búsqueda
-    // (antes se recalculaba por cada uno de los ~6000 productos).
-    const expansionesPorTermino = new Map<string, string[]>();
-    terminos.forEach(term => {
-      const termLower = term.toLowerCase();
-      expansionesPorTermino.set(termLower, expandirTerminos([termLower]));
-    });
-
-    let resultado = productos
-      .filter((p) => {
-        if (filtroSeccion !== 'Todos' && p.seccion !== filtroSeccion) return false;
-        if (filtroModelo) {
-          // Moto del despiece: sólo lo que le sirve. Dirección vieja (/catalogo/Wolf): como antes.
-          if (piezasModelo) { if (!piezasModelo.has(p.id)) return false; }
-          else if (!p.nombre.toLowerCase().includes(filtroModelo.toLowerCase())) return false;
-        }
-        return true;
-      })
-      .map((p) => ({
-        ...p,
-        relevancia: terminos.length > 0 ? calcularRelevancia(p, terminos, expansionesPorTermino) : 0
-      }));
-
-    if (terminos.length > 0) {
-      resultado = resultado
-        .filter((p) => p.relevancia > 2) // Filtro mínimo
-        .sort((a, b) => b.relevancia - a.relevancia);
-    } else if (piezasModelo) {
-      // Sin búsqueda, primero las piezas propias de la moto y después las que comparte.
-      resultado = [...resultado].sort((a, b) => (piezasModelo.get(a.id) === 'propia' ? 0 : 1) - (piezasModelo.get(b.id) === 'propia' ? 0 : 1));
+    // 1. La moto.
+    let base = productos;
+    if (filtroModelo) {
+      if (piezasModelo) base = productos.filter(p => piezasModelo.has(p.id));
+      else if (cargandoMoto) base = [];
+      else {
+        // Navegador sin despiece o dirección vieja (/catalogo/Wolf): por el nombre.
+        const palabras = limpiarTexto(filtroModelo).split(/[\s-]+/).filter(t => t.length > 1);
+        base = productos.filter(p => { const n = limpiarTexto(p.nombre); return palabras.every(t => n.includes(t)); });
+      }
     }
 
-    return resultado;
-  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo, piezasModelo, expandirTerminos, isFuzzyMatch]);
+    // 2. La búsqueda. Los términos y sus sinónimos se calculan una sola vez
+    // por búsqueda (no por cada uno de los ~6.500 productos).
+    const terminos = limpiarTexto(busquedaDebounced).split(' ').filter(t => t.length > 0);
+    const expansionesPorTermino = new Map<string, string[]>();
+    terminos.forEach(term => expansionesPorTermino.set(term.toLowerCase(), expandirTerminos([term.toLowerCase()])));
+
+    let lista: Producto[];
+    if (terminos.length > 0) {
+      const puntajes = new Map<string, number>();
+      for (const p of base) {
+        const puntaje = calcularRelevancia(p, terminos, expansionesPorTermino);
+        if (puntaje > 2) puntajes.set(p.id, puntaje);
+      }
+      lista = base.filter(p => puntajes.has(p.id))
+        .sort((a, b) => puntajes.get(b.id)! - puntajes.get(a.id)! || rangoDisponible(a) - rangoDisponible(b));
+    } else if (piezasModelo) {
+      // El despiece de la moto, por sistema. Dentro de cada sistema, primero lo que se puede
+      // comprar ya; después, como en el ERP, las piezas de su código en el orden de su lista.
+      const orden = (p: Producto) => ORDEN_SECCIONES.indexOf(p.seccion || 'Otros');
+      lista = [...base].sort((a, b) => {
+        const pa = piezasModelo.get(a.id)!, pb = piezasModelo.get(b.id)!;
+        return orden(a) - orden(b)
+          || rangoDisponible(a) - rangoDisponible(b)
+          || (pa.origen === pb.origen ? 0 : pa.origen === 'propia' ? -1 : 1)
+          || (pa.posicion ?? 0) - (pb.posicion ?? 0)
+          || (a.codigo_referencia || '').localeCompare(b.codigo_referencia || '');
+      });
+    } else {
+      // Sin moto ni búsqueda: primero lo que hay en bodega y con foto.
+      lista = [...base].sort((a, b) => rangoDisponible(a) - rangoDisponible(b));
+    }
+
+    // 3. Cuántos hay de cada sistema (para las fichas de sistema).
+    const conteo = new Map<string, number>();
+    for (const p of lista) conteo.set(p.seccion || 'Otros', (conteo.get(p.seccion || 'Otros') ?? 0) + 1);
+
+    // 4. El sistema.
+    const final = filtroSeccion === 'Todos' ? lista : lista.filter(p => (p.seccion || 'Otros') === filtroSeccion);
+    return { filteredProducts: final, conteoSistemas: conteo, totalSinSistema: lista.length };
+  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo, piezasModelo, cargandoMoto, expandirTerminos, isFuzzyMatch]);
 
   const handleProductClick = useCallback((p: Producto) => {
     setSearchParams((prev: URLSearchParams) => { prev.set('prod', p.id); return prev; });
@@ -447,7 +444,7 @@ export default function App() {
       )}
 
       <TopBanner />
-      <Navbar />
+      <Navbar busqueda={busqueda} buscar={buscar} productos={productos} filtroModelo={filtroModelo} />
       <main className="fade-in flex-1">
         <Suspense fallback={<PageLoader />}>
           <Routes>
@@ -458,36 +455,29 @@ export default function App() {
               </>
             } />
 
-            <Route path="/catalogo" element={
-              <>
-                <title>Catálogo | LV PARTS</title>
-                <CatalogView
-                  productos={filteredProducts}
-                  filtroModelo={filtroModelo}
-                  setFiltroModelo={handleSetFiltroModelo}
-                  busqueda={busqueda}
-                  setBusqueda={setBusqueda}
-                  filtroSeccion={filtroSeccion}
-                  setFiltroSeccion={setFiltroSeccion}
-                  onProductClick={handleProductClick}
-                />
-              </>
-            } />
-            <Route path="/catalogo/:modelo" element={
-              <>
-                <title>{filtroModelo ? `Repuestos Daytona ${nombreDeModelo(filtroModelo)}` : 'Catálogo'} | LV PARTS</title>
-                <CatalogView
-                  productos={filteredProducts}
-                  filtroModelo={filtroModelo}
-                  setFiltroModelo={handleSetFiltroModelo}
-                  busqueda={busqueda}
-                  setBusqueda={setBusqueda}
-                  filtroSeccion={filtroSeccion}
-                  setFiltroSeccion={setFiltroSeccion}
-                  onProductClick={handleProductClick}
-                />
-              </>
-            } />
+            {['/catalogo', '/catalogo/:modelo'].map(ruta => (
+              <Route key={ruta} path={ruta} element={
+                <>
+                  {/* Un solo texto: con varias piezas React 19 no pone el título. */}
+                  <title>{`${filtroModelo ? `Repuestos para ${nombreDeModelo(filtroModelo, despiece)}` : 'Catálogo de repuestos'} | LV PARTS`}</title>
+                  <CatalogView
+                    productos={filteredProducts}
+                    conteoSistemas={conteoSistemas}
+                    totalSinSistema={totalSinSistema}
+                    filtroModelo={filtroModelo}
+                    piezasDeMoto={piezasModelo ? piezasModelo.size : null}
+                    cargandoMoto={cargandoMoto}
+                    agrupar={Boolean(piezasModelo) && !hayBusqueda && filtroSeccion === 'Todos'}
+                    despiece={despiece}
+                    busqueda={busqueda}
+                    setBusqueda={setBusqueda}
+                    filtroSeccion={filtroSeccion}
+                    setFiltroSeccion={setFiltroSeccion}
+                    onProductClick={handleProductClick}
+                  />
+                </>
+              } />
+            ))}
 
             <Route path="/contacto" element={<><title>Contacto | LV PARTS</title><ContactView /></>} />
             <Route path="*" element={
@@ -521,9 +511,12 @@ export default function App() {
             <ProductDetailModal
               product={selectedProduct}
               allProducts={productos}
-              currentList={filteredProducts}
+              currentList={location.pathname.startsWith('/catalogo') ? filteredProducts : undefined}
               onClose={handleCloseModal}
               onSelectRelated={handleProductClick}
+              despiece={despiece}
+              filtroModelo={filtroModelo}
+              piezasModelo={piezasModelo}
             />
           </Suspense>
         </ProductDetailBoundary>
@@ -533,7 +526,8 @@ export default function App() {
           <CartDrawer />
         </Suspense>
       )}
-      {/* Botón Flotante: Visible en todas las pantallas excepto al abrir un producto (ya tiene su propio botón) */}
+      <SelectorMoto />
+      {/* Botón flotante (computadora): no se muestra con un producto o el pedido abiertos */}
       <WhatsAppButton hideWhenModalOpen={!!selectedProduct || isCartOpen} />
       <ScrollToTopButton />
       <BottomNav />
