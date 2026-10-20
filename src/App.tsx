@@ -9,9 +9,14 @@ import { TopBanner } from './components/TopBanner';
 import { HomeView } from './components/HomeView';
 import { WhatsAppButton } from './components/WhatsAppButton';
 import { ProductDetailBoundary, ProductDetailLoader } from './components/ProductDetailBoundary';
+import { PantallaCarga } from './components/PantallaCarga';
+import { indexar, prepararBusqueda, puntuar } from './utils/busqueda';
 
 // Carga Diferida (Lazy Loading)
-const CatalogView = lazy(() => import('./components/CatalogView').then(module => ({ default: module.CatalogView })));
+// La vista del catálogo se pide también mientras baja el inventario (ver más abajo):
+// así no hay una segunda espera cuando los datos ya llegaron.
+const cargarVistaCatalogo = () => import('./components/CatalogView');
+const CatalogView = lazy(() => cargarVistaCatalogo().then(module => ({ default: module.CatalogView })));
 const ContactView = lazy(() => import('./components/ContactView'));
 // Diferidos: solo se necesitan tras una interacción del usuario (abrir producto / carrito)
 const ProductDetailModal = lazy(() => import('./components/ProductDetailModal').then(module => ({ default: module.ProductDetailModal })));
@@ -33,31 +38,30 @@ import { SelectorMoto } from './components/SelectorMoto';
 const rangoDisponible = (p: Producto) => (!p.stock ? 4 : p.origenes?.includes('bajo pedido') ? 2 : 0)
   + (p.imagen && !p.imagen.includes('sin_imagen') ? 0 : 1);
 
-/** El logo con un aro naranja que gira: la misma pantalla de espera en toda la app. */
-const Cargando = ({ alto, titulo, texto }: { alto: string; titulo: string; texto: string }) => (
-  <div className={`flex ${alto} w-full items-center justify-center bg-ui-canvas`}>
-    <div className="flex flex-col items-center gap-5 animate-rise">
-      <div className="relative flex h-20 w-20 items-center justify-center">
-        <div className="absolute inset-0 animate-spin rounded-full border-[3px] border-ui-border border-t-brand-orange" />
-        <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-white p-2 shadow-card">
-          <img src="/logo.svg" alt="" className="h-full w-full object-contain" />
-        </span>
-      </div>
-      <div className="text-center">
-        <p className="font-anton text-xl uppercase tracking-wide text-ui-ink">{titulo}</p>
-        <p className="mt-1 text-sm text-ui-copy">{texto}</p>
-      </div>
-    </div>
-  </div>
-);
+const PageLoader = () => <PantallaCarga compacta />;
 
-const PageLoader = () => <Cargando alto="h-[60vh]" titulo="Un momento" texto="Cargando la página…" />;
+/** Lo que tarda en subir la cortina de la pantalla de carga (igual que `.carga-salida` en index.css). */
+const SALIDA_CARGA_MS = 320;
 
 export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { productos, loading } = useProducts();
+  const { productos, loading, error, progreso, reintentar } = useProducts();
   const location = useLocation();
   const { isOpen: isCartOpen } = useCart();
+
+  // La pantalla de carga no desaparece de golpe: su cortina sube encima del catálogo ya
+  // dibujado. Con caché (visitas repetidas) ni siquiera aparece.
+  const [cargaVisible, setCargaVisible] = useState(loading);
+  useEffect(() => {
+    if (loading) { setCargaVisible(true); return; }
+    const t = setTimeout(() => setCargaVisible(false), SALIDA_CARGA_MS);
+    return () => clearTimeout(t);
+  }, [loading]);
+
+  // Mientras baja el inventario, se adelanta la vista del catálogo (es la próxima pantalla).
+  useEffect(() => {
+    if (loading) void cargarVistaCatalogo();
+  }, [loading]);
 
   // Derivamos el producto seleccionado de la URL
   const prodId = searchParams.get('prod');
@@ -186,78 +190,8 @@ export default function App() {
 
 
 
-  // Memoizar la función de expansión de términos
-  const expandirTerminos = useMemo(() => (terminos: string[]): string[] => {
-    const sinonimos: Record<string, string[]> = {
-      'freno': ['frenos', 'frenado', 'pastilla', 'pastillas', 'disco', 'tambor'],
-      'filtro': ['filtro', 'filtrar', 'filtrado'],
-      'aceite': ['aceite', 'lubricante', 'motor oil'],
-      'cadena': ['cadena', 'transmisión', 'piñón'],
-      'amortiguador': ['amortiguadores', 'suspensión', 'monoshock'],
-      'llanta': ['llantas', 'neumático', 'neumáticos', 'rueda', 'ruedas'],
-      'faro': ['faros', 'luz', 'luces', 'farola'],
-      'escape': ['escape', 'silenciador', 'tubo', 'caño'],
-      'motor': ['motor', 'cilindro', 'cilindros', 'piston', 'pistones'],
-      'velocimetro': ['velocímetro', 'velocimetros', 'instrumentos', 'panel', 'tablero', 'tacometro', 'tacómetro'],
-      'carburador': ['carburador', 'carburadores', 'inyección', 'inyector'],
-      'arranque': ['arranque', 'starter', 'partida'],
-      'electrico': ['eléctrico', 'eléctrica', 'eléctricos', 'eléctricas', 'electricidad'],
-      'telescopica': ['telescopicas', 'telescópica', 'telescópicas', 'barra', 'barras', 'suspensión delantera', 'telescopio', 'amortiguadores delanteros'],
-      'monoshock': ['monoshock', 'monoshocks', 'amortiguador trasero', 'suspensión trasera', 'amortiguador', 'suspensión'],
-      'instalacion electrica': ['arnes', 'cableado', 'instalacion electrica'],
-      'mesa': ['mesa', 'mesas', 'araña', 'arañas', 'castillo'],
-      'traccion': ['arrastre'],
-      'bujia': ['bujia', 'bujias', 'bujías', 'bujías'],
-      'placa': ['placa', 'placas', 'Plastico', 'plasticos'],
-      'del': ['delantero', 'delantera', 'delanteros', 'delanteras'],
-      'post': ['posterior', 'trasero', 'posteriores', 'traseros'],
-      'der': ['derecha', 'derecho', 'derechos', 'derechas'],
-      'izq': ['izquierda', 'izquierdo', 'izquierdos', 'izquierdas'],
-      'protec': ['protector', 'protectores'],
-    };
-
-    const expandidos = new Set<string>();
-
-    terminos.forEach(termino => {
-      expandidos.add(termino);
-      Object.entries(sinonimos).forEach(([clave, valores]) => {
-        if (clave.includes(termino) || valores.some(v => v.includes(termino))) {
-          expandidos.add(clave); // Añadimos la clave original para búsquedas bidireccionales
-          valores.forEach(sinonimo => expandidos.add(sinonimo));
-        }
-      });
-    });
-
-    return Array.from(expandidos);
-  }, []);
-
-  // Función Custom ultra rápida de Fuzzy Matching para tolerar "dedos gordos" (1 error tipográfico)
-  const isFuzzyMatch = useCallback((text: string, term: string): boolean => {
-    if (text.includes(term)) return true;
-    // Palabras cortas no: "aro" no es "faro" mal escrito.
-    if (term.length < 5) return false;
-    const words = text.split(/[\s-]+/);
-    for (const w of words) {
-      if (Math.abs(w.length - term.length) <= 1) {
-        let mismatches = 0;
-        let i = 0, j = 0;
-        while (i < term.length && j < w.length) {
-          if (term[i] !== w[j]) {
-            mismatches++;
-            if (mismatches > 1) break;
-            if (term[i + 1] === w[j]) i++;
-            else if (term[i] === w[j + 1]) j++;
-            else { i++; j++; }
-          } else {
-            i++; j++;
-          }
-        }
-        mismatches += (term.length - i) + (w.length - j);
-        if (mismatches <= 1) return true;
-      }
-    }
-    return false;
-  }, []);
+  // Los campos del buscador en minúsculas, una vez por catálogo (ver utils/busqueda.ts).
+  const indiceBusqueda = useMemo(() => indexar(productos), [productos]);
 
   // El despiece se carga aparte (ver utils/cargarDespiece.ts).
   const { despiece, noDisponible } = useDespiece();
@@ -274,96 +208,6 @@ export default function App() {
 
   const { filteredProducts, conteoSistemas, totalSinSistema } = useMemo(() => {
 
-    const calcularRelevancia = (
-      producto: Producto,
-      terminos: string[],
-      expansionesPorTermino: Map<string, string[]>
-    ): number => {
-      const textoBusqueda = (producto.textoBusqueda || '').toLowerCase();
-      const nombre = producto.nombre.toLowerCase();
-      const codigo = producto.codigo_referencia?.toLowerCase() || '';
-      const categoria = (producto.categoria || '').toLowerCase();
-      let puntuacion = 0;
-
-      // Buscar si la búsqueda contiene comillas dobles (SKU exacto)
-      const exactSkuMatches: string[] = [];
-      if (busquedaDebounced.includes('"')) {
-        const match = busquedaDebounced.match(/"([^"]+)"/);
-        if (match && match[1]) {
-          exactSkuMatches.push(match[1].toLowerCase());
-        }
-      }
-
-      for (const exactSku of exactSkuMatches) {
-        if (codigo.includes(exactSku)) {
-          return 1000;
-        }
-      }
-
-      let terminosEncontrados = 0;
-
-      for (const term of terminos) {
-        const termLower = term.toLowerCase();
-        const expansions = expansionesPorTermino.get(termLower) || [termLower];
-        let maxTermScore = 0;
-
-        for (const exp of expansions) {
-          const expLower = exp.toLowerCase();
-          const isOriginal = expLower === termLower;
-          let termScore = 0;
-          let matchedInExp = false;
-
-          if (codigo === expLower) { termScore += 200; matchedInExp = true; }
-          else if (codigo.includes(expLower)) { termScore += 100; matchedInExp = true; }
-          else if (isOriginal && isFuzzyMatch(codigo, expLower)) { termScore += 80; matchedInExp = true; }
-
-          // Boost para coincidencia exacta de palabra completa en el nombre
-          const wordRegex = new RegExp(`\\b${expLower}\\b`, 'i');
-          
-          if (nombre === expLower) { termScore += 150; matchedInExp = true; }
-          else if (wordRegex.test(nombre)) {
-            // Si es la primera palabra, vale un poco más
-            if (nombre.startsWith(expLower)) { termScore += 90; matchedInExp = true; }
-            else { termScore += 70; matchedInExp = true; }
-          }
-          else if (nombre.startsWith(expLower)) { termScore += 50; matchedInExp = true; }
-          else if (nombre.includes(expLower)) { termScore += 30; matchedInExp = true; }
-          else if (isOriginal && isFuzzyMatch(nombre, expLower)) { termScore += 20; matchedInExp = true; }
-
-          if (categoria.includes(expLower)) { termScore += 15; matchedInExp = true; }
-
-          if (textoBusqueda.includes(expLower)) { termScore += 5; matchedInExp = true; }
-
-          // Si la coincidencia provino de la palabra original exacta que escribió el usuario, 
-          // le damos un bono gigante para que gane contra sus propios sinónimos
-          if (matchedInExp && isOriginal) {
-            termScore += 50;
-          }
-
-          if (matchedInExp && termScore > maxTermScore) {
-            maxTermScore = termScore;
-          }
-        }
-
-        if (maxTermScore > 0) {
-          puntuacion += maxTermScore;
-          terminosEncontrados++;
-        }
-      }
-
-      // Requisito dinámico: Si el usuario busca 2 palabras, idealmente las 2 (o sus sinónimos) deben existir.
-      // Castigamos brutalmente los productos que no tienen todas las palabras clave originales.
-      if (terminosEncontrados < terminos.length) {
-        puntuacion = puntuacion / 4;
-      }
-
-      if (producto.stock === false) {
-        puntuacion *= 0.5;
-      }
-
-      return puntuacion;
-    };
-
     // 1. La moto.
     let base = productos;
     if (filtroModelo) {
@@ -376,17 +220,16 @@ export default function App() {
       }
     }
 
-    // 2. La búsqueda. Los términos y sus sinónimos se calculan una sola vez
-    // por búsqueda (no por cada uno de los ~6.500 productos).
-    const terminos = limpiarTexto(busquedaDebounced).split(' ').filter(t => t.length > 0);
-    const expansionesPorTermino = new Map<string, string[]>();
-    terminos.forEach(term => expansionesPorTermino.set(term.toLowerCase(), expandirTerminos([term.toLowerCase()])));
+    // 2. La búsqueda. Los términos, sus sinónimos y sus expresiones se preparan una
+    // sola vez por búsqueda (no por cada uno de los ~7.000 productos).
+    const preparada = prepararBusqueda(busquedaDebounced);
 
     let lista: Producto[];
-    if (terminos.length > 0) {
+    if (preparada.terminos.length > 0) {
       const puntajes = new Map<string, number>();
       for (const p of base) {
-        const puntaje = calcularRelevancia(p, terminos, expansionesPorTermino);
+        const campos = indiceBusqueda.get(p.id);
+        const puntaje = campos ? puntuar(p, campos, preparada) : 0;
         if (puntaje > 2) puntajes.set(p.id, puntaje);
       }
       lista = base.filter(p => puntajes.has(p.id))
@@ -415,7 +258,7 @@ export default function App() {
     // 4. El sistema.
     const final = filtroSeccion === 'Todos' ? lista : lista.filter(p => (p.seccion || 'Otros') === filtroSeccion);
     return { filteredProducts: final, conteoSistemas: conteo, totalSinSistema: lista.length };
-  }, [productos, busquedaDebounced, filtroSeccion, filtroModelo, piezasModelo, cargandoMoto, expandirTerminos, isFuzzyMatch]);
+  }, [productos, indiceBusqueda, busquedaDebounced, filtroSeccion, filtroModelo, piezasModelo, cargandoMoto]);
 
   const handleProductClick = useCallback((p: Producto) => {
     setSearchParams((prev: URLSearchParams) => { prev.set('prod', p.id); return prev; });
@@ -425,8 +268,15 @@ export default function App() {
     setSearchParams((prev: URLSearchParams) => { prev.delete('prod'); return prev; });
   }, [setSearchParams]);
 
-  if (loading) {
-    return <Cargando alto="h-screen" titulo="Cargando catálogo" texto="Preparando los repuestos…" />;
+  // Sin nada que mostrar todavía: la pantalla de carga (o su aviso, si la carga falló).
+  if (loading || (error && productos.length === 0)) {
+    return (
+      <PantallaCarga
+        progreso={progreso}
+        error={loading ? null : isOnline ? 'Revisa tu conexión e inténtalo otra vez.' : 'Estás sin internet. Conéctate y vuelve a intentarlo.'}
+        onReintentar={reintentar}
+      />
+    );
   }
 
   return (
@@ -529,6 +379,7 @@ export default function App() {
       <ScrollToTopButton />
       <BottomNav />
       <Footer />
+      {cargaVisible && <PantallaCarga progreso={progreso} saliendo />}
     </div>
   );
 }
