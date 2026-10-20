@@ -11,10 +11,10 @@ interface HomeViewProps {
 }
 
 export const HomeView = ({ productos }: HomeViewProps) => {
-  // Cuántos repuestos activos hay de cada sistema, para "¿Qué parte buscas?".
+  // Cuántos repuestos hay de cada sistema, para "¿Qué parte buscas?" (sólo llegan los activos).
   const conteo = useMemo(() => {
     const porSistema = new Map<string, number>();
-    for (const p of productos) if (p.is_active !== false) porSistema.set(p.seccion || 'Otros', (porSistema.get(p.seccion || 'Otros') ?? 0) + 1);
+    for (const p of productos) porSistema.set(p.seccion || 'Otros', (porSistema.get(p.seccion || 'Otros') ?? 0) + 1);
     return porSistema;
   }, [productos]);
   

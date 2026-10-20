@@ -16,7 +16,8 @@ const limpiarPrecio = (valor: unknown): number => {
 
 
 // v12: las secciones pasaron a ser los sistemas del despiece (utils/sistemas.ts).
-const CACHE_KEY = 'cached_products_v12';
+// v13: se lee la vista `catalogo_publico` (sin borrados ni cantidades).
+const CACHE_KEY = 'cached_products_v13';
 const CACHE_TIME_KEY = 'cached_products_time';
 const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
 const FRESH_CACHE_TIME = 1000 * 60 * 30; // 30 Minutos (Evita sobreconsumo de ancho de banda en Vercel)
@@ -88,10 +89,10 @@ export const useProducts = () => {
 
         const mapaProductos = new Map<string, Producto>();
 
-        // El ERP no tiene UNIQUE sobre 'sku' y su borrado es lógico
-        // (update is_active=false), así que la fila descartada sigue viviendo
-        // en la tabla junto a la buena. Como acá agrupamos por SKU, hay que
-        // decidir cuál de las dos gana.
+        // El ERP no tiene UNIQUE sobre 'sku': puede haber dos repuestos
+        // activos con el mismo código. Como acá agrupamos por SKU, hay que
+        // decidir cuál de los dos gana. (Los borrados en el ERP ya no llegan:
+        // la vista `catalogo_publico` sólo trae los activos.)
         const normalizarOrigenes = (lista: string[]): string[] => {
           const set = new Set(lista);
           if (set.has('En Stock') || set.has('Guayaquil')) return ['En Stock'];
@@ -102,11 +103,9 @@ export const useProducts = () => {
         const tieneImagen = (p: Producto) => !!p.imagen && !p.imagen.includes('sin_imagen');
 
         // Puntaje de "calidad" de una fila. Se elige por esto y NO por orden de
-        // llegada: antes ganaba la última página en llegar, que solía ser la
-        // fila inactiva, y el producto bueno desaparecía tras el badge INACTIVO.
+        // llegada: las páginas se piden en paralelo y llegan en cualquier orden.
         const puntajeFila = (p: Producto): number => {
           let score = 0;
-          if (p.is_active !== false) score += 1000;
           if (!p.is_discontinued) score += 500;
           if (p.stock) score += 250;
           if (p.precio > 0) score += 50;
@@ -146,8 +145,7 @@ export const useProducts = () => {
             perdedor = nuevoEsMasNuevo ? existente : producto;
           }
 
-          // Solo las filas activas aportan origen (las inactivas llegan con la
-          // lista vacía), así que 'stock' y 'origenes' quedan siempre
+          // 'stock' sale de los mismos 'origenes', así que quedan siempre
           // coherentes entre sí: nunca más un AGOTADO con badge "En Stock".
           const origenes = normalizarOrigenes([...(ganador.origenes || []), ...(perdedor.origenes || [])]);
           const hayStock = origenes.length > 0;
@@ -156,9 +154,6 @@ export const useProducts = () => {
             ...ganador,
             origenes,
             stock: hayStock,
-            cantidad_disponible: hayStock
-              ? (Math.max(ganador.cantidad_disponible || 0, perdedor.cantidad_disponible || 0) || undefined)
-              : undefined,
             // Si a la fila ganadora le falta foto, rescatamos la de la otra.
             imagen: tieneImagen(ganador) ? ganador.imagen : (tieneImagen(perdedor) ? perdedor.imagen : ganador.imagen),
             gallery: ganador.gallery?.length ? ganador.gallery : (perdedor.gallery || []),
@@ -171,7 +166,11 @@ export const useProducts = () => {
         console.log('📡 Consultando productos desde Supabase...');
         try {
           const pageSize = 1000;
-          const selectCols = 'id, sku, name, category, price, local_stock, importer_stock, is_active, is_discontinued, image_url, gallery';
+          // La vista `catalogo_publico` (migración 20261019150000 del ERP) y no
+          // la tabla `products`: sólo columnas que se le pueden mostrar al
+          // cliente, sin repuestos borrados, y con la disponibilidad y el
+          // "descontinuado" calculados con las mismas reglas del ERP y del bot.
+          const selectCols = 'id, sku, name, category, price, disponibilidad, descontinuado, image_url, gallery';
 
           // Primera página: pedimos el conteo total en la misma consulta para saber
           // cuántas páginas faltan y traerlas todas EN PARALELO (en vez de una por una).
@@ -180,7 +179,7 @@ export const useProducts = () => {
           // piden en paralelo con .range() una fila puede repetirse en dos
           // páginas y otra no salir en ninguna.
           const { data: firstPage, error: firstError, count } = await supabase
-            .from('products')
+            .from('catalogo_publico')
             .select(selectCols, { count: 'exact' })
             .order('id', { ascending: true })
             .range(0, pageSize - 1);
@@ -195,7 +194,7 @@ export const useProducts = () => {
             for (let page = 1; page < totalPages; page++) {
               pagePromises.push(
                 supabase
-                  .from('products')
+                  .from('catalogo_publico')
                   .select(selectCols)
                   .order('id', { ascending: true })
                   .range(page * pageSize, (page + 1) * pageSize - 1)
@@ -226,24 +225,13 @@ export const useProducts = () => {
             const categoryVal = (p.category || p.categoria || 'General').trim();
             const priceVal = p.price !== undefined ? p.price : (p.precio || 0);
 
-            const localStockQty = parseInt(p.local_stock) || 0;
-            const importerStockQty = parseInt(p.importer_stock) || 0;
-
-            // Almacén Local -> 'En Stock'
-            // Solo Importadora -> 'bajo pedido'
-            // Sin stock en ninguno -> Agotado
-            let tieneStock = false;
-            let origenesRaw: string[] = [];
-
-            if (p.is_active !== false) {
-              if (localStockQty > 0) {
-                tieneStock = true;
-                origenesRaw = ['En Stock'];
-              } else if (importerStockQty > 0) {
-                tieneStock = true;
-                origenesRaw = ['bajo pedido'];
-              }
-            }
+            // La vista ya decidió con las reglas del ERP (incluida la marca
+            // "Agotado en importadora"):
+            // en_stock -> 'En Stock', bajo_pedido -> 'bajo pedido', agotado -> sin origen.
+            const origenesRaw: string[] = p.disponibilidad === 'en_stock' ? ['En Stock']
+              : p.disponibilidad === 'bajo_pedido' ? ['bajo pedido']
+              : [];
+            const tieneStock = origenesRaw.length > 0;
 
             // El sistema del despiece del ERP: la misma pieza en la misma sección que allá.
             const seccionCalc = sistemaDe(nameVal);
@@ -260,10 +248,8 @@ export const useProducts = () => {
               seccion: seccionCalc,
               imagen: imageVal,
               stock: tieneStock,
-              cantidad_disponible: localStockQty > 0 ? localStockQty : (importerStockQty > 0 ? importerStockQty : undefined),
               origenes: origenesRaw,
-              is_discontinued: p.is_discontinued === true,
-              is_active: p.is_active !== false,
+              is_discontinued: p.descontinuado === true,
               gallery: Array.isArray(p.gallery) ? p.gallery : [],
               textoBusqueda: limpiarTexto(`${nameVal} ${skuVal} ${categoryVal} ${seccionCalc} ${origenesRaw.join(' ')}`)
             };

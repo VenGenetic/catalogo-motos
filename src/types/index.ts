@@ -13,7 +13,6 @@ export interface Producto {
   seccion?: string;       // Nueva propiedad para el filtro
   textoBusqueda?: string; // Nueva propiedad para búsqueda optimizada
   is_discontinued?: boolean; // Producto descontinuado en el ERP
-  is_active?: boolean;       // Producto activo en el ERP
   gallery?: { url: string; type: string }[];
 }
 
