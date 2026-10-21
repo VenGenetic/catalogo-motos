@@ -31,3 +31,7 @@ public/data*.json
 *.xlsx
 ~$*
 desktop.ini
+
+# Perfil de navegador del robot: tiene cookies e historial; nunca va a git
+perfil_robot_v2/
+inventario_supabase.json
