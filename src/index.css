@@ -182,3 +182,45 @@ html {
 .animation-delay-200 { animation-delay: 200ms; }
 .animation-delay-300 { animation-delay: 300ms; }
 .animation-delay-500 { animation-delay: 500ms; }
+
+/* --- Pantalla de carga (components/PantallaCarga.tsx) ---
+   Sólo se anima la aguja (con transform, que el navegador compone sin volver a
+   pintar) y la salida. El fondo es quieto: mientras tanto, el hilo principal está
+   ocupado procesando el catálogo. */
+
+/* La cortina metálica del local: ranuras horizontales y una luz cálida detrás del
+   tacómetro. El mismo fondo está escrito en index.html (pantalla estática). */
+.carga-cortina {
+  background-image:
+    radial-gradient(circle at 50% 50%, rgb(var(--brand-orange-rgb) / 0.13) 0, transparent 46%),
+    repeating-linear-gradient(180deg, rgb(255 255 255 / 0.035) 0 1px, transparent 1px 3px, rgb(0 0 0 / 0.28) 3px 4px, transparent 4px 26px);
+}
+
+/* Mientras no se sabe cuántos repuestos son, la aguja tiembla en ralentí. */
+.carga-ralenti { animation: carga-ralenti 0.7s ease-in-out infinite alternate; }
+@keyframes carga-ralenti {
+  from { transform: rotate(-131deg); }
+  to { transform: rotate(-117deg); }
+}
+
+/* La cortina sube. Más corta que la entrada y acelerando (ease-in): la salida no
+   debe hacer esperar. Dura lo mismo que SALIDA_CARGA_MS en App.tsx. */
+.carga-salida {
+  pointer-events: none;
+  animation: carga-sube 320ms cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+@keyframes carga-sube {
+  to { transform: translateY(-100%); }
+}
+
+/* Los cargadores de cambio de página aparecen sólo si la espera pasa de 250 ms:
+   en las cargas rápidas no hay parpadeo. */
+.aparece-tarde { animation: aparece 200ms ease-out 250ms backwards; }
+@keyframes aparece {
+  from { opacity: 0; }
+}
+/* Con movimiento reducido aparece sin desvanecerse, pero la espera se queda (la regla
+   general de App.css la pone en cero y el cargador volvería a parpadear). */
+@media (prefers-reduced-motion: reduce) {
+  .aparece-tarde { animation-delay: 250ms !important; }
+}
