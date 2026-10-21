@@ -18,6 +18,7 @@ import { indexar, prepararBusqueda, puntuar } from './utils/busqueda';
 const cargarVistaCatalogo = () => import('./components/CatalogView');
 const CatalogView = lazy(() => cargarVistaCatalogo().then(module => ({ default: module.CatalogView })));
 const ContactView = lazy(() => import('./components/ContactView'));
+const PrivacyView = lazy(() => import('./components/PrivacyView'));
 // Diferidos: solo se necesitan tras una interacción del usuario (abrir producto / carrito)
 const ProductDetailModal = lazy(() => import('./components/ProductDetailModal').then(module => ({ default: module.ProductDetailModal })));
 const CartDrawer = lazy(() => import('./components/CartDrawer').then(module => ({ default: module.CartDrawer })));
@@ -325,6 +326,7 @@ export default function App() {
             ))}
 
             <Route path="/contacto" element={<><title>Contacto | LV PARTS</title><ContactView /></>} />
+            <Route path="/privacidad" element={<><title>Política de privacidad | LV PARTS</title><PrivacyView /></>} />
             <Route path="*" element={
               <div className="flex min-h-[60vh] flex-col items-center justify-center p-4 text-center animate-rise">
                 <img
