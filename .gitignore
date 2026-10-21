@@ -23,3 +23,11 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# Datos y scripts que no deben publicarse (public/ se sirve tal cual en lvparts.ec)
+public/*.py
+public/inventario_supabase.json
+public/data*.json
+*.xlsx
+~$*
+desktop.ini
