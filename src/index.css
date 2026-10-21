@@ -213,14 +213,27 @@ html {
   to { transform: translateY(-100%); }
 }
 
-/* Los cargadores de cambio de página aparecen sólo si la espera pasa de 250 ms:
-   en las cargas rápidas no hay parpadeo. */
-.aparece-tarde { animation: aparece 200ms ease-out 250ms backwards; }
+/* El tacómetro mini (components/Tacometro.tsx): la aguja acelera rápido, se sostiene
+   arriba un instante y baja. Menos de 1,5 s por vuelta: si tarda, no parece trabado. */
+.carga-acelera {
+  transform: rotate(-130deg);
+  animation: carga-acelera 1.4s infinite;
+}
+@keyframes carga-acelera {
+  0% { transform: rotate(-130deg); animation-timing-function: cubic-bezier(0.3, 0, 0.15, 1); }
+  45% { transform: rotate(75deg); animation-timing-function: linear; }
+  55% { transform: rotate(68deg); animation-timing-function: cubic-bezier(0.55, 0, 0.75, 0.6); }
+  100% { transform: rotate(-130deg); }
+}
+
+/* Los cargadores aparecen sólo si la espera se alarga (250 ms, o lo que diga
+   `--espera`): en las cargas rápidas no hay parpadeo. */
+.aparece-tarde { animation: aparece 200ms ease-out var(--espera, 250ms) backwards; }
 @keyframes aparece {
   from { opacity: 0; }
 }
 /* Con movimiento reducido aparece sin desvanecerse, pero la espera se queda (la regla
    general de App.css la pone en cero y el cargador volvería a parpadear). */
 @media (prefers-reduced-motion: reduce) {
-  .aparece-tarde { animation-delay: 250ms !important; }
+  .aparece-tarde { animation-delay: var(--espera, 250ms) !important; }
 }

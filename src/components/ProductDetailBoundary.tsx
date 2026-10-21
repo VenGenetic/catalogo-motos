@@ -1,5 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { AlertCircle, RotateCw, X } from 'lucide-react';
+import { TacometroMini } from './Tacometro';
 
 interface BoundaryProps {
   children: ReactNode;
@@ -61,12 +62,14 @@ export class ProductDetailBoundary extends Component<BoundaryProps, BoundaryStat
   }
 }
 
+/** Mientras baja la ficha (sólo la primera vez): aparece si tarda más de 250 ms, para no parpadear. */
 export const ProductDetailLoader = () => (
   <div
-    className="viewport-fill fixed inset-0 z-modal flex items-center justify-center bg-brand-bg/70"
+    className="aparece-tarde viewport-fill fixed inset-0 z-modal flex flex-col items-center justify-center gap-4 bg-brand-bg/80"
     role="status"
-    aria-label="Cargando detalle del repuesto"
+    aria-label="Abriendo el repuesto"
   >
-    <div className="h-12 w-12 animate-spin rounded-full border-4 border-white/30 border-t-brand-orange" />
+    <TacometroMini tono="oscuro" conLogo className="h-24 w-24" />
+    <p className="font-geist text-[11px] font-extrabold uppercase tracking-[0.18em] text-white/70">Abriendo el repuesto…</p>
   </div>
 );

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { esFotoGenerica } from '../utils/helpers';
+import { TacometroMini } from './Tacometro';
 
 interface Props {
   src: string;
@@ -73,9 +74,12 @@ export const LazyImage = ({ src, alt, className, style, onClick, cropBottom = fa
       style={style}
       onClick={onClick}
     >
+      {/* Mientras llega la foto: nada los primeros 400 ms (casi todas llegan antes y así
+          no parpadea); si tarda más, el tacómetro mini. Antes cada tarjeta palpitaba y
+          giraba desde el primer instante: con 30 tarjetas, 60 animaciones a la vez. */}
       {!isLoaded && !isPlaceholder && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-ui-muted animate-pulse">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-ui-border border-t-brand-orange"></div>
+        <div className="aparece-tarde absolute inset-0 z-10 flex items-center justify-center" style={{ '--espera': '400ms' } as React.CSSProperties}>
+          <TacometroMini tono="blanco" className="h-9 w-9 sm:h-11 sm:w-11" />
         </div>
       )}
 
