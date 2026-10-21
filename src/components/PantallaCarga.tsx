@@ -2,6 +2,7 @@ import { AlertTriangle, MessageCircle, RotateCw } from 'lucide-react';
 import { APP_CONFIG } from '../config/constants';
 import { Progreso } from '../types';
 import { buildWhatsAppUrl } from '../utils/attribution';
+import { Tacometro, TacometroMini } from './Tacometro';
 
 /*
   Pantalla de espera de toda la app: la cortina del local con un tacómetro.
@@ -20,8 +21,9 @@ import { buildWhatsAppUrl } from '../utils/attribution';
   estática de index.html: al tomar el control React, el logo no se mueve y el
   tacómetro se dibuja a su alrededor.
 
-  La versión compacta es para los cambios de página: aparece sólo si la espera
-  pasa de 250 ms (si no, sería un parpadeo).
+  La versión compacta es para los cambios de página (el tacómetro mini, ver
+  Tacometro.tsx): aparece sólo si la espera pasa de 250 ms (si no, sería un
+  parpadeo).
 */
 
 interface Props {
@@ -31,7 +33,7 @@ interface Props {
   onReintentar?: () => void;
   /** La cortina sube y deja ver el catálogo ya dibujado (dura SALIDA_CARGA_MS de App). */
   saliendo?: boolean;
-  /** Para los cambios de página: más chica, sin tacómetro. */
+  /** Para los cambios de página: el tacómetro mini, sin cortina ni contador. */
   compacta?: boolean;
 }
 
@@ -42,15 +44,7 @@ export const PantallaCarga = ({ progreso, error, onReintentar, saliendo = false,
   if (compacta) {
     return (
       <div className="aparece-tarde flex min-h-[60vh] w-full items-center justify-center bg-ui-canvas" role="status" aria-label="Cargando la página">
-        <div className="relative flex h-20 w-20 items-center justify-center">
-          <svg className="absolute inset-0 h-full w-full animate-spin [animation-duration:1.1s]" viewBox="0 0 80 80" aria-hidden="true">
-            <circle cx="40" cy="40" r="37" fill="none" strokeWidth="3" className="stroke-ui-border" />
-            <circle cx="40" cy="40" r="37" fill="none" strokeWidth="3" strokeLinecap="round" strokeDasharray="60 200" className="stroke-brand-orange" />
-          </svg>
-          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white p-2 shadow-card">
-            <img src="/logo.svg" alt="" className="h-full w-full object-contain" />
-          </span>
-        </div>
+        <TacometroMini tono="pagina" conLogo className="h-24 w-24" />
       </div>
     );
   }
@@ -148,82 +142,5 @@ export const PantallaCarga = ({ progreso, error, onReintentar, saliendo = false,
         </div>
       </div>
     </div>
-  );
-};
-
-/* --- El tacómetro ---
-   Dibujado en un cuadro de 260 × 260: arco de 270° abierto abajo, de 135° a 405°
-   (0° es la derecha y los ángulos crecen en el sentido del reloj, como en SVG). */
-
-const C = 130;
-const R = 112;
-const ANGULO_INICIO = 135;
-const BARRIDO = 270;
-
-const punto = (grados: number, r: number) => {
-  const rad = (grados * Math.PI) / 180;
-  return [C + r * Math.cos(rad), C + r * Math.sin(rad)] as const;
-};
-
-const arco = (desde: number, hasta: number, r: number) => {
-  const [x0, y0] = punto(desde, r);
-  const [x1, y1] = punto(hasta, r);
-  return `M ${x0.toFixed(2)} ${y0.toFixed(2)} A ${r} ${r} 0 ${hasta - desde > 180 ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
-};
-
-const ARCO_COMPLETO = arco(ANGULO_INICIO, ANGULO_INICIO + BARRIDO, R);
-const LARGO_ARCO = (R * Math.PI * BARRIDO) / 180;
-
-const Tacometro = ({ marcas, fraccion, ralenti }: { marcas: number; fraccion: number; ralenti: boolean }) => {
-  const pasos = marcas * 2; // una rayita a cada medio millar
-  const anguloDe = (paso: number) => ANGULO_INICIO + (BARRIDO * paso) / pasos;
-
-  return (
-    <>
-      <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 260 260" aria-hidden="true">
-        {/* Resplandor detrás del arco. */}
-        <circle cx={C} cy={C} r={R - 8} className="fill-brand-orange/[0.06]" />
-        {/* Pista y zona roja (el último millar). */}
-        <path d={ARCO_COMPLETO} fill="none" strokeWidth="8" strokeLinecap="round" className="stroke-white/10" />
-        <path d={arco(anguloDe(pasos - 2), anguloDe(pasos), R - 15)} fill="none" strokeWidth="4" className="stroke-red-500/70" />
-        {/* Lo que va cargado. */}
-        <path
-          d={ARCO_COMPLETO}
-          fill="none"
-          strokeWidth="8"
-          strokeLinecap="round"
-          className="stroke-brand-orange transition-[stroke-dashoffset] duration-[400ms] ease-out"
-          strokeDasharray={`${LARGO_ARCO} ${LARGO_ARCO}`}
-          strokeDashoffset={LARGO_ARCO * (1 - fraccion)}
-          opacity={fraccion > 0 ? 1 : 0}
-        />
-        {/* Rayitas y números de la escala. */}
-        {Array.from({ length: pasos + 1 }, (_, paso) => {
-          const mayor = paso % 2 === 0;
-          const [xa, ya] = punto(anguloDe(paso), R - (mayor ? 22 : 18));
-          const [xb, yb] = punto(anguloDe(paso), R - 12);
-          const [xt, yt] = punto(anguloDe(paso), R - 36);
-          return (
-            <g key={paso}>
-              <line x1={xa} y1={ya} x2={xb} y2={yb} strokeWidth={mayor ? 2.5 : 1.5} strokeLinecap="round" className={mayor ? 'stroke-white/50' : 'stroke-white/20'} />
-              {mayor && (
-                <text x={xt} y={yt} textAnchor="middle" dominantBaseline="central" className="fill-white/60 font-geist text-[13px] font-bold">
-                  {paso / 2}
-                </text>
-              )}
-            </g>
-          );
-        })}
-      </svg>
-
-      {/* La aguja: un div que gira (se compone en la GPU), con la base escondida bajo el logo. */}
-      <div
-        className={`absolute bottom-1/2 left-[calc(50%-1.5px)] h-[38%] w-[3px] origin-bottom rounded-full bg-brand-orange shadow-[0_0_14px_rgba(241,91,39,0.75)] ${
-          ralenti ? 'carga-ralenti' : 'transition-transform duration-[400ms] ease-out'
-        }`}
-        style={{ transform: `rotate(${-BARRIDO / 2 + BARRIDO * fraccion}deg)` }}
-        aria-hidden="true"
-      />
-    </>
   );
 };

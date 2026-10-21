@@ -11,6 +11,7 @@ import { pedirAyuda, preguntarPorRepuesto } from '../utils/consultas';
 import { useScrolled } from '../hooks/useScrolled';
 import { IconoSistema } from './IconoSistema';
 import { ProductCard } from './ProductCard';
+import { TacometroMini } from './Tacometro';
 import { nombreCorto } from './SirvePara';
 
 /*
@@ -278,7 +279,9 @@ export const CatalogView = memo(({
           <div ref={resultadosRef} className="scroll-mt-[124px] lg:scroll-mt-[132px]">
             <div className="mb-3 flex min-h-[28px] flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ui-copy">
               {/* La `key` es la cantidad: al cambiar, el número entra de nuevo. */}
-              <span key={cargandoMoto ? 'buscando' : productos.length} className="font-bold text-ui-ink animate-rise">{cargandoMoto ? 'Buscando…' : repuestosTexto(productos.length)}</span>
+              <span key={cargandoMoto ? 'buscando' : productos.length} className="inline-flex items-center gap-2 font-bold text-ui-ink animate-rise">
+                {cargandoMoto ? <><TacometroMini tono="pagina" className="h-6 w-6" /> Buscando…</> : repuestosTexto(productos.length)}
+              </span>
               {busqueda && (
                 <span className="inline-flex items-center gap-1">
                   para <strong className="text-ui-ink">“{busqueda}”</strong>
@@ -298,14 +301,16 @@ export const CatalogView = memo(({
             </div>
 
             {cargandoMoto ? (
+              // Tarjetas quietas: lo que se mueve es el tacómetro de arriba. Antes cada una
+              // tenía cuatro brillos corriendo (32 animaciones para una espera corta).
               <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 xl:grid-cols-4" aria-hidden="true">
                 {Array.from({ length: 8 }, (_, i) => (
                   <div key={i} className="stagger overflow-hidden rounded-xl border border-ui-border bg-ui-surface animate-rise" style={{ '--i': i } as React.CSSProperties}>
-                    <div className="skeleton aspect-[1024/531]" />
+                    <div className="aspect-[1024/531] bg-ui-muted" />
                     <div className="space-y-2 p-3">
-                      <div className="skeleton h-3 rounded" />
-                      <div className="skeleton h-3 w-2/3 rounded" />
-                      <div className="skeleton h-5 w-1/3 rounded" />
+                      <div className="h-3 rounded bg-ui-muted" />
+                      <div className="h-3 w-2/3 rounded bg-ui-muted" />
+                      <div className="h-5 w-1/3 rounded bg-ui-muted" />
                     </div>
                   </div>
                 ))}
