@@ -3,6 +3,8 @@ import { SISTEMAS } from '../utils/sistemas';
 
 export const APP_CONFIG = {
   WHATSAPP_NUMBER: "593993279707",
+  /** La dirección pública del catálogo, para los enlaces que salen a WhatsApp. */
+  SITE_URL: 'https://www.lvparts.ec',
   ITEMS_PER_PAGE: 30,
   LOCAL_STORAGE_KEY_FAVS: 'loveDaytonaFavs',
 };

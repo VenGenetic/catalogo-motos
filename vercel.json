@@ -3,6 +3,10 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/p/:id",
+      "destination": "/api/repuesto?id=:id"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
