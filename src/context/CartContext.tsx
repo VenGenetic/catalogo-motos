@@ -1,9 +1,7 @@
 // src/context/CartContext.tsx
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Producto, ItemCarrito } from '../types';
-import { APP_CONFIG } from '../config/constants';
-import { trackAddToCart, trackInitiateCheckout } from '../utils/tracking';
-import { buildWhatsAppUrl } from '../utils/attribution';
+import { trackAddToCart } from '../utils/tracking';
 
 interface CartContextType {
   cart: ItemCarrito[];
@@ -14,7 +12,6 @@ interface CartContextType {
   updateQuantity: (id: string, delta: number) => void;
   cartCount: number;
   cartTotal: number;
-  sendOrderToWhatsapp: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -87,36 +84,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const cartCount = cart.reduce((acc, item) => acc + (item.cantidad || item.cant || 0), 0);
   const cartTotal = cart.reduce((acc, item) => acc + (Number(item.precio) || 0) * (item.cantidad || item.cant || 0), 0);
 
-  // --- FUNCIÓN ACTUALIZADA CON FORMATO VERTICAL ---
-  const sendOrderToWhatsapp = () => {
-    trackInitiateCheckout(cart, cartTotal);
-
-    let msg = "Hola LV PARTS, mi pedido:\n\n";
-    
-    cart.forEach(i => {
-      const cantidad = i.cantidad || i.cant || 0;
-      const precioUnitario = Number(i.precio) > 0 ? `$${Number(i.precio).toFixed(2)}` : 'Precio por confirmar';
-      
-      // Línea 1: Cantidad y Nombre (Usamos ▪ como viñeta principal)
-      msg += `▪ ${cantidad}x ${i.nombre}\n`;
-      
-      // Línea 2: Referencia (si existe)
-      if (i.codigo_referencia) {
-        msg += `• Ref: ${i.codigo_referencia}\n`;
-      }
-      
-      // Línea 3: Precio
-      msg += `• ${precioUnitario}\n`;
-    });
-
-    msg += `\n${cart.some(i => !(Number(i.precio) > 0)) ? 'Subtotal de piezas con precio' : 'Total de piezas'}: $${cartTotal.toFixed(2)}`;
-    window.open(buildWhatsAppUrl(APP_CONFIG.WHATSAPP_NUMBER, msg), '_blank');
-  };
-
   return (
     <CartContext.Provider value={{
       cart, isOpen, openCart: () => setIsOpen(true), closeCart: () => setIsOpen(false),
-      addToCart, updateQuantity, cartCount, cartTotal, sendOrderToWhatsapp
+      addToCart, updateQuantity, cartCount, cartTotal
     }}>
       {children}
       

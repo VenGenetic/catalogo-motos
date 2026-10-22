@@ -8,12 +8,16 @@ import { LazyImage } from './LazyImage';
 import { trackInitiateCheckout } from '../utils/tracking';
 import { APP_CONFIG } from '../config/constants';
 import { buildWhatsAppUrl } from '../utils/attribution';
+import { registrarSolicitud } from '../utils/solicitudes';
 
 /*
   El pedido: un panel que entra por la derecha (en el celular, a pantalla
   completa). Arriba la lista de repuestos, abajo fijos el total, "Copiar" la
   proforma y "Pedir" por WhatsApp. Usa los mismos colores y botones que el
   resto del sitio (tokens ui-* y brand-*), en claro y en oscuro.
+
+  Los dos botones dejan el pedido registrado en el ERP (utils/solicitudes.ts)
+  y escriben su número en el mensaje, para que el vendedor lo encuentre.
 */
 
 const campo = 'w-full rounded-xl border border-ui-border bg-ui-muted px-4 py-3.5 text-base text-ui-ink outline-none transition-[border-color,background-color,box-shadow] duration-200 placeholder:text-ui-copy focus:border-brand-orange focus:bg-ui-surface focus:ring-4 focus:ring-brand-orange/15';
@@ -37,7 +41,9 @@ export const CartDrawer = () => {
   const [formData, setFormData] = useState({
     nombre: '',
     ciudad: '',
-    metodoPago: 'Transferencia'
+    // El valor de la primera opción del selector: con 'Transferencia' a secas
+    // el mensaje decía un pago que no estaba en la lista.
+    metodoPago: 'Transferencia Bancaria'
   });
 
   const [copied, setCopied] = useState(false);
@@ -56,7 +62,7 @@ export const CartDrawer = () => {
   };
 
   // --- LÓGICA DE MENSAJES ---
-  const generarMensajeWhatsApp = (costoEnvio: number) => {
+  const generarMensajeWhatsApp = (costoEnvio: number, codigo: string) => {
     const itemsList = cart.map(item => {
       const ref = item.codigo_referencia ? ` (Ref: ${item.codigo_referencia})` : '';
       return `▪️ *${item.cantidad}x* ${item.nombre}${ref} (${Number(item.precio) > 0 ? `$${(item.cantidad * Number(item.precio)).toFixed(2)}` : 'precio por confirmar'})`;
@@ -64,7 +70,7 @@ export const CartDrawer = () => {
 
     const totalFinal = costoEnvio > 0 ? cartTotal + costoEnvio : cartTotal;
 
-    return `👋 Hola LV PARTS, quiero confirmar el siguiente pedido:
+    return `👋 Hola LV PARTS, quiero confirmar el siguiente pedido (N.º ${codigo}):
 
 ${itemsList}
 ${costoEnvio > 0 ? `▪️ *Envío / Transporte:* $${costoEnvio.toFixed(2)}` : ''}
@@ -80,7 +86,7 @@ ${tienePreciosPendientes ? 'Hay piezas con precio por confirmar. Por favor, env�
 ¿Me confirman disponibilidad y valor final?`;
   };
 
-  const generarTextoProforma = (costoEnvio: number) => {
+  const generarTextoProforma = (costoEnvio: number, codigo: string) => {
     const date = new Date().toLocaleDateString('es-EC', { year: 'numeric', month: 'long', day: 'numeric' });
     const itemsList = cart.map(item => {
       const ref = item.codigo_referencia ? ` (Ref: ${item.codigo_referencia})` : '';
@@ -90,6 +96,7 @@ ${tienePreciosPendientes ? 'Hay piezas con precio por confirmar. Por favor, env�
     const totalFinal = costoEnvio > 0 ? cartTotal + costoEnvio : cartTotal;
 
     return `📄 *COTIZACIÓN / PROFORMA - LV PARTS*
+🧾 N.º ${codigo}
 📅 Fecha: ${date}
 👤 Cliente: ${formData.nombre.trim() || 'Consumidor Final'}
 📍 Destino: ${formData.ciudad.trim() || 'Pendiente'}
@@ -109,7 +116,10 @@ ${tienePreciosPendientes ? 'Piezas pendientes de cotización incluidas en el ped
 
   const handleCheckout = () => {
     trackInitiateCheckout(cart, cartTotal);
-    const mensaje = generarMensajeWhatsApp(0); // Sin envío por defecto
+    // Sin envío por defecto. Sin await: WhatsApp se abre en este mismo toque
+    // (si no, el navegador bloquea la ventana) y no depende de que se guarde.
+    const codigo = registrarSolicitud('whatsapp', cart, formData, 0);
+    const mensaje = generarMensajeWhatsApp(0, codigo);
     const url = buildWhatsAppUrl(APP_CONFIG.WHATSAPP_NUMBER, mensaje);
     window.open(url, '_blank');
   };
@@ -122,7 +132,8 @@ ${tienePreciosPendientes ? 'Piezas pendientes de cotización incluidas en el ped
 
   const handleConfirmCopy = async () => {
     const finalShippingCost = hasShipping ? (parseFloat(shippingCost) || 0) : 0;
-    const texto = generarTextoProforma(finalShippingCost);
+    const codigo = registrarSolicitud('proforma', cart, formData, finalShippingCost);
+    const texto = generarTextoProforma(finalShippingCost, codigo);
 
     try {
       await navigator.clipboard.writeText(texto);
