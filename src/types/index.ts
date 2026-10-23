@@ -16,6 +16,14 @@ export interface Producto {
   gallery?: { url: string; type: string }[];
 }
 
+/** Cuánto lleva la primera carga del catálogo (la pantalla de carga lo muestra). */
+export interface Progreso {
+  /** Repuestos que ya llegaron. */
+  cargadas: number;
+  /** Cuántos son en total; null hasta que responde la primera página. */
+  total: number | null;
+}
+
 export interface ItemCarrito extends Producto {
   cantidad: number;
   cant?: number; // Soporte legacy

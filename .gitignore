@@ -23,3 +23,15 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# Datos y scripts que no deben publicarse (public/ se sirve tal cual en lvparts.ec)
+public/*.py
+public/inventario_supabase.json
+public/data*.json
+*.xlsx
+~$*
+desktop.ini
+
+# Perfil de navegador del robot: tiene cookies e historial; nunca va a git
+perfil_robot_v2/
+inventario_supabase.json

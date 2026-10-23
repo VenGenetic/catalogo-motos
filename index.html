@@ -58,9 +58,19 @@
         } catch (e) {}
       })();
     </script>
+    <!-- Pantalla estática mientras baja el JavaScript: el mismo fondo (cortina) y el
+         mismo logo, en el mismo lugar, que components/PantallaCarga.tsx. Aparece sólo
+         si la espera pasa de 250 ms; React la reemplaza al arrancar. -->
+    <style>
+      .splash-estatica{position:fixed;top:0;right:0;bottom:0;left:0;display:flex;align-items:center;justify-content:center;background-color:#181818;background-image:radial-gradient(circle at 50% 50%,rgba(241,91,39,.13) 0,transparent 46%),repeating-linear-gradient(180deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px,rgba(0,0,0,.28) 3px 4px,transparent 4px 26px);animation:splash-aparece .2s ease-out .25s backwards}
+      .splash-estatica span{display:flex;box-sizing:border-box;width:64px;height:64px;padding:10px;border-radius:16px;background:#fff;box-shadow:0 12px 30px rgba(0,0,0,.16)}
+      .splash-estatica img{width:100%;height:100%;object-fit:contain}
+      @keyframes splash-aparece{from{opacity:0}}
+      @media (prefers-reduced-motion:reduce){.splash-estatica{animation:splash-aparece .01s linear .25s backwards!important}}
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><div class="splash-estatica" aria-hidden="true"><span><img src="/logo.svg" alt=""></span></div></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

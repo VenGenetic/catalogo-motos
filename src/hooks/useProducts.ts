@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Producto } from '../types';
+import { useState, useEffect, useCallback } from 'react';
+import { Producto, Progreso } from '../types';
 import { sistemaDe } from '../utils/sistemas';
 import { limpiarTexto } from '../utils/helpers';
 import { supabase } from '../config/supabase';
@@ -22,6 +22,15 @@ const CACHE_TIME_KEY = 'cached_products_time';
 const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
 const FRESH_CACHE_TIME = 1000 * 60 * 30; // 30 Minutos (Evita sobreconsumo de ancho de banda en Vercel)
 
+/**
+ * El texto en el que busca el buscador. Sale de los demás campos, así que no se
+ * guarda en la caché: era un tercio de su peso, y con el catálogo creciendo la
+ * caché se acercaba al límite del navegador. Si no cabe no se guarda, y entonces
+ * cada visita vuelve a bajar el catálogo entero de la base de datos.
+ */
+const textoDe = (p: Producto) =>
+  limpiarTexto(`${p.nombre} ${p.codigo_referencia || ''} ${p.categoria || ''} ${p.seccion || ''} ${(p.origenes || []).join(' ')}`);
+
 export const useProducts = () => {
   const [productos, setProductos] = useState<Producto[]>(() => {
     try {
@@ -37,7 +46,10 @@ export const useProducts = () => {
           const age = Date.now() - parseInt(cachedTime);
           // Si es válido (menos de 24h), lo inicializamos directamente sin flash de carga
           if (age < CACHE_DURATION * 24) {
-             return JSON.parse(cachedData);
+             const lista: Producto[] = JSON.parse(cachedData);
+             // Las cachés nuevas vienen sin el texto de búsqueda (ver textoDe).
+             for (const p of lista) if (!p.textoBusqueda) p.textoBusqueda = textoDe(p);
+             return lista;
           }
         }
       }
@@ -50,18 +62,34 @@ export const useProducts = () => {
   // Si ya tenemos productos del caché síncrono, loading empieza en false.
   const [loading, setLoading] = useState(() => productos.length === 0);
   const [error, setError] = useState<string | null>(null);
+  const [progreso, setProgreso] = useState<Progreso>({ cargadas: 0, total: null });
+  // Cada "Reintentar" de la pantalla de carga vuelve a correr la carga.
+  const [intento, setIntento] = useState(0);
+
+  const reintentar = useCallback(() => {
+    setError(null);
+    setLoading(true);
+    setProgreso({ cargadas: 0, total: null });
+    setIntento(n => n + 1);
+  }, []);
 
   useEffect(() => {
     let retryCount = 0;
     const MAX_RETRIES = 3;
+    // El avance sólo se muestra en la primera visita (sin caché). Con caché la carga va
+    // en segundo plano y actualizarlo volvería a dibujar la app con cada página.
+    const mostrarAvance = productos.length === 0;
 
     // 1. CARGA INICIAL DESDE CACHÉ (Estrategia: Stale-While-Revalidate)
     // Mostramos los datos de localStorage al instante, pero SIEMPRE consultamos
     // a Supabase en segundo plano para actualizar y refrescar los cambios de ERP.
     const fetchProducts = async (): Promise<void> => {
+      // Si se programa un reintento, la pantalla de carga sigue: antes se apagaba y
+      // se veía el catálogo vacío mientras tanto.
+      let reintentando = false;
 
       try {
-        // Evitar consultas repetidas en segundo plano si la caché es fresca (menos de 30s en producción)
+        // Evitar consultas repetidas en segundo plano si la caché es fresca (menos de 30 minutos en producción)
         const esLocal = typeof window !== 'undefined' && 
           (window.location.hostname === 'localhost' || 
            window.location.hostname === '127.0.0.1' || 
@@ -71,7 +99,7 @@ export const useProducts = () => {
         if (cachedTime && productos.length > 0 && !esLocal) {
           const age = Date.now() - parseInt(cachedTime);
           if (age < FRESH_CACHE_TIME) {
-            console.log('⚡ La caché es fresca (menos de 30 segundos). Evitando consulta a Supabase.');
+            console.log('⚡ La caché es fresca (menos de 30 minutos). Evitando consulta a Supabase.');
             setLoading(false);
             return;
           }
@@ -187,6 +215,7 @@ export const useProducts = () => {
           if (firstError) throw firstError;
 
           let allData: any[] = firstPage || [];
+          if (mostrarAvance) setProgreso({ cargadas: allData.length, total: count ?? allData.length });
 
           const totalPages = count ? Math.ceil(count / pageSize) : 1;
           if (totalPages > 1) {
@@ -198,6 +227,11 @@ export const useProducts = () => {
                   .select(selectCols)
                   .order('id', { ascending: true })
                   .range(page * pageSize, (page + 1) * pageSize - 1)
+                  // La barra avanza con cada página que llega (llegan en cualquier orden).
+                  .then(r => {
+                    if (mostrarAvance && r.data) setProgreso(p => ({ ...p, cargadas: p.cargadas + r.data.length }));
+                    return r;
+                  })
               );
             }
             const results = await Promise.all(pagePromises);
@@ -298,7 +332,8 @@ export const useProducts = () => {
 
         // GUARDAR EN CACHÉ PARA LA PRÓXIMA VEZ
         try {
-          localStorage.setItem(CACHE_KEY, JSON.stringify(procesados));
+          // Sin el texto de búsqueda: se vuelve a armar al leer la caché (ver textoDe).
+          localStorage.setItem(CACHE_KEY, JSON.stringify(procesados, (clave, valor) => clave === 'textoBusqueda' ? undefined : valor));
           localStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
         } catch (e) {
           console.warn('No se pudo guardar en caché (posiblemente cuota excedida)', e);
@@ -317,6 +352,7 @@ export const useProducts = () => {
         if (retryCount < MAX_RETRIES && err instanceof Error &&
           (err.name === 'AbortError' || err.message.includes('Failed to fetch'))) {
           retryCount++;
+          reintentando = true;
           console.log(`Reintentando carga de productos (${retryCount}/${MAX_RETRIES})...`);
           setTimeout(() => fetchProducts(), 2000 * retryCount); // Backoff exponencial
           return;
@@ -324,12 +360,14 @@ export const useProducts = () => {
 
         setError(err instanceof Error ? err.message : 'Error desconocido al cargar productos');
       } finally {
-        setLoading(false);
+        if (!reintentando) setLoading(false);
       }
     };
 
     fetchProducts();
-  }, []);
+    // `productos` se lee a propósito como estaba al empezar esta carga (¿había caché?).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [intento]);
 
-  return { productos, loading, error };
+  return { productos, loading, error, progreso, reintentar };
 };
