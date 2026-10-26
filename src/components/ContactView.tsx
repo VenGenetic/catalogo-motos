@@ -52,7 +52,7 @@ const ContactView = () => (
           </div>
           <div>
             <h3 className="text-sm font-bold text-ui-ink">Horario de Atención</h3>
-            <p className="text-xs text-ui-copy">Lun - Sáb: 9:00 AM - 6:00 PM</p>
+            <p className="text-xs text-ui-copy">Lun - Sáb: 8:00 AM - 6:00 PM</p>
           </div>
         </div>
 
