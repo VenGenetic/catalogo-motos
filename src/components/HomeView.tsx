@@ -86,7 +86,7 @@ export const HomeView = ({ productos }: HomeViewProps) => {
                      </div>
                      <div>
                        <h4 className="text-sm font-bold text-ui-ink">Horario de Atención</h4>
-                       <p className="text-xs text-ui-copy">Lunes a Sábado: 9:00 AM - 6:00 PM</p>
+                       <p className="text-xs text-ui-copy">Lunes a Sábado: 8:00 AM - 6:00 PM</p>
                      </div>
                    </div>
 
