@@ -104,16 +104,25 @@ const puntaje = (r: Repuesto) =>
 /** El aviso gris de "sin imagen" en el Storage (2.044 bytes). */
 const ETIQUETA_SIN_IMAGEN = '"50cf2a1d60097554164e5f48dc614486"';
 
+/** Qué foto muestra la página de cada repuesto. */
+export type EstadoFoto =
+  | 'storage'      // su foto, en el Storage de Supabase
+  | 'solo_local'   // su foto está sólo en public/imagenes_repuestos: falta subirla
+  | 'aviso_gris'   // apunta al aviso gris de "sin imagen"
+  | 'no_existe'    // apunta a un archivo que ya no está en el Storage
+  | 'sin_foto';    // no tiene foto
+
 /*
   ¿La foto es una foto del repuesto? En el Storage, 1.148 repuestos apuntan
   al mismo archivo gris de "sin imagen" y 276 a un archivo que ya no existe
   (medido el 27-oct-2026); la página los cambia por /sin_imagen.webp, pero a
   Google no se le puede mandar eso. Se pide sólo la cabecera de cada foto: es
   el aviso gris si es ese archivo o si se repite en muchos repuestos (ninguna
-  foto real se repite en más de cuatro).
+  foto real se repite en más de cuatro). Si la del Storage no sirve, la página
+  muestra la copia de public/imagenes_repuestos, que también puede ser el
+  aviso gris (1.173 de esos archivos lo son).
 */
-export async function fotosReales(repuestos: Repuesto[], raiz: string): Promise<Map<string, string>> {
-  const reales = new Map<string, string>();
+export async function estadoDeFotos(repuestos: Repuesto[], raiz: string): Promise<Map<string, { estado: EstadoFoto; url: string | null }>> {
   const enStorage = repuestos.filter(r => r.imagen);
   const etiquetas = new Map<string, string | null>();
   let siguiente = 0;
@@ -129,31 +138,44 @@ export async function fotosReales(repuestos: Repuesto[], raiz: string): Promise<
     }
   };
   await Promise.all(Array.from({ length: 24 }, obrero));
-
   const repetidas = new Map<string, number>();
   for (const e of etiquetas.values()) if (e) repetidas.set(e, (repetidas.get(e) ?? 0) + 1);
-  for (const r of enStorage) {
-    const e = etiquetas.get(r.id);
-    if (e && e !== ETIQUETA_SIN_IMAGEN && (repetidas.get(e) ?? 0) <= 20) reales.set(r.id, r.imagen!);
-  }
 
-  // La copia en public/imagenes_repuestos (la página la usa si la del Storage falla).
-  const carpeta = path.join(raiz, 'public', 'imagenes_repuestos');
-  if (existsSync(carpeta)) {
-    const huellas = new Map<string, string>();
-    const veces = new Map<string, number>();
-    for (const archivo of readdirSync(carpeta, { withFileTypes: true })) {
-      if (!archivo.isFile()) continue;
-      const h = createHash('md5').update(readFileSync(path.join(carpeta, archivo.name))).digest('hex');
-      huellas.set(archivo.name.toUpperCase(), h);
-      veces.set(h, (veces.get(h) ?? 0) + 1);
-    }
-    for (const r of repuestos) {
-      if (reales.has(r.id) || !r.sku) continue;
-      const nombre = `${r.sku}.webp`;
-      const h = huellas.get(nombre.toUpperCase());
-      if (h && (veces.get(h) ?? 0) <= 20) reales.set(r.id, `/imagenes_repuestos/${encodeURIComponent(r.sku)}.webp`);
+  const locales = copiasLocales(raiz);
+  const estados = new Map<string, { estado: EstadoFoto; url: string | null }>();
+  for (const r of repuestos) {
+    const e = etiquetas.get(r.id);
+    if (e && e !== ETIQUETA_SIN_IMAGEN && (repetidas.get(e) ?? 0) <= 20) {
+      estados.set(r.id, { estado: 'storage', url: r.imagen });
+    } else if (r.sku && locales.has(r.sku.toUpperCase())) {
+      estados.set(r.id, { estado: 'solo_local', url: `/imagenes_repuestos/${encodeURIComponent(r.sku)}.webp` });
+    } else {
+      estados.set(r.id, { estado: !r.imagen ? 'sin_foto' : e ? 'aviso_gris' : 'no_existe', url: null });
     }
   }
+  return estados;
+}
+
+/** Los repuestos con foto real (la del Storage o la copia local) y su dirección. */
+export async function fotosReales(repuestos: Repuesto[], raiz: string): Promise<Map<string, string>> {
+  const reales = new Map<string, string>();
+  for (const [id, { url }] of await estadoDeFotos(repuestos, raiz)) if (url) reales.set(id, url);
+  return reales;
+}
+
+/** Los SKU (en mayúsculas) con una foto real en public/imagenes_repuestos. */
+function copiasLocales(raiz: string): Set<string> {
+  const carpeta = path.join(raiz, 'public', 'imagenes_repuestos');
+  const reales = new Set<string>();
+  if (!existsSync(carpeta)) return reales;
+  const huellas = new Map<string, string>();
+  const veces = new Map<string, number>();
+  for (const archivo of readdirSync(carpeta, { withFileTypes: true })) {
+    if (!archivo.isFile() || !/.webp$/i.test(archivo.name)) continue;
+    const h = createHash('md5').update(readFileSync(path.join(carpeta, archivo.name))).digest('hex');
+    huellas.set(archivo.name.replace(/.webp$/i, '').toUpperCase(), h);
+    veces.set(h, (veces.get(h) ?? 0) + 1);
+  }
+  for (const [sku, h] of huellas) if ((veces.get(h) ?? 0) <= 20) reales.add(sku);
   return reales;
 }

@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "sincronizar-despiece": "node scripts/sincronizar-despiece.mjs",
-    "check:despiece": "node scripts/sincronizar-despiece.mjs --verificar"
+    "check:despiece": "node scripts/sincronizar-despiece.mjs --verificar",
+    "fotos:sin-foto": "node scripts/repuestos-sin-foto.mjs"
   },
   "dependencies": {
     "@supabase/postgrest-js": "^2.110.0",

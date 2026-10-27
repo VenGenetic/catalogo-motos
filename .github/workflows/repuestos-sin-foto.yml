@@ -1,0 +1,30 @@
+# La lista de repuestos sin foto, cada mañana (scripts/repuestos-sin-foto.mjs).
+# Queda en la pestaña Actions: el resumen trae los que están en bodega y el
+# archivo "repuestos-sin-foto" la lista completa en CSV.
+name: Repuestos sin foto
+
+on:
+  schedule:
+    - cron: '0 11 * * *' # 06:00 en Ecuador
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lista:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      # Sólo usa Node: no hace falta npm ci. Lee catalogo_publico con la clave
+      # pública que ya está en .env.production.
+      - run: node scripts/repuestos-sin-foto.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: repuestos-sin-foto
+          path: informes/repuestos-sin-foto.csv
+          retention-days: 30
