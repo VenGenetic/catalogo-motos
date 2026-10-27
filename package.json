@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sincronizar-despiece": "node scripts/sincronizar-despiece.mjs",
+    "check:despiece": "node scripts/sincronizar-despiece.mjs --verificar"
   },
   "dependencies": {
     "@supabase/postgrest-js": "^2.110.0",

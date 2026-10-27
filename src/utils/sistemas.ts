@@ -6,9 +6,12 @@
   (de SISTEMAS y de "Sistema de cada pieza") y de `tipoPieza` de
   scripts/meta/clasificador.js. Si cambias una regla allá, cámbiala aquí
   igual: el ERP y la web tienen que poner la misma pieza en el mismo sistema.
+  `npm run check:despiece` compara esta copia con la del ERP repuesto por
+  repuesto y avisa si se separan.
 
-  Vive aparte de despiece.ts porque se usa al cargar los productos y no tiene
-  lookbehind: carga en cualquier navegador (ver utils/cargarDespiece.ts).
+  Es una copia a mano, y no la de utils/despiece/, porque se usa al cargar
+  los productos y no tiene lookbehind: carga en cualquier navegador (ver
+  utils/cargarDespiece.ts).
 */
 
 export const SISTEMAS = [

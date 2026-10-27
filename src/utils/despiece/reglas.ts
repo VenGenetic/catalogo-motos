@@ -1,24 +1,58 @@
+// GENERADO por scripts/sincronizar-despiece.mjs desde Sistema_ERP/apartamentos/bodega/despiece.ts (2de5290, huella 2ba2c686a1ad6e44). No editar a mano: npm run sincronizar-despiece.
+import { tipoPieza } from './clasificador.js';
+
 /*
-  Despiece por modelo: a qué motos sirve cada repuesto.
+  Despiece por modelo, armado con los códigos de la importadora (JCEV).
 
-  COPIA de Sistema_ERP/apartamentos/bodega/despiece.ts: de SEGMENTOS a
-  SIN_COMPARTIDAS y `modelosCompatiblesDe`, sin cambiar una letra. Si cambias
-  una regla aquí, cambia la otra igual, o el ERP y la web le dirán al cliente
-  cosas distintas. El sistema de cada pieza está en utils/sistemas.ts.
+  Daytona no publica sus despieces, pero el código de cada repuesto ya los
+  trae: es el modelo más la posición de la pieza en la lista de esa moto.
+  `CB250GP1-019` es el asiento de la GP1 250; `CB250GP1-020`, su depurador.
+  Ordenando por ese número sale la moto pieza por pieza.
 
-  El código de la importadora es el modelo más la posición de la pieza
-  (CB250GP1-019 es el asiento de la GP1 250). Una pieza es de una moto si su
-  código es de ella (propia) o si su nombre dice que también le sirve
-  (compartida). Los nombres que no dicen la versión no se asignan, salvo las
-  excepciones escritas en el modelo (`aSecas`).
+  Cada modelo junta dos clases de piezas:
+    · Propias: su código es del modelo (`prefijos`).
+    · Compartidas: su código es de otro modelo o de una familia de motor
+      (`CB250-…`, `FE300-…`), pero el nombre dice que también le sirve
+      ("TAPA CABEZOTE SCB/TEKK/GP-1/ADV-R/CROSS").
 
-  Las reglas usan lookbehind (`(?<!SUPER\s*)`), que Safari sólo entiende desde
-  iOS 16.4. Por eso este archivo no se importa directo: se carga aparte con
-  utils/cargarDespiece.ts y, si el navegador no puede, el catálogo sigue
-  funcionando sin el filtro por moto.
+  Las compartidas salen del nombre, así que el reconocimiento es estricto: un
+  nombre que no dice la versión ("WOLF" a secas, "SHARK" a secas) no se asigna
+  a ningún modelo. Vender la pieza de otra moto cuesta una devolución. Las
+  excepciones se escriben en el modelo (`aSecas`).
+
+  Archivo sin importaciones de la app para poder probarlo con Node.
+
+  El catálogo (escritorio y móvil) usa `modelosCompatiblesDe` para mostrar a
+  qué motos sirve cada repuesto, y los dos se vuelven el despiece de una moto:
+  el de escritorio con `?modelo=` (ver `indiceDespiece.ts`) y el móvil con su
+  filtro "Moto" (ver `utils/despieceMovil.ts`). La misma regla en todos lados,
+  así que no pueden decir cosas distintas.
+
+  El catálogo público (repo catalogo-motos, src/utils/despiece/reglas.ts) y
+  el agente (src/catalogo/despiece/reglas.ts) usan una copia exacta de este
+  archivo y de scripts/meta/clasificador.js, para que el ERP, la web y el bot
+  no le digan al cliente cosas distintas. Después de commitear un cambio
+  aquí, `npm run despiece:copiar` lo lleva a los dos (y allá se commitea);
+  `npm run check:despiece-copias` avisa si se separaron. La clasificación
+  por sistema (SISTEMAS y sistemaDe) está además copiada a mano en
+  src/utils/sistemas.ts del catálogo, sin lookbehind para Safari viejo: su
+  `npm run check:despiece` la compara con esta repuesto por repuesto.
 */
 
-import { normalizar } from './sistemas';
+export const SISTEMAS = [
+  'Motor',
+  'Transmisión',
+  'Sistema eléctrico',
+  'Frenos',
+  'Suspensión y dirección',
+  'Ruedas',
+  'Chasis y carrocería',
+  'Escape',
+  'Manubrio y mandos',
+  'Accesorios',
+  'Otros',
+] as const;
+export type Sistema = typeof SISTEMAS[number];
 
 export const SEGMENTOS = [
   'Deportivas', 'Doble propósito', 'Enduro', 'Clásicas', 'Utilitarias', 'Caballito', 'Scooters', 'Cuadrón', 'Otros modelos',
@@ -61,9 +95,17 @@ export interface ModeloDespiece {
 }
 
 export interface ProductoDespiece {
-  id: number | string;
+  id: number;
   sku: string | null;
   name: string;
+}
+
+export interface PiezaDespiece<P extends ProductoDespiece = ProductoDespiece> {
+  producto: P;
+  sistema: Sistema;
+  /** Posición en la lista del modelo (el número del código). Sólo en las propias. */
+  posicion: number | null;
+  origen: 'propia' | 'compartida';
 }
 
 export interface CompatibilidadDespiece {
@@ -72,6 +114,9 @@ export interface CompatibilidadDespiece {
   posicion: number | null;
   origen: 'propia' | 'compartida';
 }
+
+/** Mayúsculas y sin tildes: los nombres vienen escritos de las dos formas. */
+export const normalizar = (texto: string) => texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase();
 
 /**
  * "CB250GP1-068G" → prefijo CB250GP1, posición 68, variante G (color, lado, año).
@@ -331,6 +376,87 @@ export const modelosDelMotor = (n: string, prefijo = '') =>
 /** Líneas eléctricas y artículos de tienda: sus nombres comparten palabras con motos ("B-E AGILITY"). */
 const SIN_COMPARTIDAS = new Set(['RBE', 'RME', 'RKX', 'MDY', 'MFP', 'REDAY', 'CED', 'POP']);
 
+// --- Sistema de cada pieza -------------------------------------------------
+
+/**
+ * La pieza es lo primero que dice el nombre; lo demás son atributos. "TANQUE
+ * GASOLINA SIN BOYA" es un tanque, no un sensor; "ARO ... ZAPATA", un aro.
+ * Se mira el comienzo antes que cualquier palabra suelta.
+ */
+const EXCEPCIONES: [RegExp, Sistema][] = [
+  [/^PASTILLAS?\s*(DE\s*)?CALIBRACION/, 'Motor'],
+  [/^PI[NÑ]ON\s*(DE\s*)?VELOCIMETRO|^RUEDA\s*FONICA/, 'Sistema eléctrico'],
+  [/^(EJE\s*)?PEDAL\s*(DE\s*)?ARRANQUE|^PI[NÑ]ON(ES)?\s*(DE\s*)?ARRANQUE|^KIT\s*PI[NÑ]ONES\s*(DE\s*)?ARRANQUE/, 'Motor'],
+];
+const INICIO: [RegExp, Sistema][] = [
+  [/^(DISCO\s*(DE\s*)?FRENO|PASTILLAS?\b|ZAPATAS?\b|MORDAZA|BOMBA\s*(DE\s*)?FRENO|KIT\s*(DE\s*)?FRENO|TROMPOS?\s*(DE\s*)?FRENO(?!.*EMBRAGUE)|PORTA\s*ZAPATA|CALIPER|MANGUERA\s*(DE\s*)?FRENO|GALLETA\s*(DE\s*)?FRENO|VARILLA\s*(DE\s*)?FRENO|PEDAL\s*(DE\s*)?FRENO)/, 'Frenos'],
+  [/^(CILINDRO|PISTON|KIT\s*(DE\s*)?(PISTON|CILINDRO|EMPAQUE|SELLO|EMBRAGUE)|CABEZOTE|CIGUE[NÑ]AL|CARTER?\b|[AÁ]RBOL|VALVULA|BALANCIN|EMPAQUE|BOMBA\s*(DE\s*)?(ACEITE|AGUA|GASOLINA)|CADENILLA|TENSOR|GUIA\s*CADENILLA|CARBURADOR|BASE\s*CARBURADOR|FILTRO|DEPURADOR|MOTOR\s*(DE\s*)?ARRANQUE|BENDIX|EMBRAGUE|RADIADOR|BUJIA|TAPA\s*(MOTOR|CABEZOTE|FILTRO)|EJE\s*BALANCEADOR|VENTILADOR|BIELA|ANILLOS?\b|RETEN|MEDIDOR\s*(DE\s*)?ACEITE|BAYONETA|TROMPOS?\s*FRENO.*EMBRAGUE)/, 'Motor'],
+  [/^(CATALINA|PI[NÑ]ON\s*MOTRIZ|PORTA\s*CATALINA|CADENA\b|KIT\s*(DE\s*)?(ARRASTRE|TRACCION)|CAJA\s*(DE\s*)?CAMBIO|SELECTOR|(EJE\s*)?PEDAL\s*(DE\s*)?CAMBIO|PATINETA|ESTRELLA|TROMPO\s*(DE\s*)?CAMBIO|TAPA\s*PI[NÑ]ON\s*MOTRIZ|CUBRE\s*CADENA|CAUCHO\s*DESLIZ|TEMPLADOR|BANDA\s*(DE\s*)?TRANSMISION|GUIA\s*(DE\s*)?CADENA\b)/, 'Transmisión'],
+  [/^(FARO|STOP|DIRECCIONAL|VELOCIMETRO|CD[I1]\b|BOBINA|MAGNETO|RECTIFICADOR|REGULADOR|BATERIA|INST\b|INST\.|INSTALACION|KIT\s*(DE\s*)?(SWITCH|RUN)|SWITCH|FLASH|PITO|BOCINA|LUZ|SENSOR|BOYA|REL[EA]Y?\b|CONTROLADOR|CARGADOR|PARLANTE|EXPLORADORA|ECU\b|CABLE\s*(DE\s*)?VELOCI|BOTON|INTERRUPTOR|MOTOR\s*ELECTRICO|CONVERTIDOR|PUERTO)/, 'Sistema eléctrico'],
+  [/^(TELESCOPICA|AMORTIGUADOR|MONOSHOCK|MESA\s*(DE\s*)?DIRECCION|MESA\s*(SUPERIOR|INFERIOR)|KIT\s*(DE\s*)?PISTAS|PISTAS?\s*(DE\s*)?DIRECCION|UNIBOLL|ROTULA|BRAZOS?\s*(DE\s*)?SUSPENSION|BUJES|KIT\s*(DE\s*)?RETENEDORES|COLUMNA\s*(DE\s*)?DIRECCION)/, 'Suspensión y dirección'],
+  [/^(AROS?\b|LLANTAS?\b|NEUMATICO|RAYOS?\b|EJE\s*(DEL|POST|TRASERO|DELANTERO)|KIT\s*(DE\s*)?EJES|CAMARA|RIN\b|MANZANA)/, 'Ruedas'],
+  [/^(ASIENTO|BASE\s*ASIENTO|TANQUE|GUARDAFANGO|GUARDALODO|PLACA|PORTA\s*PLACA|PARRILLA|ESTRIBO|OSCILANTE|PATA\b|MASCARILLA\s*COMP|PROTEC|CHASIS|SUBFRAME|PARABRISAS|EMBLEMA|ADHESIVO|TAPA\s*(DE\s*)?GASOLINA|LLAVE\s*(DE\s*)?GASOLINA|BAUL|CAJA\s*DE\s*HERRAMIENTAS|SLIDER|CRASHBAR|CUPULA|MALLA|LAMINA|CACHA|CARENAJE|CUBIERTA)/, 'Chasis y carrocería'],
+  [/^(ESCAPE|SILENCIADOR|MOFLE|PUNTA\s*(DE\s*)?ESCAPE)/, 'Escape'],
+  [/^(BOMBA\s*(DE\s*)?COMBUSTIBLE|CENTRIFUGO|KIT\s*(DE\s*)?DISTRIBUCION|TERMO?S?TATO|TERMOTOSTATO)/, 'Motor'],
+  [/^(UNIBALL|BARRAS?\s*(DE\s*)?DIRECCION)/, 'Suspensión y dirección'],
+  [/^(KIT\s*(DE\s*)?RINES)/, 'Ruedas'],
+  [/^(ALARMA|APAGADOR)/, 'Sistema eléctrico'],
+  [/^((TAPA\s*)?LATERAL|BOLSILLO|CANASTA|KIT\s*(DE\s*)?CROMADOS)/, 'Chasis y carrocería'],
+  [/^(MANIGUETA|TIMON|MANUBRIO|CABLES?\s*(DE\s*)?(ACELERADOR|EMBRAGUE|AHOGADOR|FRENO|SET)|ESPEJO|RETROVISOR|PU[NÑ]O|APOYA\s*MANOS|CUBRE\s*MANOS|PESAS|ACELERADOR|PALANCA|COMANDO)/, 'Manubrio y mandos'],
+];
+
+/** Lo que el clasificador del catálogo de Meta pone donde un despiece no lo pondría. */
+const ANTES: [RegExp, Sistema][] = [
+  [/MANIGUETA|MANETA/, 'Manubrio y mandos'],
+  [/PASTILLA\s*CALIBRACION|\bBALANCEADOR\b/, 'Motor'],
+  [/\bARRANQUE\b|\bBENDIX\b/, 'Motor'],
+  [/PI[NÑ]ON\s*VELOCIMETRO|RUEDA\s*FONICA/, 'Sistema eléctrico'],
+  [/\bLUZ\b|\bLED\b|\bLUCES\b/, 'Sistema eléctrico'],
+  [/CAJA\s*(DE\s*)?CAMBIO|SELECTOR|PEDAL\s*(DE\s*)?CAMBIO|PALANCA\s*(DE\s*)?CAMBIO|UNETAS|PATINETA|TAMBOR\s*(DE\s*)?CAMBIO|BANDA\s*(DE\s*)?TRANSMISION/, 'Transmisión'],
+  [/DISCOS?\s*Y\s*SEPARADORES|BOMBA\s*(DE\s*)?GASOLINA|ESPARRAGO|KIT\s*MANGUERAS/, 'Motor'],
+  [/KIT\s*(DE\s*)?TRACCION|ESTRELLA\s*(DE\s*)?CAMBIO/, 'Transmisión'],
+  [/\bMESA\s*(SUPERIOR|INFERIOR)|BRAZOS?\s*(DE\s*)?SUSPENSION|BUJES\s*(DE\s*)?(SUSPENSION|DIRECC?ION)/, 'Suspensión y dirección'],
+  [/\bCD[I1]\b|\bECU\b|CENTRALITA|CARGADOR|CONVERTIDOR|BREAKER|INDICADOR/, 'Sistema eléctrico'],
+  [/\bCOMANDO\b/, 'Manubrio y mandos'],
+  [/\bCABLE\b.*\b(ACELERADOR|EMBRAGUE|AHO|CHOKE|SET\d)|\bCABLE\s*(DE\s*)?FRENO/, 'Manubrio y mandos'],
+  [/^(?!.*FARO).*\bMASCARILLA\b/, 'Chasis y carrocería'],
+];
+
+const POR_TIPO: Record<string, Sistema> = {
+  Motor: 'Motor',
+  Transmision: 'Transmisión',
+  Frenos: 'Frenos',
+  Suspension: 'Suspensión y dirección',
+  Ruedas: 'Ruedas',
+  Electrico: 'Sistema eléctrico',
+  Carroceria: 'Chasis y carrocería',
+  Escape: 'Escape',
+  'Manubrio y mandos': 'Manubrio y mandos',
+  'Accesorios del piloto': 'Accesorios',
+};
+
+/** Lo que el clasificador del catálogo deja en "Otros". */
+const DESPUES: [RegExp, Sistema][] = [
+  [/CARTER|BIELA|TENSOR|CADENILLA|BUJIA|DEPURADOR|TOMA\s*(DE\s*)?AIRE|ADMISION|PALILLO|\bMOTOR\b|\bCKD\b|\bTAPA\s*PI[NÑ]ON|ARBOL\s*(DE\s*)?LEVA|VENTILADOR|BOMBA\s*(DE\s*)?AGUA|TERMOSTATO|REFRIGERANTE|RESERVORIO|INYECCION/, 'Motor'],
+  [/INSTALACION|INST\.?\s*ELECTRICA|\bRUN\b|BOTON|PITO|BOCINA|\bREL[EA]Y?\b|\bFLASH\b|CONTROLADOR|PARLANTE|\bUSB\b|ENCENDIDO|INTERRUPTOR|EXPLORADORA|PUERTO\s*(DE\s*)?CARGA|\bRADIO\b/, 'Sistema eléctrico'],
+  [/TIMON|MANUBRIO|APOYA\s*MANOS|CUBRE\s*MANOS|CONTRAPESO|\bMANDO|\bPESAS\b|RETROVISOR/, 'Manubrio y mandos'],
+  [/PISTAS?\s*(DE\s*)?DIRECCION|COLUMNA\s*(DE\s*)?DIRECCION|UNIBOLL|ROTULA|TRINCHE/, 'Suspensión y dirección'],
+  [/\bEJES\b|\bRAYOS?\b/, 'Ruedas'],
+  [/OSCILANTE|BASCULANTE|CHASIS|PATA\s*(DE\s*)?(APOYO|LAT|CENTRAL)|CABALLETE|PROTEC|GUARD|PARABRISAS|EMBLEMA|ADHESIVO|STICKER|CUBRE|SOPORTE|BASE|TAPON|SIMBRA|COLA|COLIN|AGARRADERA|ESPALDAR|APOYA\s*PIES|\bPISO\b|PLASTICO|SLIDER|CRASHBAR|SUBFRAME|TUBO|REFLECTIV|\bCAUCHOS?\b|LLAVE\s*(DE\s*)?GASOLINA|TAPA\s*(DE\s*)?GASOLINA|TAPA\s*VIN|PEDALES/, 'Chasis y carrocería'],
+  [/DRYBAG|MOCHILA|RELOJ|COMPRESOR|GORRA|CASACA|ROMPETRAFICO|TRABAPERNOS|TOP\s*CASE|TABLET/, 'Accesorios'],
+];
+
+export function sistemaDe(nombre: string): Sistema {
+  const n = normalizar(nombre).replace(/^[^A-Z0-9]+/, '');
+  for (const [patron, sistema] of EXCEPCIONES) if (patron.test(n)) return sistema;
+  for (const [patron, sistema] of INICIO) if (patron.test(n)) return sistema;
+  for (const [patron, sistema] of ANTES) if (patron.test(n)) return sistema;
+  const tipo = tipoPieza(n).split(' > ')[0];
+  if (POR_TIPO[tipo]) return POR_TIPO[tipo];
+  for (const [patron, sistema] of DESPUES) if (patron.test(n)) return sistema;
+  return 'Otros';
+}
+
 // --- Armado ----------------------------------------------------------------
 
 const DUENOS_POR_PREFIJO = new Map<string, ModeloDespiece[]>();
@@ -384,32 +510,34 @@ export function modelosCompatiblesDe(producto: ProductoDespiece): Compatibilidad
   );
 }
 
-export const modeloPorId = (id: string) => MODELOS_DESPIECE.find(m => m.id === id);
-
-/** Una pieza en el despiece de una moto. */
-export interface PiezaDeModelo {
-  origen: 'propia' | 'compartida';
-  /** Posición en la lista de la moto (el número del código). Sólo en las propias. */
-  posicion: number | null;
-}
-
 /**
- * Las piezas de una sola moto (id del producto → propia o compartida y su
- * posición), con la misma regla que `modelosCompatiblesDe`. Sólo se analiza a
- * fondo lo que puede ser de ella, para no recorrer las 80 motos con cada uno
- * de los ~6.500 productos en el celular del cliente.
+ * Reparte los productos entre los modelos. Una pieza propia cuyo nombre
+ * nombra otros modelos y no el suyo no se cuenta como propia: los prefijos de
+ * familia mezclan versiones ("TAPA CABEZOTE S1 180CC" con código de la S1 150).
  */
-export function piezasDeModelo(productos: ProductoDespiece[], id: string): Map<string | number, PiezaDeModelo> {
-  const modelo = modeloPorId(id);
-  const out = new Map<string | number, PiezaDeModelo>();
-  if (!modelo) return out;
-  for (const p of productos) {
-    const prefijo = leerCodigo(p.sku)?.prefijo;
-    const n = nombreParaMotos(p.name || '');
-    const candidato = (prefijo && modelo.prefijos.includes(prefijo)) || nombra(modelo, n, prefijo) || modelosDelMotor(n, prefijo).includes(modelo.id);
-    if (!candidato) continue;
-    const suya = modelosCompatiblesDe(p).find(c => c.modelo.id === modelo.id);
-    if (suya) out.set(p.id, { origen: suya.origen, posicion: suya.posicion });
+export function armarDespieces<P extends ProductoDespiece>(productos: P[]): Map<string, PiezaDespiece<P>[]> {
+  const resultado = new Map<string, PiezaDespiece<P>[]>(MODELOS_DESPIECE.map(m => [m.id, []]));
+
+  for (const producto of productos) {
+    const compatibles = modelosCompatiblesDe(producto);
+    if (!compatibles.length) continue;
+    const sistema = sistemaDe(producto.name || '');
+    for (const compatibilidad of compatibles) {
+      resultado.get(compatibilidad.modelo.id)!.push({
+        producto,
+        sistema,
+        posicion: compatibilidad.posicion,
+        origen: compatibilidad.origen,
+      });
+    }
   }
-  return out;
+
+  for (const piezas of resultado.values()) {
+    piezas.sort((a, b) =>
+      SISTEMAS.indexOf(a.sistema) - SISTEMAS.indexOf(b.sistema)
+      || (a.origen === b.origen ? 0 : a.origen === 'propia' ? -1 : 1)
+      || (a.posicion ?? 0) - (b.posicion ?? 0)
+      || (a.producto.sku || '').localeCompare(b.producto.sku || ''));
+  }
+  return resultado;
 }

@@ -16,7 +16,7 @@ export const GRUPOS_MOTO = [
 export type GrupoMoto = typeof GRUPOS_MOTO[number];
 
 /*
-  Motos del filtro. `id` es la moto en src/utils/despiece.ts y va en la
+  Motos del filtro. `id` es la moto en src/utils/despiece/ y va en la
   dirección (/catalogo/wolf-250): elegir "Wolf 250" muestra sólo lo que le
   sirve a la Wolf 250, no todo lo que dice "Wolf" (Super Wolf, Wolf 200,
   Wolf Evolution). Las versiones que comparten las mismas piezas van juntas.

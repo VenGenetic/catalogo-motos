@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 
 /*
-  El despiece (utils/despiece.ts) se carga en su propio archivo.
+  El despiece (utils/despiece/, copia de las reglas del ERP) se carga en su
+  propio archivo.
 
   Sus reglas usan lookbehind (`(?<!SUPER\s*)WOLF`), que Safari sólo entiende
   desde iOS 16.4. Con el build para Safari 13 esas expresiones se vuelven
