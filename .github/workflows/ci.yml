@@ -1,0 +1,34 @@
+# Build y lint en cada push y en cada pull request, en cualquier rama: lo
+# que no compila se ve antes de unirlo a main (Vercel publica main).
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build y lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      # Compila con .env.production (sólo la URL y la clave pública), como Vercel.
+      - run: npm run build
+      # Sin la carpeta del ERP, revisa que nadie haya editado a mano la copia
+      # del despiece (la rama que lo trae: feat/despiece-copia-del-erp).
+      - name: Despiece sin editar a mano
+        run: npm run --if-present check:despiece
