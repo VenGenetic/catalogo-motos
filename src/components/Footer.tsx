@@ -7,7 +7,7 @@ export const Footer = () => (
       <div className="mx-auto grid max-w-[1440px] divide-y divide-white/10 px-3 sm:px-5 md:grid-cols-3 md:divide-x md:divide-y-0 lg:px-8">
         <div className="flex items-center gap-3 py-5 md:px-5"><MessageCircle className="text-brand-orange" /><div><p className="text-xs font-black uppercase tracking-wide">Asesoría por WhatsApp</p><p className="text-xs text-white/55">Confirma compatibilidad antes de comprar</p></div></div>
         <div className="flex items-center gap-3 py-5 md:px-5"><MapPin className="text-brand-orange" /><div><p className="text-xs font-black uppercase tracking-wide">Atención en Guayaquil</p><p className="text-xs text-white/55">Repuestos y soporte especializado</p></div></div>
-        <div className="flex items-center gap-3 py-5 md:px-5"><Phone className="text-brand-orange" /><div><p className="text-xs font-black uppercase tracking-wide">+593 99 327 9707</p><p className="text-xs text-white/55">Lunes a sábado, 9:00 a 18:00</p></div></div>
+        <div className="flex items-center gap-3 py-5 md:px-5"><Phone className="text-brand-orange" /><div><p className="text-xs font-black uppercase tracking-wide">+593 99 327 9707</p><p className="text-xs text-white/55">Lunes a sábado, 8:00 a 18:00</p></div></div>
       </div>
     </div>
     <div className="mx-auto grid max-w-[1440px] gap-8 px-5 py-10 md:grid-cols-[1.5fr_1fr_1fr] lg:px-8">
