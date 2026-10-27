@@ -20,9 +20,11 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 const clave = supabaseAnonKey || 'placeholder-key';
 
+// La clave publicable nueva de Supabase (sb_publishable_…) no es un JWT: va
+// sólo en `apikey`. La anon de siempre (JWT) sigue yendo también como Bearer.
 export const supabase = new PostgrestClient(`${(supabaseUrl || 'https://placeholder.supabase.co').replace(/\/$/, '')}/rest/v1`, {
   headers: {
     apikey: clave,
-    Authorization: `Bearer ${clave}`,
+    ...(clave.startsWith('eyJ') ? { Authorization: `Bearer ${clave}` } : {}),
   },
 });
