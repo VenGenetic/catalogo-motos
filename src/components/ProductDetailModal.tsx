@@ -152,7 +152,9 @@ export const ProductDetailModal = ({ product, allProducts, currentList, onClose,
       "@type": "Offer",
       "priceCurrency": "USD",
       "price": product.precio,
-      "availability": product.stock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+      // "Bajo pedido" es BackOrder: así lo dice también el feed de Google (ver vite/sitemapYFeed.ts).
+      "availability": !product.stock ? "https://schema.org/OutOfStock"
+        : product.origenes?.includes('bajo pedido') ? "https://schema.org/BackOrder" : "https://schema.org/InStock"
     }
   };
 
