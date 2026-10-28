@@ -22,17 +22,59 @@ const CACHE_TIME_KEY = 'cached_products_time';
 const CACHE_DURATION = 1000 * 60 * 60; // 1 Hora
 const FRESH_CACHE_TIME = 1000 * 60 * 30; // 30 Minutos (Evita sobreconsumo de ancho de banda en Vercel)
 
-// Más viejo que esto, mejor la vista en vivo: si la base falla, el CDN puede
+// Más viejo que esto, mejor la base en vivo: si la base falla, el CDN puede
 // seguir sirviendo el último JSON que salió bien (stale-while-revalidate).
 const MAX_EDAD_JSON = 1000 * 60 * 60 * 6; // 6 horas
 
+const PAGINA = 1000; // PostgREST corta en 1000 filas sin avisar
+// Sólo columnas que se le pueden mostrar al cliente, sin repuestos borrados, y
+// con la disponibilidad y el "descontinuado" con las reglas del ERP y del bot.
+const COLUMNAS = 'id, sku, name, category, price, disponibilidad, descontinuado, image_url, gallery';
+
+/** Una fila del catálogo como la entrega la base: las columnas de COLUMNAS. */
+type FilaCatalogo = { id: number } & Record<string, unknown>;
+
+/** Una página de la función `catalogo_publico()` del ERP: los repuestos con id mayor a `desde`. */
+const paginaDeLaFuncion = async (desde: number): Promise<FilaCatalogo[]> => {
+  const { data, error } = await supabase.rpc('catalogo_publico', { p_desde_id: desde, p_limite: PAGINA }, { get: true });
+  if (error) throw error;
+  return data ?? [];
+};
+
+/** Lo mismo desde la vista `catalogo_publico`, mientras la función no exista. */
+const paginaDeLaVista = async (desde: number): Promise<FilaCatalogo[]> => {
+  const { data, error } = await supabase.from('catalogo_publico').select(COLUMNAS).gt('id', desde).order('id', { ascending: true }).limit(PAGINA);
+  if (error) throw error;
+  return (data ?? []) as FilaCatalogo[];
+};
+
+/**
+ * Todo el catálogo, página por página por id: cada una es una búsqueda en la
+ * clave primaria, y una fila que cambia a mitad de camino no corre a las
+ * demás. Sigue hasta una página vacía, así no depende de cuántas filas
+ * entregue PostgREST por página.
+ */
+const leerPorPaginas = async (
+  pagina: (desde: number) => Promise<FilaCatalogo[]>,
+  alAvanzar: (cargadas: number) => void,
+): Promise<FilaCatalogo[]> => {
+  const filas: FilaCatalogo[] = [];
+  for (let desde = 0; ; ) {
+    const lote = await pagina(desde);
+    if (lote.length === 0) return filas;
+    filas.push(...lote);
+    desde = lote[lote.length - 1].id;
+    alAvanzar(filas.length);
+  }
+};
+
 /**
  * El catálogo entero que arma api/catalogo.js y guarda el CDN de Vercel, con
- * las mismas columnas que la vista `catalogo_publico`. Si no llega bien
+ * las mismas columnas que la función `catalogo_publico()`. Si no llega bien
  * (función caída, `vite preview`, que responde index.html, o JSON viejo)
- * falla y useProducts lee la vista.
+ * falla y useProducts lee la base.
  */
-const leerCatalogoJson = async (): Promise<any[]> => {
+const leerCatalogoJson = async (): Promise<FilaCatalogo[]> => {
   const r = await fetch('/api/catalogo', { headers: { Accept: 'application/json' } });
   if (!r.ok) throw new Error(`/api/catalogo respondió ${r.status}`);
   const datos = await r.json();
@@ -216,62 +258,21 @@ export const useProducts = () => {
           rawProducts = await leerCatalogoJson();
           if (mostrarAvance) setProgreso({ cargadas: rawProducts.length, total: rawProducts.length });
         } catch (jsonErr) {
-          console.warn('⚠️ El JSON del catálogo no sirvió; se lee la vista.', jsonErr);
+          console.warn('⚠️ El JSON del catálogo no sirvió; se lee la base.', jsonErr);
         }
 
-        // Si no, la vista, página por página.
+        // Si no, la base página por página: la función `catalogo_publico()` o,
+        // mientras no exista (migración 20261028200000 del ERP), la vista.
         if (rawProducts.length === 0) {
           console.log('📡 Consultando productos desde Supabase...');
+          const avance = (cargadas: number) => { if (mostrarAvance) setProgreso({ cargadas, total: null }); };
           try {
-            const pageSize = 1000;
-            // La vista `catalogo_publico` (migración 20261019150000 del ERP) y no
-            // la tabla `products`: sólo columnas que se le pueden mostrar al
-            // cliente, sin repuestos borrados, y con la disponibilidad y el
-            // "descontinuado" calculados con las mismas reglas del ERP y del bot.
-            const selectCols = 'id, sku, name, category, price, disponibilidad, descontinuado, image_url, gallery';
-
-            // Primera página: pedimos el conteo total en la misma consulta para saber
-            // cuántas páginas faltan y traerlas todas EN PARALELO (en vez de una por una).
-            // El .order('id') es obligatorio: sin ORDER BY explícito Postgres no
-            // garantiza un orden estable entre consultas, y como las páginas se
-            // piden en paralelo con .range() una fila puede repetirse en dos
-            // páginas y otra no salir en ninguna.
-            const { data: firstPage, error: firstError, count } = await supabase
-              .from('catalogo_publico')
-              .select(selectCols, { count: 'exact' })
-              .order('id', { ascending: true })
-              .range(0, pageSize - 1);
-
-            if (firstError) throw firstError;
-
-            let allData: any[] = firstPage || [];
-            if (mostrarAvance) setProgreso({ cargadas: allData.length, total: count ?? allData.length });
-
-            const totalPages = count ? Math.ceil(count / pageSize) : 1;
-            if (totalPages > 1) {
-              const pagePromises = [];
-              for (let page = 1; page < totalPages; page++) {
-                pagePromises.push(
-                  supabase
-                    .from('catalogo_publico')
-                    .select(selectCols)
-                    .order('id', { ascending: true })
-                    .range(page * pageSize, (page + 1) * pageSize - 1)
-                    // La barra avanza con cada página que llega (llegan en cualquier orden).
-                    .then(r => {
-                      if (mostrarAvance && r.data) setProgreso(p => ({ ...p, cargadas: p.cargadas + r.data.length }));
-                      return r;
-                    })
-                );
-              }
-              const results = await Promise.all(pagePromises);
-              for (const r of results) {
-                if (r.error) throw r.error;
-                if (r.data) allData = allData.concat(r.data);
-              }
+            try {
+              rawProducts = await leerPorPaginas(paginaDeLaFuncion, avance);
+            } catch (e) {
+              if ((e as { code?: string } | null)?.code !== 'PGRST202') throw e;
+              rawProducts = await leerPorPaginas(paginaDeLaVista, avance);
             }
-
-            rawProducts = allData;
           } catch (sbErr) {
             console.error('⚠️ Supabase falló al cargar productos:', sbErr);
             throw sbErr;
