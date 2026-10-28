@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "check:catalogo-json": "node script/check-catalogo-json.mjs"
   },
   "dependencies": {
     "@supabase/postgrest-js": "^2.110.0",
